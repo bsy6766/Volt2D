@@ -1,0 +1,38 @@
+//
+//  ActionMoveTo.h
+//  OpenGL_2D_Framework
+//
+//  Created by Seung Youp Baek on 12/5/14.
+//  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
+//
+
+#ifndef __CS364FinalProject__ActionMoveTo__
+#define __CS364FinalProject__ActionMoveTo__
+
+#include "SpriteAction.h"
+
+class ActionMoveTo :  public SpriteAction{
+private:
+    glm::vec2 destination;
+    glm::vec2 previousPosition;
+    glm::vec2 originalPosition;
+    glm::vec2 movedDistance;
+    
+public:
+    ActionMoveTo();
+    ActionMoveTo(const ActionMoveTo& other);
+    void clone(SpriteAction* dataPtr);
+    
+    ~ActionMoveTo();
+    void initMoveTo(glm::vec2 destination, double duration);
+    
+    void update(double elapsedTime, double unusedTime);
+    
+    void setOriginalPosition(glm::vec2 pos, bool fresh);
+    glm::vec2 getMovedDistance();
+    
+    //override
+    void revive();
+};
+
+#endif /* defined(__CS364FinalProject__ActionMoveTo__) */
