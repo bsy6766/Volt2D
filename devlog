@@ -1,0 +1,10 @@
+OpenGL 2D Graphic Framework Devlog
+
+Before first commit
+- Project made for Computer Graphics course's final project.
+- Implemented basic grahpic framework that handles simple sprites, sprite animation, and some sprite actions.
+
+JAN/15/2015
+- Continuing from previous project.
+- Added git repo.
+- Currently working on simple Particle System.
