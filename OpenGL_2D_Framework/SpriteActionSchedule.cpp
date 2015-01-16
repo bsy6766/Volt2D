@@ -56,9 +56,16 @@ void SpriteActionSchedule::createSchedule(std::vector<SpriteAction*> &actions, i
     this->iterateCounter = 0;
     this->sharedUnusedTime = 0;
     this->readyToUseUnusedTime = false;
-    
+
+	//WIN32::avoid potentially uninitilaized local pointer
+	SpriteAction *dataPtr, *clonePtr;
+
     for (int i = 0; i<(int)actions.size(); ++i){
-        SpriteAction *dataPtr, *clonePtr;
+        //SpriteAction *dataPtr, *clonePtr;
+		//set pointers to 0
+		dataPtr = 0;
+		clonePtr = 0;
+
         switch(actions.at(i)->getActionID()){
             case ACTION_MOVE_TO:
             {
@@ -105,6 +112,7 @@ void SpriteActionSchedule::createSchedule(std::vector<SpriteAction*> &actions, i
         }
         //copy data
         clonePtr->clone(dataPtr);
+
         //set pointer to this clone;
         
         //add ptr
