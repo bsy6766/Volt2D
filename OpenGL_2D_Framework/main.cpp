@@ -12,12 +12,12 @@
 #include "Scene.h"
 
 #include <stdio.h>  /* defines FILENAME_MAX */
-#ifdef WINDOWS
-#include <direct.h>
-#define GetCurrentDir _getcwd
-#else
-#include <unistd.h>
-#define GetCurrentDir getcwd
+#ifdef _WIN32
+	#include <direct.h>
+	#define GetCurrentDir _getcwd
+#elif
+	#include <unistd.h>
+	#define GetCurrentDir getcwd
 #endif
 
 int main(int argc, const char * argv[]) {
@@ -35,15 +35,15 @@ int main(int argc, const char * argv[]) {
     std::string runningPath(cCurrentPath);
     std::cout << "The current working directory is " << runningPath << std::endl;
     
-    char buffer[1024];
-    char *answer = getcwd(buffer, sizeof(buffer));
-    string s_cwd;
-    if (answer)
-    {
-        s_cwd = answer;
-    }
-    
-    std::cout << "The current working directory is " << s_cwd << std::endl;
+    //char buffer[1024];
+    //char *answer = getcwd(buffer, sizeof(buffer));
+    //string s_cwd;
+    //if (answer)
+    //{
+    //    s_cwd = answer;
+    //}
+    //
+    //std::cout << "The current working directory is " << s_cwd << std::endl;
     
     
     std::string windowTitle = "opengl 2d framework";
