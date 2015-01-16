@@ -107,6 +107,10 @@ void GameManager::createWindow(int _screenWidth, int _screenHeight, std::string 
     
     //create window with size and title.
     window = glfwCreateWindow(_screenWidth, _screenHeight, title.c_str(), NULL, NULL);
+
+#ifdef _WIN32
+	glfwSetWindowPos(window, 100, 100);
+#endif
     
     //store screen size
     screenWidth = _screenWidth;
