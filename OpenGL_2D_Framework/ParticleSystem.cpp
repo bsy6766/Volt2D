@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <iostream>
 #include "ParticleSystem.h"
