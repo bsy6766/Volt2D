@@ -709,12 +709,12 @@ void GameManager::initParticleSystem(){
     testParticle->setPosition(glm::vec2(300, 360));
     testParticle->initParticleSystem(
                                      10.0,	//duration
-                                     5.0,	//life time
-                                     1.0,	//life time var
+                                     10.0,	//life time
+                                     0.0,	//life time var
                                      20.0,	//speed
-                                     1.0,	//speed var
+                                     5.0,	//speed var
                                      90.0,	//emit angle
-                                     20.0,	//emit angle var
+                                     360.0,	//emit angle var
                                      0.0,	//gravity X
                                      -50.0	//gravity Y
                                      );

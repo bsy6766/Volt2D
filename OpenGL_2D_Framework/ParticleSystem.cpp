@@ -91,12 +91,24 @@ void ParticleSystem::initParticleSystem(double duration, double lifeTime, double
 	this->particlePerSec = this->totalParticleCount / this->duration;
     
     this->lifeTime = lifeTime;
-    this->lifeTime = lifeTimeVar;
+    this->lifeTimeVar = lifeTimeVar;
     
     this->speed = speed;
     this->speedVar = speedVar;
     
+	//limite boundary
+	if (emitAngle > 360)
+		emitAngle = 360;
+	else if (emitAngle < 0)
+		emitAngle = 0;
+
     this->emitAngle = emitAngle;
+
+	if (emitAngleVar > 360)
+		emitAngleVar = 360;
+	else if (emitAngleVar < 0)
+		emitAngleVar = 0;
+
     this->emitAngleVar = emitAngleVar;
     
     this->gravityX = gravityX;
@@ -115,107 +127,112 @@ void ParticleSystem::initParticleSystem(double duration, double lifeTime, double
     indicesData.push_back(1);
     indicesData.push_back(2);
     indicesData.push_back(3);
+
+	//rand seed
+	srand((unsigned int)time(NULL));
 }
 
 void ParticleSystem::update(){
     //get time
-	float elapsedTime = (float)Timer::getInstance().getElapsedTime();
+	double elapsedTime = Timer::getInstance().getElapsedTime();
 	//cout << "elapsed time = " << elapsedTime << endl;
     
-    //add to total
-	totalElapsedTime += elapsedTime;
-    //cout << "total elapsed time = " << totalElapsedTime << endl;
-    
-    int newParticleNumber = 0;
-	float currentPoint = 0;
+	if (totalCreatedParticles < totalParticleCount){
 
-    //if particle system isn't dead yet
-    if(totalElapsedTime < duration){
-		currentPoint = this->particlePerSec * elapsedTime;
-    }
-    else{
-        double remainingTime = elapsedTime - (totalElapsedTime - duration);
-		currentPoint = this->particlePerSec * remainingTime;
-    }
+		//add to total
+		totalElapsedTime += elapsedTime;
+		//cout << "total elapsed time = " << totalElapsedTime << endl;
 
-	//if the point hasn't stacked up to 1 yet,
-	if (currentPoint < 1){
-		//add it
-		newLifePoint += currentPoint;
-		//if newLifePoint is bigger than 1, need to add particle
-		if (newLifePoint >= 1){
-			//newParticleNumber = floor(newLifePoint);
-			newParticleNumber = newLifePoint / 1;
-			//keep the fractional point for later
-			newLifePoint -= newParticleNumber * 1;
+		int newParticleNumber = 0;
+		float currentPoint = 0;
+
+		//if particle system isn't dead yet
+		if (totalElapsedTime < duration){
+			currentPoint = this->particlePerSec * (float)elapsedTime;
+		}
+		else{
+			float remainingTime = elapsedTime - (totalElapsedTime - duration);
+			currentPoint = this->particlePerSec * remainingTime;
+		}
+
+		//if the point hasn't stacked up to 1 yet,
+		if (currentPoint < 1){
+			//add it
+			newLifePoint += currentPoint;
+			//if newLifePoint is bigger than 1, need to add particle
+			if (newLifePoint >= 1){
+				//newParticleNumber = floor(newLifePoint);
+				newParticleNumber = newLifePoint / 1;
+				//keep the fractional point for later
+				newLifePoint -= newParticleNumber * 1;
+			}
+		}
+		//else, add new particle
+		else{
+			newParticleNumber = floor(currentPoint);
+			newLifePoint += (currentPoint - newParticleNumber);
+		}
+
+		//update data
+		totalCreatedParticles += newParticleNumber;
+
+		//if no particle is created
+		if (totalCreatedParticles == 0)
+			return;
+
+		//if (newParticleNumber)
+		//	cout << totalCreatedParticles << " particles created so far..." << endl;
+
+		//add new particle
+		for (int i = 0; i<newParticleNumber; ++i){
+			//new particle
+			particleList.push_back(new Particle());
+			//init
+			particleList.back()->initParticle(
+				position,
+				computeRandom(lifeTime - lifeTimeVar, lifeTime + lifeTimeVar),
+				computeRandom(speed - speedVar, speed + speedVar),
+				computeRandom(emitAngle - emitAngleVar / 2, emitAngle + emitAngleVar / 2)
+				);
+
+			cout << "Created new particle with lifetime = " << particleList.back()->lifeTime << endl;
+
+			//set distance x,y,z to 0 and size to 1
+			vertexDistanceData.push_back(0);
+			vertexDistanceData.push_back(0);
+			vertexDistanceData.push_back(0);
+			vertexDistanceData.push_back(1);
 		}
 	}
-	//else, add new particle
-	else{
-		newParticleNumber = floor(currentPoint);
-		newLifePoint += (currentPoint - newParticleNumber);
-	}
-    totalCreatedParticles += newParticleNumber;
-
-	//if (newParticleNumber)
-	//	cout << totalCreatedParticles << " particles created so far..." << endl;
-    
-	//rand seed
-	srand((unsigned int)time(NULL));
-
-	//add new particle
-	for (int i = 0; i<newParticleNumber; ++i){
-		//new particle
-		particleList.push_back(new Particle());
-		//init
-		particleList.back()->initParticle(
-			position,
-			computeRandom(lifeTime - lifeTimeVar, lifeTimeVar + lifeTimeVar),
-			computeRandom(speed - speedVar, speed + speedVar),
-			computeRandom(emitAngle - emitAngleVar / 2, emitAngle + emitAngleVar / 2)
-			);
-		//set distance x,y,z to 0 and size to 1
-		vertexDistanceData.push_back(0);
-		vertexDistanceData.push_back(0);
-		vertexDistanceData.push_back(0);
-		vertexDistanceData.push_back(1);
-	}
-    
-    //iterate through particle lise
-    //if particle list is empty, push back N particles at initial state
-    //else, continue iterating
-        //if lifetime is greater than 0, it's alive
-            //subtract elapsed time
-            //if particle is still alive, update position
-                //update
-            //else, this needs to die,
-                //if (Ncounter < N)
-                    //revive particle and reset to initial state
-                //else
-                    //remove from list
-        //else, it's dead
-            //if (Ncounter < N)
-                //revive particle and reset to initial state
-            //else
-                //remove from list
     
 	//update particles data
     int index = 0;
 
-    for (std::list<Particle*>::const_iterator ci = particleList.begin(); ci != particleList.end(); ++ci) {
-        if((*ci)->lifeTime > 0){
-            //particle is alive
-            (*ci)->lifeTime -= elapsedTime;
-            if((*ci)->lifeTime > 0){
+	//iterate through particle list
+	for (std::list<Particle*>::const_iterator ci = particleList.begin(); ci != particleList.end(); ++ci) {
+		//get time val
+		double lifeTime = (*ci)->lifeTime;
+		double livedTime = (*ci)->livedTime;
+
+		//if particle was alive on previous iteration
+		if (livedTime < lifeTime){
+			//update and get particle's up time
+			(*ci)->livedTime += elapsedTime;
+			//update
+			livedTime = (*ci)->livedTime;
+			//cout << "particle #" << index / 4 << " lived time = " << livedTime << endl;
+
+			//if particle's time didn't exceed its life time
+            if(livedTime < lifeTime){
                 double directionAngle = (*ci)->direction;
                 float speed = (*ci)->speed;
 //                cout << "angle = " << directionAngle << endl;
-                float movedX = (float)cos(directionAngle * M_PI / 180) * elapsedTime * speed;
-                float movedY = (float)sin(directionAngle * M_PI / 180) * elapsedTime * speed;
+				float movedX = (float)cos(directionAngle * M_PI / 180) * elapsedTime * speed;
+				float movedY = (float)sin(directionAngle * M_PI / 180) * elapsedTime * speed;
                 
                 //gravity
-                float gAccelX = 9.8 * (float)totalElapsedTime * (gravityX / 3000);
-                float gAccelY = 9.8 * (float)totalElapsedTime * (gravityY / 3000);
+                float gAccelX = GRAVITY * (float)livedTime * (gravityX / 3000);
+                float gAccelY = GRAVITY * (float)livedTime * (gravityY / 3000);
                 
                 vertexDistanceData.at(index) += (movedX + gAccelX);
                 vertexDistanceData.at(index+1) += (movedY + gAccelY);
@@ -228,17 +245,16 @@ void ParticleSystem::update(){
         }
         index+=4;
     }
-    
 
     //update Data
     glBindBuffer(GL_ARRAY_BUFFER, vpbo);
-    glBufferData(GL_ARRAY_BUFFER, totalParticleCount * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
+	glBufferData(GL_ARRAY_BUFFER, totalParticleCount * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
 //    glBufferSubData(GL_ARRAY_BUFFER, 0, liveCount * sizeof(GLfloat) * 4, &vertexDistanceData[0]);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, totalParticleCount * sizeof(GLfloat) * 4, &vertexDistanceData[0]);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, totalCreatedParticles * sizeof(GLfloat) * 4, &vertexDistanceData[0]);
 }
 
 void ParticleSystem::render(){
-    if(visible){
+    if(visible && totalCreatedParticles > 0){
         texture->bind(GL_TEXTURE0);
         
         GLint modelUniformLocation = glGetUniformLocation(progPtr->getObject(), "modelMat");

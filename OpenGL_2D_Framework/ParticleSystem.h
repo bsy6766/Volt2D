@@ -22,6 +22,7 @@
 #include "Program.h"
 
 const int MAX_PARTICLE_COUNT = 1000;
+const float GRAVITY = 9.81;
 
 class ParticleSystem{
 private:
