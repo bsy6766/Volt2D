@@ -108,7 +108,10 @@ void GameManager::createWindow(int _screenWidth, int _screenHeight, std::string 
     //create window with size and title.
     window = glfwCreateWindow(_screenWidth, _screenHeight, title.c_str(), NULL, NULL);
 
+	//Need to move app window a bit to right and bottom. Windows only. 
+	//Mac(Xcode) opens app window on the center of the screen. 
 #ifdef _WIN32
+	//set window's position (topleft anchor point) x by 100 and y by 100
 	glfwSetWindowPos(window, 100, 100);
 #endif
     
@@ -702,22 +705,23 @@ void GameManager::releaseUndeadActions(){
 
 void GameManager::initParticleSystem(){
 //    testParticle = new ParticleSystem(100);
-    testParticle = ParticleSystem::initWithSize(100);
+    testParticle = ParticleSystem::initWithParticleSize(100);
     testParticle->setPosition(glm::vec2(300, 360));
     testParticle->initParticleSystem(
-                                     10.0,
-                                     5.0,  //life time
-                                     1.0,   //life time var
-                                     20.0,   //speed
-                                     1.0,   //speed var
-                                     90.0,   //emit angle
-                                     20.0,  //emit angle var
-                                     0.0,  //gravity X
-                                     -50.0    //gravity Y
+                                     10.0,	//duration
+                                     5.0,	//life time
+                                     1.0,	//life time var
+                                     20.0,	//speed
+                                     1.0,	//speed var
+                                     90.0,	//emit angle
+                                     20.0,	//emit angle var
+                                     0.0,	//gravity X
+                                     -50.0	//gravity Y
                                      );
     testParticle->initParticleTexture(GL_TEXTURE_2D, "../Texture/dust.png", program);
     
-    testParticle2 = ParticleSystem::initWithSize(100);
+	/*
+    testParticle2 = ParticleSystem::initWithParticleSize(100);
     testParticle2->setPosition(glm::vec2(900, 360));
     testParticle2->initParticleSystem(
                                       10.0,
@@ -732,6 +736,7 @@ void GameManager::initParticleSystem(){
                                       );
     testParticle2->initParticleTexture(GL_TEXTURE_2D, "../Texture/dust.png", program);
     std::cout << "initializing particle" << std::endl;
+	*/
 }
 
 void GameManager::releaseParticleSystem(){

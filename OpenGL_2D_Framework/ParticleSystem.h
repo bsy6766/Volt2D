@@ -48,8 +48,10 @@ private:
     int liveCount;
     
     //time
-    double totalElapsedTime;
+	//double totalElapsedTime;
+	float totalElapsedTime;
     double duration;
+	double particlePerSec;
     
     //visibility
     bool visible;
@@ -91,6 +93,11 @@ private:
     float speed;
     float speedVar;
 
+	//accumulative new life point.
+	//if it gets bigger than 0, add new particle and keep the fractional point.
+	//else, keep build up the point
+	float newLifePoint;
+
     void sortParticleList();
     void removeDeadParticles();
 
@@ -101,13 +108,29 @@ private:
     }
     
 public:
-    static ParticleSystem* initWithSize(int size);
+    static ParticleSystem* initWithParticleSize(int size);
     ~ParticleSystem();
     
     void initParticleTexture(GLenum _textureTarget, const std::string& _fileName, Program* progPtr);
-    void initParticleSystem(double duration, double lifeTime, double lifeTimeVar, float speed, float speedVar, double emitAngle, double emitAngleVar, float gravityX, float gravityY);
+   
+	/**
+	* Particle system initializer
+	* @param duration the duration of the particle system
+	* @param lifeTime the base life time of single particle
+	* @param lifeTimeVar the range between maximum and minimum variance of life time
+	* @param speed the movement speed of single particle
+	* @param speedVar the range between maximum and minimum variance of speed
+	* @param emitAngle the particle's emitting direction(degree angle)
+	*/
+	void initParticleSystem(double duration, double lifeTime, double lifeTimeVar, float speed, float speedVar, double emitAngle, double emitAngleVar, float gravityX, float gravityY);
     void setPosition(glm::vec2 position);
     void render();
+
+	/**
+	* A particle update function.
+	* This function updates the particle data by adding new particle based on elapsed time.
+	* It updates each particle's position data.
+	*/
     void update();
 };
 

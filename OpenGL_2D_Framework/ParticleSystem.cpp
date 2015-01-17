@@ -20,6 +20,7 @@ ParticleSystem::ParticleSystem(int size){
     this->totalCreatedParticles = 0;
     this->position = glm::vec2(640, 360);   //default position
     this->visible = true;
+	this->newLifePoint = 0;
 }
 
 ParticleSystem::~ParticleSystem(){
@@ -29,7 +30,7 @@ ParticleSystem::~ParticleSystem(){
     }
 }
 
-ParticleSystem* ParticleSystem::initWithSize(int size){
+ParticleSystem* ParticleSystem::initWithParticleSize(int size){
     ParticleSystem *ret = new ParticleSystem(size);
     return ret;
 }
@@ -86,6 +87,8 @@ void ParticleSystem::initParticleTexture(GLenum _textureTarget, const std::strin
 
 void ParticleSystem::initParticleSystem(double duration, double lifeTime, double lifeTimeVar, float speed, float speedVar, double emitAngle, double emitAngleVar, float gravityX, float gravityY){
     this->duration = duration;
+
+	this->particlePerSec = this->totalParticleCount / this->duration;
     
     this->lifeTime = lifeTime;
     this->lifeTime = lifeTimeVar;
@@ -109,18 +112,20 @@ void ParticleSystem::initParticleSystem(double duration, double lifeTime, double
             computeRandom(speed - speedVar, speed + speedVar),
             computeRandom(emitAngle - emitAngleVar/2, emitAngle + emitAngleVar/2)
                                           );
-        
+      
         vertexDistanceData.push_back(0);
         vertexDistanceData.push_back(0);
         vertexDistanceData.push_back(0);
         vertexDistanceData.push_back(1);
     }
     
+	//quad texture UV
     uvVertexData.push_back(glm::vec2(0, 0));
     uvVertexData.push_back(glm::vec2(0, 1));
     uvVertexData.push_back(glm::vec2(1, 0));
     uvVertexData.push_back(glm::vec2(1, 1));
     
+	//quad indicies
     indicesData.push_back(0);
     indicesData.push_back(1);
     indicesData.push_back(2);
@@ -130,37 +135,47 @@ void ParticleSystem::initParticleSystem(double duration, double lifeTime, double
 }
 
 void ParticleSystem::update(){
-    //new update system
-    //Ncounter = 0;
-    //calculate how many particles we need to add, let say N
-    //to calculate this, particle system must be alive
-    
     //get time
-    double elapsedTime = Timer::getInstance().getElapsedTime();
+	float elapsedTime = (float)Timer::getInstance().getElapsedTime();
+	cout << "elapsed time = " << elapsedTime << endl;
     
     //add to total
-    totalElapsedTime += elapsedTime;
-    
-    cout << "elapsed time = " << elapsedTime << endl;
+	totalElapsedTime += elapsedTime;
     cout << "total elapsed time = " << totalElapsedTime << endl;
     
     int newParticleNumber = 0;
-    
+	float currentPoint = 0;
+
     //if particle system isn't dead yet
     if(totalElapsedTime < duration){
-        newParticleNumber = this->totalParticleCount * elapsedTime / this->duration;
+		currentPoint = this->particlePerSec * elapsedTime;
     }
     else{
         double remainingTime = elapsedTime - (totalElapsedTime - duration);
-        cout << "remaining time = " << remainingTime << endl;
-        
-        newParticleNumber = this->totalParticleCount * remainingTime / this->duration;
+		currentPoint = this->particlePerSec * remainingTime;
     }
-    
-    cout << "Adding " << newParticleNumber << " new particles" << endl;
+
+	//if the point hasn't stacked up to 1 yet,
+	if (currentPoint < 1){
+		//add it
+		newLifePoint += currentPoint;
+		//if newLifePoint is bigger than 1, need to add particle
+		if (newLifePoint >= 1){
+			//newParticleNumber = floor(newLifePoint);
+			newParticleNumber = newLifePoint / 1;
+			//keep the fractional point for later
+			newLifePoint -= newParticleNumber * 1;
+		}
+	}
+	//else, add new particle
+	else{
+		newParticleNumber = floor(currentPoint);
+		newLifePoint += (currentPoint - newParticleNumber);
+	}
     totalCreatedParticles += newParticleNumber;
     
-    cout << totalCreatedParticles << " particles created so far..." << endl;
+	if (newParticleNumber)
+		cout << totalCreatedParticles << " particles created so far..." << endl;
     
     
     //iterate through particle lise
@@ -212,7 +227,7 @@ void ParticleSystem::update(){
 //        liveCount++;
     }
     
-    totalElapsedTime += elapsedTime;
+    //totalElapsedTime += elapsedTime;
     
     //update Data
     glBindBuffer(GL_ARRAY_BUFFER, vpbo);

@@ -75,6 +75,7 @@ int main(int argc, const char * argv[]) {
         
         gm->initParticleSystem();
         
+
         gm->initLoading();
         
         gm->startGame();
