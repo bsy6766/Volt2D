@@ -2,7 +2,7 @@
 
 layout(location = 0) in vec3 vert;
 layout(location = 1) in vec2 uvVert;
-layout(location = 2) in vec4 posVert;
+layout(location = 2) in vec3 posVert;
 
 uniform mat4 modelMat;
 uniform mat4 cameraMat;
@@ -13,8 +13,8 @@ out vec2 fragTexCoord;
 void main(){
     vec4 finalPosition;
     if(particle){
-        vec3 movedPos = posVert.xyz;
-        vec3 addPos = vert + movedPos;
+        //vec3 movedPos = posVert.xyz;
+        vec3 addPos = vert + posVert;
         finalPosition = vec4(addPos, 1.0f);
     }
     else{
