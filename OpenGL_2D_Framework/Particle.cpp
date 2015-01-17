@@ -19,6 +19,7 @@ Particle::~Particle(){
 void Particle::initParticle(glm::vec2 position, double lifeTime, float speed, double direction){
     this->position = position;
     this->lifeTime = lifeTime;
+	this->livedTime = 0;
     this->speed = speed;
     this->direction = direction;
 }

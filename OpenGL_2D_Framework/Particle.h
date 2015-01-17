@@ -22,6 +22,7 @@ public:
     
     glm::vec2 position;
     double lifeTime;
+	double livedTime;
     float speed;
     double direction;    //like angle
     
