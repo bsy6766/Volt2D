@@ -705,7 +705,7 @@ void GameManager::releaseUndeadActions(){
 
 void GameManager::initParticleSystem(){
 //    testParticle = new ParticleSystem(100);
-    testParticle = ParticleSystem::initWithParticleSize(100);
+    testParticle = ParticleSystem::initWithParticleSize(250);
     testParticle->setPosition(glm::vec2(300, 360));
     testParticle->initParticleSystem(
                                      10.0,	//duration
@@ -716,7 +716,7 @@ void GameManager::initParticleSystem(){
                                      90.0,	//emit angle
                                      360.0,	//emit angle var
                                      0.0,	//gravity X
-                                     -50.0	//gravity Y
+                                     0.0	//gravity Y
                                      );
     testParticle->initParticleTexture(GL_TEXTURE_2D, "../Texture/dust.png", program);
     

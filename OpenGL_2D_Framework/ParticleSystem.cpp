@@ -28,6 +28,12 @@ ParticleSystem::~ParticleSystem(){
     for(std::list<Particle*>::const_iterator ci = particleList.begin(); ci != particleList.end(); ++ci){
         delete (*ci);
     }
+
+	glDeleteVertexArrays(1, &vao);
+	glDeleteBuffers(1, &vpbo);
+	glDeleteBuffers(1, &vbo);
+	glDeleteBuffers(1, &ibo);
+	glDeleteBuffers(1, &uvbo);
 }
 
 ParticleSystem* ParticleSystem::initWithParticleSize(int size){
@@ -79,8 +85,8 @@ void ParticleSystem::initParticleTexture(GLenum _textureTarget, const std::strin
     //allocating blank position buffer
     glGenBuffers(1, &vpbo);
     glBindBuffer(GL_ARRAY_BUFFER, vpbo);
-    glBufferData(GL_ARRAY_BUFFER, totalParticleCount * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
-    glVertexAttribPointer(progPtr->attrib("posVert"), 4, GL_FLOAT, GL_FALSE, 0, NULL);
+    glBufferData(GL_ARRAY_BUFFER, totalParticleCount * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+    glVertexAttribPointer(progPtr->attrib("posVert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
     
     glBindVertexArray(0);
 }
@@ -137,7 +143,7 @@ void ParticleSystem::update(){
 	double elapsedTime = Timer::getInstance().getElapsedTime();
 	//cout << "elapsed time = " << elapsedTime << endl;
     
-	if (totalCreatedParticles < totalParticleCount){
+	if (totalCreatedParticles <= totalParticleCount){
 
 		//add to total
 		totalElapsedTime += elapsedTime;
@@ -201,7 +207,7 @@ void ParticleSystem::update(){
 			vertexDistanceData.push_back(0);
 			vertexDistanceData.push_back(0);
 			vertexDistanceData.push_back(0);
-			vertexDistanceData.push_back(1);
+			//vertexDistanceData.push_back(1);
 		}
 	}
     
@@ -231,26 +237,31 @@ void ParticleSystem::update(){
 				float movedY = (float)sin(directionAngle * M_PI / 180) * elapsedTime * speed;
                 
                 //gravity
-                float gAccelX = GRAVITY * (float)livedTime * (gravityX / 3000);
-                float gAccelY = GRAVITY * (float)livedTime * (gravityY / 3000);
+				float gAccelX = 0, gAccelY = 0;
+
+				if (gravityX != 0)
+					gAccelX = GRAVITY * (float)livedTime * (gravityX / 3000);
+                if(gravityY != 0)
+					gAccelY = GRAVITY * (float)livedTime * (gravityY / 3000);
                 
                 vertexDistanceData.at(index) += (movedX + gAccelX);
                 vertexDistanceData.at(index+1) += (movedY + gAccelY);
                 vertexDistanceData.at(index+2) = 0; //z
-                vertexDistanceData.at(index+3) = 1; //size
+                //vertexDistanceData.at(index+3) = 1; //size
             }
             else{
                 //dead. remove
             }
         }
-        index+=4;
+        index += 3;
     }
 
     //update Data
     glBindBuffer(GL_ARRAY_BUFFER, vpbo);
-	glBufferData(GL_ARRAY_BUFFER, totalParticleCount * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
+	glBufferData(GL_ARRAY_BUFFER, totalParticleCount * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
 //    glBufferSubData(GL_ARRAY_BUFFER, 0, liveCount * sizeof(GLfloat) * 4, &vertexDistanceData[0]);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, totalCreatedParticles * sizeof(GLfloat) * 4, &vertexDistanceData[0]);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, totalCreatedParticles * sizeof(GLfloat) * 3, &vertexDistanceData[0]);
+	//cout << "size = " << vertexDistanceData.size() << endl;
 }
 
 void ParticleSystem::render(){
@@ -271,7 +282,7 @@ void ParticleSystem::render(){
         
         GLint particleUniformLocation = glGetUniformLocation(progPtr->getObject(), "particle");
         if(particleUniformLocation == -1)
-            throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
+            throw std::runtime_error( std::string("Program uniform not found: " ) + "particle");
         glUniform1i(particleUniformLocation, 1);
         
         glBindVertexArray(vao);
@@ -283,7 +294,7 @@ void ParticleSystem::render(){
         glVertexAttribDivisor(progPtr->attrib("uvVert"), 0);
         glVertexAttribDivisor(progPtr->attrib("posVert"), 1);
         
-        glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, totalParticleCount);
+        glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, totalCreatedParticles);
     }
 }
 
