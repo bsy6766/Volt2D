@@ -145,7 +145,7 @@ void GameManager::render(){
     }
     else{
         spriteManager->render();
-//        testParticle->render();
+        testParticle->render();
 //        testParticle2->render();
         if(loadingFading){
             loadingSpriteManager->render();

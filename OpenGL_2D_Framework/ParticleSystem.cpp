@@ -102,23 +102,6 @@ void ParticleSystem::initParticleSystem(double duration, double lifeTime, double
     this->gravityX = gravityX;
     this->gravityY = gravityY;
     
-    srand((unsigned int)time(NULL));
-    
-    for(int i = 0; i<totalParticleCount; ++i){
-        particleList.push_back(new Particle());
-        particleList.back()->initParticle(
-            position,
-            computeRandom(lifeTime - lifeTimeVar, lifeTimeVar + lifeTimeVar),
-            computeRandom(speed - speedVar, speed + speedVar),
-            computeRandom(emitAngle - emitAngleVar/2, emitAngle + emitAngleVar/2)
-                                          );
-      
-        vertexDistanceData.push_back(0);
-        vertexDistanceData.push_back(0);
-        vertexDistanceData.push_back(0);
-        vertexDistanceData.push_back(1);
-    }
-    
 	//quad texture UV
     uvVertexData.push_back(glm::vec2(0, 0));
     uvVertexData.push_back(glm::vec2(0, 1));
@@ -137,11 +120,11 @@ void ParticleSystem::initParticleSystem(double duration, double lifeTime, double
 void ParticleSystem::update(){
     //get time
 	float elapsedTime = (float)Timer::getInstance().getElapsedTime();
-	cout << "elapsed time = " << elapsedTime << endl;
+	//cout << "elapsed time = " << elapsedTime << endl;
     
     //add to total
 	totalElapsedTime += elapsedTime;
-    cout << "total elapsed time = " << totalElapsedTime << endl;
+    //cout << "total elapsed time = " << totalElapsedTime << endl;
     
     int newParticleNumber = 0;
 	float currentPoint = 0;
@@ -173,10 +156,30 @@ void ParticleSystem::update(){
 		newLifePoint += (currentPoint - newParticleNumber);
 	}
     totalCreatedParticles += newParticleNumber;
+
+	//if (newParticleNumber)
+	//	cout << totalCreatedParticles << " particles created so far..." << endl;
     
-	if (newParticleNumber)
-		cout << totalCreatedParticles << " particles created so far..." << endl;
-    
+	//rand seed
+	srand((unsigned int)time(NULL));
+
+	//add new particle
+	for (int i = 0; i<newParticleNumber; ++i){
+		//new particle
+		particleList.push_back(new Particle());
+		//init
+		particleList.back()->initParticle(
+			position,
+			computeRandom(lifeTime - lifeTimeVar, lifeTimeVar + lifeTimeVar),
+			computeRandom(speed - speedVar, speed + speedVar),
+			computeRandom(emitAngle - emitAngleVar / 2, emitAngle + emitAngleVar / 2)
+			);
+		//set distance x,y,z to 0 and size to 1
+		vertexDistanceData.push_back(0);
+		vertexDistanceData.push_back(0);
+		vertexDistanceData.push_back(0);
+		vertexDistanceData.push_back(1);
+	}
     
     //iterate through particle lise
     //if particle list is empty, push back N particles at initial state
@@ -196,9 +199,9 @@ void ParticleSystem::update(){
             //else
                 //remove from list
     
+	//update particles data
     int index = 0;
-//    liveCount = 0;
-    
+
     for (std::list<Particle*>::const_iterator ci = particleList.begin(); ci != particleList.end(); ++ci) {
         if((*ci)->lifeTime > 0){
             //particle is alive
@@ -224,11 +227,9 @@ void ParticleSystem::update(){
             }
         }
         index+=4;
-//        liveCount++;
     }
     
-    //totalElapsedTime += elapsedTime;
-    
+
     //update Data
     glBindBuffer(GL_ARRAY_BUFFER, vpbo);
     glBufferData(GL_ARRAY_BUFFER, totalParticleCount * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?

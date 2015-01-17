@@ -101,6 +101,10 @@ private:
     void sortParticleList();
     void removeDeadParticles();
 
+	/**
+	* Computes random number between the range.
+	* This function handles all type of number
+	*/
     template<typename Type>
     Type computeRandom(Type min, Type max){
             Type randVal = (Type)rand() / RAND_MAX;
