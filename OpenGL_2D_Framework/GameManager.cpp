@@ -705,13 +705,13 @@ void GameManager::releaseUndeadActions(){
 
 void GameManager::initParticleSystem(){
 //    testParticle = new ParticleSystem(100);
-    testParticle = ParticleSystem::initWithParticleSize(250);
+    testParticle = ParticleSystem::initWithParticleSize(200);
     testParticle->setPosition(glm::vec2(300, 360));
     testParticle->initParticleSystem(
                                      10.0,	//duration
-                                     10.0,	//life time
-                                     0.0,	//life time var
-                                     20.0,	//speed
+                                     3.0,	//life time
+                                     1.0,	//life time var
+                                     10.0,	//speed
                                      5.0,	//speed var
                                      90.0,	//emit angle
                                      360.0,	//emit angle var

@@ -40,7 +40,7 @@ private:
 
     std::vector<GLfloat> vertexData;
     std::vector<glm::vec2> uvVertexData;
-    std::vector<GLfloat> vertexDistanceData;
+    //std::vector<GLfloat> vertexDistanceData;
     std::vector<GLushort> indicesData;
     
     Texture *texture;
@@ -72,6 +72,7 @@ private:
     //number. This is fixed.
     int totalParticleCount;
     int totalCreatedParticles;
+	int livingParticleNum;
     
     //emit
     double emitAngle;

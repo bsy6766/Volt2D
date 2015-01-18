@@ -96,6 +96,10 @@ void ParticleSystem::initParticleSystem(double duration, double lifeTime, double
 
 	this->particlePerSec = this->totalParticleCount / this->duration;
     
+	//if particle's life time variance is greater than base life time, we force to set life time 1 greater than life time var
+	if (lifeTime < lifeTimeVar)
+		lifeTime = lifeTimeVar + 1;
+
     this->lifeTime = lifeTime;
     this->lifeTimeVar = lifeTimeVar;
     
@@ -142,7 +146,8 @@ void ParticleSystem::update(){
     //get time
 	double elapsedTime = Timer::getInstance().getElapsedTime();
 	//cout << "elapsed time = " << elapsedTime << endl;
-    
+	std::vector<GLfloat> vertexDistanceData;
+
 	if (totalCreatedParticles <= totalParticleCount){
 
 		//add to total
@@ -153,7 +158,7 @@ void ParticleSystem::update(){
 		float currentPoint = 0;
 
 		//if particle system isn't dead yet
-		if (totalElapsedTime < duration){
+		if (totalElapsedTime <= duration){
 			currentPoint = this->particlePerSec * (float)elapsedTime;
 		}
 		else{
@@ -195,27 +200,24 @@ void ParticleSystem::update(){
 			particleList.push_back(new Particle());
 			//init
 			particleList.back()->initParticle(
-				position,
+				glm::vec2(),
 				computeRandom(lifeTime - lifeTimeVar, lifeTime + lifeTimeVar),
 				computeRandom(speed - speedVar, speed + speedVar),
 				computeRandom(emitAngle - emitAngleVar / 2, emitAngle + emitAngleVar / 2)
 				);
 
 			cout << "Created new particle with lifetime = " << particleList.back()->lifeTime << endl;
-
-			//set distance x,y,z to 0 and size to 1
-			vertexDistanceData.push_back(0);
-			vertexDistanceData.push_back(0);
-			vertexDistanceData.push_back(0);
-			//vertexDistanceData.push_back(1);
 		}
 	}
-    
+
+	//sort particle
+	sortParticleList();
+
 	//update particles data
-    int index = 0;
+	int liveCount = 0;
 
 	//iterate through particle list
-	for (std::list<Particle*>::const_iterator ci = particleList.begin(); ci != particleList.end(); ++ci) {
+	for (std::list<Particle*>::const_iterator ci = particleList.begin(); ci != particleList.end();) {
 		//get time val
 		double lifeTime = (*ci)->lifeTime;
 		double livedTime = (*ci)->livedTime;
@@ -244,28 +246,61 @@ void ParticleSystem::update(){
                 if(gravityY != 0)
 					gAccelY = GRAVITY * (float)livedTime * (gravityY / 3000);
                 
-                vertexDistanceData.at(index) += (movedX + gAccelX);
-                vertexDistanceData.at(index+1) += (movedY + gAccelY);
-                vertexDistanceData.at(index+2) = 0; //z
-                //vertexDistanceData.at(index+3) = 1; //size
+				//get current distance
+				glm::vec2 currentDistance = (*ci)->positionData;
+
+				//calculate new distace
+				float xMoved = currentDistance.x + movedX + gAccelX;
+				float yMoved = currentDistance.y + movedY + gAccelY;
+
+				//update data
+				(*ci)->updateDistnace(xMoved, yMoved);
+
+				//push back to vector
+				vertexDistanceData.push_back(xMoved);
+				vertexDistanceData.push_back(yMoved);
+                vertexDistanceData.push_back(0);
+
+				//increment iterator
+				++ci;
+				//count
+				liveCount++;
             }
             else{
-                //dead. remove
+                //dead. remove. erase function return the next element. So we don't increment iterator
+				delete (*ci);
+				ci = particleList.erase(ci);
+				cout << "particle dead" << endl;
             }
         }
-        index += 3;
+		else{
+			//what?
+		}
     }
+
+	livingParticleNum = liveCount;
+	//cout << "currently living particle = " << livingParticleNum << endl;
+
+	//if (livingParticleNum == 0){
+	//	glBindBuffer(GL_ARRAY_BUFFER, vpbo);
+	//	glBufferData(GL_ARRAY_BUFFER, totalParticleCount * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
+	//	return;
+	//}
 
     //update Data
     glBindBuffer(GL_ARRAY_BUFFER, vpbo);
-	glBufferData(GL_ARRAY_BUFFER, totalParticleCount * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
+	if (livingParticleNum > 0){
+		glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(GLfloat) * 3, &vertexDistanceData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
+	}
 //    glBufferSubData(GL_ARRAY_BUFFER, 0, liveCount * sizeof(GLfloat) * 4, &vertexDistanceData[0]);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, totalCreatedParticles * sizeof(GLfloat) * 3, &vertexDistanceData[0]);
+	//if (livingParticleNum > 0)
+	//	glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(GLfloat) * 3, &vertexDistanceData[0]);
 	//cout << "size = " << vertexDistanceData.size() << endl;
 }
 
 void ParticleSystem::render(){
-    if(visible && totalCreatedParticles > 0){
+    if(visible && livingParticleNum > 0){
         texture->bind(GL_TEXTURE0);
         
         GLint modelUniformLocation = glGetUniformLocation(progPtr->getObject(), "modelMat");
@@ -294,10 +329,14 @@ void ParticleSystem::render(){
         glVertexAttribDivisor(progPtr->attrib("uvVert"), 0);
         glVertexAttribDivisor(progPtr->attrib("posVert"), 1);
         
-        glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, totalCreatedParticles);
+		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, livingParticleNum);
     }
 }
 
 void ParticleSystem::setPosition(glm::vec2 position){
     this->position = position;
+}
+
+void ParticleSystem::sortParticleList(){
+	//sort particle
 }
