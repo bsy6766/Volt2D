@@ -20,14 +20,16 @@ public:
     
     bool dead;
     
-    glm::vec2 position;
+    glm::vec2 positionData;
     double lifeTime;
 	double livedTime;
     float speed;
     double direction;    //like angle
     
-    void initParticle(glm::vec2 position, double lifeTime, float speed, double direction);
+    void initParticle(glm::vec2 posData, double lifeTime, float speed, double direction);
     void updatePosition();
+
+	void updateDistnace(float x, float y);
 };
 
 #endif /* defined(__CS364FinalProject__Particle__) */

@@ -16,10 +16,15 @@ Particle::~Particle(){
     dead = true;
 }
 
-void Particle::initParticle(glm::vec2 position, double lifeTime, float speed, double direction){
-    this->position = position;
+void Particle::initParticle(glm::vec2 posData, double lifeTime, float speed, double direction){
+    this->positionData = posData;
     this->lifeTime = lifeTime;
 	this->livedTime = 0;
     this->speed = speed;
-    this->direction = direction;
+	this->direction = direction;
+}
+
+void Particle::updateDistnace(float x, float y){
+	positionData.x = x;
+	positionData.y = y;
 }
