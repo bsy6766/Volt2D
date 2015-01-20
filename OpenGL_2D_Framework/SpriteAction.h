@@ -24,10 +24,14 @@ enum ActionID{
     ACTION_FADE_TO
 };
 
+/**
+*	SpriteAction
+*	This class is a base class to an Action classes.
+*/
+
 class SpriteAction{
 private:
 protected:
-    
     ActionID actionID;
     
     double duration;
@@ -39,11 +43,22 @@ public:
     SpriteAction();
     virtual ~SpriteAction();
     
+	/**
+	* is currently running or not. 
+	*/
     bool running;
+
+	/**
+	* is live or dead
+	*/
     bool alive;
 
     double previousTime;
     
+	/**
+	* action won't get deleted if it is true. 
+	* It becomes true when action repeats forever
+	*/
     bool isProtected;
     
     ActionID getActionID();
@@ -54,9 +69,14 @@ public:
     glm::vec2 getMovedDistance();
     void setSpeed(double speed);
     
+	/**
+	* pure virtual function.
+	* Derived class 
+	*/
     virtual void update(double elapsedTime, double unusedTime) = 0;
     virtual void clone(SpriteAction *ptr);
     
+	//time functions
     double getPreviousTime();
     double getCurrentTime();
     double setCurrentTime(double time);
@@ -66,7 +86,7 @@ public:
     bool isAlive();
     
     void kill();
-    void revive();
+    void revive();	//reset action
 };
 
 #endif /* defined(__CS364FinalProject__SpriteAction__) */
