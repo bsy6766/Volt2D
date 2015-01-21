@@ -13,6 +13,8 @@ using std::endl;
 
 ParticleSystemManager::ParticleSystemManager(){
     cout << "Creating Particle System Manager" << endl;
+	this->size = 0;
+	this->visible = true;
 }
 
 ParticleSystemManager::~ParticleSystemManager(){
@@ -23,9 +25,19 @@ ParticleSystemManager::~ParticleSystemManager(){
     for(std::list<ParticleSystem *>::const_iterator ci = particleSystemList.begin(); ci != particleSystemList.end(); ++ci){
         delete (*ci);
     }
+
+	this->size = 0;
 }
 
 void ParticleSystemManager::render(){
+	//if the list is empty, return
+	if (size == 0)
+		return;
+
+	//if not visible, return
+	if (!visible)
+		return;
+
     //iterate through particle system list and render.
     //if particle system is in this list, then it means it's still alive.
     for(std::list<ParticleSystem *>::const_iterator ci = particleSystemList.begin(); ci != particleSystemList.end(); ++ci){
@@ -53,7 +65,7 @@ void ParticleSystemManager::update(){
     }
 }
 
-void ParticleSystemManager::addParticle(ParticleSystem *particleSystemPtr){
+void ParticleSystemManager::addParticleSystem(ParticleSystem *particleSystemPtr){
     //check nullptr. if 0, return
     if(particleSystemPtr == 0)
         return;

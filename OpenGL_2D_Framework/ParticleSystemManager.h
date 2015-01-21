@@ -17,16 +17,22 @@ class ParticleSystemManager{
 protected:
 private:
     std::list<ParticleSystem *> particleSystemList;
-    
+	int size;
+
 public:
     ParticleSystemManager();
     ~ParticleSystemManager();
     
+	//render particle system
     void render();
+
+	//update and remove from list if it's dead
     void update();
-    void addParticle(ParticleSystem *particleSystemPtr);
+
+	//add particle system on list
+    void addParticleSystem(ParticleSystem *particleSystemPtr);
     
-    bool globalVisible;
+    bool visible;
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ParticleSystemManager__) */

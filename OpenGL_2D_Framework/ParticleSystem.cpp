@@ -145,14 +145,14 @@ void ParticleSystem::initParticleSystem(double duration, double lifeTime, double
 void ParticleSystem::update(){
     //get time
 	double elapsedTime = Timer::getInstance().getElapsedTime();
-	//cout << "elapsed time = " << elapsedTime << endl;
+
+	//temporary vector
 	std::vector<GLfloat> vertexDistanceData;
 
 	if (totalCreatedParticles <= totalParticleCount){
 
 		//add to total
 		totalElapsedTime += elapsedTime;
-		//cout << "total elapsed time = " << totalElapsedTime << endl;
 
 		int newParticleNumber = 0;
 		float currentPoint = 0;
@@ -191,9 +191,6 @@ void ParticleSystem::update(){
 		if (totalCreatedParticles == 0)
 			return;
 
-		//if (newParticleNumber)
-		//	cout << totalCreatedParticles << " particles created so far..." << endl;
-
 		//add new particle
 		for (int i = 0; i<newParticleNumber; ++i){
 			//new particle
@@ -205,8 +202,6 @@ void ParticleSystem::update(){
 				computeRandom(speed - speedVar, speed + speedVar),
 				computeRandom(emitAngle - emitAngleVar / 2, emitAngle + emitAngleVar / 2)
 				);
-
-//			cout << "Created new particle with lifetime = " << particleList.back()->lifeTime << endl;
 		}
 	}
 
@@ -225,7 +220,6 @@ void ParticleSystem::update(){
 			(*ci)->livedTime += elapsedTime;
 			//update
 			livedTime = (*ci)->livedTime;
-			//cout << "particle #" << index / 4 << " lived time = " << livedTime << endl;
 
 			//if particle's time didn't exceed its life time
             if(livedTime < lifeTime){
@@ -267,7 +261,6 @@ void ParticleSystem::update(){
                 //dead. remove. erase function return the next element. So we don't increment iterator
 				delete (*ci);
 				ci = particleList.erase(ci);
-//				cout << "particle dead" << endl;
             }
         }
 		else{
@@ -276,13 +269,6 @@ void ParticleSystem::update(){
     }
 
 	livingParticleNum = liveCount;
-	//cout << "currently living particle = " << livingParticleNum << endl;
-
-	//if (livingParticleNum == 0){
-	//	glBindBuffer(GL_ARRAY_BUFFER, vpbo);
-	//	glBufferData(GL_ARRAY_BUFFER, totalParticleCount * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
-	//	return;
-	//}
 
     //update Data
     glBindBuffer(GL_ARRAY_BUFFER, vpbo);
@@ -290,10 +276,6 @@ void ParticleSystem::update(){
 		glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(GLfloat) * 3, &vertexDistanceData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
 	}
-//    glBufferSubData(GL_ARRAY_BUFFER, 0, liveCount * sizeof(GLfloat) * 4, &vertexDistanceData[0]);
-	//if (livingParticleNum > 0)
-	//	glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(GLfloat) * 3, &vertexDistanceData[0]);
-	//cout << "size = " << vertexDistanceData.size() << endl;
 }
 
 void ParticleSystem::render(){

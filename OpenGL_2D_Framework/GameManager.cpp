@@ -727,7 +727,7 @@ void GameManager::initParticleSystem(){
                                      );
     testParticle->initParticleTexture(GL_TEXTURE_2D, "../Texture/dust.png", program);
     
-    particleSystemManager->addParticle(testParticle);
+    particleSystemManager->addParticleSystem(testParticle);
 }
 
 void GameManager::loadShader(const std::string& filePath, GLenum shaderType){
