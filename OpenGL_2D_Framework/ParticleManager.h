@@ -9,11 +9,15 @@
 #ifndef __OpenGL_2D_Framework__ParticleManager__
 #define __OpenGL_2D_Framework__ParticleManager__
 
-#include "Particle.h"
+#include "ParticleSystem.h"
+#include <list>
+#include <iostream>
 
 class ParticleManager{
 protected:
 private:
+    std::list<ParticleSystem *> particleSystemList;
+    
 public:
     ParticleManager();
     ~ParticleManager();
