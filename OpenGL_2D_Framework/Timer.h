@@ -11,18 +11,21 @@
 
 #include <GLFW/glfw3.h>
 
-//Singleton Timer
+//Singleton Timer class
 class Timer{
 private:
     double currentTime;
     double previousTime;
     
+    //singleton instnace
     static Timer instance;
     
     //private constructor
     Timer(){
+        //on creation, set previous time to -1 so we know this is a fresh instance
         previousTime = -1;
     };
+    
     //copy constructor not defined. Prevents copying instance
     Timer(Timer const&);
     //assign operator constructor not defined. Prevenets copying instance
@@ -31,17 +34,13 @@ private:
 public:
     //return static timer instance
     static Timer& getInstance(){
-        //if timer never been created
-//        if(!instance){
-//            //create new instance
-//            instance = new Timer();
-//        }
-        //return instance
         return instance;
     }
     
+    //record the time
     void recordTime();
     
+    //time getter
     double getElapsedTime();
     double getCurrentTime();
 };
