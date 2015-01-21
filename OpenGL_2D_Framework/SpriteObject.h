@@ -26,7 +26,10 @@
 #include <vector>
 #include <list>
 
+//2D and 3D size is scaled down to 10. 
+//ex) 1280 x 640 pixels texture -> 128 * 64 vertex length quad
 const int SCREEN_TO_WORLD_SCALE = 10;
+
 const float static GLOBAL_Z_VALUE = 0;
 
 struct Rect{

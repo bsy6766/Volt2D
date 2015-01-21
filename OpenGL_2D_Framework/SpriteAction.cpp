@@ -96,6 +96,8 @@ void SpriteAction::revive(){
 }
 
 void SpriteAction::clone(SpriteAction *ptr){
+	//check if pointer is null!!
+
     std::cout << "sprite action clone base" << std::endl;
     this->actionID = ptr->actionID;
     this->duration = ptr->duration;
