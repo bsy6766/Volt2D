@@ -2,6 +2,7 @@ OpenGL 2D Graphic Framework Devlog
 
 Before first commit
 - Project made for Computer Graphics course's final project.
+- This project was inspired by Cocos2D and SpriteKit
 - Implemented basic grahpic framework that handles simple sprites, sprite animation, and some sprite actions.
 
 JAN/15/2015
@@ -9,3 +10,6 @@ JAN/15/2015
 - Added git repo.
 - Currently working on simple Particle System.
 - Now working on both Mac and Windows
+
+JAN/16~20/2015
+- Fixed particle system.
