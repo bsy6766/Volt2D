@@ -39,6 +39,7 @@
 
 //particle
 #include "ParticleSystem.h"
+#include "ParticleSystemManager.h"
 
 class GameManager{
 private:
@@ -84,12 +85,15 @@ private:
     /*--------------------Sprite manager-----------------*/
     SpriteManager *loadingSpriteManager;
     SpriteManager *spriteManager;
-    /*--------------------Sprite manager-----------------*/
+    /*---------------------------------------------------*/
     
     ActionJumpBy *jumpAction;
     
+    /*----------------------Particles--------------------*/
     ParticleSystem *testParticle;
-    ParticleSystem *testParticle2;
+    ParticleSystemManager *particleSystemManager;
+    /*---------------------------------------------------*/
+    
     
     //Shader
     Shader *vertexShader;
@@ -176,8 +180,10 @@ public:
     void initActionScheduler();
     void releaseActionScheduler();
     
+    void initParticleSystemManager();
+    void releaseParticleSystemManager();
+    
     void initParticleSystem();
-    void releaseParticleSystem();
     
     void initKeyLock();
     

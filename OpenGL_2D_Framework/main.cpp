@@ -73,9 +73,10 @@ int main(int argc, const char * argv[]) {
         
         gm->initSpriteManager();
         
+        gm->initParticleSystemManager();
+        
         gm->initParticleSystem();
         
-
         gm->initLoading();
         
         gm->startGame();
@@ -89,7 +90,7 @@ int main(int argc, const char * argv[]) {
     gm->releaseUndeadActions();
     gm->releaseSprites();
     gm->releaseSpriteManager();
-    gm->releaseParticleSystem();
+    gm->releaseParticleSystemManager();
     gm->releaseCamera();
     
     delete gm;

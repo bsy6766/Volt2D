@@ -145,8 +145,8 @@ void GameManager::render(){
     }
     else{
         spriteManager->render();
-        testParticle->render();
-//        testParticle2->render();
+        particleSystemManager->render();
+        
         if(loadingFading){
             loadingSpriteManager->render();
         }
@@ -214,8 +214,8 @@ void GameManager::startGame(){
             input();
             
             //update sprite data
-            testParticle->update();
-//            testParticle2->update();
+            particleSystemManager->update();
+
             character->updateFrame();
             spriteManager->update();
         }
@@ -703,8 +703,15 @@ void GameManager::releaseUndeadActions(){
     }
 }
 
+void GameManager::initParticleSystemManager(){
+    particleSystemManager = new ParticleSystemManager();
+}
+
+void GameManager::releaseParticleSystemManager(){
+    delete particleSystemManager;
+}
+
 void GameManager::initParticleSystem(){
-//    testParticle = new ParticleSystem(100);
     testParticle = ParticleSystem::initWithParticleSize(200);
     testParticle->setPosition(glm::vec2(300, 360));
     testParticle->initParticleSystem(
@@ -720,28 +727,7 @@ void GameManager::initParticleSystem(){
                                      );
     testParticle->initParticleTexture(GL_TEXTURE_2D, "../Texture/dust.png", program);
     
-	/*
-    testParticle2 = ParticleSystem::initWithParticleSize(100);
-    testParticle2->setPosition(glm::vec2(900, 360));
-    testParticle2->initParticleSystem(
-                                      10.0,
-                                      5.0,  //life time
-                                      1.0,   //life time var
-                                      20.0,   //speed
-                                      1.0,   //speed var
-                                      270.0,   //emit angle
-                                      20.0,  //emit angle var
-                                      0.0,  //gravity X
-                                      50.0    //gravity Y
-                                      );
-    testParticle2->initParticleTexture(GL_TEXTURE_2D, "../Texture/dust.png", program);
-    std::cout << "initializing particle" << std::endl;
-	*/
-}
-
-void GameManager::releaseParticleSystem(){
-    delete testParticle;
-    delete testParticle2;
+    particleSystemManager->addParticle(testParticle);
 }
 
 void GameManager::loadShader(const std::string& filePath, GLenum shaderType){
