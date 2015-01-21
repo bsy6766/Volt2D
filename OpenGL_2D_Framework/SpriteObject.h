@@ -69,7 +69,6 @@ protected:
     glm::mat4 translateMat;
     glm::mat4 rotateMat;
     glm::mat4 scaleMat;
-    
     glm::mat4 modelMat;
     
     std::vector<glm::vec3> vertexData;
