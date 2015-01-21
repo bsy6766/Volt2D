@@ -206,7 +206,7 @@ void ParticleSystem::update(){
 				computeRandom(emitAngle - emitAngleVar / 2, emitAngle + emitAngleVar / 2)
 				);
 
-//			cout << "Created new particle with lifetime = " << particleList.back()->lifeTime << endl;
+			cout << "Created new particle with lifetime = " << particleList.back()->lifeTime << endl;
 		}
 	}
 
@@ -231,7 +231,7 @@ void ParticleSystem::update(){
             if(livedTime < lifeTime){
                 double directionAngle = (*ci)->direction;
                 float speed = (*ci)->speed;
-//                cout << "angle = " << directionAngle << endl;
+
 				float movedX = (float)cos(directionAngle * M_PI / 180) * elapsedTime * speed;
 				float movedY = (float)sin(directionAngle * M_PI / 180) * elapsedTime * speed;
                 
@@ -267,7 +267,7 @@ void ParticleSystem::update(){
                 //dead. remove. erase function return the next element. So we don't increment iterator
 				delete (*ci);
 				ci = particleList.erase(ci);
-//				cout << "particle dead" << endl;
+				cout << "particle dead" << endl;
             }
         }
 		else{
