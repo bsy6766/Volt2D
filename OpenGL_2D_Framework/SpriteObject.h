@@ -40,25 +40,43 @@ struct Rect{
     float h;
 };
 
+//add numver to each sprite(for debug?)
 static int ID_COUNTER = 0;
 
 class SpriteObject{
 private:
+	/**
+	* instant update.
+	* this function updates sprite actions with 0 duration. 
+	*/
     void instantUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
+
+	/**
+	* Interval update.
+	* This function updates sprite actions with duration greater than 0.
+	*/
     void intervalUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
 protected:
     int spriteID;
     
+	//w = width, h = height
     int w;
     int h;
     
     glm::vec2 position;
+
+	//store program pointer for now since we only use 1 program and 1 shader
     Program *progPtr;
     
     bool actionRunning;
-    float z;    //each sprite can set 0~100.
+
+	//each sprite can set 0~100.
+    float z;    
     
+	//not used yet
     Rect boundingBox;
+
+	//visible = render
     bool visible;
     
     GLuint vao;    //vertex array object
@@ -66,17 +84,17 @@ protected:
     GLuint uvbo;     //uv vert buffer object
     GLuint ibo;    //indices buffer object
     
+	//opengl matrix
     glm::mat4 translateMat;
     glm::mat4 rotateMat;
     glm::mat4 scaleMat;
-    
     glm::mat4 modelMat;
     
+	//stores the data
     std::vector<glm::vec3> vertexData;
     std::vector<glm::vec2> uvVertexData;
     std::vector<GLushort> indicesData;
     
-//    std::list<SpriteAction *> spriteActionList;
     std::list<SpriteActionSchedule *> spriteActionScheduleList;
     
 public:
