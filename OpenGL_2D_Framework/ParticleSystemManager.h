@@ -24,8 +24,8 @@ public:
     
     void render();
     void update();
-    void addParticle();
-    void deleteSprite();
+    void addParticle(ParticleSystem *particleSystemPtr);
+    
     bool globalVisible;
 };
 

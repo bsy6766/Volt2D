@@ -52,3 +52,10 @@ void ParticleSystemManager::update(){
         }
     }
 }
+
+void ParticleSystemManager::addParticle(ParticleSystem *particleSystemPtr){
+    if(particleSystemPtr == 0)
+        return;
+    
+    particleSystemList.push_back(particleSystemPtr);
+}
