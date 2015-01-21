@@ -48,6 +48,8 @@ private:
     
     int liveCount;
     
+    bool alive;
+    
     //time
 	//double totalElapsedTime;
 	float totalElapsedTime;
@@ -158,6 +160,11 @@ public:
      * Set particle system's position
      */
     void setPosition(glm::vec2 position);
+    
+    /**
+     * True = dead, false = alive
+     */
+    bool isDead();
 };
 
 #endif /* defined(__CS364FinalProject__ParticleSystem__) */
