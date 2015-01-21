@@ -210,9 +210,6 @@ void ParticleSystem::update(){
 		}
 	}
 
-	//sort particle
-	sortParticleList();
-
 	//update particles data
 	int liveCount = 0;
 
@@ -335,8 +332,4 @@ void ParticleSystem::render(){
 
 void ParticleSystem::setPosition(glm::vec2 position){
     this->position = position;
-}
-
-void ParticleSystem::sortParticleList(){
-	//sort particle
 }

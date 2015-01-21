@@ -100,9 +100,6 @@ private:
 	//else, keep build up the point
 	float newLifePoint;
 
-    void sortParticleList();
-    void removeDeadParticles();
-
 	/**
 	* Computes random number between the range.
 	* This function handles all type of number
@@ -117,6 +114,11 @@ public:
     static ParticleSystem* initWithParticleSize(int size);
     ~ParticleSystem();
     
+    /**
+     * Initialize particle's texture. 
+     * If this function isn't called(or if texture isn't set),
+     * then the particle system use default texture(circle).
+     */
     void initParticleTexture(GLenum _textureTarget, const std::string& _fileName, Program* progPtr);
    
 	/**
@@ -128,16 +130,34 @@ public:
 	* @param speedVar the range between maximum and minimum variance of speed
 	* @param emitAngle the particle's emitting direction(degree angle)
 	*/
-	void initParticleSystem(double duration, double lifeTime, double lifeTimeVar, float speed, float speedVar, double emitAngle, double emitAngleVar, float gravityX, float gravityY);
-    void setPosition(glm::vec2 position);
+	void initParticleSystem(
+                            double duration,
+                            double lifeTime,
+                            double lifeTimeVar,
+                            float speed,
+                            float speedVar,
+                            double emitAngle,
+                            double emitAngleVar,
+                            float gravityX,
+                            float gravityY
+                            );
+    /**
+     * Render particles. 
+     * Render only living ones.
+     */
     void render();
 
 	/**
 	* A particle update function.
-	* This function updates the particle data by adding new particle based on elapsed time.
+	* Based on elpased time, add new particles and remove dead ones
 	* It updates each particle's position data.
 	*/
     void update();
+    
+    /**
+     * Set particle system's position
+     */
+    void setPosition(glm::vec2 position);
 };
 
 #endif /* defined(__CS364FinalProject__ParticleSystem__) */
