@@ -29,13 +29,16 @@ void ActionDelay::initDelay(double duration){
 }
 
 void ActionDelay::update(double elapsedTime, double unusedtime){
+    //if update is instant,
     if(elapsedTime == -1){
         //instant
         totalDelayed = duration;
+        //dead
         alive = false;
         return;
     }
     
+    //cast to float
     float dur = (float)duration;
     float currentTime = (float)(totalElapsedTime + unusedtime);
     

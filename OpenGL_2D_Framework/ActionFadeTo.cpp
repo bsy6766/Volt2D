@@ -40,7 +40,7 @@ float ActionFadeTo::getFadedOpacity(){
 }
 
 void ActionFadeTo::update(double elapsedTime, double unusedTime){
-//    std::cout << "fading..." << std::endl;
+    //if it's instant
     if(elapsedTime == -1){
         fadedOpacity = finalOpacity - originalOpacity;
         previousOpacity = finalOpacity;
@@ -48,10 +48,12 @@ void ActionFadeTo::update(double elapsedTime, double unusedTime){
         return;
     }
     
-    float currentTime = (float)getCurrentTime() + (float)unusedTime;
+    //get time in float
+    float currentTime = (float)getTotalElapsedTime() + (float)unusedTime;
     float previousTime = (float)getPreviousTime();
     float duration = (float)getDuration();
     
+    //if 
     if(currentTime == duration) {
         fadedOpacity = finalOpacity - previousOpacity;
     }

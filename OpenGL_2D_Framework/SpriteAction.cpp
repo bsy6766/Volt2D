@@ -30,7 +30,7 @@ ActionID SpriteAction::getActionID(){
     return actionID;
 }
 
-double SpriteAction::getCurrentTime(){
+double SpriteAction::getTotalElapsedTime(){
     return totalElapsedTime;
 }
 

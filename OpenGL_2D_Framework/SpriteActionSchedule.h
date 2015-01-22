@@ -36,7 +36,6 @@ public:
     ~SpriteActionSchedule();
     
     void createSchedule(SpriteAction *action);
-//    void createSchedule(std::list<SpriteAction> &actions);
     void createSchedule(std::vector<SpriteAction*> &actions, int repeat);
     
     std::list<SpriteAction*> &getList();

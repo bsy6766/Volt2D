@@ -70,7 +70,7 @@ void ActionJumpBy::update(double elapsedTime, double unusedTime){
     }
     
     float duration = (float)getDuration();
-    float currentTime = (float)getCurrentTime();
+    float currentTime = (float)getTotalElapsedTime();
     float time = (float)getElapsedTime() + (float)unusedTime;
     
     //    float ratio = sin(3*currentTime) / 6;

@@ -50,7 +50,7 @@ void ActionRotateBy::update(double elapsedTime, double unusedtime){
     }
     
     float duration = (float)getDuration();
-    float currentTime = (float)getCurrentTime();
+    float currentTime = (float)getTotalElapsedTime();
     float time = (float)getElapsedTime() + (float)unusedTime;
     
     if(currentTime >= duration){

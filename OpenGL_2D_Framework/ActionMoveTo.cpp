@@ -45,7 +45,7 @@ void ActionMoveTo::update(double elapsedTime, double unusedTime){
         return;
     }
     
-    float currentTime = (float)getCurrentTime() + (float)unusedTime;
+    float currentTime = (float)getTotalElapsedTime() + (float)unusedTime;
     float prevTime = (float)getPreviousTime();
     
     glm::vec2 dist = destination - originalPosition;

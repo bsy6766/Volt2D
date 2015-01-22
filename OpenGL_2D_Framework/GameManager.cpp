@@ -160,7 +160,7 @@ void GameManager::startGame(){
     double initialTime, singleLoopTime, elapsedTime, oneSecond = 0, fpsCounter = 0;
     Timer::getInstance().recordTime();
     
-    while(Timer::getInstance().getCurrentTime() < 2){
+    while(Timer::getInstance().getTotalElapsedTime() < 2){
         Timer::getInstance().recordTime();
     }
     

@@ -41,7 +41,7 @@ SpriteActionSchedule::SpriteActionSchedule(const SpriteActionSchedule& other){
 }
 
 SpriteActionSchedule::~SpriteActionSchedule(){
-
+    cout << "Deleting Sprite Action Schedule..." << endl;
 }
 
 void SpriteActionSchedule::createSchedule(SpriteAction *action){
@@ -124,7 +124,6 @@ std::list<SpriteAction*> &SpriteActionSchedule::getList(){
 }
 
 bool SpriteActionSchedule::isRepeatDone(){
-//    return true;
     if(repeat == REPEAT_FOREVER)
         return false;
     return repeat == repeatCounter;

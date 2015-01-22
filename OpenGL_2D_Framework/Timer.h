@@ -42,7 +42,7 @@ public:
     
     //time getter
     double getElapsedTime();
-    double getCurrentTime();
+    double getTotalElapsedTime();
 };
 
 

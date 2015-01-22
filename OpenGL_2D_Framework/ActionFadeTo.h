@@ -21,11 +21,16 @@ private:
 public:
     ActionFadeTo();
     ~ActionFadeTo();
-    void clone(SpriteAction* dataPtr);
+    
     void initFadeTo(float opacity, double duration);
-    void setOriginalOpacity(float opacity);
     void update(double elapsedTime, double unusedTime);
+    
+    //get & set
     float getFadedOpacity();
+    void setOriginalOpacity(float opacity);
+    
+    //virtual
+    void clone(SpriteAction* dataPtr);
     void revive();
 };
 

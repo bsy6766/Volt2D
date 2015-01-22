@@ -75,7 +75,7 @@ public:
 
 	//time functions
     double getPreviousTime();
-    double getCurrentTime();
+    double getTotalElapsedTime();
     double getElapsedTime();
 
     double setCurrentTime(double time);

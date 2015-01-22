@@ -34,7 +34,7 @@ void Timer::recordTime(){
     }
 }
 
-double Timer::getCurrentTime(){
+double Timer::getTotalElapsedTime(){
     //return current time(ms)
     return currentTime;
 }
