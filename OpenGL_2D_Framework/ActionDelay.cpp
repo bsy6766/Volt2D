@@ -29,7 +29,6 @@ void ActionDelay::initDelay(double duration){
 }
 
 void ActionDelay::update(double elapsedTime, double unusedtime){
-//    cout << "delaying" << endl;
     if(elapsedTime == -1){
         //instant
         totalDelayed = duration;

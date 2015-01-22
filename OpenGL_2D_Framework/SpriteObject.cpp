@@ -124,13 +124,9 @@ void SpriteObject::update(){
         return;
     }
     
-    //there is action to run, first, get time
-//    double elapsedTime = Timer::getInstance().getElapsedTime();
-    
     //iterate through schedule list
     for(std::list<SpriteActionSchedule*>::const_iterator ci = spriteActionScheduleList.begin(); ci != spriteActionScheduleList.end(); ++ci){
         //get first schedule from list
-//        SpriteActionSchedule *schedulePtr = spriteActionScheduleList.front();
         std::list<SpriteAction*> spriteActionList = (*ci)->getList();
         
         //iterate through the schedule(even if theres only one action!)
@@ -142,10 +138,7 @@ void SpriteObject::update(){
             //if action is dead(already processed), just continue to next action
             if(!(*i)->isAlive())
                 continue;
-            
-            
-            //            (*i)->setCurrentTime(elapsedTime);
-            
+
             //get id, because we have tons of different actions...
             ActionID actionID = (*i)->getActionID();
             

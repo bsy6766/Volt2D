@@ -113,8 +113,6 @@ void SpriteActionSchedule::createSchedule(std::vector<SpriteAction*> &actions, i
         //copy data
         clonePtr->clone(dataPtr);
 
-        //set pointer to this clone;
-        
         //add ptr
         this->actionList.push_back(clonePtr);
         cout << "\tAdded." << endl;;

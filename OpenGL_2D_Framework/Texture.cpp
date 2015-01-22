@@ -43,7 +43,7 @@ void Texture::loadImage(const string& filePath){
     FILE *file = fopen(filePath.c_str(), "rb");
     if(!file)
         throw runtime_error("texture image file cannot be opened");
-    //or give option to replace with default.png?
+    //or give option to replace with default.png?-> do it!
     
     data = stbi_load_from_file(file, &width, &height, &channel, 0);
     flipImage();

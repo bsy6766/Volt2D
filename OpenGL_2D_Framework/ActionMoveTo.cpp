@@ -35,6 +35,7 @@ void ActionMoveTo::initMoveTo(glm::vec2 destination, double duration){
 }
 
 void ActionMoveTo::update(double elapsedTime, double unusedTime){
+	//if elapsed time is -1, means instant update
     if(elapsedTime == -1){
         //instant
         movedDistance = destination - originalPosition;

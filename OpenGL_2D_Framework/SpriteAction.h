@@ -11,6 +11,7 @@
 
 #include <glm/glm.hpp>
 
+//Action IDs
 enum ActionID{
     ACTION_DELAY = 0,
     ACTION_MOVE_TO,
@@ -32,8 +33,10 @@ enum ActionID{
 class SpriteAction{
 private:
 protected:
+	//action's unique enum ID
     ActionID actionID;
     
+	//item vars
     double duration;
     double totalElapsedTime;
     double unusedTime;
@@ -61,13 +64,27 @@ public:
 	*/
     bool isProtected;
     
-    ActionID getActionID();
+	//getters
+	ActionID getActionID();
+	glm::vec2 getDestination();
+	glm::vec2 getMovedDistance();
+    double getDuration();
+	
+	bool isRunning();
+    bool isAlive();
+
+	//time functions
+    double getPreviousTime();
+    double getCurrentTime();
+    double getElapsedTime();
+
+    double setCurrentTime(double time);
+
+	//setters
+	void setSpeed(double speed);
+
     void startAction();
     void stopAction();
-    glm::vec2 getDestination();
-    double getDuration();
-    glm::vec2 getMovedDistance();
-    void setSpeed(double speed);
     
 	/**
 	* pure virtual function.
@@ -75,18 +92,10 @@ public:
 	*/
     virtual void update(double elapsedTime, double unusedTime) = 0;
     virtual void clone(SpriteAction *ptr);
-    
-	//time functions
-    double getPreviousTime();
-    double getCurrentTime();
-    double setCurrentTime(double time);
-    double getElapsedTime();
-    
-    bool isRunning();
-    bool isAlive();
-    
+
+	//kill and reset
     void kill();
-    void revive();	//reset action
+    void revive();
 };
 
 #endif /* defined(__CS364FinalProject__SpriteAction__) */

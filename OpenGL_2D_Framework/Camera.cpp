@@ -62,20 +62,14 @@ void Camera::moveFoward(){
 
 void Camera::moveBackward(){
     position += glm::vec3(glm::inverse(glm::rotate(glm::mat4(), horizontalAngle, glm::vec3(0,1,0))) * glm::vec4(0,0,-speed,1) );
-    //position += vec3(getOrientation() * vec4(0,0,-0.1f,1));
-    //position += vec3(0, 0, -0.1f);
 }
 
 void Camera::moveRight(){
     position += glm::vec3(glm::inverse(glm::rotate(glm::mat4(), horizontalAngle, glm::vec3(0,1,0))) * glm::vec4(-speed, 0, 0,1) );
-    //position += vec3(getOrientation() * vec4(-0.1f, 0, 0,1));
-    //position += vec3(-0.1f, 0, 0);
 }
 
 void Camera::moveLeft(){
     position += glm::vec3(glm::inverse(glm::rotate(glm::mat4(), horizontalAngle, glm::vec3(0,1,0))) * glm::vec4(speed, 0, 0,1) );
-    //position += vec3(getOrientation() * vec4(0.1f, 0, 0,1));
-    //position += vec3(0.1f, 0, 0);
 }
 
 void Camera::moveUp(){

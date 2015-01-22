@@ -77,7 +77,7 @@ void ActionJumpBy::update(double elapsedTime, double unusedTime){
     float distX, distY;
     
     if(currentTime >= duration){
-        
+        //todo. implement
     }
     else{
         distY = distance.y / 5 * sin(currentTime * 1.9 / duration * M_PI);

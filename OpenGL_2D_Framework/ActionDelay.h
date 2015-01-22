@@ -13,15 +13,18 @@
 
 class ActionDelay : public SpriteAction{
 private:
+	//time
     double totalDelayed;
     double delayTick;
     
 public:
     ActionDelay();
     ~ActionDelay();
+
     void initDelay(double duration);
     void update(double elapsedTime, double unusedtime);
     double getDelayTick();
+
     void clone(SpriteAction *);
     void revive();
 };
