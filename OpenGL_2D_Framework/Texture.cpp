@@ -41,9 +41,16 @@ void Texture::bind(GLenum textureUnit){
 
 void Texture::loadImage(const string& filePath){
     FILE *file = fopen(filePath.c_str(), "rb");
-    if(!file)
-        throw runtime_error("texture image file cannot be opened");
-    //or give option to replace with default.png?-> do it!
+    //!!! now texture will be set to "missing texture" if failed to read file
+    if(!file){
+        //try again with default
+        const string defaultPath = "../Texture/default.png";
+        file = fopen(defaultPath.c_str(), "rb");
+        if(!file){
+            //default is missing...what's happening?
+            throw runtime_error("Default texture image file cannot be opened");
+        }
+    }
     
     data = stbi_load_from_file(file, &width, &height, &channel, 0);
     flipImage();
