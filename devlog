@@ -13,3 +13,12 @@ JAN/15/2015
 
 JAN/16~20/2015
 - Fixed particle system.
+
+JAN/21/2015
+- Cleaning up code
+- Fixing git issue with Mac
+- Starting on progress bar
+
+JAN/22/2015
+- Cleaning and commenting code
+- Added default texture
