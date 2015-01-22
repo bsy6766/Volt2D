@@ -24,29 +24,32 @@ private:
     GLuint textureObject;
     GLenum textureTarget;
     GLint textureLocation;
+    
     std::string fileName;
     unsigned char* data;
     GLsizei width, height;
+    
     int channel;
     
     void loadImage(const string& filePath);
     void initTexture(GLuint programObject);
-    void flipImage();
+    void flipImage();   //for stb_image
     
 public:
     Texture();
     Texture(GLenum _textureTarget, const std::string& _fileName);
     ~Texture();
+    
     bool load(GLuint programObject);
     void bind(GLenum textureUnit);
+    
+    //getter
     void getImageSize(int &w, int &h);
     GLenum getTextureTarget();
     GLint getTextureLocation();
-    
     GLuint getObject();
     
-    
-    
+    //Image format
     enum Format {
         Format_Grayscale = 1, /**< one channel: grayscale */
         Format_GrayscaleAlpha = 2, /**< two channels: grayscale and alpha */

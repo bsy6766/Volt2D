@@ -46,6 +46,7 @@ void Texture::loadImage(const string& filePath){
         //try again with default
         const string defaultPath = "../Texture/default.png";
         file = fopen(defaultPath.c_str(), "rb");
+        
         if(!file){
             //default is missing...what's happening?
             throw runtime_error("Default texture image file cannot be opened");
