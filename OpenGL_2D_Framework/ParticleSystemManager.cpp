@@ -72,4 +72,5 @@ void ParticleSystemManager::addParticleSystem(ParticleSystem *particleSystemPtr)
     
     //add to list
     particleSystemList.push_back(particleSystemPtr);
+	++size;
 }
