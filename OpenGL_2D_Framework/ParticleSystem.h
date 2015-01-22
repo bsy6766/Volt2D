@@ -36,19 +36,17 @@ private:
     GLuint vbo;
     GLuint ibo;
     GLuint uvbo;
-    GLuint vpbo;    //vertex position buffer
+	//vertex position buffer
+    GLuint vpbo;
 
     std::vector<GLfloat> vertexData;
     std::vector<glm::vec2> uvVertexData;
-    //std::vector<GLfloat> vertexDistanceData;
     std::vector<GLushort> indicesData;
     
     Texture *texture;
     Program *progPtr;
     
     int liveCount;
-    
-    bool alive;
     
     //time
 	//double totalElapsedTime;
@@ -87,6 +85,8 @@ private:
     float endSizeRand;
     
     //opacity
+	//current's I hard coded to send 255 to shader. Fix this
+	//particle will not have feature to fade in or out. This will be handled with Actions
 //    float startOpacity;
 //    float endOpacity;
 

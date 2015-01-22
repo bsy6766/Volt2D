@@ -280,34 +280,41 @@ void ParticleSystem::update(){
 
 void ParticleSystem::render(){
     if(visible && livingParticleNum > 0){
+		//bind texture
         texture->bind(GL_TEXTURE0);
         
+		//set model matrix
         GLint modelUniformLocation = glGetUniformLocation(progPtr->getObject(), "modelMat");
         if(modelUniformLocation == -1)
             throw std::runtime_error( std::string("Program uniform not found: " ) + "modelMat");
         glm::mat4 modelMat = glm::mat4();
         glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, &modelMat[0][0]);
         
+		//set opacity
         GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
         if(opacityUniformLocation == -1)
             throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
         float opacity = 255;
         glUniform1fv(opacityUniformLocation, 1, &opacity);
         
+		//tell this is particle
         GLint particleUniformLocation = glGetUniformLocation(progPtr->getObject(), "particle");
         if(particleUniformLocation == -1)
             throw std::runtime_error( std::string("Program uniform not found: " ) + "particle");
         glUniform1i(particleUniformLocation, 1);
         
+		//just opengl stuff. bind vao and enable attrib
         glBindVertexArray(vao);
         glEnableVertexAttribArray(progPtr->attrib("vert"));
         glEnableVertexAttribArray(progPtr->attrib("uvVert"));
         glEnableVertexAttribArray(progPtr->attrib("posVert"));
         
-        glVertexAttribDivisor(progPtr->attrib("vert"), 0);
-        glVertexAttribDivisor(progPtr->attrib("uvVert"), 0);
-        glVertexAttribDivisor(progPtr->attrib("posVert"), 1);
+		//divide attrib
+        glVertexAttribDivisor(progPtr->attrib("vert"), 0);		//0. Always use same quad vertex
+        glVertexAttribDivisor(progPtr->attrib("uvVert"), 0);	//0. Always use same indices
+        glVertexAttribDivisor(progPtr->attrib("posVert"), 1);	//1, Use 1 pos(vec3) value for each quad
         
+		//draw particles.
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, livingParticleNum);
     }
 }

@@ -145,11 +145,11 @@ void GameManager::render(){
     }
     else{
         spriteManager->render();
-        particleSystemManager->render();
         
         if(loadingFading){
             loadingSpriteManager->render();
-        }
+		}
+		particleSystemManager->render();
     }
 
     glUseProgram(0);
