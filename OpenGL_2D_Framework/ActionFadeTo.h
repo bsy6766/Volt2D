@@ -23,7 +23,6 @@ public:
     ~ActionFadeTo();
     
     void initFadeTo(float opacity, double duration);
-    void update(double elapsedTime, double unusedTime);
     
     //get & set
     float getFadedOpacity();
@@ -31,6 +30,9 @@ public:
     
     //virtual
     void clone(SpriteAction* dataPtr);
+    void update(double elapsedTime, double unusedTime);
+    
+    //override
     void revive();
 };
 

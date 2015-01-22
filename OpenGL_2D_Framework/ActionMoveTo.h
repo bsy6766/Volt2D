@@ -21,15 +21,17 @@ private:
 public:
     ActionMoveTo();
     ActionMoveTo(const ActionMoveTo& other);
-    void clone(SpriteAction* dataPtr);
-    
     ~ActionMoveTo();
+    
     void initMoveTo(glm::vec2 destination, double duration);
     
-    void update(double elapsedTime, double unusedTime);
-    
+    //set & get
     void setOriginalPosition(glm::vec2 pos, bool fresh);
     glm::vec2 getMovedDistance();
+    
+    //virtuals
+    void clone(SpriteAction* dataPtr);
+    void update(double elapsedTime, double unusedTime);
     
     //override
     void revive();

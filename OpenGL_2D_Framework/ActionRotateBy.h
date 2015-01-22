@@ -23,14 +23,16 @@ public:
     ~ActionRotateBy();
     void initRoateBy(float angle, float duration);
     
-    void update(double elapsedTime, double unusedTime);
-    
+    //set & get
     void setOriginalAngle(float angle, bool fresh);
     float getMovedAngle();
     
+    //virtuals
+    void update(double elapsedTime, double unusedTime);
+    void clone(SpriteAction* dataPtr);
+    
     //override
     void revive();
-    void clone(SpriteAction* dataPtr);
 };
 
 #endif /* defined(__CS364FinalProject__ActionRotateBy__) */

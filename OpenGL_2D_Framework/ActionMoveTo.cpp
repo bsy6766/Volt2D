@@ -20,10 +20,6 @@ ActionMoveTo::~ActionMoveTo(){
     cout << "deleting MoveTo action" << endl;
 }
 
-ActionMoveTo::ActionMoveTo(const ActionMoveTo& other){
-    cout << "copying MoveTo action" << endl;
-}
-
 void ActionMoveTo::initMoveTo(glm::vec2 destination, double duration){
     this->duration = duration;
     this->destination = destination;

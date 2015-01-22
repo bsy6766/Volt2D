@@ -12,10 +12,15 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
+/**
+ * This Camera class was created during 2014 summer break.
+ */
+
 class Camera{
 private:
     glm::vec3 position;
     
+    //camera variables
     GLfloat fovy;
     GLfloat aspect;
     GLfloat nears;
@@ -29,19 +34,26 @@ public:
     Camera(glm::vec3 position, float vAngle, float hAngle, float fovy, float aspect, float nears, float fars, float speed);
     ~Camera();
     
+    //getters
     glm::mat4 getProjection() const;
     glm::mat4 getMatrix() const;
     glm::mat4 getView() const;
     glm::mat4 getOrientation() const;
     glm::vec3 getPosition() const;
+    
     void setPosition(glm::vec3 position);
+    
+    //movement functions
     void moveFoward();
     void moveBackward();
     void moveRight();
     void moveLeft();
     void moveUp();
     void moveDown();
+    
     void changeAngle(double verticalValue, double horizontalValue);
+    
+    //speed
     void increaseSpeed();
     void decreaseSpeed();
 };

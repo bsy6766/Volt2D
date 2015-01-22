@@ -44,11 +44,10 @@ void Program::createProgram(Shader *vertexShaderPtr, Shader *fragmentShaderPtr){
         programObject = 0;
         throw std::runtime_error(msg);
     }
-    
-    //set attrib location
 }
 
 GLuint Program::getObject(){
+    //return object
     return programObject;
 }
 

@@ -19,10 +19,15 @@ using namespace std;
 class Program{
 private:
     GLuint programObject;
+    
 public:
     Program();
     ~Program();
+    
+    //init
     void createProgram(Shader *vertexShaderPtr, Shader *fragmentShaderPtr);
+    
+    //get
     GLuint getObject();
     GLint attrib(const GLchar* attribName) const;
 };

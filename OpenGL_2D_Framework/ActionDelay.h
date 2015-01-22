@@ -22,13 +22,15 @@ public:
     ~ActionDelay();
 
     void initDelay(double duration);
-    void update(double elapsedTime, double unusedtime);
     
     //getter
     double getDelayTick();
 
     //virtuals
     void clone(SpriteAction *);
+    void update(double elapsedTime, double unusedtime);
+
+    //override
     void revive();
 };
 

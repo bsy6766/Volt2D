@@ -20,15 +20,18 @@ private:
     
 public:
     ActionJumpBy();
-    void clone(SpriteAction* dataPtr);
     ~ActionJumpBy();
+    
     void initJumpBy(glm::vec2 distance, double duration);
     
+    //set & get
     void setJumpingPosition(glm::vec2 jumpingPosition, bool fresh);
     glm::vec2& getDistance();
     glm::vec2& getMovedDistance();
     
+    //virtual
     void update(double elapsedTime, double unusedTime);
+    void clone(SpriteAction* dataPtr);
 };
 
 #endif /* defined(__CS364FinalProject__ActionJumpBy__) */
