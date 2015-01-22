@@ -23,27 +23,32 @@ class SpriteAnimation : public SpriteObject{
 private:
     std::vector<Texture *> textureList;
     
-    double frameInterval;
+    //frame variable
     int frameListSize;
     int currentFrameIndex;
+    
+    //time
+    double frameInterval;
     double currentTime;
     double totalElapsedTime;
     
     //pure virtual
     void createVertexData();
     void loadVertexData();
-    void release();
-    void updateMatrix();
     void render();
+    
+    void updateMatrix();
     
 public:
     SpriteAnimation();
     SpriteAnimation(Program *progPtr);
     ~SpriteAnimation();
     
+    //temporary
     bool canJump;
+    
+    //use Timer class for elapsed time
     void updateFrame();
-
     
     void init(std::string fileName, std::string stateName, int frameSize, double interval);
 };

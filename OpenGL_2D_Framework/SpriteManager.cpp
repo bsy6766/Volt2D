@@ -13,7 +13,12 @@ SpriteManager::SpriteManager(){
 }
 
 SpriteManager::~SpriteManager(){
+    //clear remaining sprites on list
+    for (std::list<SpriteObject *>::const_iterator ci = spriteList.begin(); ci != spriteList.end(); ++ci){
+        delete (*ci);
+    }
     
+    spriteList.clear();
 }
 
 void SpriteManager::render(){
@@ -40,12 +45,4 @@ bool compareZ(SpriteObject* lhs, SpriteObject* rhs){
 void SpriteManager::addSprite(SpriteObject *pSpriteObj){
     spriteList.push_back(pSpriteObj);
     spriteList.sort(compareZ);
-}
-
-void SpriteManager::deleteSprite(){
-    for (std::list<SpriteObject *>::const_iterator ci = spriteList.begin(); ci != spriteList.end(); ++ci){
-        delete (*ci);
-    }
-    
-    spriteList.clear();
 }

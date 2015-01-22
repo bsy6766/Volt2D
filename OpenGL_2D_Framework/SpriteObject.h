@@ -46,6 +46,7 @@ class SpriteObject{
 private:
     void instantUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
     void intervalUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
+    
 protected:
     int spriteID;
     
@@ -75,7 +76,6 @@ protected:
     std::vector<glm::vec2> uvVertexData;
     std::vector<GLushort> indicesData;
     
-//    std::list<SpriteAction *> spriteActionList;
     std::list<SpriteActionSchedule *> spriteActionScheduleList;
     
 public:
@@ -106,6 +106,7 @@ public:
     virtual void createVertexData() = 0;
     virtual void loadVertexData() = 0;
     virtual void render() = 0;
+    
 //    virtual void update() = 0;
     void update();
     void updateFromSpriteAction();

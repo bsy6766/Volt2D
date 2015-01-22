@@ -51,7 +51,7 @@ void SpriteAnimation::init(std::string fileName, std::string stateName, int fram
     for(int i = 0; i<frameSize; i++){
         //set texture
         std::string textureFileName = fileName + "_" + std::to_string(i+1) + ".png";
-        //defualt path
+        //defualt path. This is hard coded!!!!!!!!
         std::string path = "../Texture/animation/run/" + textureFileName;
         Texture *tex = new Texture(GL_TEXTURE_2D, path);
         tex->load(progPtr->getObject());
@@ -125,7 +125,7 @@ void SpriteAnimation::updateFrame(){
     if(nextTime > frameInterval){
         //display next frame
         currentFrameIndex++;
-//        std::cout << "frame inc" << std::endl;
+
         if(currentFrameIndex >= frameListSize){
             currentFrameIndex = 0;
         }
@@ -147,12 +147,25 @@ void SpriteAnimation::render(){
     GLint modelUniformLocation = glGetUniformLocation(progPtr->getObject(), "modelMat");
     if(modelUniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + "modelMat");
+    
     if(actionRunning)
         updateFromSpriteAction();
+    
     updateMatrix();
+    
     translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
     modelMat = glm::mat4() * translateMat;
     glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, &modelMat[0][0]);
+    
+    GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
+    if(opacityUniformLocation == -1)
+        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
+    glUniform1fv(opacityUniformLocation, 1, &opacity);
+    
+    GLint particleUniformLocation = glGetUniformLocation(progPtr->getObject(), "particle");
+    if(particleUniformLocation == -1)
+        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
+    glUniform1i(particleUniformLocation, 0);
     
     glBindVertexArray(vao);
     glEnableVertexAttribArray(progPtr->attrib("vert"));

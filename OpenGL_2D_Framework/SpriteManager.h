@@ -21,10 +21,12 @@ private:
 public:
     SpriteManager();
     ~SpriteManager();
+    
     void render();
     void update();
+    
     void addSprite(SpriteObject *pSpriteObj);
-    void deleteSprite();
+    
     bool globalVisible;
 };
 

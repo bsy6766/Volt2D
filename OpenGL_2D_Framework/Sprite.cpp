@@ -98,10 +98,6 @@ void Sprite::render(){
     }
 }
 
-glm::mat4 Sprite::getModelMat(){
-    return modelMat;
-}
-
 void Sprite::updateMatrix(){
     glm::mat4 result = glm::mat4();
     translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));

@@ -169,7 +169,6 @@ public:
     void releaseLoading();
     
     void initSprites();
-    void releaseSprites();
     
     void initSpriteActions();
     void releaseUndeadActions();

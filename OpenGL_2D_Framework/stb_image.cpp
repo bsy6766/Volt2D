@@ -1,6 +1,10 @@
 
 #include "stb_image.h"
 
+/**
+ * Separated from original header file.
+ */
+
 #ifndef STBI_HEADER_FILE_ONLY
 //#ifdef STB_IMAGE_IMPLEMENTATION
 

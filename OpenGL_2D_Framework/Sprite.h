@@ -16,26 +16,24 @@ class Sprite :  public SpriteObject{
 private:
     Texture *texture;
     
-    //pure virtual
+    //pure virtual.
     void createVertexData();
     void loadVertexData();
-    
     void render();
-//    void update();
     
 public:
     Sprite();
-    Sprite(Program *ptr);
+    Sprite(Program *ptr);   //create with specific program pointer
     ~Sprite();
     
     //inits
     void initSpriteWithTexture(GLenum _textureTarget, const std::string& _fileName);
     
-    glm::mat4 getModelMat();
-    
+    /**
+     * updates matrix. 
+     * calculate translation, rotation, scale matrix and compute model matrix
+     */
     void updateMatrix();
-//    void updateFromAction();
-    void removeDeadAction();
 };
 
 #endif /* defined(__CS364FinalProject__Sprite__) */

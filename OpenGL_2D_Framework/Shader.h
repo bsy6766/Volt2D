@@ -15,6 +15,11 @@
 #include <fstream>	//file
 #include <sstream>	//string stream
 
+/**
+ * This Shader class was created during 2014 summer break.
+ * It loads shader.
+ */
+
 class Shader{
 private:
     GLuint shaderObject;

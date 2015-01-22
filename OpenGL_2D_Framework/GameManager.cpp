@@ -429,7 +429,7 @@ void GameManager::finishLoading(){
 }
 
 void GameManager::releaseLoading(){
-    loadingSpriteManager->deleteSprite();
+    delete loadingSpriteManager;
 }
 
 void GameManager::initSprites(){
@@ -498,10 +498,6 @@ void GameManager::initSprites(){
     spriteManager->addSprite(buildingSilhouette3_1);
     spriteManager->addSprite(ground_1);
     spriteManager->addSprite(ground_2);
-}
-
-void GameManager::releaseSprites(){
-    spriteManager->deleteSprite();
 }
 
 void GameManager::initCharacter(){

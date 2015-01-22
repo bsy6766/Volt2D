@@ -88,7 +88,6 @@ int main(int argc, const char * argv[]) {
     gm->releaseProgram();
     gm->releaseShader();
     gm->releaseUndeadActions();
-    gm->releaseSprites();
     gm->releaseSpriteManager();
     gm->releaseParticleSystemManager();
     gm->releaseCamera();
