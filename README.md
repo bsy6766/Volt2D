@@ -9,3 +9,14 @@ This project uses external libraries
 - GLEW 1.11.0
 - GLM
 - stb_image
+
+Features
+- Sprites
+- Sprite Animation
+- Sprite Actions
+	- Delay
+	- FadeTo
+	- JumpBy
+	- MoveTo
+	- RoateBy
+- Particle System
