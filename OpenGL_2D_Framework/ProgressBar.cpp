@@ -7,3 +7,22 @@
 //
 
 #include "ProgressBar.h"
+
+using std::cout;
+using std::endl;
+
+ProgressBar::ProgressBar(){
+    cout << "Creating Progress Bar" << endl;
+}
+
+ProgressBar::~ProgressBar(){
+    cout << "Deleting Progress Bar" << endl;
+}
+
+void ProgressBar::update(){
+    
+}
+
+void ProgressBar::render(){
+    
+}

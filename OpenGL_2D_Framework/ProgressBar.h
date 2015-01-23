@@ -9,6 +9,19 @@
 #ifndef __OpenGL_2D_Framework__ProgressBar__
 #define __OpenGL_2D_Framework__ProgressBar__
 
-#include <stdio.h>
+#include <iostream>
+#include "ProgressObject.h"
+
+class ProgressBar: public ProgressObject{
+private:
+    
+public:
+    ProgressBar();
+    ~ProgressBar();
+    
+    //virtual
+    void update();
+    void render();
+};
 
 #endif /* defined(__OpenGL_2D_Framework__ProgressBar__) */
