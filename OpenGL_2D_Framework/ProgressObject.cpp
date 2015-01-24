@@ -19,8 +19,14 @@ ProgressObject::ProgressObject(){
     
     //initially percentage is set to full(100.0)
     this->percentage = 100.0;
+    //reverse direction is set to false by default
+    this->reverse = false;
 }
 
 ProgressObject::~ProgressObject(){
     cout << "Deleting ProgressObject" << endl;
+}
+
+bool ProgressObject::isReverse(){
+    return reverse;
 }

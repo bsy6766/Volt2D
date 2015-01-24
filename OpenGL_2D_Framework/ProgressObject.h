@@ -12,6 +12,9 @@
 #include <iostream>
 #include "Texture.h"
 
+const float PRECENTAGE_MAX = 100.0;
+const float PERCENTAGE_MIN = 0.0;
+
 class ProgressObject{
 protected:
     double duration;
@@ -20,10 +23,19 @@ protected:
     //0.0 ~ 100.0
     float percentage;
     
+    enum ProgressType{
+        BAR = 0,
+        RADIAL
+    };
+    
+    bool reverse;
+    
 private:
 public:
     ProgressObject();
-    ~ProgressObject();
+    virtual ~ProgressObject();
+    
+    bool isReverse();
     
     virtual void update() = 0;
     virtual void render() = 0;
