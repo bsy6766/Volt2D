@@ -6,7 +6,7 @@ This project uses external libraries
 - GLEW 1.11.0
 - GLM
 - stb_image
-- 
+
 #Todo
 - Refactor and optimize
 - Optimize more
