@@ -10,10 +10,18 @@
 #define __OpenGL_2D_Framework__ProgressObject__
 
 #include <iostream>
+#include "Timer.h"
 #include "Texture.h"
 
 const float PRECENTAGE_MAX = 100.0;
 const float PERCENTAGE_MIN = 0.0;
+
+/*
+    Base class to each type of progress objects
+    BAR: Typical bar type 
+    RADIAN: Clock-like type
+    BLOCK: Stacking block type
+ */
 
 class ProgressObject{
 protected:
@@ -25,7 +33,8 @@ protected:
     
     enum ProgressType{
         BAR = 0,
-        RADIAL
+        RADIAL,
+        BLOCK
     };
     
     bool reverse;

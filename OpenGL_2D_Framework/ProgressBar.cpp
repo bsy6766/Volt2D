@@ -20,7 +20,12 @@ ProgressBar::~ProgressBar(){
 }
 
 void ProgressBar::update(){
+    double elapsedTime = Timer::getInstance().getElapsedTime();
     
+    //if progress bar is still alive
+    if(totalElapsedTime < duration){
+        //update
+    }
 }
 
 void ProgressBar::render(){
