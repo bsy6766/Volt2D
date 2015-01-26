@@ -708,7 +708,7 @@ void GameManager::releaseParticleSystemManager(){
 }
 
 void GameManager::initParticleSystem(){
-    testParticle = ParticleSystem::initWithParticleSize(200);
+    testParticle = ParticleSystem::initWithParticleSize(100);
     testParticle->setPosition(glm::vec2(300, 360));
     testParticle->initParticleSystem(
                                      10.0,	//duration

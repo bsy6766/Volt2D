@@ -8,8 +8,13 @@
 
 #include "Particle.h"
 
-Particle::Particle(){
-    dead = false;
+Particle::Particle():
+		dead(false), 
+		positionData(glm::vec2()), 
+		lifeTime(0), 
+		livedTime(0), 
+		speed(0), 
+		direction(0){
 }
 
 Particle::~Particle(){
