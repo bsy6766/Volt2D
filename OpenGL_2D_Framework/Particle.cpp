@@ -8,8 +8,23 @@
 
 #include "Particle.h"
 
-Particle::Particle(){
-    dead = false;
+Particle::Particle() :
+		dead(false), 
+		positionData(glm::vec2()), 
+		lifeTime(0), 
+		livedTime(0), 
+		speed(0), 
+		direction(90){
+	//note: defualt angle(direction) is set to north (90 degrees)
+}
+
+Particle::Particle(glm::vec2 posData, double lifeTime, float speed, double direction) :
+		dead(false),
+		positionData(posData),
+		lifeTime(lifeTime),
+		livedTime(0),
+		speed(speed),
+		direction(direction){
 }
 
 Particle::~Particle(){

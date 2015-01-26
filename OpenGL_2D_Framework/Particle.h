@@ -16,19 +16,32 @@ private:
 public:
     //defualt
     Particle();
+	//default with init
+	Particle(glm::vec2 posData, double lifeTime, float speed, double direction);
+	//destructor
     ~Particle();
     
+	//true = dead
     bool dead;
     
+	//position
     glm::vec2 positionData;
-    double lifeTime;
-	double livedTime;
-    float speed;
-    double direction;    //like angle
-    
-    void initParticle(glm::vec2 posData, double lifeTime, float speed, double direction);
-    void updatePosition();
 
+	//lifeTime = how long does it lives
+    double lifeTime;
+	//livedTime = how long did it live
+	double livedTime;
+
+	//speed of particle
+    float speed;
+
+	//in radian. Default angle is 90 degrees(north)
+    double direction;    
+    
+	//initialize particle
+    void initParticle(glm::vec2 posData, double lifeTime, float speed, double direction);
+
+	//update current distance
 	void updateDistnace(float x, float y);
 };
 
