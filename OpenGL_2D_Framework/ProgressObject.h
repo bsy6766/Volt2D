@@ -10,8 +10,10 @@
 #define __OpenGL_2D_Framework__ProgressObject__
 
 #include <iostream>
-#include "Timer.h"
 #include "Texture.h"
+
+
+#include "Timer.h"
 
 const float PRECENTAGE_MAX = 100.0;
 const float PERCENTAGE_MIN = 0.0;
