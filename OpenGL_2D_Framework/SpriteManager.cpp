@@ -8,8 +8,7 @@
 
 #include "SpriteManager.h"
 
-SpriteManager::SpriteManager(){
-    globalVisible = true;
+SpriteManager::SpriteManager():globalVisible(true){
 }
 
 SpriteManager::~SpriteManager(){
@@ -17,7 +16,7 @@ SpriteManager::~SpriteManager(){
     for (std::list<SpriteObject *>::const_iterator ci = spriteList.begin(); ci != spriteList.end(); ++ci){
         delete (*ci);
     }
-    
+    //clear the list. But wouldn't the program release it anyway?
     spriteList.clear();
 }
 

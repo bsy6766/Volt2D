@@ -10,8 +10,10 @@
 #define __CS364FinalProject__SpriteManager__
 
 #include <list>
-#include "SpriteObject.h"
 #include <assert.h>
+#include <iostream>
+
+#include "SpriteObject.h"
 
 /**
  * Sprite Manager Class
