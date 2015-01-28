@@ -11,8 +11,13 @@
 
 #include <list>
 #include "SpriteObject.h"
+#include <assert.h>
 
-//This class group up, sort, and handles multiple sprites. 
+/**
+ * Sprite Manager Class
+ * This class manages sprites. 
+ *
+ */
 
 class SpriteManager{
 private:
@@ -26,6 +31,7 @@ public:
     void update();
     
     void addSprite(SpriteObject *pSpriteObj);
+    //void deleteSprite(const std::string spriteName);
     
     bool globalVisible;
 };

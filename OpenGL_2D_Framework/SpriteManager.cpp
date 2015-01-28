@@ -31,8 +31,17 @@ void SpriteManager::render(){
 }
 
 void SpriteManager::update(){
-    for (std::list<SpriteObject *>::const_iterator ci = spriteList.begin(); ci != spriteList.end(); ++ci){
-        (*ci)->update();
+    //iterating through list. update and delete nulls(0)
+    for (std::list<SpriteObject *>::const_iterator ci = spriteList.begin(); ci != spriteList.end();){
+        //if pointer is null, delete pointer and remove from the list.
+        if((*ci) == 0){
+            delete (*ci);
+            ci = spriteList.erase(ci);  //returns next element
+        }
+        else{
+            (*ci)->update();
+            ++ci;
+        }
     }
 }
 
@@ -43,6 +52,8 @@ bool compareZ(SpriteObject* lhs, SpriteObject* rhs){
 
 //add sprtie and sort by z depth
 void SpriteManager::addSprite(SpriteObject *pSpriteObj){
+    assert(pSpriteObj != 0);
+    
     spriteList.push_back(pSpriteObj);
     spriteList.sort(compareZ);
 }
