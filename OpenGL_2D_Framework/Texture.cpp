@@ -27,9 +27,9 @@ Texture::~Texture(){
     data = NULL;
 }
 
-bool Texture::load(GLuint programObject){
+bool Texture::load(){
     loadImage(fileName);
-    initTexture(programObject);
+    initTexture();
     return true;
 }
 
@@ -75,7 +75,7 @@ void Texture::flipImage(){
     delete rowBuffer;
 }
 
-void Texture::initTexture(GLuint programObject){
+void Texture::initTexture(){
     glGenTextures(1, &textureObject);
     glBindTexture(GL_TEXTURE_2D, textureObject);
     

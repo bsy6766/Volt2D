@@ -32,7 +32,7 @@ private:
     int channel;
     
     void loadImage(const string& filePath);
-    void initTexture(GLuint programObject);
+    void initTexture();
     void flipImage();   //for stb_image
     
 public:
@@ -40,7 +40,7 @@ public:
     Texture(GLenum _textureTarget, const std::string& _fileName);
     ~Texture();
     
-    bool load(GLuint programObject);
+    bool load();
     void bind(GLenum textureUnit);
     
     //getter
