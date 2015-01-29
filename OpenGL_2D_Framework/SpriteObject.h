@@ -25,9 +25,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 #include <list>
+#include <iostream>
 
-//2D and 3D size is scaled down to 10. 
-//ex) 1280 x 640 pixels texture -> 128 * 64 vertex length quad
+using std::cout;
+using std::endl;
 
 struct Rect{
     //x,y = bottom left
@@ -45,6 +46,7 @@ private:
     void intervalUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
 	
 	winSize size = Scene::getInstance().getWindowSize();
+
 protected:
     int spriteID;
     
@@ -77,9 +79,9 @@ protected:
     std::list<SpriteActionSchedule *> spriteActionScheduleList;
     
 public:
-    SpriteObject();
+    SpriteObject();	//not implemented
     SpriteObject(Program *ptr);
-    virtual ~SpriteObject();
+    virtual ~SpriteObject();	//virtual!
     
     float opacity;
     float angle;

@@ -6,22 +6,14 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#include <iostream>
 
 #include "Sprite.h"
 #include <cmath>
 
-Sprite::Sprite():SpriteObject(){
-    spriteID = ID_COUNTER;
-    ID_COUNTER++;
-    texture = 0;
-
-    std::cout << "Sprite created with ID#" << spriteID << std::endl;
-}
-
 Sprite::Sprite(Program *ptr)
-        :SpriteObject(ptr){
-    texture = 0 ;
+        :SpriteObject(ptr),
+		texture(0){
+	std::cout << "Sprite created with ID#" << spriteID << std::endl;
 }
 
 Sprite::~Sprite(){
@@ -111,15 +103,32 @@ void Sprite::createVertexData(){
     float width = (float)w / SCREEN_TO_WORLD_SCALE;
     float height = (float)h / SCREEN_TO_WORLD_SCALE;
     
-    vertexData.push_back(glm::vec3(-(width/2), -(height/2), GLOBAL_Z_VALUE));
-    vertexData.push_back(glm::vec3(-(width/2), height/2, GLOBAL_Z_VALUE));
-    vertexData.push_back(glm::vec3(width/2, -(height/2), GLOBAL_Z_VALUE));
-    vertexData.push_back(glm::vec3(width/2, height/2, GLOBAL_Z_VALUE));
-    
-    uvVertexData.push_back(glm::vec2(0, 0));
-    uvVertexData.push_back(glm::vec2(0, 1));
-    uvVertexData.push_back(glm::vec2(1, 0));
-    uvVertexData.push_back(glm::vec2(1, 1));
+	/*
+
+		Quad
+		Vertex								UV coordinate
+					(width, height)						(1,1)
+		*------------*						*------------*
+		|		     |						|			 |
+		|			 |						|			 |
+		|	 		 |						|			 |
+		|			 |					  v	|			 |
+		*------------*						*------------*
+		(0,0)								(0,0)   u
+
+	*/
+    vertexData.push_back(glm::vec3(-(width/2), -(height/2), GLOBAL_Z_VALUE));	//bot left
+    vertexData.push_back(glm::vec3(-(width/2), height/2, GLOBAL_Z_VALUE));		//top left
+    vertexData.push_back(glm::vec3(width/2, -(height/2), GLOBAL_Z_VALUE));		//bot right
+    vertexData.push_back(glm::vec3(width/2, height/2, GLOBAL_Z_VALUE));			//top right
+
+	uvVertexData.push_back(glm::vec2(0, 0));	//bot left
+	uvVertexData.push_back(glm::vec2(0, 1));	//top left
+	uvVertexData.push_back(glm::vec2(1, 0));	//bot right
+	uvVertexData.push_back(glm::vec2(1, 1));	//top right
+	
+	//NOTE: if you don't flip the texture and want to handle with UV coordinate, go on this order
+	//top left->bot left->top right->bot right
     
     indicesData.push_back(0);
     indicesData.push_back(1);

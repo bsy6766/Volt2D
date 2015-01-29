@@ -36,7 +36,7 @@ void Texture::load(){
 
 void Texture::bind(GLenum textureUnit){
     glActiveTexture(textureUnit);	//NOTE: This is kind of useless if we are only going to use GL_TEXTRE0
-    //glBindTexture(textureTarget, textureObject);
+    glBindTexture(textureTarget, textureObject);
     glUniform1i(textureLocation, 0);
 }
 

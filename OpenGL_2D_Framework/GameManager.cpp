@@ -721,7 +721,7 @@ void GameManager::initParticleSystem(){
                                      0.0,	//gravity X
                                      0.0	//gravity Y
                                      );
-    testParticle->initParticleTexture(GL_TEXTURE_2D, "../Texture/dust.png", program);
+    testParticle->initParticleTexture(GL_TEXTURE_2D, "../Texture/knife.jpg", program);
     
     particleSystemManager->addParticleSystem(testParticle);
 }

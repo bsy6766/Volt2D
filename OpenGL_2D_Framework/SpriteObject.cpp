@@ -12,7 +12,7 @@
 SpriteObject::SpriteObject() :
 		spriteID(ID_COUNTER),
 		actionRunning(false),
-        progPtr(0),
+		progPtr(0),
         translateMat(glm::mat4()),
         rotateMat(glm::mat4()),
         scaleMat(glm::mat4()),
@@ -45,9 +45,11 @@ SpriteObject::SpriteObject(Program *ptr) :
 }
 
 SpriteObject::~SpriteObject(){
+	cout << "SpriteObject::Deleting SpriteActionSchedule...";
 	for (std::list<SpriteActionSchedule *>::const_iterator ci = spriteActionScheduleList.begin(); ci != spriteActionScheduleList.end(); ++ci){
 		delete (*ci);
 	}
+	cout << "Done." << endl;
 }
 
 void SpriteObject::setPosition(glm::vec2 position){
