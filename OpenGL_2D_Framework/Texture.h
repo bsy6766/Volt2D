@@ -43,6 +43,11 @@ private:
 	* Generate the texture and bind the texture object to GL_TEXTRE_2D
 	*/
     void initTexture();
+
+	/**
+	* Flip image data
+	* A data loaded by stb_image
+	*/
     void flipImage();   //for stb_image
     
 public:
@@ -69,7 +74,9 @@ public:
 	*/
     void load();
 
-
+	/**
+	* Bind texture.
+	*/
     void bind(GLenum textureUnit);
     
     //getter
@@ -80,10 +87,10 @@ public:
     
     //Image format
     enum Format {
-        Format_Grayscale = 1, /**< one channel: grayscale */
-        Format_GrayscaleAlpha = 2, /**< two channels: grayscale and alpha */
-        Format_RGB = 3, /**< three channels: red, green, blue */
-        Format_RGBA = 4 /**< four channels: red, green, blue, alpha */
+        Format_Grayscale = 1,			/**< one channel: grayscale */
+        Format_GrayscaleAlpha = 2,		/**< two channels: grayscale and alpha */
+        Format_RGB = 3,					/**< three channels: red, green, blue */
+        Format_RGBA = 4					/**< four channels: red, green, blue, alpha */
     };
 };
 

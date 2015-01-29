@@ -35,8 +35,8 @@ void Texture::load(){
 }
 
 void Texture::bind(GLenum textureUnit){
-    glActiveTexture(textureUnit);
-    glBindTexture(textureTarget, textureObject);
+    glActiveTexture(textureUnit);	//NOTE: This is kind of useless if we are only going to use GL_TEXTRE0
+    //glBindTexture(textureTarget, textureObject);
     glUniform1i(textureLocation, 0);
 }
 
@@ -53,7 +53,13 @@ void Texture::loadImage(const string& filePath){
             throw runtime_error("Default texture image file cannot be opened");
         }
     }
-    
+	/*
+		stbi_load_from_file
+		stb_image reads from top-left most in the image. 
+		pixel data has y scanelines of x pixels
+
+		But glTexImage2D reads pixal data from bottom left. See initTexture()
+	*/
     data = stbi_load_from_file(file, &width, &height, &channel, 0);
     flipImage();
     fclose(file);
@@ -80,7 +86,7 @@ void Texture::initTexture(){
     glGenTextures(1, &textureObject);
 	glBindTexture(textureTarget, textureObject);
 
-    // set texture parameters
+    // set texture parameters. Linear and clamp to edge. 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -88,6 +94,12 @@ void Texture::initTexture(){
     
 	assert(data != NULL);
 
+	/*
+		Apply texture from data.
+		Unlikely stb_image, glTexImage2D's pixel data pointer starts from bottom left corner of the image.
+		Subsequent pixel elements progress left to right, bottom to top.
+		This is why we are flipping the image data.
+	*/
     switch(channel){
         case Format_Grayscale:
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
@@ -96,9 +108,11 @@ void Texture::initTexture(){
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, data);
             break;
         case Format_RGB:
+			//jpg
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             break;
         case Format_RGBA:
+			//Has alpha. ex)png
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
             break;
     }
