@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__Camera__
-#define __CS364FinalProject__Camera__
+#ifndef __OpenGL_2D_Framework__Camera__
+#define __OpenGL_2D_Framework__Camera__
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -58,4 +58,4 @@ public:
     void decreaseSpeed();
 };
 
-#endif /* defined(__CS364FinalProject__Camera__) */
+#endif /* defined(__OpenGL_2D_Framework__Camera__) */

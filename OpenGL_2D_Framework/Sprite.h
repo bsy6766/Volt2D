@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__Sprite__
-#define __CS364FinalProject__Sprite__
+#ifndef __OpenGL_2D_Framework__Sprite__
+#define __OpenGL_2D_Framework__Sprite__
 
 #include "SpriteObject.h"
 #include "Texture.h"
@@ -36,4 +36,4 @@ public:
     void updateMatrix();
 };
 
-#endif /* defined(__CS364FinalProject__Sprite__) */
+#endif /* defined(__OpenGL_2D_Framework__Sprite__) */

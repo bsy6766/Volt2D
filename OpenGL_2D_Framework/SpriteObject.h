@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__SpriteObject__
-#define __CS364FinalProject__SpriteObject__
+#ifndef __OpenGL_2D_Framework__SpriteObject__
+#define __OpenGL_2D_Framework__SpriteObject__
 
 //#include
 #include "Program.h"
@@ -32,9 +32,6 @@ const int SCREEN_TO_WORLD_SCALE = 10;
 
 const float static GLOBAL_Z_VALUE = 0;
 
-//int screenWidth;
-//int screenHeight;
-
 struct Rect{
     //x,y = bottom left
     float x;
@@ -49,7 +46,8 @@ class SpriteObject{
 private:
     void instantUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
     void intervalUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
-    
+	
+	winSize size = Scene::getInstance().getWindowSize();
 protected:
     int spriteID;
     
@@ -115,4 +113,4 @@ public:
     void updateFromSpriteAction();
 };
 
-#endif /* defined(__CS364FinalProject__SpriteObject__) */
+#endif /* defined(__OpenGL_2D_Framework__SpriteObject__) */

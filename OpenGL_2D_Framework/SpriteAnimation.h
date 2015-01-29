@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__SpriteAnimation__
-#define __CS364FinalProject__SpriteAnimation__
+#ifndef __OpenGL_2D_Framework__SpriteAnimation__
+#define __OpenGL_2D_Framework__SpriteAnimation__
 
 #include "Texture.h"
 #include <vector>
@@ -53,4 +53,4 @@ public:
     void init(std::string fileName, std::string stateName, int frameSize, double interval);
 };
 
-#endif /* defined(__CS364FinalProject__SpriteAnimation__) */
+#endif /* defined(__OpenGL_2D_Framework__SpriteAnimation__) */

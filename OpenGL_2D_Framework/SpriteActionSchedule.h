@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__SpriteActionSchedule__
-#define __CS364FinalProject__SpriteActionSchedule__
+#ifndef __OpenGL_2D_Framework__SpriteActionSchedule__
+#define __OpenGL_2D_Framework__SpriteActionSchedule__
 
 #include <list>
 #include <vector>
@@ -50,4 +50,4 @@ public:
     void reviveAllActions();
 };
 
-#endif /* defined(__CS364FinalProject__SpriteActionSchedule__) */
+#endif /* defined(__OpenGL_2D_Framework__SpriteActionSchedule__) */

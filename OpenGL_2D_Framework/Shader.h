@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__Shader__
-#define __CS364FinalProject__Shader__
+#ifndef __OpenGL_2D_Framework__Shader__
+#define __OpenGL_2D_Framework__Shader__
 
 #include <GL/glew.h>
 #include <stdexcept>
@@ -55,4 +55,4 @@ public:
     GLuint getObject();
 };
 
-#endif /* defined(__CS364FinalProject__Shader__) */
+#endif /* defined(__OpenGL_2D_Framework__Shader__) */

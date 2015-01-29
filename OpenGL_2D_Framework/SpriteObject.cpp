@@ -10,7 +10,8 @@
 #include <iostream>
 
 SpriteObject::SpriteObject() :
-        spriteID(ID_COUNTER),
+		spriteID(ID_COUNTER),
+		actionRunning(false),
         progPtr(0),
         translateMat(glm::mat4()),
         rotateMat(glm::mat4()),
@@ -20,28 +21,9 @@ SpriteObject::SpriteObject() :
         angle(0),
         w(0),
         h(0),
-        position(glm::vec2(screenWidth/2, screenHeight/2)),
+		position(glm::vec2(size.w / 2, size.h / 2)),
         visible(true){
-/*
-    actionRunning = false;
-    progPtr = 0;
-    
-    translateMat = glm::mat4();
-    rotateMat = glm::mat4();
-    scaleMat = glm::mat4();
-    modelMat = glm::mat4();
-    
-    opacity = 255;
-    angle = 0;
-    
-    w = 0;
-    h = 0;
-    
-    winSize size = Scene::getInstance().getWindowSize();
-    position = glm::vec2(size.w/2, size.h/2);
-    
-    visible = true;
- */
+
 }
 
 SpriteObject::SpriteObject(Program *ptr) :
@@ -55,8 +37,8 @@ SpriteObject::SpriteObject(Program *ptr) :
         opacity(255),
         angle(0),
         w(0),
-        h(0),
-        position(glm::vec2(screenWidth/2, screenHeight/2)),
+		h(0),
+		position(glm::vec2(size.w / 2, size.h / 2)),
         visible(true){
             
     ID_COUNTER++;

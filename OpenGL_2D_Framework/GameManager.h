@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__GameManager__
-#define __CS364FinalProject__GameManager__
+#ifndef __OpenGL_2D_Framework__GameManager__
+#define __OpenGL_2D_Framework__GameManager__
 
 //opengl
 #include <GL/glew.h>
@@ -40,9 +40,6 @@
 //particle
 #include "ParticleSystem.h"
 #include "ParticleSystemManager.h"
-
-extern int screenWidth;
-extern int screenHeight;
 
 class GameManager{
 private:
@@ -205,4 +202,4 @@ public:
     void releaseCamera();
 };
 
-#endif /* defined(__CS364FinalProject__GameManager__) */
+#endif /* defined(__OpenGL_2D_Framework__GameManager__) */

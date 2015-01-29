@@ -115,9 +115,9 @@ void GameManager::createWindow(int _screenWidth, int _screenHeight, std::string 
 	glfwSetWindowPos(window, 100, 100);
 #endif
     
-    //store screen size
-    screenWidth = _screenWidth;
-    screenHeight = _screenHeight;
+    //store screen size. Use Scene instead
+    //screenWidth = _screenWidth;
+    //screenHeight = _screenHeight;
     
     //if window wasn't created,
     if(!window){

@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__Particle__
-#define __CS364FinalProject__Particle__
+#ifndef __OpenGL_2D_Framework__Particle__
+#define __OpenGL_2D_Framework__Particle__
 
 #include <glm/glm.hpp>
 
@@ -45,4 +45,4 @@ public:
 	void updateDistnace(float x, float y);
 };
 
-#endif /* defined(__CS364FinalProject__Particle__) */
+#endif /* defined(__OpenGL_2D_Framework__Particle__) */

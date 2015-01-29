@@ -6,10 +6,17 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__Scene__
-#define __CS364FinalProject__Scene__
+#ifndef __OpenGL_2D_Framework__Scene__
+#define __OpenGL_2D_Framework__Scene__
 
-//This class contains screen info
+/*
+	Scene class
+	Singletone
+	The purpose of this class is to make Root Scene node.
+	Treating the entire program as a scene, the scene director will have data related to window
+	such as window size, title, or glenable stuffs. 
+	Currently, it doesn't do much, but it will be very handy later.
+*/
 
 struct winSize{
     float w;
@@ -40,4 +47,4 @@ public:
     void setWindowSize(int screenWidth, int screenHeight);
 };
 
-#endif /* defined(__CS364FinalProject__Scene__) */
+#endif /* defined(__OpenGL_2D_Framework__Scene__) */

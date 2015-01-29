@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__ActionRotateBy__
-#define __CS364FinalProject__ActionRotateBy__
+#ifndef __OpenGL_2D_Framework__ActionRotateBy__
+#define __OpenGL_2D_Framework__ActionRotateBy__
 
 #include "SpriteAction.h"
 
@@ -35,4 +35,4 @@ public:
     void revive();
 };
 
-#endif /* defined(__CS364FinalProject__ActionRotateBy__) */
+#endif /* defined(__OpenGL_2D_Framework__ActionRotateBy__) */

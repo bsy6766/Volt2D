@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__SpriteManager__
-#define __CS364FinalProject__SpriteManager__
+#ifndef __OpenGL_2D_Framework__SpriteManager__
+#define __OpenGL_2D_Framework__SpriteManager__
 
 #include <list>
 #include <assert.h>
@@ -38,4 +38,4 @@ public:
     bool globalVisible;
 };
 
-#endif /* defined(__CS364FinalProject__SpriteManager__) */
+#endif /* defined(__OpenGL_2D_Framework__SpriteManager__) */

@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__SpriteAction__
-#define __CS364FinalProject__SpriteAction__
+#ifndef __OpenGL_2D_Framework__SpriteAction__
+#define __OpenGL_2D_Framework__SpriteAction__
 
 #include <glm/glm.hpp>
 
@@ -98,4 +98,4 @@ public:
     void revive();
 };
 
-#endif /* defined(__CS364FinalProject__SpriteAction__) */
+#endif /* defined(__OpenGL_2D_Framework__SpriteAction__) */

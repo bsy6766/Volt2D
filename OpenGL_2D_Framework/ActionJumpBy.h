@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __CS364FinalProject__ActionJumpBy__
-#define __CS364FinalProject__ActionJumpBy__
+#ifndef __OpenGL_2D_Framework__ActionJumpBy__
+#define __OpenGL_2D_Framework__ActionJumpBy__
 
 #include "SpriteAction.h"
 
@@ -34,4 +34,4 @@ public:
     void clone(SpriteAction* dataPtr);
 };
 
-#endif /* defined(__CS364FinalProject__ActionJumpBy__) */
+#endif /* defined(__OpenGL_2D_Framework__ActionJumpBy__) */

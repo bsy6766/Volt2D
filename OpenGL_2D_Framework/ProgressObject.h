@@ -11,8 +11,6 @@
 
 #include <iostream>
 #include "Texture.h"
-
-
 #include "Timer.h"
 
 const float PRECENTAGE_MAX = 100.0;
