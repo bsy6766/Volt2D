@@ -41,11 +41,11 @@
 #include "ParticleSystem.h"
 #include "ParticleSystemManager.h"
 
+extern int screenWidth;
+extern int screenHeight;
+
 class GameManager{
 private:
-    int screenWidth;
-    int screenHeight;
-    
     bool running;
     bool printFPS;
     

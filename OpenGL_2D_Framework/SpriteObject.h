@@ -32,6 +32,9 @@ const int SCREEN_TO_WORLD_SCALE = 10;
 
 const float static GLOBAL_Z_VALUE = 0;
 
+//int screenWidth;
+//int screenHeight;
+
 struct Rect{
     //x,y = bottom left
     float x;
