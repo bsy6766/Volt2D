@@ -23,6 +23,9 @@ struct winSize{
     float h;
 };
 
+const int SCREEN_TO_WORLD_SCALE = 10;
+const float static GLOBAL_Z_VALUE = 0;
+
 //Singleton Scene
 class Scene{
 private:

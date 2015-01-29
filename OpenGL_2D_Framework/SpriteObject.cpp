@@ -45,7 +45,9 @@ SpriteObject::SpriteObject(Program *ptr) :
 }
 
 SpriteObject::~SpriteObject(){
-
+	for (std::list<SpriteActionSchedule *>::const_iterator ci = spriteActionScheduleList.begin(); ci != spriteActionScheduleList.end(); ++ci){
+		delete (*ci);
+	}
 }
 
 void SpriteObject::setPosition(glm::vec2 position){

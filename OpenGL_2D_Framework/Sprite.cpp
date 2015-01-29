@@ -11,8 +11,7 @@
 #include "Sprite.h"
 #include <cmath>
 
-Sprite::Sprite()
-        :SpriteObject(){
+Sprite::Sprite():SpriteObject(){
     spriteID = ID_COUNTER;
     ID_COUNTER++;
     texture = 0;
@@ -27,19 +26,19 @@ Sprite::Sprite(Program *ptr)
 
 Sprite::~Sprite(){
     spriteID = -1;
+
     GLuint textureObj = texture->getObject();
     glDeleteTextures(1, &textureObj);
-    if(texture)
-        delete texture;
+
+	if (texture){
+		delete texture;
+		texture = nullptr;
+	}
     
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &uvbo);
     glDeleteBuffers(1, &ibo);
-    
-    for (std::list<SpriteActionSchedule *>::const_iterator ci = spriteActionScheduleList.begin(); ci != spriteActionScheduleList.end(); ++ci){
-        delete (*ci);
-    }
     
     actionRunning = false;
     
@@ -49,7 +48,7 @@ Sprite::~Sprite(){
 void Sprite::initSpriteWithTexture(GLenum _textureTarget, const std::string& _fileName){
     std::cout << "init sprite with texture with path of " << _fileName << std::endl;
     texture = new Texture(_textureTarget, _fileName);
-    texture->load(progPtr->getObject());
+    texture->load();
     texture->getImageSize(w, h);
 
     position = glm::vec2(640, 360);
@@ -66,6 +65,8 @@ void Sprite::initSpriteWithTexture(GLenum _textureTarget, const std::string& _fi
 
 void Sprite::render(){
     if(visible){
+		assert(texture != 0);
+
         texture->bind(GL_TEXTURE0);
         
         GLint modelUniformLocation = glGetUniformLocation(progPtr->getObject(), "modelMat");

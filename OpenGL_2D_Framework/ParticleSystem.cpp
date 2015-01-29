@@ -44,7 +44,8 @@ ParticleSystem* ParticleSystem::initWithParticleSize(int size){
 void ParticleSystem::initParticleTexture(GLenum _textureTarget, const std::string& _fileName, Program *progPtr){
     this->progPtr = progPtr;
     texture = new Texture(_textureTarget, _fileName);
-    texture->load(progPtr->getObject());
+    texture->load();
+
     int w,h;
     texture->getImageSize(w, h);
     
@@ -279,7 +280,9 @@ void ParticleSystem::update(){
 }
 
 void ParticleSystem::render(){
-    if(visible && livingParticleNum > 0){
+	if (visible && livingParticleNum > 0){
+
+		assert(texture != 0);
 		//bind texture
         texture->bind(GL_TEXTURE0);
         

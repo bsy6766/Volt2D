@@ -21,26 +21,55 @@ using namespace std;
 
 class Texture{
 private:
+	//OpenGL
     GLuint textureObject;
     GLenum textureTarget;
     GLint textureLocation;
     
+	//Basic info
     std::string fileName;
     unsigned char* data;
     GLsizei width, height;
-    
     int channel;
     
+	/**
+	*	Loads image.
+	* @param filePath a const string represents the path if file(image)
+	*/
     void loadImage(const string& filePath);
+
+	/**
+	* Initialize texture.
+	* Generate the texture and bind the texture object to GL_TEXTRE_2D
+	*/
     void initTexture();
     void flipImage();   //for stb_image
     
 public:
-    Texture();
-    Texture(GLenum _textureTarget, const std::string& _fileName);
+	//don't implement. Prevent calling default constructor. Texture must be initialized, else it's useless
+    Texture();	
+
+	/**
+	* Texture class constructor
+	* Initialize the texture object.
+	* @param textureTarget a GLenum represents type of texture
+	* @param fileName a const string represents the name of file(image)
+	*/
+    Texture(GLenum textureTarget, const std::string& fileName);
+
+	/**
+	* Texture class destructor
+	* Release texture.
+	*/
     ~Texture();
     
-    bool load();
+	/**
+	* Load texture.
+	* Reads the image and initialize the texture
+	*/
+    void load();
+
+
     void bind(GLenum textureUnit);
     
     //getter

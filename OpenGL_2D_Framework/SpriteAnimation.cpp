@@ -54,7 +54,7 @@ void SpriteAnimation::init(std::string fileName, std::string stateName, int fram
         //defualt path. This is hard coded!!!!!!!!
         std::string path = "../Texture/animation/run/" + textureFileName;
         Texture *tex = new Texture(GL_TEXTURE_2D, path);
-        tex->load(progPtr->getObject());
+        tex->load();
         textureList.push_back(tex);
     }
     

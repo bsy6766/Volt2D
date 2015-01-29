@@ -11,6 +11,10 @@
 
 #include "SpriteObject.h"
 #include "Texture.h"
+#include "Scene.h"
+
+#include <GL\glew.h>
+#include <assert.h>
 
 class Sprite :  public SpriteObject{
 private:
@@ -26,8 +30,12 @@ public:
     Sprite(Program *ptr);   //create with specific program pointer
     ~Sprite();
     
+	static Sprite* createSprite();
+	void initTexture(GLenum _textureTarget = GL_TEXTURE_2D, const std::string& _fileName = "../Texture/default.png");
+
+
     //inits
-    void initSpriteWithTexture(GLenum _textureTarget, const std::string& _fileName);
+    void initSpriteWithTexture(GLenum _textureTarget = GL_TEXTURE_2D, const std::string& _fileName = "../Texture/default.png");
     
     /**
      * updates matrix. 

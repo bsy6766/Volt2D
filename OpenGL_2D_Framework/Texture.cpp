@@ -11,26 +11,27 @@
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_ASSERT(x)
 
-Texture::Texture(){
-    textureObject = 0;
-    data = NULL;
-}
+Texture::Texture(GLenum textureTarget, const std::string& fileName):
+		textureTarget(textureTarget), 
+		fileName(fileName),
+		data(NULL),
+		width(0),
+		height(0),
+		channel(0){
 
-Texture::Texture(GLenum _textureTarget, const std::string& _fileName){
-    textureTarget = _textureTarget;
-    fileName = _fileName;
 }
 
 Texture::~Texture(){
+	glDeleteTextures(1, &textureObject);
     textureObject = 0;
 //    stbi_image_free(data);
     data = NULL;
 }
 
-bool Texture::load(){
+void Texture::load(){
+	//load and init the texture
     loadImage(fileName);
     initTexture();
-    return true;
 }
 
 void Texture::bind(GLenum textureUnit){
@@ -77,16 +78,16 @@ void Texture::flipImage(){
 
 void Texture::initTexture(){
     glGenTextures(1, &textureObject);
-    glBindTexture(GL_TEXTURE_2D, textureObject);
-    
+	glBindTexture(textureTarget, textureObject);
+
     // set texture parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     
+	assert(data != NULL);
+
     switch(channel){
         case Format_Grayscale:
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
