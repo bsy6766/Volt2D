@@ -13,7 +13,7 @@
 #include "Texture.h"
 #include "Scene.h"
 
-#include <GL\glew.h>
+#include <GL/glew.h>
 #include <assert.h>
 
 class Sprite :  public SpriteObject{
