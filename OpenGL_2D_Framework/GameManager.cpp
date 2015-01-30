@@ -514,28 +514,45 @@ void GameManager::releaseCharacter(){
 
 void GameManager::initSpriteActions(){
     /* -------------------------Background Action------------------------------- */
-    ActionFadeTo fadeOutDay;
-    fadeOutDay.initFadeTo(0, 60);
-    
-    ActionDelay delayBtwFade;
-    delayBtwFade.initDelay(5);
-    
-    ActionFadeTo fadeInDay;
-    fadeInDay.initFadeTo(255, 60);
-    
-    SpriteActionSchedule dayBGSchedule;
-    
-    std::vector<SpriteAction*> actionBackgroundSequence
-    {
-        &delayBtwFade,
-        &fadeOutDay,
-        &delayBtwFade,
-        &fadeInDay
-    };
-    
-    dayBGSchedule.createSchedule(actionBackgroundSequence, REPEAT_FOREVER);
-    dayBackground->addActions(dayBGSchedule);
-    dayBackground->runAction();
+	{
+		ActionFadeTo* fadeOutDay = new ActionFadeTo();
+		fadeOutDay->initFadeTo(0, 60);
+
+		ActionDelay* delayBtwFade = new ActionDelay();
+		delayBtwFade->initDelay(5);
+
+		ActionFadeTo* fadeInDay = new ActionFadeTo();
+		fadeInDay->initFadeTo(255, 60);
+
+		SpriteActionSchedule* dayBGSchedule = new SpriteActionSchedule();
+
+		dayBGSchedule->createSchedule(REPEAT_FOREVER, 4, delayBtwFade, fadeOutDay, delayBtwFade, fadeInDay);
+		dayBackground->addActions(dayBGSchedule);
+		dayBackground->runAction();
+
+		//ActionFadeTo fadeOutDay;
+		//fadeOutDay.initFadeTo(0, 60);
+
+		//ActionDelay delayBtwFade;
+		//delayBtwFade.initDelay(5);
+
+		//ActionFadeTo fadeInDay;
+		//fadeInDay.initFadeTo(255, 60);
+
+		//SpriteActionSchedule dayBGSchedule;
+
+		//std::vector<SpriteAction*> actionBackgroundSequence
+		//{
+		//	&delayBtwFade,
+		//	&fadeOutDay,
+		//	&delayBtwFade,
+		//	&fadeInDay
+		//};
+
+		//dayBGSchedule.createSchedule(actionBackgroundSequence, REPEAT_FOREVER);
+		//dayBackground->addActions(dayBGSchedule);
+		//dayBackground->runAction();
+	}
     /* -------------------------Background Action------------------------------- */
     
     /* ---------------------------Ground Action--------------------------------- */

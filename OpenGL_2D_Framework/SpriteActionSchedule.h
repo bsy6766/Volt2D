@@ -24,18 +24,24 @@ const int REPEAT_ONCE = 0;
 class SpriteActionSchedule{
 private:
     std::list<SpriteAction*> actionList;
+
     int repeat;
     int repeatCounter;
     int size;
     int iterateCounter;
     
 public:
+	//default constructor
     SpriteActionSchedule();
+	//constructor
     SpriteActionSchedule(SpriteAction* other);
+	//copy constructor
     SpriteActionSchedule(const SpriteActionSchedule& other);
+	//destructor
     ~SpriteActionSchedule();
     
-    void createSchedule(SpriteAction *action);
+	void createSchedule(SpriteAction *action);
+	void createSchedule(int repeat, int argNums, SpriteAction *actions, ...);
     void createSchedule(std::vector<SpriteAction*> &actions, int repeat);
     
     std::list<SpriteAction*> &getList();

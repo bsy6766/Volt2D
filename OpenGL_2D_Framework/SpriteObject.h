@@ -42,6 +42,11 @@ static int ID_COUNTER = 0;
 
 class SpriteObject{
 private:
+	/**
+	*	Update instant actions.
+	*	Instant actions are actions with 0 duration. 
+	*	
+	*/
     void instantUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
     void intervalUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
 	
@@ -62,20 +67,23 @@ protected:
     Rect boundingBox;
     bool visible;
     
-    GLuint vao;    //vertex array object
-    GLuint vbo;    //vertex buffer object
-    GLuint uvbo;     //uv vert buffer object
-    GLuint ibo;    //indices buffer object
+    GLuint vao;		//vertex array object
+    GLuint vbo;		//vertex buffer object
+    GLuint uvbo;	//uv vert buffer object
+    GLuint ibo;		//indices buffer object
     
+	//OpenGL Matrix
     glm::mat4 translateMat;
     glm::mat4 rotateMat;
     glm::mat4 scaleMat;
     glm::mat4 modelMat;
     
+	//vertex, texture coordinate and index data
     std::vector<glm::vec3> vertexData;
     std::vector<glm::vec2> uvVertexData;
     std::vector<GLushort> indicesData;
     
+	//Action schedule list
     std::list<SpriteActionSchedule *> spriteActionScheduleList;
     
 public:
@@ -95,8 +103,9 @@ public:
     float getZ_Depth();
     
     //sprite action
-    void addAction(SpriteAction *action);
-    void addActions(SpriteActionSchedule &actions);
+	void addAction(SpriteAction *action);
+	void addActions(SpriteActionSchedule &actions);
+	void addActions(SpriteActionSchedule* actions);
     void runAction();
     void stopAction();
     std::list<SpriteAction*> getSpriteActionList();

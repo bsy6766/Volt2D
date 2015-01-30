@@ -8,6 +8,7 @@
 
 #include "SpriteActionSchedule.h"
 #include <iostream>
+#include<stdarg.h>
 
 using std::cout;
 using std::endl;
@@ -41,11 +42,34 @@ SpriteActionSchedule::SpriteActionSchedule(const SpriteActionSchedule& other){
 }
 
 SpriteActionSchedule::~SpriteActionSchedule(){
-    cout << "Deleting Sprite Action Schedule..." << endl;
+    cout << "SpriteActionSchedule::Deleting..." << endl;
+	for (auto it : actionList){
+		//delete it;
+	}
 }
 
 void SpriteActionSchedule::createSchedule(SpriteAction *action){
     actionList.push_back(action);
+}
+
+void SpriteActionSchedule::createSchedule(int repeat, int argNums, SpriteAction* actions, ...){
+	va_list args;
+	va_start(args, actions);
+	
+	for (int i = 0; i < argNums; ++i){
+		SpriteAction* ptr = va_arg(args, SpriteAction*);
+		assert(ptr != nullptr);
+
+		//add ptr
+		this->actionList.push_back(ptr);
+	}
+
+	this->repeat = repeat;
+	this->repeatCounter = 0;
+	this->size = argNums;
+	this->iterateCounter = 0;
+	this->sharedUnusedTime = 0;
+	this->readyToUseUnusedTime = false;
 }
 
 void SpriteActionSchedule::createSchedule(std::vector<SpriteAction*> &actions, int repeat){
@@ -60,7 +84,7 @@ void SpriteActionSchedule::createSchedule(std::vector<SpriteAction*> &actions, i
 	//WIN32::avoid potentially uninitilaized local pointer
 	SpriteAction *dataPtr, *clonePtr;
 
-    for (int i = 0; i<(int)actions.size(); ++i){
+	for (int i = 0; i<(int)actions.size(); ++i){
         //SpriteAction *dataPtr, *clonePtr;
 		//set pointers to 0
 		dataPtr = 0;

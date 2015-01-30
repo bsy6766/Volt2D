@@ -45,7 +45,7 @@ SpriteObject::SpriteObject(Program *ptr) :
 }
 
 SpriteObject::~SpriteObject(){
-	cout << "SpriteObject::Deleting SpriteActionSchedule...";
+	cout << "SpriteObject::Deleting...";
 	for (std::list<SpriteActionSchedule *>::const_iterator ci = spriteActionScheduleList.begin(); ci != spriteActionScheduleList.end(); ++ci){
 		delete (*ci);
 	}
@@ -85,6 +85,11 @@ void SpriteObject::addAction(SpriteAction *action){
 void SpriteObject::addActions(SpriteActionSchedule &actions){
     cout << "Adding list of actions to Sprite #" << spriteID << std::endl;
     spriteActionScheduleList.push_back(new SpriteActionSchedule(actions));
+}
+
+void SpriteObject::addActions(SpriteActionSchedule* actions){
+	cout << "Adding list of actions to Sprite #" << spriteID << std::endl;
+	spriteActionScheduleList.push_back(actions);
 }
 
 void SpriteObject::runAction(){
