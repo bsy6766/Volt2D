@@ -27,3 +27,12 @@ JAN/23~25/2015
 - Cleaning and commenting...
 - Adding initialize list on default constructor
 - Added Progress Radian and Progress Block files
+
+JAN/26-28/2015
+- Revisiting codes.
+- Removing unused variables and functions
+- Adding detailed comments
+- Started to use Scene class more wisely
+
+JAN/29/2015
+- Fixing memory issue
