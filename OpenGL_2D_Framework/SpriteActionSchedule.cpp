@@ -8,17 +8,25 @@
 
 #include "SpriteActionSchedule.h"
 #include <iostream>
-#include<stdarg.h>
 
 using std::cout;
 using std::endl;
 
-SpriteActionSchedule::SpriteActionSchedule(){
-    cout << "Creating sprite action schedule" << endl;
+SpriteActionSchedule::SpriteActionSchedule() :
+        repeat(0),
+        repeatCounter(0),
+        size(0),
+        iterateCounter(0),
+        sharedUnusedTime(0),
+        readyToUseUnusedTime(false){
+    cout << "SpriteActionSchedule::Creating sprite action schedule" << endl;
+            
 }
 
-SpriteActionSchedule::SpriteActionSchedule(SpriteAction* other){
-    this->actionList.push_back(other);
+SpriteActionSchedule::SpriteActionSchedule(SpriteAction* action){
+    assert(action != 0);
+    
+    this->actionList.push_back(action);
     
     this->repeat = 0;   //default
     this->repeatCounter = 0;
@@ -28,50 +36,48 @@ SpriteActionSchedule::SpriteActionSchedule(SpriteAction* other){
     this->readyToUseUnusedTime = false;
 }
 
-SpriteActionSchedule::SpriteActionSchedule(const SpriteActionSchedule& other){
+SpriteActionSchedule::SpriteActionSchedule(const SpriteActionSchedule& other) :
+        repeat(other.repeat),
+        repeatCounter(other.repeatCounter),
+        size(other.size),
+        iterateCounter(other.iterateCounter),
+        sharedUnusedTime(other.sharedUnusedTime),
+        readyToUseUnusedTime(other.readyToUseUnusedTime){
+
     for (std::list<SpriteAction*>::const_iterator ci = other.actionList.begin(); ci != other.actionList.end(); ++ci){
-        cout << "\tAdding from list...action#" << (*ci)->getActionID() << endl;
+        cout << "SpriteActionSchedule::Adding from list...action#" << (*ci)->getActionID() << endl;
         this->actionList.push_back(*ci);
     }
-    this->repeat = other.repeat;
-    this->repeatCounter = other.repeatCounter;
-    this->size = other.size;
-    this->iterateCounter = other.iterateCounter;
-    this->sharedUnusedTime = other.sharedUnusedTime;
-    this->readyToUseUnusedTime = other.readyToUseUnusedTime;
 }
 
 SpriteActionSchedule::~SpriteActionSchedule(){
-    cout << "SpriteActionSchedule::Deleting..." << endl;
-	for (auto it : actionList){
-		//delete it;
+    cout << "SpriteActionSchedule::Deleting...";
+    
+	for (const auto& it : actionList){
+		delete it;
 	}
+    
+    cout << "Done." << endl;
 }
 
 void SpriteActionSchedule::createSchedule(SpriteAction *action){
     actionList.push_back(action);
 }
 
-void SpriteActionSchedule::createSchedule(int repeat, int argNums, SpriteAction* actions, ...){
-	va_list args;
-	va_start(args, actions);
-	
-	for (int i = 0; i < argNums; ++i){
-		SpriteAction* ptr = va_arg(args, SpriteAction*);
-		assert(ptr != nullptr);
-
-		//add ptr
-		this->actionList.push_back(ptr);
-	}
-
-	this->repeat = repeat;
-	this->repeatCounter = 0;
-	this->size = argNums;
-	this->iterateCounter = 0;
-	this->sharedUnusedTime = 0;
-	this->readyToUseUnusedTime = false;
+void SpriteActionSchedule::createSchedule(std::vector<SpriteAction*> actions, int repeat){
+    for(auto it : actions){
+        this->actionList.push_back(it);
+    }
+    
+    this->repeat = repeat;
+    this->repeatCounter = 0;
+    this->size = (int)actions.size();
+    this->iterateCounter = 0;
+    this->sharedUnusedTime = 0;
+    this->readyToUseUnusedTime = false;
 }
 
+/*
 void SpriteActionSchedule::createSchedule(std::vector<SpriteAction*> &actions, int repeat){
     cout << "Creating Sprite Action Schedule..." << endl;
     this->repeat = repeat;
@@ -142,6 +148,7 @@ void SpriteActionSchedule::createSchedule(std::vector<SpriteAction*> &actions, i
         cout << "\tAdded." << endl;;
     }
 }
+*/
 
 std::list<SpriteAction*> &SpriteActionSchedule::getList(){
     return actionList;

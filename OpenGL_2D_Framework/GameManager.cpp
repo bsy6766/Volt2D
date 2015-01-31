@@ -380,7 +380,7 @@ void GameManager::initLoading(){
     loadingSpriteManager->addSprite(loadingIcon);
     loadingSpriteManager->addSprite(loadingText);
     
-    ActionRotateBy* loadingIconRotateAction;
+    ActionRotateBy* loadingIconRotateAction = new ActionRotateBy();
     loadingIconRotateAction->initRotateBy(360, 1);
     
     SpriteActionSchedule* loadingIconSequence = new SpriteActionSchedule();
