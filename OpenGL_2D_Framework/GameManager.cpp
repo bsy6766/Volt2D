@@ -149,7 +149,7 @@ void GameManager::render(){
         if(loadingFading){
             loadingSpriteManager->render();
 		}
-		particleSystemManager->render();
+//		particleSystemManager->render();
     }
 
     glUseProgram(0);
@@ -361,10 +361,10 @@ void GameManager::releaseSpriteManager(){
 }
 
 void GameManager::initLoading(){
-//    loadingBG = new Sprite(program);
-//    loadingBG->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/loading/loading background.png");
-//    loadingBG->setZ_Depth(z_loading_BG);
-//    loadingBG->setPosition(glm::vec2(640, 360));
+    loadingBG = new Sprite(program);
+    loadingBG->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/loading/loading background.png");
+    loadingBG->setZ_Depth(z_loading_BG);
+    loadingBG->setPosition(glm::vec2(640, 360));
     
     loadingIcon = new Sprite(program);
     loadingIcon->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/loading/loading icon.png");
@@ -376,21 +376,17 @@ void GameManager::initLoading(){
     loadingText->setZ_Depth(z_loading_hud);
     loadingText->setPosition(glm::vec2(1150, 40));
     
-//    loadingSpriteManager->addSprite(loadingBG);
+    loadingSpriteManager->addSprite(loadingBG);
     loadingSpriteManager->addSprite(loadingIcon);
     loadingSpriteManager->addSprite(loadingText);
     
-    ActionRotateBy loadingIconRotateAction;
-    loadingIconRotateAction.initRoateBy(360, 1);
+    ActionRotateBy* loadingIconRotateAction;
+    loadingIconRotateAction->initRotateBy(360, 1);
     
-    SpriteActionSchedule loadingIconSchedule;
+    SpriteActionSchedule* loadingIconSequence = new SpriteActionSchedule();
     
-    std::vector<SpriteAction*> loadingSequence{
-        &loadingIconRotateAction
-    };
-    
-    loadingIconSchedule.createSchedule(loadingSequence, REPEAT_FOREVER);
-    loadingIcon->addActions(loadingIconSchedule);
+    loadingIconSequence->createSchedule({loadingIconRotateAction}, REPEAT_FOREVER);
+    loadingIcon->addActions(loadingIconSequence);
     loadingIcon->runAction();
 }
 
@@ -398,32 +394,27 @@ void GameManager::finishLoading(){
     loading = false;
     loadingFading = true;
     
-    ActionFadeTo *fadeOutLoadingIcon = new ActionFadeTo();
+    ActionFadeTo* fadeOutLoadingIcon = new ActionFadeTo();
     fadeOutLoadingIcon->initFadeTo(0, 2.0);
     
-    ActionFadeTo *fadeOutLoadingText = new ActionFadeTo();
+    ActionFadeTo* fadeOutLoadingText = new ActionFadeTo();
     fadeOutLoadingText->initFadeTo(0, 2.0);
-//
-//    ActionDelay delayBG;
-//    delayBG.initDelay(2);
-//    
-//    ActionFadeTo fadeOutLoadingBG;
-//    fadeOutLoadingBG.initFadeTo(0, 1);
+
+    ActionDelay* delayBG = new ActionDelay();
+    delayBG->initDelay(2);
     
-//    SpriteActionSchedule loadingBGSchedule;
-//    
-//    std::vector<SpriteAction*> bgSequence{
-//        &delayBG,
-//        &fadeOutLoadingBG
-//    };
-//    
-//    loadingBGSchedule.createSchedule(bgSequence, 0);
+    ActionFadeTo* fadeOutLoadingBG = new ActionFadeTo();
+    fadeOutLoadingBG->initFadeTo(0, 1);
     
-//    loadingBG->addActions(loadingBGSchedule);
+    SpriteActionSchedule* loadingBGSequence = new SpriteActionSchedule();
+    
+    loadingBGSequence->createSchedule({delayBG, fadeOutLoadingBG}, 0);
+    
+    loadingBG->addActions(loadingBGSequence);
     loadingIcon->addAction(fadeOutLoadingIcon);
     loadingText->addAction(fadeOutLoadingText);
 
-//    loadingBG->runAction();
+    loadingBG->runAction();
     loadingIcon->runAction();
     loadingText->runAction();
 }
@@ -518,15 +509,18 @@ void GameManager::initSpriteActions(){
 		ActionFadeTo* fadeOutDay = new ActionFadeTo();
 		fadeOutDay->initFadeTo(0, 60);
 
-		ActionDelay* delayBtwFade = new ActionDelay();
-		delayBtwFade->initDelay(5);
+		ActionDelay* delayBeforeFade = new ActionDelay();
+		delayBeforeFade->initDelay(5);
 
 		ActionFadeTo* fadeInDay = new ActionFadeTo();
 		fadeInDay->initFadeTo(255, 60);
+        
+        ActionDelay* delayBtwFade = new ActionDelay();
+        delayBtwFade->initDelay(5);
 
 		SpriteActionSchedule* dayBGSchedule = new SpriteActionSchedule();
 
-		dayBGSchedule->createSchedule(REPEAT_FOREVER, 4, delayBtwFade, fadeOutDay, delayBtwFade, fadeInDay);
+        dayBGSchedule->createSchedule({delayBeforeFade, fadeOutDay, delayBtwFade, fadeInDay}, REPEAT_FOREVER);
 		dayBackground->addActions(dayBGSchedule);
 		dayBackground->runAction();
 
@@ -554,152 +548,8 @@ void GameManager::initSpriteActions(){
 		//dayBackground->runAction();
 	}
     /* -------------------------Background Action------------------------------- */
-    
-    /* ---------------------------Ground Action--------------------------------- */
-    ActionMoveTo moveGroundMiddleToLeft;
-    moveGroundMiddleToLeft.initMoveTo(glm::vec2(-640, 43), 5.0);
-    
-    ActionMoveTo moveGroundBackToRight;
-    moveGroundBackToRight.initMoveTo(glm::vec2(1920, 43), 0);
-    
-    ActionMoveTo moveGroundRightToMiddle;
-    moveGroundRightToMiddle.initMoveTo(glm::vec2(640, 43), 5.0);
-    
-    SpriteActionSchedule groundOneSchedule;
-    
-    std::vector<SpriteAction*> actionSequenceOne
-    {
-        &moveGroundMiddleToLeft,
-        &moveGroundBackToRight,
-        &moveGroundRightToMiddle
-    };
+ 
 
-    groundOneSchedule.createSchedule(actionSequenceOne, REPEAT_FOREVER);
-    
-    SpriteActionSchedule groundTwoSchedule;
-    
-    std::vector<SpriteAction*> actionSequenceTwo{
-        &moveGroundRightToMiddle,
-        &moveGroundMiddleToLeft,
-        &moveGroundBackToRight
-    };
-    
-    groundTwoSchedule.createSchedule(actionSequenceTwo, REPEAT_FOREVER);
-    
-    ground_1->addActions(groundOneSchedule);
-    ground_2->addActions(groundTwoSchedule);
-    
-    ground_1->runAction();
-    ground_2->runAction();
-    /* ---------------------------Ground Action--------------------------------- */
-    
-    /* -------------------Building Silhouette 1_1 Action------------------------ */
-    
-    float bsOneYPos = buildingSilhouette1_1->getPosition().y;
-    
-    ActionMoveTo moveBSOne_OneToLeft;
-    moveBSOne_OneToLeft.initMoveTo(glm::vec2(-640, bsOneYPos), 15.0);
-    ActionMoveTo moveBSOne_OneBackToRight;
-    moveBSOne_OneBackToRight.initMoveTo(glm::vec2(1920, bsOneYPos), 0);
-    ActionMoveTo moveBSOne_OneToMiddle;
-    moveBSOne_OneToMiddle.initMoveTo(glm::vec2(640, bsOneYPos), 15.0);
-    
-    SpriteActionSchedule bsOne_OneSchedule;
-    std::vector<SpriteAction*> bsOne_OneSeq{
-        &moveBSOne_OneToLeft,
-        &moveBSOne_OneBackToRight,
-        &moveBSOne_OneToMiddle
-    };
-    bsOne_OneSchedule.createSchedule(bsOne_OneSeq, REPEAT_FOREVER);
-    
-    buildingSilhouette1_1->addActions(bsOne_OneSchedule);
-    buildingSilhouette1_1->runAction();
-    
-    /* -------------------Building Silhouette 1_1 Action------------------------ */
-    
-    /* -------------------Building Silhouette 1_2 Action------------------------ */
-    
-    ActionMoveTo moveBSOne_TwoToMiddle;
-    moveBSOne_TwoToMiddle.initMoveTo(glm::vec2(640, bsOneYPos), 15);
-    ActionMoveTo moveBSOne_TwoToLeft;
-    moveBSOne_TwoToLeft.initMoveTo(glm::vec2(-640, bsOneYPos), 15);
-    ActionMoveTo moveBSOne_TwoBackToRight;
-    moveBSOne_TwoBackToRight.initMoveTo(glm::vec2(1920, bsOneYPos), 0);
-    
-    SpriteActionSchedule bsOne_TwoSchedule;
-    std::vector<SpriteAction*> bsOne_TwoSeq{
-        &moveBSOne_TwoToMiddle,
-        &moveBSOne_TwoToLeft,
-        &moveBSOne_TwoBackToRight
-    };
-    bsOne_TwoSchedule.createSchedule(bsOne_TwoSeq, REPEAT_FOREVER);
-    
-    buildingSilhouette1_2->addActions(bsOne_TwoSchedule);
-    buildingSilhouette1_2->runAction();
-    
-    /* -------------------Building Silhouette 1_2 Action------------------------ */
-    
-    /* -------------------Building Silhouette 2_1 Action------------------------ */
-    
-    float bsTwoYPos = buildingSilhouette2_1->getPosition().y;
-    
-    ActionMoveTo moveBSTwo_OneToLeft;
-    moveBSTwo_OneToLeft.initMoveTo(glm::vec2(-640, bsTwoYPos), 35.0);
-    ActionMoveTo moveBSTwo_OneBackToRight;
-    moveBSTwo_OneBackToRight.initMoveTo(glm::vec2(1920, bsTwoYPos), 0);
-    ActionMoveTo moveBSTwo_OneToMiddle;
-    moveBSTwo_OneToMiddle.initMoveTo(glm::vec2(640, bsTwoYPos), 35.0);
-    
-    SpriteActionSchedule bsTwo_OneSchedule;
-    std::vector<SpriteAction*> bsTwo_OneSeq{
-        &moveBSTwo_OneToLeft,
-        &moveBSTwo_OneBackToRight,
-        &moveBSTwo_OneToMiddle
-    };
-    bsTwo_OneSchedule.createSchedule(bsTwo_OneSeq, REPEAT_FOREVER);
-    
-    buildingSilhouette2_1->addActions(bsTwo_OneSchedule);
-    buildingSilhouette2_1->runAction();
-    
-    /* -------------------Building Silhouette 2_1 Action------------------------ */
-    
-    /* -------------------Building Silhouette 2_2 Action------------------------ */
-    
-    ActionMoveTo moveBSTwo_TwoToLeftDouble;
-    moveBSTwo_TwoToLeftDouble.initMoveTo(glm::vec2(-640, bsTwoYPos), 70.0);
-    ActionMoveTo moveBSTwo_TwoBackToRight;
-    moveBSTwo_TwoBackToRight.initMoveTo(glm::vec2(1920, bsTwoYPos), 0);
-    
-    SpriteActionSchedule bsTwo_TwoSchedule;
-    std::vector<SpriteAction*> bsTwo_TwoSeq{
-        &moveBSTwo_TwoToLeftDouble,
-        &moveBSTwo_TwoBackToRight
-    };
-    bsTwo_TwoSchedule.createSchedule(bsTwo_TwoSeq, REPEAT_FOREVER);
-    
-    buildingSilhouette2_2->addActions(bsTwo_TwoSchedule);
-    buildingSilhouette2_2->runAction();
-    
-    /* -------------------Building Silhouette 2_2 Action------------------------ */
-    
-    /* -------------------Building Silhouette 3_1 Action------------------------ */
-    float bsThreeYPos = buildingSilhouette3_1->getPosition().y;
-    ActionMoveTo moveBSThree_OneToLeftDouble;
-    moveBSThree_OneToLeftDouble.initMoveTo(glm::vec2(-100, bsThreeYPos), 140.0);
-    ActionMoveTo moveBSThree_OneBackToRight;
-    moveBSThree_OneBackToRight.initMoveTo(glm::vec2(1400, bsThreeYPos), 0);
-    
-    SpriteActionSchedule bsThree_OneSchedule;
-    std::vector<SpriteAction*> bsThree_OneSeq{
-        &moveBSThree_OneToLeftDouble,
-        &moveBSThree_OneBackToRight
-    };
-    bsThree_OneSchedule.createSchedule(bsThree_OneSeq, REPEAT_FOREVER);
-    
-    buildingSilhouette3_1->addActions(bsThree_OneSchedule);
-    buildingSilhouette3_1->runAction();
-    
-    /* -------------------Building Silhouette 3_1 Action------------------------ */
     
     /* ------------------------Character Jump Action---------------------------- */
     jumpAction = new ActionJumpBy();

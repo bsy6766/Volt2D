@@ -21,7 +21,7 @@ ActionRotateBy::~ActionRotateBy(){
     cout << "Deleting action RotateBy" << endl;
 }
 
-void ActionRotateBy::initRoateBy(float angle, float duration){
+void ActionRotateBy::initRotateBy(float angle, float duration){
     cout << "Initializing RotateBy with angle: " << angle << " and duration: " << duration << endl;
     this->duration = duration;
     this->actionID = ACTION_ROTATE_BY;

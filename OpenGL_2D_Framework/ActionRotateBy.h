@@ -21,7 +21,7 @@ private:
 public:
     ActionRotateBy();
     ~ActionRotateBy();
-    void initRoateBy(float angle, float duration);
+    void initRotateBy(float angle, float duration);
     
     //set & get
     void setOriginalAngle(float angle, bool fresh);
