@@ -39,7 +39,7 @@ void GameManager::initEssentials(){
     loading = true;
     loadingFading = false;
     
-    windowSize = Scene::getInstance().getWindowSize();
+    windowSize = Director::getInstance().getWindowSize();
 }
 
 void GameManager::initKeyLock(){

@@ -9,7 +9,7 @@
 #include <iostream>
 #include <string>
 #include "GameManager.h"
-#include "Scene.h"
+#include "Director.h"
 
 #include <stdio.h>  /* defines FILENAME_MAX */
 #ifdef _WIN32
@@ -57,7 +57,7 @@ int main(int argc, const char * argv[]) {
         gm->initGLFW();
         gm->createWindow(1280, 720, windowTitle);
         
-        Scene::getInstance().setWindowSize(1280, 720);
+        Director::getInstance().setWindowSize(1280, 720);
         
         gm->initGLEW();
         gm->initOpenGL();

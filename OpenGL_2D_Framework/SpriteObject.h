@@ -19,7 +19,7 @@
 #include "ActionDelay.h"
 #include "ActionRotateBy.h"
 #include "SpriteActionSchedule.h"
-#include "Scene.h"
+#include "Director.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -50,7 +50,7 @@ private:
     void instantUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
     void intervalUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
 	
-	winSize size = Scene::getInstance().getWindowSize();
+	winSize size = Director::getInstance().getWindowSize();
 
 protected:
     int spriteID;

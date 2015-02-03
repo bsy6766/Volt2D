@@ -23,6 +23,7 @@
 #include "Program.h"
 #include "Camera.h"
 #include "Timer.h"
+#include "Director.h"
 
 //sprite
 #include "Sprite.h"
