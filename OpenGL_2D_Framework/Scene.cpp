@@ -8,12 +8,10 @@
 
 #include "Scene.h"
 
-Scene Scene::instance;
+Scene::Scene(){
 
-winSize Scene::getWindowSize(){
-    return WinSize;
 }
 
-void Scene::setWindowSize(int screenWidth, int screenHeight){
-    WinSize = {(float)screenWidth, (float)screenHeight};
+Scene::~Scene(){
+
 }

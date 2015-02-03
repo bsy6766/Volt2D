@@ -11,45 +11,19 @@
 
 /*
 	Scene class
-	Singletone
-	The purpose of this class is to make Root Scene node.
-	Treating the entire program as a scene, the scene director will have data related to window
-	such as window size, title, or glenable stuffs. 
-	Currently, it doesn't do much, but it will be very handy later.
+	Base class
+	User creates derive class of Scene class. 
 */
-
-struct winSize{
-    float w;
-    float h;
-};
-
-//2D and 3D size is scaled down to 10. 
-//ex) 1280 x 640 pixels texture -> 128 * 64 vertex length quad
-const int SCREEN_TO_WORLD_SCALE = 10;
-const float static GLOBAL_Z_VALUE = 0;
 
 //Singleton Scene
 class Scene{
+protected:
 private:
-    static Scene instance;
-    winSize WinSize;
-    Scene(){
-        WinSize = {0, 0};
-    }
-    
-    //copy constructor not defined. Prevents copying instance
-    Scene(Scene const&);
-    //assign operator constructor not defined. Prevenets copying instance
-    void operator=(Scene const&);
-    
 public:
-    //return static Scene instance
-    static Scene& getInstance(){
-        return instance;
-    }
-    
-    winSize getWindowSize();
-    void setWindowSize(int screenWidth, int screenHeight);
+	Scene();
+	~Scene();
+	Scene(Scene const& other);
+	void operator=(Scene const& other);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Scene__) */
