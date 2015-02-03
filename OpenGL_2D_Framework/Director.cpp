@@ -7,3 +7,29 @@
 //
 
 #include "Director.h"
+
+Director::Director(){
+
+}
+
+Director::~Director(){
+	while (!sceneQueue.empty()){
+		delete sceneQueue.front();
+		sceneQueue.pop();
+	}
+
+	assert(sceneQueue.empty());
+
+}
+
+winSize Director::getWindowSize(){
+	return WinSize;
+}
+
+void Director::setWindowSize(int screenWidth, int screenHeight){
+	WinSize = { (float)screenWidth, (float)screenHeight };
+}
+
+void Director::pushScene(Scene* pScene){
+	sceneQueue.push(pScene);
+}
