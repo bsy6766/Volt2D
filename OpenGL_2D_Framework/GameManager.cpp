@@ -141,7 +141,7 @@ void GameManager::render(){
     glUniformMatrix4fv(cameraUniformLocation, 1, GL_FALSE, &cameraMat[0][0]);
     
     if(loading){
-//        loadingSpriteManager->render();
+        loadingSpriteManager->render();
     }
     else{
         spriteManager->render();
@@ -149,7 +149,7 @@ void GameManager::render(){
         if(loadingFading){
             loadingSpriteManager->render();
 		}
-//		particleSystemManager->render();
+		particleSystemManager->render();
     }
 
     glUseProgram(0);
@@ -588,7 +588,7 @@ void GameManager::initParticleSystem(){
                                      0.0,	//gravity X
                                      0.0	//gravity Y
                                      );
-    testParticle->initParticleTexture(GL_TEXTURE_2D, "../Texture/knife.jpg", program);
+    testParticle->initParticleTexture(GL_TEXTURE_2D, "../Texture/dust.png", program);
     
     particleSystemManager->addParticleSystem(testParticle);
 }

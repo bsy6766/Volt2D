@@ -53,7 +53,7 @@ SpriteActionSchedule::SpriteActionSchedule(const SpriteActionSchedule& other) :
 SpriteActionSchedule::~SpriteActionSchedule(){
     cout << "SpriteActionSchedule::Deleting...";
     
-	for (const auto& it : actionList){
+	for (auto& it : actionList){
 		delete it;
 	}
     
