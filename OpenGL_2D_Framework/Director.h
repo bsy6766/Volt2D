@@ -9,6 +9,10 @@
 #ifndef __OpenGL_2D_Framework__Director__
 #define __OpenGL_2D_Framework__Director__
 
+//opengl
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "Scene.h"
 #include "CommonInclude.h"
 
@@ -26,7 +30,10 @@
 const int SCREEN_TO_WORLD_SCALE = 10;
 const float static GLOBAL_Z_VALUE = 0;
 
-struct winSize{
+//limit the maximum scene queue to 5. 
+const int MAX_SCENE_QUEUE_SIZE = 5;
+
+struct WinSize{
 	float w;
 	float h;
 };
@@ -35,12 +42,36 @@ class Director{
 protected:
 	//no one derives from this class!
 private:
-	winSize WinSize;
+	WinSize winSize;
+
+	//GLFW window
+	GLFWwindow* window;
 
 	//Scene queue. FIFO. Only the first element gets updated and rendered.
 	//First element = current scene
 	std::queue<Scene*> sceneQueue;
 
+	/**
+	*	init OpenGL
+	*/
+	void initOpenGL();
+
+	/**
+	*	init GLEW
+	*	This must be called after initializing GLFW. 
+	*	See initGLFW()
+	*/
+	void initGLEW();
+
+	/**
+	*	init GLFW and create window
+	*	@param screenWidth screen width
+	*	@param screenHeight screen height
+	*	@param windowTitle window title
+	*/
+	void initGLFW(const int& screenWidth, const int& screenHeight, const std::string& windowTitle);
+
+	//basic functions
 	Director();
 	~Director();
 	Director(Director const& other);
@@ -59,21 +90,17 @@ public:
 	*	init GLFW
 	*	throw error exception if fail to initialize.
 	*/
-	void initApp();
+	void initApp(const int screenWidth, const int screenHeight, const std::string& windowTitle);
 
 	/**
-	*	Create window with size and title
-	*	Default window size is 100 x x100
-	*	Default window title is noName
-	*/
-	bool createWindow(int screenWidth, int screenHeight, std::string& windowTitle);
-
-	/**
-	*	Run.
-	*	Director runs the scene. 
-	*	Game loop goes here
+	*	Run game loop
 	*/
 	void run();
+
+	/**
+	*	Pause game loop
+	*/
+	void pause();
 
 	void stop();
 
@@ -87,8 +114,10 @@ public:
 	*/
 	void transitionToNextScene();
 
-	winSize getWindowSize();
-	void setWindowSize(int screenWidth, int screenHeight);
+	WinSize getWindowSize();
+	void setWindowSize(int width, int height){
+		winSize = { width, height };
+	}
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Director__) */

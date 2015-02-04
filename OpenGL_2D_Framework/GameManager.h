@@ -51,7 +51,7 @@ private:
     bool leftClicked;
     
     GLFWwindow *window;
-    winSize windowSize;
+    WinSize windowSize;
     
     /*---------------Loading screen sprites--------------*/
     Sprite *loadingBG;
