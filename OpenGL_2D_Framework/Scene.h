@@ -9,12 +9,9 @@
 #ifndef __OpenGL_2D_Framework__Scene__
 #define __OpenGL_2D_Framework__Scene__
 
-#include "CommonInclude.h"
-#include "SpriteManager.h"
-#include "Layer.h"
-
-#include <map>
-#include <string>
+//#include "CommonInclude.h"
+//#include "SpriteManager.h"
+//#include "Layer.h"
 
 /*
 	Scene class

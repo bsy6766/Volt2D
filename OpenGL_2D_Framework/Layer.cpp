@@ -8,8 +8,8 @@
 
 #include "Layer.h"
 
-Layer::Layer(int z = 0):z(z){
-
+Layer::Layer(int z):z(z){
+    
 }
 
 Layer::~Layer(){

@@ -49,7 +49,7 @@ private:
 
 	//Scene queue. FIFO. Only the first element gets updated and rendered.
 	//First element = current scene
-	std::queue<Scene*> sceneQueue;
+    std::queue<Scene* > sceneQueue;
 
 	/**
 	*	init OpenGL
