@@ -102,6 +102,9 @@ public:
 	*/
 	void pause();
 
+    /**
+     *  Stop the game loop
+     */
 	void stop();
 
 	/**
@@ -113,10 +116,16 @@ public:
 	*	Load the next scene, pop the current one and set the next scene to current scene
 	*/
 	void transitionToNextScene();
+    
+    /**
+     *
+     */
+    void transitionSceneWith(Scene* pScene);
+    
 
 	WinSize getWindowSize();
 	void setWindowSize(int width, int height){
-		winSize = { width, height };
+		winSize = { (float)width, (float)height };
 	}
 };
 
