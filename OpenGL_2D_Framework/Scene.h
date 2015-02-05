@@ -9,21 +9,33 @@
 #ifndef __OpenGL_2D_Framework__Scene__
 #define __OpenGL_2D_Framework__Scene__
 
+#include "CommonInclude.h"
+#include "SpriteManager.h"
+#include "Layer.h"
+
+#include <map>
+#include <string>
+
 /*
 	Scene class
 	Base class
 	User creates derive class of Scene class. 
 */
 
-//Singleton Scene
 class Scene{
 protected:
 private:
+	//std::map<std::string, Layer> layerMap;
+
+
 public:
 	Scene();
 	~Scene();
 	Scene(Scene const& other);
 	void operator=(Scene const& other);
+
+	void update();
+	void render();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Scene__) */

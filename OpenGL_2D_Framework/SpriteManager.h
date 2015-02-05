@@ -23,7 +23,7 @@
 
 class SpriteManager{
 private:
-    std::list<SpriteObject*> spriteList;
+    std::list<SpriteObject* > spriteList;
     
 public:
     SpriteManager();
