@@ -8,14 +8,10 @@
 
 #include "Layer.h"
 
-Layer::Layer(int z):z(z){
+Layer::Layer(){
     
 }
 
 Layer::~Layer(){
 
-}
-
-int Layer::getZ(){
-	return z;
 }

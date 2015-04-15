@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdexcept>
 #include <glm/glm.hpp>
+#include <cstring>
 
 #include "stb_image.h"
 

@@ -74,9 +74,9 @@ void Texture::flipImage(){
         unsigned char* row = data + ((rowIdx * width + 0) * channel);
         unsigned char* oppositeRow = data + (((height - rowIdx - 1) * width + 0) * channel);
         
-        memcpy(rowBuffer, row, rowSize);
-        memcpy(row, oppositeRow, rowSize);
-        memcpy(oppositeRow, rowBuffer, rowSize);
+        std::memcpy(rowBuffer, row, rowSize);
+        std::memcpy(row, oppositeRow, rowSize);
+        std::memcpy(oppositeRow, rowBuffer, rowSize);
     }
     
     delete rowBuffer;
