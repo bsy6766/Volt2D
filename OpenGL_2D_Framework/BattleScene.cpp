@@ -30,6 +30,11 @@ void BattleScene::init(){
     //create HUD Layer
     Layer* HUDLayer = new Layer;
     addLayer(HUDLayer);
+    Sprite* creeper = new Sprite();
+    creeper->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/boss_creeper.png");
+    creeper->setPosition(glm::vec2(size.w/2, size.h/2));
+    creeper->setZ_Depth(2);
+    HUDLayer->addSprite(creeper);
 }
 
 //void BattleScene::update(){

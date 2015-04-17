@@ -19,11 +19,23 @@ Scene::~Scene(){
 }
 
 void Scene::update(){
+    //update scene stuff first
     spriteManager->update();
+    
+    //update layers
+    for(auto it : layerMap){
+        (it.second)->update();
+    }
 }
 
 void Scene::render(){
+    //render scene stuff first
     spriteManager->render();
+    
+    //render layers
+    for(auto it : layerMap){
+        (it.second)->render();
+    }
 }
 
 void Scene::run(){
