@@ -75,6 +75,7 @@ void Director::pushScene(Scene* newScene){
         }
         
         nextScene = newScene;
+        nextScene->init();
     }
 }
 
@@ -217,6 +218,20 @@ void Director::key_callback(GLFWwindow* window, int key, int scancode, int actio
     
     if(action == GLFW_PRESS){
         cout << "Keyboard pressed" << endl;
+        
+        if(key == GLFW_KEY_C){
+            directorPtr->mainCamera->setPosition(glm::vec3(0, 0, -77.25));
+        }
+        
+        directorPtr->runningScene->keyPressed(key);
+    }
+    else if(action == GLFW_RELEASE){
+//        directorPtr->runningScene->keyPressed();
+        cout << "Keyboard released" << endl;
+        directorPtr->runningScene->keyReleased(key);
+    }
+    else if(action == GLFW_REPEAT){
+//        cout << "Keyboard repeating " << endl;
         //W,S
         if(key == GLFW_KEY_W){
             directorPtr->mainCamera->moveFoward();
@@ -247,14 +262,6 @@ void Director::key_callback(GLFWwindow* window, int key, int scancode, int actio
         else if(key == GLFW_KEY_2){
             directorPtr->mainCamera->decreaseSpeed();
         }
-        
-        if(key == GLFW_KEY_C){
-            directorPtr->mainCamera->setPosition(glm::vec3(0, 0, -77.25));
-        }
-    }
-    else if(action == GLFW_RELEASE){
-//        directorPtr->runningScene->keyPressed();
-        cout << "Keyboard released" << endl;
     }
 }
 
@@ -262,35 +269,46 @@ void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos)
     double x, y;
     glfwGetCursorPos(window, &x, &y);
     Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
-    directorPtr->prevMousePos = glm::vec2((float)x, (float)y);
+//    directorPtr->prevMousePos = glm::vec2((float)x, (float)y);
+    
+    directorPtr->runningScene->mouseMove(x, y);
 }
 
 void Director::mouse_button_callback(GLFWwindow *window, int button, int action, int mods){
-    if(button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS){
-        Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
-        double curMouseX, curMouseY;
-        glfwGetCursorPos(window, &curMouseX, &curMouseY);
-        glm::vec2 newMousePos = glm::vec2((float)curMouseX, (float)curMouseY);
-        //!!!update camera movement by mouse. Please move this function in to camera class later!!!!!
-        glm::vec2 mouseDelta = newMousePos - directorPtr->prevMousePos;
-        
-        directorPtr->mainCamera->changeAngle(0.15f * mouseDelta.y, 0.15f * mouseDelta.x);
-        
-        directorPtr->prevMousePos = newMousePos;
-    }
+    Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
+    directorPtr->runningScene->mouseButton(button, action);
+    
+//    if(button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS){
+//        double curMouseX, curMouseY;
+//        glfwGetCursorPos(window, &curMouseX, &curMouseY);
+//        glm::vec2 newMousePos = glm::vec2((float)curMouseX, (float)curMouseY);
+//        //!!!update camera movement by mouse. Please move this function in to camera class later!!!!!
+//        glm::vec2 mouseDelta = newMousePos - directorPtr->prevMousePos;
+//        
+//        cout << "mD = (" << mouseDelta.x << ", " << mouseDelta.y << ")" << endl;
+//        
+//        directorPtr->mainCamera->changeAngle(0.15f * mouseDelta.y, 0.15f * mouseDelta.x);
+//        
+//        directorPtr->prevMousePos = newMousePos;
+//    }
 
 }
 
-//
-//void Director::transitionToNextScene(bool wait = true){
-//    //check if there is running scene and next scene
-//    //first, init next scene and prepare all the materials for that scene
-//    //if there's any issue, remove the scene and cancel this event
-//    //else, you are good to go. swap the scene
-//    //if wait, then don't render and run sprites and actions till the transition is done,
-//    //else, run as soon as init is done
-//    //at the end, delete dying scene
-//}
+
+void Director::transitionToNextScene(bool wait = true){
+    //check if there is running scene and next scene
+    //first, init next scene and prepare all the materials for that scene
+    //if there's any issue, remove the scene and cancel this event
+    //else, you are good to go. swap the scene
+    //if wait, then don't render and run sprites and actions till the transition is done,
+    //else, run as soon as init is done
+    //at the end, delete dying scene
+    dyingScene = runningScene;
+    runningScene = nextScene;
+    nextScene = 0;
+    
+    delete dyingScene;
+}
 
 void Director::run(){
     while (!glfwWindowShouldClose(window)){

@@ -16,11 +16,12 @@
 #include "Scene.h"
 #include "Sprite.h"
 
+#include "BattleScene.h"
+
 class TitleScene : public Scene{
 protected:
 private:
     Sprite* bg;
-    Sprite* loadingBg;
     virtual void exit();
 public:
     TitleScene();
@@ -30,8 +31,10 @@ public:
     virtual void init();
     virtual void keyPressed(int key);
     virtual void keyReleased(int key);
-    virtual void update();
-    virtual void render();
+    virtual void mouseButton(int button, int action);
+    virtual void mouseMove(double x, double y);
+//    virtual void update();
+//    virtual void render();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__TitleScene__) */

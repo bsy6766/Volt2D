@@ -19,7 +19,7 @@ class Scene{
 protected:
     SpriteManager *spriteManager;
 private:
-    //	std::map<int/*z order*/, Layer*> layerMap;
+    std::multimap<int/*z order*/, Layer*> layerMap;
     virtual void exit();
 public:
 	Scene();
@@ -28,16 +28,18 @@ public:
 //	void operator=(Scene const& other);
     
     virtual void init() = 0;
+    virtual void update();
+    virtual void render();
     virtual void keyPressed(int key) = 0;
     virtual void keyReleased(int key) = 0;
-	virtual void update() = 0;
-    virtual void render() = 0;
+    virtual void mouseButton(int button, int action) = 0;
+    virtual void mouseMove(double x, double y) = 0;
     
     void run();
     
     void addLayer(Layer* childLayer);
     void addSprite(SpriteObject* childSprite);
-    void addParticleSystem();
+//    void addParticleSystem();
     
 };
 

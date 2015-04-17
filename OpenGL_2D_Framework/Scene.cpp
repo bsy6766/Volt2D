@@ -18,8 +18,12 @@ Scene::~Scene(){
     exit();
 }
 
-void Scene::exit(){
-    delete spriteManager;
+void Scene::update(){
+    spriteManager->update();
+}
+
+void Scene::render(){
+    spriteManager->render();
 }
 
 void Scene::run(){
@@ -33,5 +37,14 @@ void Scene::addSprite(SpriteObject* childSprite){
 }
 
 void Scene::addLayer(Layer *childLayer){
+//    int layerMapSize = layerMap.size();
+    layerMap.insert(std::pair<int, Layer*>(childLayer->getZorder(), childLayer));
+}
+
+void Scene::exit(){
+    delete spriteManager;
     
+    for(auto it : layerMap){
+        delete it.second;
+    }
 }

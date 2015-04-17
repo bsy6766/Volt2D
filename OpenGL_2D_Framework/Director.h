@@ -53,8 +53,8 @@ private:
 //    //Scene queue. FIFO. Only the first element gets updated and rendered.
     Scene* runningScene;
     Scene* nextScene;
-//    Scene* dyingScene;
-//    
+    Scene* dyingScene;
+//
     //shader & program
     std::unordered_map<std::string, Program*> programs;
 
@@ -123,11 +123,11 @@ public:
 //     */
 //    void popScene();
 //    
-//    /**
-//     *	Load the next scene, pop the current one and set the next scene to current scene
-//     */
-//    void transitionToNextScene(bool wait);
-//    
+    /**
+     *	Load the next scene, pop the current one and set the next scene to current scene
+     */
+    void transitionToNextScene(bool wait);
+//
 //    /**
 //     *
 //     */

@@ -22,31 +22,30 @@ TitleScene::~TitleScene(){
 void TitleScene::init(){
     cout << "TitleScene::init()" << endl;
     //init basic stuff
-//    bg = new Sprite();
-//    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/titleScene_bg.png");
-//    bg->setZ_Depth(1);
-//    addSprite(bg);
-    
-    loadingBg = new Sprite();
-    loadingBg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/loading/loading background.png");
-    loadingBg->setZ_Depth(0);
-    loadingBg->setPosition(glm::vec2(640, 360));
-    addSprite(loadingBg);
-}
-
-void TitleScene::update(){
-    spriteManager->update();
-}
-
-void TitleScene::render(){
-    spriteManager->render();
+    bg = new Sprite();
+    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/titleScene_bg.png");
+    bg->setZ_Depth(1);
+    WinSize size = Director::getInstance().getWindowSize();
+    bg->setPosition(glm::vec2(size.w/2, size.h/2));
+    addSprite(bg);
 }
 
 void TitleScene::keyPressed(int key){
-    
+    if(key == GLFW_KEY_ENTER){
+        Director::getInstance().pushScene(new BattleScene());
+        Director::getInstance().transitionToNextScene(true);
+    }
 }
 
 void TitleScene::keyReleased(int key){
+    
+}
+
+void TitleScene::mouseButton(int button, int action){
+    
+}
+
+void TitleScene::mouseMove(double x, double y){
     
 }
 
