@@ -7,11 +7,14 @@
 //
 
 #include "SpriteManager.h"
+#include "SpriteObject.h"
 
 SpriteManager::SpriteManager():globalVisible(true){
+    cout << "SpriteManager" << endl;
 }
 
 SpriteManager::~SpriteManager(){
+    cout << "~SpriteManager" << endl;
     //clear remaining sprites on list
     for (std::list<SpriteObject *>::const_iterator ci = spriteList.begin(); ci != spriteList.end(); ++ci){
         delete (*ci);

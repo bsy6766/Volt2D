@@ -9,12 +9,13 @@
 #ifndef __OpenGL_2D_Framework__Sprite__
 #define __OpenGL_2D_Framework__Sprite__
 
+//#include <GL/glew.h>
+
 #include "SpriteObject.h"
 #include "Texture.h"
-#include "Scene.h"
+//#include "Scene.h"
+#include "CommonInclude.h"
 
-#include <GL/glew.h>
-#include <assert.h>
 
 class Sprite :  public SpriteObject{
 private:

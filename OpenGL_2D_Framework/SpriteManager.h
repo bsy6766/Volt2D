@@ -11,9 +11,9 @@
 
 #include <list>
 #include <assert.h>
-#include <iostream>
+#include "CommonInclude.h"
 
-#include "SpriteObject.h"
+class SpriteObject;
 
 /**
  * Sprite Manager Class

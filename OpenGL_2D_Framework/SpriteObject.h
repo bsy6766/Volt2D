@@ -50,7 +50,7 @@ private:
     void instantUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
     void intervalUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
 	
-	WinSize size = Director::getInstance().getWindowSize();
+//	WinSize size = Director::getInstance().getWindowSize();
 
 protected:
     int spriteID;

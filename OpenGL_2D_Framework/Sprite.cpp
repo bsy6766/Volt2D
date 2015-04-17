@@ -9,6 +9,12 @@
 #include "Sprite.h"
 #include <cmath>
 
+Sprite::Sprite()
+        :SpriteObject(),
+        texture(0){
+    
+}
+
 Sprite::Sprite(Program *ptr)
         :SpriteObject(ptr),
 		texture(0){

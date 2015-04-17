@@ -14,12 +14,13 @@
 
 //inherit. must need
 #include "Scene.h"
-//#include "Sprite.h"
+#include "Sprite.h"
 
 class TitleScene : public Scene{
 protected:
 private:
-//    Sprite* bg;
+    Sprite* bg;
+    Sprite* loadingBg;
     virtual void exit();
 public:
     TitleScene();
@@ -27,8 +28,8 @@ public:
     
     //override pure
     virtual void init();
-    virtual void keyPressed();
-    virtual void keyReleased();
+    virtual void keyPressed(int key);
+    virtual void keyReleased(int key);
     virtual void update();
     virtual void render();
 };

@@ -21,9 +21,10 @@ SpriteObject::SpriteObject() :
         angle(0),
         w(0),
         h(0),
-		position(glm::vec2(size.w / 2, size.h / 2)),
+		position(glm::vec2( Director::getInstance().getWindowSize().w / 2,  Director::getInstance().getWindowSize().h / 2)),
         visible(true){
-
+    progPtr = Director::getInstance().getProgramPtr();
+    ID_COUNTER++;
 }
 
 SpriteObject::SpriteObject(Program *ptr) :
@@ -38,7 +39,7 @@ SpriteObject::SpriteObject(Program *ptr) :
         angle(0),
         w(0),
 		h(0),
-		position(glm::vec2(size.w / 2, size.h / 2)),
+		position(glm::vec2( Director::getInstance().getWindowSize().w / 2,  Director::getInstance().getWindowSize().h / 2)),
         visible(true){
             
     ID_COUNTER++;

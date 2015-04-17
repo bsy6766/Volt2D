@@ -9,30 +9,36 @@
 #ifndef __OpenGL_2D_Framework__Scene__
 #define __OpenGL_2D_Framework__Scene__
 
-//#include "CommonInclude.h"
-//#include "SpriteManager.h"
-//#include "Layer.h"
+#include "CommonInclude.h"
+#include "SpriteManager.h"
+#include "Layer.h"
 
-/*
-	Scene class
-	Base class
-	User creates derive class of Scene class. 
-*/
+#include <map>
 
 class Scene{
 protected:
+    SpriteManager *spriteManager;
 private:
-	//std::map<std::string, Layer> layerMap;
-
-
+    //	std::map<int/*z order*/, Layer*> layerMap;
+    virtual void exit();
 public:
 	Scene();
-	~Scene();
-	Scene(Scene const& other);
-	void operator=(Scene const& other);
-
-	void update();
-	void render();
+	virtual ~Scene();
+//	Scene(Scene const& other);
+//	void operator=(Scene const& other);
+    
+    virtual void init() = 0;
+    virtual void keyPressed(int key) = 0;
+    virtual void keyReleased(int key) = 0;
+	virtual void update() = 0;
+    virtual void render() = 0;
+    
+    void run();
+    
+    void addLayer(Layer* childLayer);
+    void addSprite(SpriteObject* childSprite);
+    void addParticleSystem();
+    
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Scene__) */

@@ -8,8 +8,9 @@
 
 #include <iostream>
 #include <string>
-#include "GameManager.h"
+//#include "GameManager.h"
 #include "Director.h"
+#include "TitleScene.h"
 
 #include <stdio.h>  /* defines FILENAME_MAX */
 #ifdef _WIN32
@@ -48,51 +49,57 @@ int main(int argc, const char * argv[]) {
     
     std::string windowTitle = "opengl 2d framework";
     
-    GameManager* gm = new GameManager();
+//    GameManager* gm = new GameManager();
+    Director::getInstance().setWindowSize(1280, 720);
     
     try{
-        gm->initEssentials();
-        
-        //init the game
-        gm->initGLFW();
-        gm->createWindow(1280, 720, windowTitle);
-        
-        Director::getInstance().setWindowSize(1280, 720);
-        
-        gm->initGLEW();
-        gm->initOpenGL();
-        
-        //load shaders
-        gm->loadShader("../Shader/vertexShader.glsl", GL_VERTEX_SHADER);
-        gm->loadShader("../Shader/fragmentShader.glsl", GL_FRAGMENT_SHADER);
-        
-        //create program
-        gm->loadProgram();
-        
-        gm->loadCamera();
-        
-        gm->initSpriteManager();
-        
-        gm->initParticleSystemManager();
-        
-        gm->initParticleSystem();
-        
-        gm->initLoading();
-        
-        gm->startGame();
+        Director::getInstance().initApp(1280, 720, "microRaid dev");
+        TitleScene* titleScene = new TitleScene();
+        Director::getInstance().pushScene(titleScene);
+        Director::getInstance().run();
+//        gm->initEssentials();
+//        
+//        //init the game
+//        gm->initGLFW();
+//        gm->createWindow(1280, 720, windowTitle);
+//        
+//        
+//        gm->initGLEW();
+//        gm->initOpenGL();
+//        
+//        //load shaders
+//        gm->loadShader("../Shader/vertexShader.glsl", GL_VERTEX_SHADER);
+//        gm->loadShader("../Shader/fragmentShader.glsl", GL_FRAGMENT_SHADER);
+//        
+//        //create program
+//        gm->loadProgram();
+//        
+//        gm->loadCamera();
+//        
+//        gm->initSpriteManager();
+//        
+//        gm->initParticleSystemManager();
+//        
+//        gm->initParticleSystem();
+//        
+//        gm->initLoading();
+//        
+//        gm->startGame();
     }
     catch(std::exception &e){
         std::cout << e.what() << std::endl;
     }
     
-    gm->releaseProgram();
-    gm->releaseShader();
-    gm->releaseUndeadActions();
-    gm->releaseSpriteManager();
-    gm->releaseParticleSystemManager();
-    gm->releaseCamera();
-    
-    delete gm;
+    //exit app
+//    Director::getInstance().terminateApp();
+//    gm->releaseProgram();
+//    gm->releaseShader();
+//    gm->releaseUndeadActions();
+//    gm->releaseSpriteManager();
+//    gm->releaseParticleSystemManager();
+//    gm->releaseCamera();
+//    
+//    delete gm;
     
     return 0;
 }
