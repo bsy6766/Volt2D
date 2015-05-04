@@ -25,6 +25,9 @@
 #include <unordered_map>
 #include "Timer.h"
 
+
+#include <FTGL/ftgl.h>
+
 //2D and 3D size is scaled down to 10. 
 //ex) 1280 x 640 pixels texture -> 128 * 64 vertex length quad
 const int SCREEN_TO_WORLD_SCALE = 10;
@@ -43,8 +46,10 @@ protected:
     //no one derives from this class!
 private:
     WinSize winSize;
+//    FTFont *font;
     
     glm::vec2 prevMousePos;
+    glm::vec2 curMousePos;
     bool leftClicked;
     
     //GLFW window
@@ -59,7 +64,7 @@ private:
     std::unordered_map<std::string, Program*> programs;
 
     //camera
-    Camera* mainCamera;
+    Camera* camera;
 
     void initOpenGL();
     void initGLEW();
@@ -101,6 +106,8 @@ public:
     
     void render();
     void update();
+    void updateMouseInput();
+    void updateKeyInput();
 //
 //    /**
 //     *	Pause game loop
@@ -140,6 +147,7 @@ public:
     void setWindowSize(float width, float height);
     
     Program* getProgramPtr(std::string programName="Default");
+    Camera* getCameraPtr();
 
 //    void releaseShaders();
 //    void releasePrograms();

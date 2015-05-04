@@ -5,6 +5,9 @@ layout(location = 1) in vec2 uvVert;
 layout(location = 2) in vec3 posVert;
 
 uniform mat4 modelMat;
+uniform mat4 translateMat;
+uniform mat4 rotateMat;
+uniform mat4 scaleMat;
 uniform mat4 cameraMat;
 uniform bool particle;
 
@@ -20,6 +23,7 @@ void main(){
     else{
         finalPosition = vec4(vert, 1.0f);
     }
-    gl_Position = cameraMat * modelMat * finalPosition;
+    mat4 objectMat = modelMat * translateMat * rotateMat * scaleMat;
+    gl_Position = cameraMat * objectMat * finalPosition;
     fragTexCoord = uvVert;
 }

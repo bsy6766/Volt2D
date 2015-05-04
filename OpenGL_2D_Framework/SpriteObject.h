@@ -18,8 +18,10 @@
 #include "ActionFadeTo.h"
 #include "ActionDelay.h"
 #include "ActionRotateBy.h"
+#include "ActionScaleBy.h"
 #include "SpriteActionSchedule.h"
 #include "Director.h"
+#include "BoundingBox.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -30,13 +32,13 @@
 using std::cout;
 using std::endl;
 
-struct Rect{
-    //x,y = bottom left
-    float x;
-    float y;
-    float w;
-    float h;
-};
+//struct Rect{
+//    //x,y = bottom left
+//    float x;
+//    float y;
+//    float w;
+//    float h;
+//};
 
 static int ID_COUNTER = 0;
 
@@ -64,7 +66,7 @@ protected:
     bool actionRunning;
     float z;    //each sprite can set 0~100.
     
-    Rect boundingBox;
+    BoundingBox* boundingBox;
     bool visible;
     
     GLuint vao;		//vertex array object
@@ -93,10 +95,23 @@ public:
     
     float opacity;
     float angle;
+    float scaleX;
+    float scaleY;
     
-    //position
+    enum SpriteType{
+        NORMAL_TYPE = 0,
+        BILLBOARD_TYPE
+    };
+    
+    SpriteType type;
+    
+    //setter
     void setPosition(glm::vec2 position);
+    void setPosition(glm::vec3 position);
+    void setPosition(float x, float y, float z);
     glm::vec2 getPosition();
+    void setScale(float scaleX, float scaleY);
+    glm::vec2 getScale();
     
     //z depth
     void setZ_Depth(float value);
@@ -115,6 +130,8 @@ public:
     virtual void createVertexData() = 0;
     virtual void loadVertexData() = 0;
     virtual void render() = 0;
+    
+    void rotateSprite(GLfloat angle, glm::vec3 axis);
     
 //    virtual void update() = 0;
     void update();

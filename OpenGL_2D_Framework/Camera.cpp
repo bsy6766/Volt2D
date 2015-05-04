@@ -11,7 +11,7 @@
 
 Camera::Camera() :
     position(0, 0, -77.25),
-    verticalAngle(0),
+    verticalAngle(20),
     horizontalAngle(0),
     fovy(50.0f),
     aspect(1280.0f/720.0f),
@@ -107,4 +107,15 @@ void Camera::changeAngle(double verticalValue, double horizontalValue){
         horizontalAngle += 360.0f;
     else if(horizontalAngle > 360.0f)
         horizontalAngle -= 360.0f;
+    
+//    cout << "Camera::VerticalAngle = " << verticalAngle << endl;
+//    cout << "Camera::HorizontalAngle = " << horizontalAngle << endl;
+}
+
+GLfloat Camera::getVerticalAngle() const{
+    return verticalAngle;
+}
+
+GLfloat Camera::getHorizontalAngle() const{
+    return horizontalAngle;
 }

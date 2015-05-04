@@ -14,10 +14,16 @@
 #include "Layer.h"
 
 #include <map>
+#include <glm/glm.hpp>
+
+class GLFWwindow;
 
 class Scene{
 protected:
     SpriteManager *spriteManager;
+    GLFWwindow* window;
+    glm::vec2 prevMousePos;
+    glm::vec2 curMousePos;
 private:
     std::multimap<int/*z order*/, Layer*> layerMap;
     virtual void exit();
@@ -34,8 +40,12 @@ public:
     virtual void keyReleased(int key) = 0;
     virtual void mouseButton(int button, int action) = 0;
     virtual void mouseMove(double x, double y) = 0;
+    virtual void injectKey() = 0;
+    virtual void injectMouseMove() = 0;
     
     void run();
+    
+    void boundWindow(GLFWwindow* window);
     
     void addLayer(Layer* childLayer);
     void addSprite(SpriteObject* childSprite);

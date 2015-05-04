@@ -47,6 +47,7 @@ void Sprite::initSpriteWithTexture(GLenum _textureTarget, const std::string& _fi
     texture = new Texture(_textureTarget, _fileName);
     texture->load();
     texture->getImageSize(w, h);
+    boundingBox = new BoundingBox();
 
     position = glm::vec2(640, 360);
     z = GLOBAL_Z_VALUE;
@@ -54,10 +55,10 @@ void Sprite::initSpriteWithTexture(GLenum _textureTarget, const std::string& _fi
     createVertexData();
     loadVertexData();
     
-    boundingBox.x = vertexData.at(0).x;
-    boundingBox.y = vertexData.at(0).y;
-    boundingBox.w = w;
-    boundingBox.h = h;
+    boundingBox->x = vertexData.at(0).x;
+    boundingBox->y = vertexData.at(0).y;
+    boundingBox->w = w;
+    boundingBox->h = h;
 }
 
 void Sprite::render(){
@@ -66,13 +67,46 @@ void Sprite::render(){
 
         texture->bind(GL_TEXTURE0);
         
+//        glm::mat4 billboardCamMat = Director::getInstance().getCameraPtr()->getOrientation();
+//        billboardCamMat = glm::inverse(billboardCamMat);
+//        GLuint cameraUniformLocation = glGetUniformLocation(progPtr->getObject(), "cameraMat");
+//        glUniformMatrix4fv(cameraUniformLocation, 1, GL_FALSE, &billboardCamMat[0][0]);
+//        Camera* camera = Director::getInstance().getCameraPtr();
+//        GLfloat verticalAngle = camera->getVerticalAngle() * (-1);
+//        GLfloat horizontalAngle = camera->getHorizontalAngle() * (-1);
+        
+//        glm::mat4 orientation;
+//        orientation = glm::rotate(orientation, verticalAngle, glm::vec3(1,0,0));
+//        orientation = glm::rotate(orientation, horizontalAngle, glm::vec3(0,1,0));
+//        
+//        orientation = glm::translate(orientation, camera->getPosition());
+        
         GLint modelUniformLocation = glGetUniformLocation(progPtr->getObject(), "modelMat");
         if(modelUniformLocation == -1)
             throw std::runtime_error( std::string("Program uniform not found: " ) + "modelMat");
+        glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, &modelMat[0][0]);
+        
+        GLint rotateUniformLocation = glGetUniformLocation(progPtr->getObject(), "rotateMat");
+        if(rotateUniformLocation == -1)
+            throw std::runtime_error( std::string("Program uniform not found: " ) + "rotateMat");
+        glUniformMatrix4fv(rotateUniformLocation, 1, GL_FALSE, &rotateMat[0][0]);
+        
+        GLint translateUniformLocation = glGetUniformLocation(progPtr->getObject(), "translateMat");
+        if(translateUniformLocation == -1)
+            throw std::runtime_error( std::string("Program uniform not found: " ) + "translateMat");
+        glUniformMatrix4fv(translateUniformLocation, 1, GL_FALSE, &translateMat[0][0]);
+        
+        GLint scaleUniformLocation = glGetUniformLocation(progPtr->getObject(), "scaleMat");
+        if(scaleUniformLocation == -1)
+            throw std::runtime_error( std::string("Program uniform not found: " ) + "scaleMat");
+        glUniformMatrix4fv(scaleUniformLocation, 1, GL_FALSE, &scaleMat[0][0]);
+        
         if(actionRunning)
             updateFromSpriteAction();
-        updateMatrix();
-        glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, &modelMat[0][0]);
+        
+//        updateMatrix();
+//        updateBillboardMatrix(verticalAngle, horizontalAngle);
+        
         
         GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
         if(opacityUniformLocation == -1)
@@ -100,7 +134,16 @@ void Sprite::updateMatrix(){
     glm::mat4 result = glm::mat4();
     translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
     rotateMat = glm::rotate(glm::mat4(), angle, glm::vec3(0, 0, 1));
-    scaleMat = glm::mat4();
+    scaleMat = glm::scale(glm::mat4(), glm::vec3(scaleX, scaleY, 1.0));
+    modelMat = result * translateMat * rotateMat * scaleMat;
+}
+
+void Sprite::updateBillboardMatrix(GLfloat verticalAngle, GLfloat horizontalAngle){
+    glm::mat4 result = glm::mat4();
+    translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
+    rotateMat = glm::rotate(glm::mat4(), verticalAngle, glm::vec3(1, 0, 0));
+    rotateMat = glm::rotate(rotateMat, horizontalAngle, glm::vec3(0, 1, 0));
+    scaleMat = glm::scale(glm::mat4(), glm::vec3(scaleX, scaleY, 1.0));
     modelMat = result * translateMat * rotateMat * scaleMat;
 }
 
@@ -166,4 +209,8 @@ void Sprite::loadVertexData(){
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), &indicesData[0], GL_STATIC_DRAW);
     
     glBindVertexArray(0);
+}
+
+void Sprite::setType(SpriteType type = NORMAL_TYPE){
+    this->type = type;
 }

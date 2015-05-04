@@ -28,8 +28,8 @@ public:
     float getMovedAngle();
     
     //virtuals
-    void update(double elapsedTime, double unusedTime);
-    void clone(SpriteAction* dataPtr);
+    virtual void update(double elapsedTime, double unusedTime);
+    virtual void clone(SpriteAction* dataPtr);
     
     //override
     void revive();

@@ -32,17 +32,20 @@ public:
     ~Sprite();
     
 	static Sprite* createSprite();
-	void initTexture(GLenum _textureTarget = GL_TEXTURE_2D, const std::string& _fileName = "../Texture/default.png");
+//	void initTexture(GLenum _textureTarget = GL_TEXTURE_2D, const std::string& _fileName = "../Texture/default.png");
 
 
     //inits
     void initSpriteWithTexture(GLenum _textureTarget = GL_TEXTURE_2D, const std::string& _fileName = "../Texture/default.png");
+    void initSpriteWithSpriteSheet(const std::string spriteFileName);
+    void setType(SpriteType type);
     
     /**
      * updates matrix. 
      * calculate translation, rotation, scale matrix and compute model matrix
      */
     void updateMatrix();
+    void updateBillboardMatrix(GLfloat verticalAngle, GLfloat horizontalAngle);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Sprite__) */

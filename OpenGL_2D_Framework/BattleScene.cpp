@@ -27,6 +27,15 @@ void BattleScene::init(){
     bg->setPosition(glm::vec2(size.w/2, size.h/2));
     addSprite(bg);
     
+//    ActionRotateBy* bgRotationAction = new ActionRotateBy();
+//    bgRotationAction->initRotateBy(360, 10);
+//    
+//    SpriteActionSchedule* loadingIconSequence = new SpriteActionSchedule();
+//    
+//    loadingIconSequence->createSchedule({bgRotationAction}, REPEAT_FOREVER);
+//    bg->addActions(loadingIconSequence);
+//    bg->runAction();
+    
     //create HUD Layer
     Layer* HUDLayer = new Layer;
     addLayer(HUDLayer);
@@ -88,6 +97,15 @@ void BattleScene::mouseMove(double x, double y){
         }
         bg->setPosition(newBgPos);
     }
+}
+
+
+void BattleScene::injectKey(){
+    
+}
+
+void BattleScene::injectMouseMove(){
+    
 }
 
 void BattleScene::exit(){

@@ -22,7 +22,11 @@ class TitleScene : public Scene{
 protected:
 private:
     Sprite* bg;
+    Sprite* ground;
+    
+    
     virtual void exit();
+    
 public:
     TitleScene();
     ~TitleScene();
@@ -35,6 +39,10 @@ public:
     virtual void mouseMove(double x, double y);
 //    virtual void update();
 //    virtual void render();
+    virtual void injectKey();
+    virtual void injectMouseMove();
+    
+    void updateMouseInput();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__TitleScene__) */

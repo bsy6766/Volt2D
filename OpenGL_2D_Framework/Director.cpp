@@ -11,9 +11,8 @@
 Director::Director():
 winSize({ 0, 0 }),
 runningScene(0),
-nextScene(0),
+nextScene(0)
 //dyingScene(0)
-prevMousePos(glm::vec2(-1, -1))
 {
     
 }
@@ -27,8 +26,8 @@ Director::~Director(){
     for(auto it = programs.begin(); it != programs.end(); ++it )
         delete it->second;
         
-    if(mainCamera)
-        delete mainCamera;
+    if(camera)
+        delete camera;
     
     cout << "GLFW window...";
     //delete window and terminate. This must be processed at last.
@@ -66,6 +65,7 @@ void Director::pushScene(Scene* newScene){
     if(!runningScene){
         cout << "No running scene exists. Pushing new scene to running scene" << endl;
         runningScene = newScene;
+        runningScene->boundWindow(window);
         runningScene->init();
     }
     else{
@@ -75,6 +75,7 @@ void Director::pushScene(Scene* newScene){
         }
         
         nextScene = newScene;
+        nextScene->boundWindow(window);
         nextScene->init();
     }
 }
@@ -104,7 +105,14 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
     addProgramWithShader("Default", "../Shader/vertexShader.glsl", "../Shader/fragmentShader.glsl");
     
     //create basic camera
-    mainCamera = new Camera();
+    camera = new Camera();
+    
+    
+//    font = new FTBufferFont("../Font/AnjaEliane.ttf");
+//    if(font->Error()){
+//        cout << "font error" << endl;
+//    }
+//    font->FaceSize(100);
 }
 
 void Director::terminateApp(){
@@ -204,6 +212,11 @@ void Director::createWindow(const int &screenWidth, const int &screenHeight, con
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, mouse_move_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    
+    
+    prevMousePos = glm::vec2(winSize.w/2, winSize.h/2);
+    curMousePos = glm::vec2(winSize.w/2, winSize.h/2);
 }
 
 void Director::glfw_error_callback(int error, const char *description){
@@ -211,58 +224,12 @@ void Director::glfw_error_callback(int error, const char *description){
 }
 
 void Director::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
-    Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
+//    Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
     if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
     
-    if(action == GLFW_PRESS){
-        cout << "Keyboard pressed" << endl;
-        
-        if(key == GLFW_KEY_C){
-            directorPtr->mainCamera->setPosition(glm::vec3(0, 0, -77.25));
-        }
-        
-        directorPtr->runningScene->keyPressed(key);
-    }
-    else if(action == GLFW_RELEASE){
-//        directorPtr->runningScene->keyPressed();
-        cout << "Keyboard released" << endl;
-        directorPtr->runningScene->keyReleased(key);
-    }
-    else if(action == GLFW_REPEAT){
-//        cout << "Keyboard repeating " << endl;
-        //W,S
-        if(key == GLFW_KEY_W){
-            directorPtr->mainCamera->moveFoward();
-        }
-        else if(key == GLFW_KEY_S){
-            directorPtr->mainCamera->moveBackward();
-        }
-        
-        //A,D
-        if(key == GLFW_KEY_A){
-            directorPtr->mainCamera->moveLeft();
-        }
-        else if(key == GLFW_KEY_D){
-            directorPtr->mainCamera->moveRight();
-        }
-        
-        //Lshift, space
-        if(key == GLFW_KEY_F){
-            directorPtr->mainCamera->moveDown();
-        }
-        else if(key == GLFW_KEY_R){
-            directorPtr->mainCamera->moveUp();
-        }
-        
-        if(key == GLFW_KEY_1){
-            directorPtr->mainCamera->increaseSpeed();
-        }
-        else if(key == GLFW_KEY_2){
-            directorPtr->mainCamera->decreaseSpeed();
-        }
-    }
+
 }
 
 void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos){
@@ -272,6 +239,7 @@ void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos)
 //    directorPtr->prevMousePos = glm::vec2((float)x, (float)y);
     
     directorPtr->runningScene->mouseMove(x, y);
+//    cout << "(" << x << ", " << y << ")" << endl;
 }
 
 void Director::mouse_button_callback(GLFWwindow *window, int button, int action, int mods){
@@ -287,7 +255,7 @@ void Director::mouse_button_callback(GLFWwindow *window, int button, int action,
 //        
 //        cout << "mD = (" << mouseDelta.x << ", " << mouseDelta.y << ")" << endl;
 //        
-//        directorPtr->mainCamera->changeAngle(0.15f * mouseDelta.y, 0.15f * mouseDelta.x);
+//        directorPtr->camera->changeAngle(0.15f * mouseDelta.y, 0.15f * mouseDelta.x);
 //        
 //        directorPtr->prevMousePos = newMousePos;
 //    }
@@ -325,27 +293,106 @@ void Director::run(){
 
 void Director::render(){
     glClearColor(0, 0, 0, 1); //black
+//    glClearColor(1, 1, 1, 1); //black
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+//    glColor4f(1, 1, 1, 1);
+//     glPushAttrib(GL_ALL_ATTRIB_BITS);
+//    font->Render("hello world!", 15);
+//    glPopAttrib();
+
     
     //Camera
     glUseProgram(programs.at("Default")->getObject());
     //Camera Matrix. Projection * view.
     GLuint cameraUniformLocation = glGetUniformLocation(programs.at("Default")->getObject(), "cameraMat");
-    glm::mat4 cameraMat = mainCamera->getMatrix();
+    glm::mat4 cameraMat = camera->getMatrix();
     glUniformMatrix4fv(cameraUniformLocation, 1, GL_FALSE, &cameraMat[0][0]);
     
-    
     if(runningScene)
-        runningScene->render();
+        runningScene->run();
     
     glUseProgram(0);
 }
 
 void Director::update(){
-    if(runningScene)
+    if(runningScene){
+        runningScene->injectKey();
+        runningScene->injectMouseMove();
         runningScene->update();
+    }
+}
+
+void Director::updateMouseInput(){
+    double x, y;
+    glfwGetCursorPos(window, &x, &y);
+    prevMousePos = curMousePos;
+    curMousePos.x = x;
+    curMousePos.y = y;
+
+    glm::vec2 mouseDelta = curMousePos - prevMousePos;
+    camera->changeAngle(0.15f * mouseDelta.y, 0.15f * mouseDelta.x);
+    
+//    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS){
+//        double x, y;
+//        glfwGetCursorPos(window, &x, &y);
+//        prevMousePos = curMousePos;
+//        curMousePos.x = x;
+//        curMousePos.y = y;
+//        
+//        glm::vec2 mouseDelta = curMousePos - prevMousePos;
+//        camera->changeAngle(0.15f * mouseDelta.y, 0.15f * mouseDelta.x);
+//
+//    }
+//    else{
+//        double x, y;
+//        glfwGetCursorPos(window, &x, &y);
+//        prevMousePos.x = x;
+//        prevMousePos.y = y;
+//    }
+}
+
+void Director::updateKeyInput(){
+    //W,S
+    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
+        camera->moveFoward();
+    }
+    else if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
+        camera->moveBackward();
+    }
+    
+    //A,D
+    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
+        camera->moveLeft();
+    }
+    else if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
+        camera->moveRight();
+    }
+    
+    //Lshift, space
+    if(glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS){
+        camera->moveDown();
+    }
+    else if(glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS){
+        camera->moveUp();
+    }
+    
+    if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS){
+        camera->increaseSpeed();
+    }
+    else if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS){
+        camera->decreaseSpeed();
+    }
+    
+    if(glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS){
+        camera->setPosition(glm::vec3(0, 0, -77.25));
+    }
 }
 
 Program* Director::getProgramPtr(std::string programName){
     return programs.at(programName);
+}
+
+Camera* Director::getCameraPtr(){
+    return camera;
 }

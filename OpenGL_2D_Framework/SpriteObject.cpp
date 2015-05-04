@@ -19,8 +19,11 @@ SpriteObject::SpriteObject() :
         modelMat(glm::mat4()),
         opacity(255),
         angle(0),
+        scaleX(1.0),
+        scaleY(1.0),
         w(0),
         h(0),
+        type(NORMAL_TYPE),
 		position(glm::vec2( Director::getInstance().getWindowSize().w / 2,  Director::getInstance().getWindowSize().h / 2)),
         visible(true){
     progPtr = Director::getInstance().getProgramPtr();
@@ -37,8 +40,11 @@ SpriteObject::SpriteObject(Program *ptr) :
         modelMat(glm::mat4()),
         opacity(255),
         angle(0),
+        scaleX(1.0),
+        scaleY(1.0),
         w(0),
-		h(0),
+        h(0),
+        type(NORMAL_TYPE),
 		position(glm::vec2( Director::getInstance().getWindowSize().w / 2,  Director::getInstance().getWindowSize().h / 2)),
         visible(true){
             
@@ -58,8 +64,27 @@ void SpriteObject::setPosition(glm::vec2 position){
     this->translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
 }
 
+void SpriteObject::setPosition(glm::vec3 position){
+//    this->position = position.xy;
+    this->translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, position.z / 10));
+}
+
+void SpriteObject::setPosition(float x, float y, float z){
+//    this->position = position;
+    this->translateMat = glm::translate(glm::mat4(), glm::vec3((x- 640) / 10, (y - 360) / 10, z / 10));
+}
+
 glm::vec2 SpriteObject::getPosition(){
     return position;
+}
+
+void SpriteObject::setScale(float scaleX, float scaleY){
+    this->scaleX = scaleX;
+    this->scaleY = scaleY;
+}
+
+glm::vec2 SpriteObject::getScale(){
+    return glm::vec2(scaleX, scaleY);
 }
 
 void SpriteObject::setZ_Depth(float value){
@@ -239,7 +264,7 @@ void SpriteObject::update(){
                 
                 case ACTION_ROTATE_BY:
                 {
-                    ActionRotateBy  *rotateByPtr = static_cast<ActionRotateBy*>(*i);
+                    ActionRotateBy *rotateByPtr = static_cast<ActionRotateBy*>(*i);
                     
                     if(rotateByPtr->isAlive() && !rotateByPtr->isRunning()){
                         rotateByPtr->startAction();
@@ -254,6 +279,24 @@ void SpriteObject::update(){
                     else{
                         intervalUpdate(rotateByPtr, ci, instantHasNext, sequence);
                     }
+                    break;
+                }
+                case ACTION_SCALE_BY:
+                {
+//                    ActionScaleBy *scaleByPtr = static_cast<ActionScaleBy*>(*i);
+//                    
+//                    if(scaleByPtr->isAlive() && !scaleByPtr->isRunning()){
+//                        scaleByPtr->startAction();
+//                        scaleByPtr->setOriginalScale(scale);
+//                    }
+//                    
+//                    if(scaleByPtr->getDuration() == 0){
+//                        instantUpdate(scaleByPtr, ci, instantHasNext, sequence);
+//                        scale += scaleByPtr->getScaledScale();
+//                    }
+//                    else{
+//                        intervalUpdate(scaleByPtr, ci, instantHasNext, sequence);
+//                    }
                     break;
                 }
                 default:
@@ -390,6 +433,11 @@ void SpriteObject::updateFromSpriteAction(){
                     angle += ptr->getMovedAngle();
                     break;
                 }
+                case ACTION_SCALE_BY:
+                {
+//                    ActionScaleBy *ptr = static_cast<ActionScaleBy*>(*action_ci);
+//                    scale += ptr->getScaledScale();
+                }
                 default:
                     break;
             }
@@ -422,4 +470,8 @@ void SpriteObject::updateFromSpriteAction(){
         scheduleEmpty = false;
     }
     
+}
+
+void SpriteObject::rotateSprite(GLfloat angle, glm::vec3 axis){
+    rotateMat = glm::rotate(rotateMat, angle, axis);
 }

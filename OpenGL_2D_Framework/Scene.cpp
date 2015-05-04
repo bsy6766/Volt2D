@@ -7,8 +7,11 @@
 //
 
 #include "Scene.h"
+#include <GLFW/glfw3.h>
 
-Scene::Scene(){
+Scene::Scene():
+window(0)
+{
     cout << "Scene()" << endl;
     spriteManager = new SpriteManager();
 }
@@ -16,6 +19,15 @@ Scene::Scene(){
 Scene::~Scene(){
     cout << "~Scene()" << endl;
     exit();
+}
+
+void Scene::boundWindow(GLFWwindow *window){
+    this->window = window;
+    double x, y;
+    glfwGetCursorPos(window, &x, &y);
+    
+    prevMousePos = glm::vec2(x, y);
+    curMousePos = glm::vec2(x, y);
 }
 
 void Scene::update(){
@@ -31,6 +43,7 @@ void Scene::update(){
 void Scene::render(){
     //render scene stuff first
     spriteManager->render();
+    
     
     //render layers
     for(auto it : layerMap){

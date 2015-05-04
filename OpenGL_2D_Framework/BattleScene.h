@@ -13,6 +13,7 @@
 
 #include "Scene.h"
 #include "Sprite.h"
+#include "SpriteAction.h"
 #include "CommonInclude.h"
 
 class BattleScene : public Scene{
@@ -33,6 +34,8 @@ public:
     virtual void keyReleased(int key);
     virtual void mouseButton(int button, int action);
     virtual void mouseMove(double x, double y);
+    virtual void injectKey();
+    virtual void injectMouseMove();
     
     virtual void exit();
 };

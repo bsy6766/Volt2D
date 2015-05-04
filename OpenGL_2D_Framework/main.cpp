@@ -12,6 +12,8 @@
 #include "Director.h"
 #include "TitleScene.h"
 
+#include "SpriteSheet.h"
+
 #include <stdio.h>  /* defines FILENAME_MAX */
 #ifdef _WIN32
 	#include <direct.h>
@@ -48,6 +50,11 @@ int main(int argc, const char * argv[]) {
     
     
     std::string windowTitle = "opengl 2d framework";
+    
+    SpriteSheet* ss = new SpriteSheet();
+    ss->initSpriteSheetWithXML("battle scene.xml");
+    delete ss;
+    
     
 //    GameManager* gm = new GameManager();
     Director::getInstance().setWindowSize(1280, 720);

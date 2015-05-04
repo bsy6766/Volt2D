@@ -11,6 +11,7 @@
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include "CommonInclude.h"
 
 /**
  * This Camera class was created during 2014 summer break.
@@ -40,6 +41,8 @@ public:
     glm::mat4 getView() const;
     glm::mat4 getOrientation() const;
     glm::vec3 getPosition() const;
+    GLfloat getVerticalAngle() const;
+    GLfloat getHorizontalAngle() const;
     
     void setPosition(glm::vec3 position);
     
