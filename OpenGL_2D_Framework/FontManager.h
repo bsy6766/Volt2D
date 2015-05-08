@@ -9,6 +9,31 @@
 #ifndef __OpenGL_2D_Framework__FontManager__
 #define __OpenGL_2D_Framework__FontManager__
 
-#include <stdio.h>
+#include "Font.h"
+#include <map>
+#include <string>
+#include "CommonInclude.h"
+#include "Director.h"
+
+class FontManager{
+protected:
+private:
+    FontManager();
+    
+    std::map<std::string, Font*> fontMap;
+public:
+    static const std::string defaultFontName;
+    
+    static FontManager& getInstance(){
+        static FontManager instance;
+        return instance;
+    }
+    
+    ~FontManager();
+    FontManager(FontManager const&) = delete;
+    void operator=(FontManager const&) = delete;
+    
+    void addFont(std::string fontName, int fontSize);
+};
 
 #endif /* defined(__OpenGL_2D_Framework__FontManager__) */

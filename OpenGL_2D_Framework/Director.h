@@ -27,7 +27,16 @@
 
 #include "TextManager.h"
 
-//2D and 3D size is scaled down to 10. 
+#include <stdio.h>  /* defines FILENAME_MAX */
+#ifdef _WIN32
+#include <direct.h>
+#define GetCurrentDir _getcwd
+#elif __APPLE__
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#endif
+
+//2D and 3D size is scaled down to 10.
 //ex) 1280 x 640 pixels texture -> 128 * 64 vertex length quad
 const int SCREEN_TO_WORLD_SCALE = 10;
 const float static GLOBAL_Z_VALUE = 0;
@@ -46,6 +55,8 @@ protected:
 private:
     WinSize winSize;
 //    FTFont *font;
+    
+    std::string workingDirectory;
     
     glm::vec2 prevMousePos;
     glm::vec2 curMousePos;
@@ -109,6 +120,7 @@ public:
     void update();
     void updateMouseInput();
     void updateKeyInput();
+    std::string getWorkingDir();
 //
 //    /**
 //     *	Pause game loop

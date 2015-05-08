@@ -9,6 +9,21 @@
 #ifndef __OpenGL_2D_Framework__Text__
 #define __OpenGL_2D_Framework__Text__
 
-#include <stdio.h>
+#include "TextObject.h"
+
+class Text : public TextObject{
+protected:
+private:
+    std::string text;
+
+public:
+    Text();
+    ~Text();
+    
+    std::string getText();
+    void setText(std::string);
+    void computeVertexData();
+    bool hasEmptyText();
+};
 
 #endif /* defined(__OpenGL_2D_Framework__Text__) */

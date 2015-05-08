@@ -14,7 +14,18 @@ runningScene(0),
 nextScene(0)
 //dyingScene(0)
 {
+    char cCurrentPath[FILENAME_MAX];
     
+//    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
+//    {
+//        return errno;
+//    }
+    
+    cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
+    
+    //    printf ("The current working directory is %s\n", cCurrentPath);
+    workingDirectory = cCurrentPath;
+    std::cout << "The current working directory is " << workingDirectory << std::endl;
 }
 
 Director::~Director(){
@@ -46,6 +57,10 @@ void Director::setWindowSize(float width, float height){
 
 WinSize Director::getWindowSize(){
     return winSize;
+}
+
+std::string Director::getWorkingDir(){
+    return workingDirectory;
 }
 
 void Director::addProgramWithShader(const std::string programName, const std::string vertexShaderPath, const std::string fragmentShaderPath){
@@ -278,9 +293,9 @@ void Director::run(){
     //    textManager->initFreeType();
     //    textManager->loadFreeTypeFont("../Font/UhBee Kang-Ja.ttf", 50);
     //    textManager->loadFreeTypeFont("../Font/AnjaEliane.ttf", 50);
-        textManager->loadFont("../Font/UhBee Kang-Ja.ttf", 200);
+//        textManager->loadFont("../Font/UhBee Kang-Ja.ttf", 200);
 //    textManager->loadFont("../Font/anjaEliane.ttf", 50);
-    textManager->setText("!");
+//    textManager->setText("!");
     while (!glfwWindowShouldClose(window)){
         Timer::getInstance().recordTime();
         
@@ -318,7 +333,7 @@ void Director::render(){
     glUseProgram(0);
     glUseProgram(programs.at("Text")->getObject());
     
-    textManager->renderText();
+//    textManager->renderText();
     glUseProgram(0);
 //    textManager->renderLive("Hello");
 }

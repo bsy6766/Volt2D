@@ -14,14 +14,7 @@
 
 #include "SpriteSheet.h"
 
-#include <stdio.h>  /* defines FILENAME_MAX */
-#ifdef _WIN32
-	#include <direct.h>
-	#define GetCurrentDir _getcwd
-#elif __APPLE__
-	#include <unistd.h>
-	#define GetCurrentDir getcwd
-#endif
+
 
 int main(int argc, const char * argv[]) {
     
