@@ -28,7 +28,7 @@ void TitleScene::init(){
     bg->setZ_Depth(2);
     bg->type = Sprite::BILLBOARD_TYPE;
     WinSize size = Director::getInstance().getWindowSize();
-    bg->setPosition(glm::vec2(size.w/2, size.h/2));
+    bg->setPosition(glm::vec2(size.w/2-100, size.h/2));
     addSprite(bg);
     
     ground = new Sprite();
@@ -116,7 +116,7 @@ void TitleScene::injectMouseMove(){
     //billboard
     bg->rotateSprite(horizontalAngle * (-1), glm::vec3(0, 1, 0));
     
-    cout << "curMousePos = (" << x << ", " << y << ")" << endl;
+//    cout << "curMousePos = (" << x << ", " << y << ")" << endl;
 }
 
 void TitleScene::exit(){

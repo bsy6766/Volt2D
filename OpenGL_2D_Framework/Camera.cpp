@@ -16,7 +16,7 @@ Camera::Camera() :
     fovy(50.0f),
     aspect(1280.0f/720.0f),
     nears(0.01f),
-    fars(200.0f),
+    fars(500.0f),
     speed(0.1f)
 {
     

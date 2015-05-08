@@ -16,6 +16,7 @@
 #include <map>
 #include <glm/glm.hpp>
 
+
 class GLFWwindow;
 
 class Scene{
@@ -26,6 +27,7 @@ protected:
     glm::vec2 curMousePos;
 private:
     std::multimap<int/*z order*/, Layer*> layerMap;
+    
     virtual void exit();
 public:
 	Scene();

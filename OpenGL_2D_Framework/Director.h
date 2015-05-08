@@ -25,8 +25,7 @@
 #include <unordered_map>
 #include "Timer.h"
 
-
-#include <FTGL/ftgl.h>
+#include "TextManager.h"
 
 //2D and 3D size is scaled down to 10. 
 //ex) 1280 x 640 pixels texture -> 128 * 64 vertex length quad
@@ -82,6 +81,8 @@ private:
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     static void glfw_error_callback(int error, const char *description);
     
+    //text test
+    TextManager* textManager;
 public:
     static Director& getInstance(){
         static Director instance;

@@ -103,16 +103,12 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
     
     //create basic shader
     addProgramWithShader("Default", "../Shader/vertexShader.glsl", "../Shader/fragmentShader.glsl");
+    addProgramWithShader("Text", "../Shader/textVertexShader.glsl", "../Shader/textFragmentShader.glsl");
     
     //create basic camera
     camera = new Camera();
     
-    
-//    font = new FTBufferFont("../Font/AnjaEliane.ttf");
-//    if(font->Error()){
-//        cout << "font error" << endl;
-//    }
-//    font->FaceSize(100);
+    textManager = new TextManager();
 }
 
 void Director::terminateApp(){
@@ -279,6 +275,12 @@ void Director::transitionToNextScene(bool wait = true){
 }
 
 void Director::run(){
+    //    textManager->initFreeType();
+    //    textManager->loadFreeTypeFont("../Font/UhBee Kang-Ja.ttf", 50);
+    //    textManager->loadFreeTypeFont("../Font/AnjaEliane.ttf", 50);
+        textManager->loadFont("../Font/UhBee Kang-Ja.ttf", 200);
+//    textManager->loadFont("../Font/anjaEliane.ttf", 50);
+    textManager->setText("!");
     while (!glfwWindowShouldClose(window)){
         Timer::getInstance().recordTime();
         
@@ -292,8 +294,9 @@ void Director::run(){
 }
 
 void Director::render(){
-    glClearColor(0, 0, 0, 1); //black
-//    glClearColor(1, 1, 1, 1); //black
+//    glClearColor(0, 0, 0, 1); //black
+    glClearColor(0.5, 0.5, 0.5, 1);
+//    glClearColor(1, 1, 1, 1); //white
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
 //    glColor4f(1, 1, 1, 1);
@@ -313,6 +316,11 @@ void Director::render(){
         runningScene->run();
     
     glUseProgram(0);
+    glUseProgram(programs.at("Text")->getObject());
+    
+    textManager->renderText();
+    glUseProgram(0);
+//    textManager->renderLive("Hello");
 }
 
 void Director::update(){

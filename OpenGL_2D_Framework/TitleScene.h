@@ -24,7 +24,6 @@ private:
     Sprite* bg;
     Sprite* ground;
     
-    
     virtual void exit();
     
 public:

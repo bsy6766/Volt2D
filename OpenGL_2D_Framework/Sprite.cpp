@@ -127,6 +127,7 @@ void Sprite::render(){
         
         //draw based on indices
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+        glBindVertexArray(0);
     }
 }
 
