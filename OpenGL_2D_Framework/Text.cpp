@@ -113,13 +113,12 @@ void Text::computeVertexData(){
         int height = (int)(gData.metrics.height >> 6);
         int width = (int)(gData.metrics.width >> 6);
         
-        cout << "gData.advance.x = " << (gData.metrics.horiAdvance >> 6) << endl;
-        
         if(c == ' ')
             width = 15;
         
         glm::vec2 p1 = glm::vec2(origin.x, origin.y - (height - bearingY)); //left bottom
         glm::vec2 p2 = glm::vec2(origin.x + width, origin.y + bearingY);
+        
         cout << "p1 = (" << p1.x << ", " << p1.y << ", 0)" << endl;
         cout << "p2 = (" << p2.x << ", " << p2.y << ", 0)" << endl;
         p1 /= 10;

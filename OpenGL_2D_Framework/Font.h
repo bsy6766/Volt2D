@@ -21,16 +21,16 @@ class GlyphData {
 public:
     bool valid;
     char c;     // the character of this glyph
-    int size;   // font size
-    
-    int bitmap_width;   // texture width
-    int bitmap_rows;    // texture height
+//    int size;   // font size
+//    
+//    int bitmap_width;   // texture width
+//    int bitmap_rows;    // texture height
     unsigned char *bitmap_buffer;   // texture data
-    FT_Vector advance;  // this variable contains the information of how much we need to move to the right from the last character
+//    FT_Vector advance;  // this variable contains the information of how much we need to move to the right from the last character
     FT_Glyph_Metrics metrics;
-    int bitmap_left;    // width of the glyph in pixels
-    int bitmap_top;     // height of the glyph in pixels
-    
+//    int bitmap_left;    // width of the glyph in pixels
+//    int bitmap_top;     // height of the glyph in pixels
+//    
     //Texture
     GLuint texObj;
 };

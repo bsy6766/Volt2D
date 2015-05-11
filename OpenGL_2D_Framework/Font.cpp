@@ -66,15 +66,15 @@ bool Font::initFont(std::string fontName, int fontSize){
         //update reference
         gData.bitmap_buffer = new unsigned char[bitmap.rows * bitmap.width * sizeof(unsigned char)];
         memcpy(gData.bitmap_buffer, bitmap.buffer, bitmap.rows * bitmap.width * sizeof(unsigned char));
-        
-        gData.bitmap_width = bitmap.width; // copy texture width
-        gData.bitmap_rows = bitmap.rows; // copy texture height
-        gData.bitmap_left = slot->bitmap_left; // copy glyph width (pixels)
-        gData.bitmap_top = slot->bitmap_top; // copy glyph height (pixels)
-        gData.advance = glyph->advance; // copy the advance vector (note this isn't c++ vector, this is real vector)
+//
+//        gData.bitmap_width = bitmap.width; // copy texture width
+//        gData.bitmap_rows = bitmap.rows; // copy texture height
+//        gData.bitmap_left = slot->bitmap_left; // copy glyph width (pixels)
+//        gData.bitmap_top = slot->bitmap_top; // copy glyph height (pixels)
+//        gData.advance = glyph->advance; // copy the advance vector (note this isn't c++ vector, this is real vector)
         //        gData.c = (char)i; // set the character
         gData.c = i;
-        gData.size = size; // set the size
+//        gData.size = size; // set the size
         gData.valid = true;
         gData.metrics = slot->metrics;
         
