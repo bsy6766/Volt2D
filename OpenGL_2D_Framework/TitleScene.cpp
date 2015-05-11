@@ -32,7 +32,7 @@ void TitleScene::init(){
 //    addSprite(bg);
 //    
     ground = new Sprite();
-    ground->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_ground.png");
+    ground->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_bg.png");
     ground->setZ_Depth(1);
     ground->setPosition(size.w/2, 0, 0);
     ground->rotateSprite(90, glm::vec3(-1, 0, 0));
@@ -41,7 +41,7 @@ void TitleScene::init(){
     FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
     
     helloWorldText = new Text();
-    helloWorldText->initText("Hello Ahzae from SRL!\nWelcome to Todayhumor! - sodmaster", "UhBee Kang-Ja.ttf");
+    helloWorldText->initText("Hello Ahzae from SRL! Welcome to Todayhumor! - sodmaster", "UhBee Kang-Ja.ttf");
     helloWorldText->setColor(glm::vec3(100, 200, 30));
     addText(helloWorldText);
     
