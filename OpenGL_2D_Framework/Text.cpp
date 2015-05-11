@@ -31,6 +31,7 @@ Text::~Text(){
 void Text::initText(std::string label, std::string fontName = "arial.tff"){
     if(!dirty){
         dirty = true;
+        this->fontName = fontName;
         text = label;
         computeVertexData();
     }
@@ -48,6 +49,15 @@ void Text::setText(std::string newText = ""){
 }
 
 void Text::setColor(glm::vec3 textColor){
+    if(textColor.r > 255)
+        textColor.r = 255;
+    
+    if(textColor.g > 255)
+        textColor.g = 255;
+    
+    if(textColor.b > 255)
+        textColor.b = 255;
+    
     this->fontColor = textColor;
 }
 
@@ -62,7 +72,7 @@ void Text::computeVertexData(){
     textureObjectData.clear();
     indicesData.clear();
     
-    Font* font = FontManager::getInstance().getFont("UhBee Kang-Ja.ttf");
+    Font* font = FontManager::getInstance().getFont(fontName);
     if(!font){
         cout << "Failed to find font." << endl;
         loaded = false;
@@ -103,11 +113,15 @@ void Text::computeVertexData(){
         int height = (int)(gData.metrics.height >> 6);
         int width = (int)(gData.metrics.width >> 6);
         
+        cout << "gData.advance.x = " << (gData.metrics.horiAdvance >> 6) << endl;
+        
         if(c == ' ')
             width = 15;
         
         glm::vec2 p1 = glm::vec2(origin.x, origin.y - (height - bearingY)); //left bottom
         glm::vec2 p2 = glm::vec2(origin.x + width, origin.y + bearingY);
+        cout << "p1 = (" << p1.x << ", " << p1.y << ", 0)" << endl;
+        cout << "p2 = (" << p2.x << ", " << p2.y << ", 0)" << endl;
         p1 /= 10;
         p2 /= 10;
         
@@ -116,13 +130,11 @@ void Text::computeVertexData(){
         vertexData.push_back(glm::vec3(p2.x, p1.y, 0)); //Right bottom
         vertexData.push_back(glm::vec3(p2.x, p2.y, 0)); //Right top
         
-        cout << "p1 = (" << p1.x << ", " << p1.y << ", 0)" << endl;
-        cout << "p2 = (" << p2.x << ", " << p2.y << ", 0)" << endl;
         
-        cout << "bot left: ( " << p1.x << ", " << p1.y << ", 0)" << endl;
-        cout << "top left: ( " << p1.x << ", " << p2.y << ", 0)" << endl;
-        cout << "bot right: ( " << p2.x << ", " << p1.y << ", 0)" << endl;
-        cout << "top right: ( " << p2.x << ", " << p2.y << ", 0)" << endl;
+//        cout << "bot left: ( " << p1.x << ", " << p1.y << ", 0)" << endl;
+//        cout << "top left: ( " << p1.x << ", " << p2.y << ", 0)" << endl;
+//        cout << "bot right: ( " << p2.x << ", " << p1.y << ", 0)" << endl;
+//        cout << "top right: ( " << p2.x << ", " << p2.y << ", 0)" << endl;
         
         //add uv coord. This is different from Sprite class because we didn't use stb_image to load and flip font texture.
         uvVertexData.push_back(glm::vec2(0, 1));	//top left
@@ -139,7 +151,7 @@ void Text::computeVertexData(){
         indicesData.push_back(indicesIndex * 4 + 3);
         
         //advance origin
-        origin.x += width;
+        origin.x += (gData.metrics.horiAdvance >> 6);
         
         indicesIndex++;
     }
@@ -248,7 +260,7 @@ void Text::render(){
     glActiveTexture(GL_TEXTURE0);
     
     unsigned int textLength = (unsigned int)text.length();
-    Font* font = FontManager::getInstance().getFont("UhBee Kang-Ja.ttf");
+    Font* font = FontManager::getInstance().getFont(fontName);
     const char* textCStr = text.c_str();
     for(unsigned int i = 0; i<textLength; i++){
         //for each character
@@ -256,7 +268,7 @@ void Text::render(){
         int cInt = (int)c;
 //        cout << "rendering = " << cInt << endl;
         if(cInt < 32 || cInt > 126){
-            cout << "WHAaaaaaaaaaaat?!" << endl;
+            cout << "Unsupported text" << endl;
             exit(1);
         }
 //        get GlyphData

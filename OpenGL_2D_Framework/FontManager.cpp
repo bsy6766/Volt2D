@@ -13,7 +13,7 @@ const std::string FontManager::defaultFontName = "arial.ttf";
 FontManager::FontManager(){
     //add default font size of 10
     Font *defaultFont = new Font();
-    defaultFont->initFont(defaultFontName, 10);
+    defaultFont->initFont(defaultFontName, 50);
     fontMap.insert(std::pair<std::string, Font*>(defaultFontName, defaultFont));
 }
 

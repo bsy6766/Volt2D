@@ -41,8 +41,9 @@ void TitleScene::init(){
     FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
     
     helloWorldText = new Text();
-    helloWorldText->initText("Hello Ahzae from SRL! Welcome to Todayhumor! - sodmaster", "UhBee Kang-Ja.ttf");
-    helloWorldText->setColor(glm::vec3(100, 200, 30));
+//    helloWorldText->initText("HELLO WORLD! Seung Youp Baek~", "UhBee Kang-Ja.ttf");
+    helloWorldText->initText("HELLO WORLD! Seung Youp Baek~", "arial.ttf");
+    helloWorldText->setColor(glm::vec3(0, 0, 255));
     addText(helloWorldText);
     
     glfwSetCursorPos(window, size.w/2, size.h/2);

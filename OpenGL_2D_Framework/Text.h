@@ -18,7 +18,7 @@ private:
     std::string text;
     bool dirty;
     bool loaded;
-    std::string fontame;
+    std::string fontName;
     
     void getMaxValues(Font* font, int& width, int& height, glm::vec2& origin);
     glm::vec3 fontColor;    //RGB
