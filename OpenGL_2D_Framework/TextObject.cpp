@@ -13,8 +13,12 @@ TextObject::TextObject()
 vao(0),
 vbo(0),
 uvbo(0),
-textbo(0),
-ibo(0)
+ibo(0),
+translateMat(glm::mat4()),
+rotateMat(glm::mat4()),
+scaleMat(glm::mat4()),
+modelMat(glm::mat4()),
+position(glm::vec2(0, 0))
 {
     
 }

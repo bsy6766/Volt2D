@@ -14,6 +14,8 @@
 #include <GL/glew.h>
 #include <vector>
 #include <string>
+#include <glm/glm.hpp>
+#include "Program.h"
 
 class TextObject{
 protected:
@@ -22,7 +24,7 @@ protected:
     //    int w;
     //    int h;
     //
-    //    glm::vec2 position;
+    glm::vec2 position;
     //    Program *progPtr;
     //
     //    bool actionRunning;
@@ -34,7 +36,6 @@ protected:
     GLuint vao;		//vertex array object
     GLuint vbo;		//vertex buffer object
     GLuint uvbo;	//uv vert buffer object
-    GLuint textbo;  //texture buffer object
     GLuint ibo;		//indices buffer object
     
     //OpenGL Matrix
@@ -46,11 +47,16 @@ protected:
     //vertex, texture coordinate and index data
     std::vector<glm::vec3> vertexData;
     std::vector<glm::vec2> uvVertexData;
+    std::vector<GLuint> textureObjectData;
     std::vector<GLushort> indicesData;
+    
+    Program* prog;
 private:
 public:
     TextObject();
     virtual ~TextObject();
+    
+    virtual void render() = 0;
 };
 
 #endif /* defined(__OpenGL_2D_Framework__TextObject__) */

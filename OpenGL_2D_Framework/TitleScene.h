@@ -15,6 +15,8 @@
 //inherit. must need
 #include "Scene.h"
 #include "Sprite.h"
+#include "Text.h"
+#include "FontManager.h"
 
 #include "BattleScene.h"
 
@@ -23,6 +25,7 @@ protected:
 private:
     Sprite* bg;
     Sprite* ground;
+    Text* helloWorldText;
     
     virtual void exit();
     

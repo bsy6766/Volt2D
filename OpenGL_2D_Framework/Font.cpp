@@ -30,7 +30,7 @@ Font::~Font(){
 bool Font::initFont(std::string fontName, int fontSize){
     FT_Face face;
     std::string workingDir = Director::getInstance().getWorkingDir();
-    std::string fontPath = workingDir + "/" + fontName;
+    std::string fontPath = workingDir + "/../Font/" + fontName;
     if(FT_New_Face(library, fontPath.c_str(), 0, &face)){
         cout << "TextManager::Failed to load face. " << endl;
         return false;
@@ -73,9 +73,10 @@ bool Font::initFont(std::string fontName, int fontSize){
         gData.bitmap_top = slot->bitmap_top; // copy glyph height (pixels)
         gData.advance = glyph->advance; // copy the advance vector (note this isn't c++ vector, this is real vector)
         //        gData.c = (char)i; // set the character
-        gData.c = 'a';
+        gData.c = i;
         gData.size = size; // set the size
         gData.valid = true;
+        gData.metrics = slot->metrics;
         
         GLuint textureObject;
         glGenTextures(1, &textureObject);
@@ -91,7 +92,15 @@ bool Font::initFont(std::string fontName, int fontSize){
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmap.width, bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, gData.bitmap_buffer);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+        
+        glyphMap.insert(std::pair<char,GlyphData>(gData.c, gData));
     }
     
     return true;
+}
+
+void Font::getGlyphDataFromChar(char c, GlyphData& gData){
+    if(glyphMap.count(c)){
+        gData = glyphMap.at(c);
+    }
 }

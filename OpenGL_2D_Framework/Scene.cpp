@@ -14,6 +14,7 @@ window(0)
 {
     cout << "Scene()" << endl;
     spriteManager = new SpriteManager();
+    textManager = new TextManager();
 }
 
 Scene::~Scene(){
@@ -43,7 +44,7 @@ void Scene::update(){
 void Scene::render(){
     //render scene stuff first
     spriteManager->render();
-    
+    textManager->render();
     
     //render layers
     for(auto it : layerMap){
@@ -59,6 +60,10 @@ void Scene::run(){
 
 void Scene::addSprite(SpriteObject* childSprite){
     spriteManager->addSprite(childSprite);
+}
+
+void Scene::addText(TextObject* childText){
+    textManager->addText(childText);
 }
 
 void Scene::addLayer(Layer *childLayer){

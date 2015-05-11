@@ -15,3 +15,16 @@ TextManager::TextManager(){
 TextManager::~TextManager(){
     
 }
+
+void TextManager::addText(TextObject *textObj){
+    if(textObj)
+        textObjectList.push_back(textObj);
+}
+
+void TextManager::render(){
+    if(!textObjectList.empty())
+        for(auto it : textObjectList){
+            it->render();
+        }
+}
+

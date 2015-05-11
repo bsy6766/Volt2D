@@ -16,10 +16,10 @@ nextScene(0)
 {
     char cCurrentPath[FILENAME_MAX];
     
-//    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
-//    {
+    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
+    {
 //        return errno;
-//    }
+    }
     
     cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
     
@@ -331,11 +331,6 @@ void Director::render(){
         runningScene->run();
     
     glUseProgram(0);
-    glUseProgram(programs.at("Text")->getObject());
-    
-//    textManager->renderText();
-    glUseProgram(0);
-//    textManager->renderLive("Hello");
 }
 
 void Director::update(){

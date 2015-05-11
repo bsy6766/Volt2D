@@ -34,6 +34,7 @@ public:
     void operator=(FontManager const&) = delete;
     
     void addFont(std::string fontName, int fontSize);
+    Font* getFont(std::string fontName);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__FontManager__) */

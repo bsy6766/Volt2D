@@ -21,22 +21,29 @@ TitleScene::~TitleScene(){
 
 void TitleScene::init(){
     cout << "TitleScene::init()" << endl;
-    //init basic stuff
-    bg = new Sprite();
-//    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/titleScene_bg.png");
-    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/boss_creeper.png");
-    bg->setZ_Depth(2);
-    bg->type = Sprite::BILLBOARD_TYPE;
     WinSize size = Director::getInstance().getWindowSize();
-    bg->setPosition(glm::vec2(size.w/2-100, size.h/2));
-    addSprite(bg);
-    
+    //init basic stuff
+//    bg = new Sprite();
+////    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/titleScene_bg.png");
+//    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/boss_creeper.png");
+//    bg->setZ_Depth(2);
+//    bg->type = Sprite::BILLBOARD_TYPE;
+//    bg->setPosition(glm::vec2(size.w/2-100, size.h/2));
+//    addSprite(bg);
+//    
     ground = new Sprite();
     ground->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_ground.png");
     ground->setZ_Depth(1);
     ground->setPosition(size.w/2, 0, 0);
     ground->rotateSprite(90, glm::vec3(-1, 0, 0));
     addSprite(ground);
+    
+    FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
+    
+    helloWorldText = new Text();
+    helloWorldText->initText("Hello Ahzae from SRL!\nWelcome to Todayhumor! - sodmaster", "UhBee Kang-Ja.ttf");
+    helloWorldText->setColor(glm::vec3(100, 200, 30));
+    addText(helloWorldText);
     
     glfwSetCursorPos(window, size.w/2, size.h/2);
     cout << "init mouse pos with = (" << size.w/2 << ", " << size.h/2 << ")" << endl;
@@ -114,7 +121,7 @@ void TitleScene::injectMouseMove(){
     float horizontalAngle = 0.15f * mouseDelta.x;
     Director::getInstance().getCameraPtr()->changeAngle(0.15f * mouseDelta.y, 0.15f * mouseDelta.x);
     //billboard
-    bg->rotateSprite(horizontalAngle * (-1), glm::vec3(0, 1, 0));
+//    bg->rotateSprite(horizontalAngle * (-1), glm::vec3(0, 1, 0));
     
 //    cout << "curMousePos = (" << x << ", " << y << ")" << endl;
 }

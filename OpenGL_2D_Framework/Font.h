@@ -27,6 +27,7 @@ public:
     int bitmap_rows;    // texture height
     unsigned char *bitmap_buffer;   // texture data
     FT_Vector advance;  // this variable contains the information of how much we need to move to the right from the last character
+    FT_Glyph_Metrics metrics;
     int bitmap_left;    // width of the glyph in pixels
     int bitmap_top;     // height of the glyph in pixels
     
@@ -48,7 +49,7 @@ public:
     ~Font();
     //read font file and generate glyph map.
     bool initFont(std::string fontName, int fontSize);
-    
+    void getGlyphDataFromChar(char c, GlyphData& gData);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Font__) */

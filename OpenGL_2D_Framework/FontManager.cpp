@@ -32,3 +32,12 @@ void FontManager::addFont(std::string fontName, int fontSize){
     fontMap.insert(std::pair<std::string, Font*>(fontName, newFont));
     
 }
+
+Font* FontManager::getFont(std::string fontName = defaultFontName){
+    if(fontMap.count(fontName)){
+        return fontMap.at(fontName);
+    }
+    else{
+        return 0;
+    }
+}

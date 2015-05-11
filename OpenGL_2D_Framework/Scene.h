@@ -11,6 +11,7 @@
 
 #include "CommonInclude.h"
 #include "SpriteManager.h"
+#include "TextManager.h"
 #include "Layer.h"
 
 #include <map>
@@ -22,6 +23,7 @@ class GLFWwindow;
 class Scene{
 protected:
     SpriteManager *spriteManager;
+    TextManager *textManager;
     GLFWwindow* window;
     glm::vec2 prevMousePos;
     glm::vec2 curMousePos;
@@ -51,6 +53,7 @@ public:
     
     void addLayer(Layer* childLayer);
     void addSprite(SpriteObject* childSprite);
+    void addText(TextObject* childText);
 //    void addParticleSystem();
     
 };
