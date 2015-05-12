@@ -41,6 +41,8 @@ bool Font::initFont(std::string fontName, int fontSize){
         size = 1;
     
     FT_Set_Pixel_Sizes(face, 0, size);
+    
+    this->lineSpace = (face->height >> 6);
 
     //load all char
     for(size_t i = ' '; i <= '~'; ++i){
@@ -60,7 +62,6 @@ bool Font::initFont(std::string fontName, int fontSize){
         FT_BitmapGlyph bitmap_glyph = (FT_BitmapGlyph)glyph;
         //        FT_Bitmap& bitmap = slot->bitmap;
         FT_Bitmap bitmap = bitmap_glyph->bitmap;
-        
         
         GlyphData gData;
         //update reference
@@ -103,4 +104,8 @@ void Font::getGlyphDataFromChar(char c, GlyphData& gData){
     if(glyphMap.count(c)){
         gData = glyphMap.at(c);
     }
+}
+
+int Font::getLineSpace(){
+    return lineSpace;
 }

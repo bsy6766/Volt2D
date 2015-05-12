@@ -41,9 +41,10 @@ void TitleScene::init(){
     FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
     
     helloWorldText = new Text();
-//    helloWorldText->initText("HELLO WORLD! Seung Youp Baek~", "UhBee Kang-Ja.ttf");
-    helloWorldText->initText("HELLO WORLD! Seung Youp Baek~", "arial.ttf");
-    helloWorldText->setColor(glm::vec3(0, 0, 255));
+    //    helloWorldText->initText("HELLO WORLD! Seung Youp Baek~", "UhBee Kang-Ja.ttf");
+    helloWorldText->initText("HELLO WORLD!\nSeung Youp Baek~\nOpenGL with TTF.", "UhBee Kang-Ja.ttf");
+//    helloWorldText->initText("HELLO WORLD!\nSeung Youp Baek~\nOpenGL with TTF.", "arial.ttf");
+    helloWorldText->setColor(glm::vec3(255, 255, 255));
     addText(helloWorldText);
     
     glfwSetCursorPos(window, size.w/2, size.h/2);

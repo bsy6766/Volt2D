@@ -41,6 +41,7 @@ private:
     static FT_Library library;  //Made static so all manager can share one library.
     FT_GlyphSlot glyph;
     int size;
+    int lineSpace;
 
     std::map<char, GlyphData> glyphMap;
     
@@ -50,6 +51,7 @@ public:
     //read font file and generate glyph map.
     bool initFont(std::string fontName, int fontSize);
     void getGlyphDataFromChar(char c, GlyphData& gData);
+    int getLineSpace();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Font__) */
