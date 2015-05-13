@@ -48,6 +48,7 @@ public:
     };
     
     TextAlign align;
+    void setTextAlign(TextAlign mode);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Text__) */

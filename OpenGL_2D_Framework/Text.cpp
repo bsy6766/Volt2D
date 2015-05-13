@@ -282,9 +282,11 @@ void Text::getMaxValues(Font* font, int &width, int &height, std::vector<glm::ve
     int w = 0;
     int h = 0;
     int totalHeight = 0;
+    int maxWidth = 0;
     int bearingY = 0;
     
     std::vector<int> offsetY;
+    std::vector<int> widthList;
     
     for(auto it : splittedText){
         w = 0;
@@ -307,12 +309,15 @@ void Text::getMaxValues(Font* font, int &width, int &height, std::vector<glm::ve
             int newBearingY = (int)(gData.metrics.horiBearingY >> 6);
             if(newBearingY >= bearingY)
                 bearingY = newBearingY;
+            
+            if(w >= maxWidth)
+                maxWidth = w;
         }
         
         //sum total hiehgt
         totalHeight += h;
         
-        //create origin
+        //create origin (center aligned)
         glm::vec2 origin = glm::vec2(0, 0);
         origin.x = w/2 * (-1);
         origin.y = 0;
@@ -321,6 +326,8 @@ void Text::getMaxValues(Font* font, int &width, int &height, std::vector<glm::ve
         //save offsets
         offsetY.push_back(bearingY);
         offsetY.push_back(h - bearingY);
+        
+        widthList.push_back(w);
     }
 //    
 //    int offset = 0;
@@ -329,8 +336,14 @@ void Text::getMaxValues(Font* font, int &width, int &height, std::vector<glm::ve
     
     int newY = 0 - offsetY.at(0) + baseY;
     int lineSpace = font->getLineSpace();
-    
+
     for(unsigned int i = 0; i<originList.size(); i++){
+        if(align == ALIGN_RIGHT){
+            originList.at(i).x = ((-1) * (maxWidth / 2)) + (maxWidth - widthList.at(i));
+        }
+        else if(align == ALIGN_LEFT){
+            originList.at(i).x = maxWidth / 2 * (-1);
+        }
         originList.at(i).y = newY;
         newY -= lineSpace;
     }
@@ -440,4 +453,8 @@ void Text::splitByNewLine(){
     while(getline(ss, tok, '\n')) {
         splittedText.push_back(tok);
     }
+}
+
+void Text::setTextAlign(Text::TextAlign mode){
+    this->align = mode;
 }
