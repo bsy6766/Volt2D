@@ -14,7 +14,7 @@
 #include "SpriteObject.h"
 #include "Texture.h"
 //#include "Scene.h"
-#include "CommonInclude.h"
+//#include "CommonInclude.h"
 
 
 class Sprite :  public SpriteObject{
@@ -22,9 +22,9 @@ private:
     Texture *texture;
     
     //pure virtual.
-    void createVertexData();
-    void loadVertexData();
-    void render();
+    virtual void computeVertexData();
+    virtual void loadVertexData();
+    virtual void render();
     
 public:
     Sprite();

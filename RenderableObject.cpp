@@ -19,7 +19,9 @@ scaleMat(glm::mat4()),
 modelMat(glm::mat4()),
 angle(0),
 scale(glm::vec3(0, 0, 0)),
-opacity(255)
+opacity(255),
+Object(),
+boundingBox(new BoundingBox())
 {
     
 }
@@ -27,16 +29,17 @@ opacity(255)
 RenderableObject::~RenderableObject(){
     deleteVertexData();
     cout << "Deleting Renderable Object" << endl;
+    delete boundingBox;
 }
 
 void RenderableObject::translateTo(glm::vec3 position){
     this->position = position;
-    
-    
+    translateMat = glm::translate(glm::mat4(), position);
 }
 
 void RenderableObject::translateBy(glm::vec3 distance){
     this->position += distance;
+    translateMat = glm::translate(translateMat, distance);
 }
 
 void RenderableObject::rotateTo(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
@@ -122,4 +125,20 @@ void RenderableObject::deleteVertexData(){
     vbo = 0;
     uvbo = 0;
     ibo = 0;
+}
+
+GLfloat RenderableObject::getScaleX(){
+    return scale.x;
+}
+
+GLfloat RenderableObject::getScaleY(){
+    return scale.y;
+}
+
+GLfloat RenderableObject::getScaleZ(){
+    return scale.z;
+}
+
+glm::vec3 RenderableObject::getScale(){
+    return this->scale;
 }

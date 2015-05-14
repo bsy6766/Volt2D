@@ -20,29 +20,15 @@
 #include "ActionRotateBy.h"
 #include "ActionScaleBy.h"
 #include "SpriteActionSchedule.h"
-#include "Director.h"
-#include "BoundingBox.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 #include <list>
-#include <iostream>
 
-using std::cout;
-using std::endl;
-
-//struct Rect{
-//    //x,y = bottom left
-//    float x;
-//    float y;
-//    float w;
-//    float h;
-//};
+#include "RenderableObject.h"
 
 static int ID_COUNTER = 0;
 
-class SpriteObject{
+class SpriteObject : public RenderableObject{
 private:
 	/**
 	*	Update instant actions.
@@ -60,30 +46,11 @@ protected:
     int w;
     int h;
     
-    glm::vec2 position;
+//    glm::vec2 position;
     Program *progPtr;
     
     bool actionRunning;
     float z;    //each sprite can set 0~100.
-    
-    BoundingBox* boundingBox;
-    bool visible;
-    
-    GLuint vao;		//vertex array object
-    GLuint vbo;		//vertex buffer object
-    GLuint uvbo;	//uv vert buffer object
-    GLuint ibo;		//indices buffer object
-    
-	//OpenGL Matrix
-    glm::mat4 translateMat;
-    glm::mat4 rotateMat;
-    glm::mat4 scaleMat;
-    glm::mat4 modelMat;
-    
-	//vertex, texture coordinate and index data
-    std::vector<glm::vec3> vertexData;
-    std::vector<glm::vec2> uvVertexData;
-    std::vector<GLushort> indicesData;
     
 	//Action schedule list
     std::list<SpriteActionSchedule *> spriteActionScheduleList;
@@ -93,25 +60,12 @@ public:
     SpriteObject(Program *ptr);
     virtual ~SpriteObject();	//virtual!
     
-    float opacity;
-    float angle;
-    float scaleX;
-    float scaleY;
-    
     enum SpriteType{
         NORMAL_TYPE = 0,
         BILLBOARD_TYPE
     };
     
     SpriteType type;
-    
-    //setter
-    void setPosition(glm::vec2 position);
-    void setPosition(glm::vec3 position);
-    void setPosition(float x, float y, float z);
-    glm::vec2 getPosition();
-    void setScale(float scaleX, float scaleY);
-    glm::vec2 getScale();
     
     //z depth
     void setZ_Depth(float value);
@@ -123,15 +77,9 @@ public:
 	void addActions(SpriteActionSchedule* actions);
     void runAction();
     void stopAction();
+    
     std::list<SpriteAction*> getSpriteActionList();
     bool isActionRunning();
-    
-    //init. Derived sprite class must implement their each own vertex data and load as they need
-    virtual void createVertexData() = 0;
-    virtual void loadVertexData() = 0;
-    virtual void render() = 0;
-    
-    void rotateSprite(GLfloat angle, glm::vec3 axis);
     
 //    virtual void update() = 0;
     void update();

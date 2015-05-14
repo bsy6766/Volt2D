@@ -10,8 +10,9 @@
 #include <cmath>
 
 Sprite::Sprite()
-        :SpriteObject(),
-        texture(0){
+:SpriteObject(),
+texture(0)
+{
     
 }
 
@@ -47,12 +48,12 @@ void Sprite::initSpriteWithTexture(GLenum _textureTarget, const std::string& _fi
     texture = new Texture(_textureTarget, _fileName);
     texture->load();
     texture->getImageSize(w, h);
-    boundingBox = new BoundingBox();
+//    this->boundingBox = new BoundingBox();
 
-    position = glm::vec2(640, 360);
+//    position = glm::vec2(640, 360, 0);
     z = GLOBAL_Z_VALUE;
     
-    createVertexData();
+    computeVertexData();
     loadVertexData();
     
     boundingBox->x = vertexData.at(0).x;
@@ -135,7 +136,8 @@ void Sprite::updateMatrix(){
     glm::mat4 result = glm::mat4();
     translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
     rotateMat = glm::rotate(glm::mat4(), angle, glm::vec3(0, 0, 1));
-    scaleMat = glm::scale(glm::mat4(), glm::vec3(scaleX, scaleY, 1.0));
+//    scaleMat = glm::scale(glm::mat4(), glm::vec3(scaleX, scaleY, 1.0));
+    scaleMat = glm::scale(glm::mat4(), scale);
     modelMat = result * translateMat * rotateMat * scaleMat;
 }
 
@@ -144,11 +146,12 @@ void Sprite::updateBillboardMatrix(GLfloat verticalAngle, GLfloat horizontalAngl
     translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
     rotateMat = glm::rotate(glm::mat4(), verticalAngle, glm::vec3(1, 0, 0));
     rotateMat = glm::rotate(rotateMat, horizontalAngle, glm::vec3(0, 1, 0));
-    scaleMat = glm::scale(glm::mat4(), glm::vec3(scaleX, scaleY, 1.0));
+//    scaleMat = glm::scale(glm::mat4(), glm::vec3(scaleX, scaleY, 1.0));
+    scaleMat = glm::scale(glm::mat4(), scale);
     modelMat = result * translateMat * rotateMat * scaleMat;
 }
 
-void Sprite::createVertexData(){
+void Sprite::computeVertexData(){
     float width = (float)w / SCREEN_TO_WORLD_SCALE;
     float height = (float)h / SCREEN_TO_WORLD_SCALE;
     

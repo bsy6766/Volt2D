@@ -40,7 +40,7 @@ protected:
     //0~255
     GLfloat opacity;
     
-    BoundingBox* bBox;
+    BoundingBox* boundingBox;
     
 private:
     void setAngle(GLfloat angle);
@@ -63,6 +63,12 @@ public:
     //opacity
     void setOpacity(GLfloat opacity);
     GLfloat getOpacity();
+    
+    //scale
+    GLfloat getScaleX();
+    GLfloat getScaleY();
+    GLfloat getScaleZ();
+    glm::vec3 getScale();
     
     virtual void computeVertexData() = 0;
     virtual void loadVertexData() = 0;

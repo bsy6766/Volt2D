@@ -10,44 +10,27 @@
 #include <iostream>
 
 SpriteObject::SpriteObject() :
-		spriteID(ID_COUNTER),
-		actionRunning(false),
-		progPtr(0),
-        translateMat(glm::mat4()),
-        rotateMat(glm::mat4()),
-        scaleMat(glm::mat4()),
-        modelMat(glm::mat4()),
-        opacity(255),
-        angle(0),
-        scaleX(1.0),
-        scaleY(1.0),
-        w(0),
-        h(0),
-        type(NORMAL_TYPE),
-		position(glm::vec2( Director::getInstance().getWindowSize().w / 2,  Director::getInstance().getWindowSize().h / 2)),
-        visible(true){
+spriteID(ID_COUNTER),
+actionRunning(false),
+progPtr(0),
+w(0),
+h(0),
+type(NORMAL_TYPE),
+RenderableObject()
+{
     progPtr = Director::getInstance().getProgramPtr();
     ID_COUNTER++;
 }
 
 SpriteObject::SpriteObject(Program *ptr) :
-        spriteID(ID_COUNTER),
-        actionRunning(false),
-        progPtr(ptr),
-        translateMat(glm::mat4()),
-        rotateMat(glm::mat4()),
-        scaleMat(glm::mat4()),
-        modelMat(glm::mat4()),
-        opacity(255),
-        angle(0),
-        scaleX(1.0),
-        scaleY(1.0),
-        w(0),
-        h(0),
-        type(NORMAL_TYPE),
-		position(glm::vec2( Director::getInstance().getWindowSize().w / 2,  Director::getInstance().getWindowSize().h / 2)),
-        visible(true){
-            
+spriteID(ID_COUNTER),
+actionRunning(false),
+progPtr(ptr),
+w(0),
+h(0),
+type(NORMAL_TYPE),
+RenderableObject()
+{
     ID_COUNTER++;
 }
 
@@ -57,34 +40,6 @@ SpriteObject::~SpriteObject(){
 		delete (*ci);
 	}
 	cout << "Done." << endl;
-}
-
-void SpriteObject::setPosition(glm::vec2 position){
-    this->position = position;
-    this->translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
-}
-
-void SpriteObject::setPosition(glm::vec3 position){
-//    this->position = position.xy;
-    this->translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, position.z / 10));
-}
-
-void SpriteObject::setPosition(float x, float y, float z){
-//    this->position = position;
-    this->translateMat = glm::translate(glm::mat4(), glm::vec3((x- 640) / 10, (y - 360) / 10, z / 10));
-}
-
-glm::vec2 SpriteObject::getPosition(){
-    return position;
-}
-
-void SpriteObject::setScale(float scaleX, float scaleY){
-    this->scaleX = scaleX;
-    this->scaleY = scaleY;
-}
-
-glm::vec2 SpriteObject::getScale(){
-    return glm::vec2(scaleX, scaleY);
 }
 
 void SpriteObject::setZ_Depth(float value){
@@ -168,121 +123,121 @@ void SpriteObject::update(){
             ActionID actionID = (*i)->getActionID();
             
             switch (actionID) {
-                case ACTION_MOVE_TO:
-                {
-                    //cast sprite action to move to
-                    ActionMoveTo *moveToPtr = static_cast<ActionMoveTo*>(*i);
-                    //if action is alive, and now running, has original position...run the algorithm.
-                    
-                    //if action is alive(probably guaranteed at this point), but isn't running yet,
-                    if(moveToPtr->isAlive() && !moveToPtr->isRunning()){
-                        //set running to true
-                        moveToPtr->startAction();
-                        //set starting point
-                        moveToPtr->setOriginalPosition(position, true);
-                    }
-                    //but handle instant action first.
-                    if(moveToPtr->getDuration() == 0){
-                        instantUpdate(moveToPtr, ci, instantHasNext, sequence);
-                        //update position
-                        position += moveToPtr->getMovedDistance();
-                    }
-                    else{
-                        //since instant action doesn't consume iteration and get updated right away in here, we have to delete on next action
-                        //also need to check if schedule needs to repeat
-                        intervalUpdate(moveToPtr, ci, instantHasNext, sequence);
-                    }
-                    break;
-                }
-                case ACTION_JUMP_BY:
-                {
-                    ActionJumpBy *jumpByPtr = static_cast<ActionJumpBy*>(*i);
-                    
-                    if(jumpByPtr->isAlive() && !jumpByPtr->isRunning()){
-                        jumpByPtr->startAction();
-                        jumpByPtr->setJumpingPosition(position, true);
-                    }
-                    
-                    //0 second instant. if x value is same with sprite's position, no need to process thing.
-                    //instant
-                    if(jumpByPtr->getDuration() == 0){
-                        //same x, just y, 0 second, stay...
-                        if(jumpByPtr->getDistance().x == 0){
-                            jumpByPtr->running = false;
-                            jumpByPtr->alive = false;
-                        }
-                        else{
-                            instantUpdate(jumpByPtr, ci, instantHasNext, sequence);
-                            //update Position
-                            position += jumpByPtr->getMovedDistance();
-                        }
-                    }
-                    else{
-                        intervalUpdate(jumpByPtr, ci, instantHasNext, sequence);
-                    }
-                    
-                    break;
-                }
-                case ACTION_FADE_TO:
-                {
-                    ActionFadeTo *fadeToPtr = static_cast<ActionFadeTo*>(*i);
-                    
-                    if(fadeToPtr->isAlive() && !fadeToPtr->isRunning()){
-                        cout << "Sprite #" << spriteID << " starting ACTION_FADE_TO" << endl;
-                        fadeToPtr->startAction();
-                        fadeToPtr->setOriginalOpacity(opacity);
-                    }
-                    
-                    if(fadeToPtr->getDuration() == 0){
-                        instantUpdate(fadeToPtr, ci, instantHasNext, sequence);
-                        
-                        opacity = fadeToPtr->getFadedOpacity();
-                    }
-                    else{
-                        intervalUpdate(fadeToPtr, ci, instantHasNext, sequence);
-                    }
-                    break;
-                }
-                    
-                case ACTION_DELAY:
-                {
-                    ActionDelay *delayPtr = static_cast<ActionDelay*>(*i);
-                    
-                    if(delayPtr->isAlive() && !delayPtr->isRunning()){
-                        cout << "Sprite #" << spriteID << " starting ACTION_DELAY" << endl;
-                        delayPtr->startAction();
-                    }
-                    
-                    if(delayPtr->getDuration() == 0){
-                        instantUpdate(delayPtr, ci, instantHasNext, sequence);
-                    }
-                    else{
-                        intervalUpdate(delayPtr, ci, instantHasNext, sequence);
-                    }
-                    break;
-                }
-                
-                case ACTION_ROTATE_BY:
-                {
-                    ActionRotateBy *rotateByPtr = static_cast<ActionRotateBy*>(*i);
-                    
-                    if(rotateByPtr->isAlive() && !rotateByPtr->isRunning()){
-                        rotateByPtr->startAction();
-                        rotateByPtr->setOriginalAngle(angle, true);
-                    }
-                    
-                    if(rotateByPtr->getDuration() == 0){
-                        instantUpdate(rotateByPtr, ci, instantHasNext, sequence);
-                        
-                        angle += rotateByPtr->getMovedAngle();
-                    }
-                    else{
-                        intervalUpdate(rotateByPtr, ci, instantHasNext, sequence);
-                    }
-                    break;
-                }
-                case ACTION_SCALE_BY:
-                {
+//                case ACTION_MOVE_TO:
+//                {
+//                    //cast sprite action to move to
+//                    ActionMoveTo *moveToPtr = static_cast<ActionMoveTo*>(*i);
+//                    //if action is alive, and now running, has original position...run the algorithm.
+//                    
+//                    //if action is alive(probably guaranteed at this point), but isn't running yet,
+//                    if(moveToPtr->isAlive() && !moveToPtr->isRunning()){
+//                        //set running to true
+//                        moveToPtr->startAction();
+//                        //set starting point
+//                        moveToPtr->setOriginalPosition(position, true);
+//                    }
+//                    //but handle instant action first.
+//                    if(moveToPtr->getDuration() == 0){
+//                        instantUpdate(moveToPtr, ci, instantHasNext, sequence);
+//                        //update position
+//                        position += moveToPtr->getMovedDistance();
+//                    }
+//                    else{
+//                        //since instant action doesn't consume iteration and get updated right away in here, we have to delete on next action
+//                        //also need to check if schedule needs to repeat
+//                        intervalUpdate(moveToPtr, ci, instantHasNext, sequence);
+//                    }
+//                    break;
+//                }
+//                case ACTION_JUMP_BY:
+//                {
+//                    ActionJumpBy *jumpByPtr = static_cast<ActionJumpBy*>(*i);
+//                    
+//                    if(jumpByPtr->isAlive() && !jumpByPtr->isRunning()){
+//                        jumpByPtr->startAction();
+//                        jumpByPtr->setJumpingPosition(position, true);
+//                    }
+//                    
+//                    //0 second instant. if x value is same with sprite's position, no need to process thing.
+//                    //instant
+//                    if(jumpByPtr->getDuration() == 0){
+//                        //same x, just y, 0 second, stay...
+//                        if(jumpByPtr->getDistance().x == 0){
+//                            jumpByPtr->running = false;
+//                            jumpByPtr->alive = false;
+//                        }
+//                        else{
+//                            instantUpdate(jumpByPtr, ci, instantHasNext, sequence);
+//                            //update Position
+//                            position += jumpByPtr->getMovedDistance();
+//                        }
+//                    }
+//                    else{
+//                        intervalUpdate(jumpByPtr, ci, instantHasNext, sequence);
+//                    }
+//                    
+//                    break;
+//                }
+//                case ACTION_FADE_TO:
+//                {
+//                    ActionFadeTo *fadeToPtr = static_cast<ActionFadeTo*>(*i);
+//                    
+//                    if(fadeToPtr->isAlive() && !fadeToPtr->isRunning()){
+//                        cout << "Sprite #" << spriteID << " starting ACTION_FADE_TO" << endl;
+//                        fadeToPtr->startAction();
+//                        fadeToPtr->setOriginalOpacity(opacity);
+//                    }
+//                    
+//                    if(fadeToPtr->getDuration() == 0){
+//                        instantUpdate(fadeToPtr, ci, instantHasNext, sequence);
+//                        
+//                        opacity = fadeToPtr->getFadedOpacity();
+//                    }
+//                    else{
+//                        intervalUpdate(fadeToPtr, ci, instantHasNext, sequence);
+//                    }
+//                    break;
+//                }
+//                    
+//                case ACTION_DELAY:
+//                {
+//                    ActionDelay *delayPtr = static_cast<ActionDelay*>(*i);
+//                    
+//                    if(delayPtr->isAlive() && !delayPtr->isRunning()){
+//                        cout << "Sprite #" << spriteID << " starting ACTION_DELAY" << endl;
+//                        delayPtr->startAction();
+//                    }
+//                    
+//                    if(delayPtr->getDuration() == 0){
+//                        instantUpdate(delayPtr, ci, instantHasNext, sequence);
+//                    }
+//                    else{
+//                        intervalUpdate(delayPtr, ci, instantHasNext, sequence);
+//                    }
+//                    break;
+//                }
+//                
+//                case ACTION_ROTATE_BY:
+//                {
+//                    ActionRotateBy *rotateByPtr = static_cast<ActionRotateBy*>(*i);
+//                    
+//                    if(rotateByPtr->isAlive() && !rotateByPtr->isRunning()){
+//                        rotateByPtr->startAction();
+//                        rotateByPtr->setOriginalAngle(angle, true);
+//                    }
+//                    
+//                    if(rotateByPtr->getDuration() == 0){
+//                        instantUpdate(rotateByPtr, ci, instantHasNext, sequence);
+//                        
+//                        angle += rotateByPtr->getMovedAngle();
+//                    }
+//                    else{
+//                        intervalUpdate(rotateByPtr, ci, instantHasNext, sequence);
+//                    }
+//                    break;
+//                }
+//                case ACTION_SCALE_BY:
+//                {
 //                    ActionScaleBy *scaleByPtr = static_cast<ActionScaleBy*>(*i);
 //                    
 //                    if(scaleByPtr->isAlive() && !scaleByPtr->isRunning()){
@@ -297,8 +252,8 @@ void SpriteObject::update(){
 //                    else{
 //                        intervalUpdate(scaleByPtr, ci, instantHasNext, sequence);
 //                    }
-                    break;
-                }
+//                    break;
+//                }
                 default:
                     break;
             }//switch end
@@ -401,14 +356,18 @@ void SpriteObject::updateFromSpriteAction(){
                 case ACTION_MOVE_TO:
                 {
                     ActionMoveTo *ptr = static_cast<ActionMoveTo*>(*action_ci);
-                    position += ptr->getMovedDistance();
+//                    position += ptr->getMovedDistance();
+                    glm::vec2 d = ptr->getMovedDistance();
+                    position += glm::vec3(d.x, d.y, 0);
                     break;
                 }
                     
                 case ACTION_JUMP_BY:
                 {
                     ActionJumpBy *ptr = static_cast<ActionJumpBy*>(*action_ci);
-                    position += ptr->getMovedDistance();
+//                    position += ptr->getMovedDistance();
+                    glm::vec2 d = ptr->getMovedDistance();
+                    position += glm::vec3(d.x, d.y, 0);
                     break;
                 }
                 case ACTION_FADE_TO:
@@ -469,9 +428,4 @@ void SpriteObject::updateFromSpriteAction(){
         spriteActionScheduleList.pop_front();
         scheduleEmpty = false;
     }
-    
-}
-
-void SpriteObject::rotateSprite(GLfloat angle, glm::vec3 axis){
-    rotateMat = glm::rotate(rotateMat, angle, axis);
 }

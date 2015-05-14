@@ -11,6 +11,7 @@
 
 #include <glm/glm.hpp>
 #include "Director.h"
+#include "CommonInclude.h"
 
 class Object{
 protected:
@@ -22,13 +23,13 @@ public:
     Object();
     virtual ~Object();
     
-    //setters
+    //position
     void setPosition(glm::vec3 position);
-    void setVisible(bool visibility);
-    
-    //getters
     glm::vec3 getPosition();
+    
+    //visibility
     bool isVisible();
+    void setVisible(bool visibility);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Object__) */
