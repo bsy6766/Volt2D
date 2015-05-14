@@ -42,9 +42,9 @@ void TitleScene::init(){
     
     helloWorldText = new Text();
     helloWorldText->setColor(glm::vec3(255, 255, 255));
-    helloWorldText->setTextAlign(Text::TextAlign::ALIGN_CENTER);
+    helloWorldText->setTextAlign(Text::TextAlign::ALIGN_LEFT);
     //    helloWorldText->initText("HELLO WORLD! Seung Youp Baek~", "UhBee Kang-Ja.ttf");
-    helloWorldText->initText("HELLO WORLD!\nSeung Youp Baek~\nOpenGL with TTF.", "UhBee Kang-Ja.ttf");
+    helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.", "UhBee Kang-Ja.ttf");
 //    helloWorldText->initText("HELLO WORLD!\nSeung Youp Baek~\nOpenGL with TTF.", "arial.ttf");
     addText(helloWorldText);
     
