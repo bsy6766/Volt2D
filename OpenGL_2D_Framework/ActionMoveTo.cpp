@@ -12,7 +12,9 @@
 using std::cout;
 using std::endl;
 
-ActionMoveTo::ActionMoveTo():ActionObject(){
+ActionMoveTo::ActionMoveTo():
+ActionObject()
+{
     cout << "creating MoveTo action" << endl;
 }
 
@@ -30,17 +32,14 @@ void ActionMoveTo::initMoveTo(glm::vec2 destination, double duration){
     this->originalPosition = glm::vec2();
 }
 
+void ActionMoveTo::instantUpdate(){
+    movedDistance = destination - originalPosition;
+    previousPosition = destination;
+    //set action as dead and done
+    alive = false;
+}
+
 void ActionMoveTo::update(double elapsedTime, double unusedTime){
-	//if elapsed time is -1, means instant update
-    if(elapsedTime == -1){
-        //instant
-        movedDistance = destination - originalPosition;
-        previousPosition = destination;
-        //set action as dead and done
-        alive = false;
-        return;
-    }
-    
     float currentTime = (float)getTotalElapsedTime() + (float)unusedTime;
     float prevTime = (float)getPreviousTime();
     

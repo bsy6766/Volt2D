@@ -40,15 +40,12 @@ float ActionRotateBy::getMovedAngle(){
     return movedAngle;
 }
 
+void ActionRotateBy::instantUpdate(){
+    movedAngle = rotatingAngle - previousAngle;
+    alive = false;
+}
+
 void ActionRotateBy::update(double elapsedTime, double unusedtime){
-    //    cout << "delaying" << endl;
-    if(elapsedTime == -1){
-        //instant
-        movedAngle = rotatingAngle - previousAngle;
-        alive = false;
-        return;
-    }
-    
     float duration = (float)getDuration();
     float currentTime = (float)getTotalElapsedTime();
     float time = (float)getElapsedTime() + (float)unusedTime;

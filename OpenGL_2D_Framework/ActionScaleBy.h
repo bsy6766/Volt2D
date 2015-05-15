@@ -29,6 +29,7 @@ public:
     void setOriginalScale(float scale);
     float getScaledScale();
     
+    virtual void instantUpdate();
     virtual void update(double elapsedTiem, double unusedTime);
     virtual void clone(ActionObject *ptr);
 };

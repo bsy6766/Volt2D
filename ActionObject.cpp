@@ -8,21 +8,21 @@
 
 #include "ActionObject.h"
 
-ActionObject::ActionObject(){
-    running = false;
-    alive = true;
-    previousTime = 0;
-    isProtected = false;    //defualt
-    
-    totalElapsedTime = 0;
-    unusedTime = 0;
-    speed = 1;
-    
-    std::cout << "creating action" << std::endl;
+ActionObject::ActionObject():
+running(false),
+alive(true),
+previousTime(0),
+isProtected(false),
+totalElapsedTime(0),
+unusedTime(0),
+speed(1),
+duration(-1)
+{
+    std::cout << "ActionObject()" << std::endl;
 }
 
 ActionObject::~ActionObject(){
-    std::cout << "deleting action" << std::endl;
+    std::cout << "~ActionObject()" << std::endl;
 }
 
 ActionID ActionObject::getActionID(){

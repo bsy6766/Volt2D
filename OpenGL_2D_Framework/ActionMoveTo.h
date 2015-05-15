@@ -30,8 +30,9 @@ public:
     glm::vec2 getMovedDistance();
     
     //virtuals
-    void clone(ActionObject* dataPtr);
-    void update(double elapsedTime, double unusedTime);
+    virtual void instantUpdate();
+    virtual void update(double elapsedTime, double unusedTime);
+    virtual void clone(ActionObject* dataPtr);
     
     //override
     void revive();

@@ -48,27 +48,12 @@ glm::vec2& ActionJumpBy::getMovedDistance(){
     return movedDistance;
 }
 
-void ActionJumpBy::clone(ActionObject* dataPtr){
-    std::cout << "Cloning action jump by" << std::endl;
-    ActionJumpBy *other = static_cast<ActionJumpBy*>(dataPtr);
-    
-    ActionObject::clone(dataPtr);
-    
-    this->actionID = other->actionID;
-    
-    this->distance = other->distance;
-    this->jumpingPosition = other->jumpingPosition;
-    this->previousPosition = other->previousPosition;
-    this->movedDistance = other->movedDistance;
+void ActionJumpBy::instantUpdate(){
+    movedDistance += distance;
+    alive = false;
 }
 
 void ActionJumpBy::update(double elapsedTime, double unusedTime){
-    if(elapsedTime == -1){
-        movedDistance += distance;
-        alive = false;
-        return;
-    }
-    
     float duration = (float)getDuration();
     float currentTime = (float)getTotalElapsedTime();
     float time = (float)getElapsedTime() + (float)unusedTime;
@@ -84,4 +69,18 @@ void ActionJumpBy::update(double elapsedTime, double unusedTime){
         distX = distance.x * time / duration;
         movedDistance = glm::vec2(distX, distY);
     }
+}
+
+void ActionJumpBy::clone(ActionObject* dataPtr){
+    std::cout << "Cloning action jump by" << std::endl;
+    ActionJumpBy *other = static_cast<ActionJumpBy*>(dataPtr);
+    
+    ActionObject::clone(dataPtr);
+    
+    this->actionID = other->actionID;
+    
+    this->distance = other->distance;
+    this->jumpingPosition = other->jumpingPosition;
+    this->previousPosition = other->previousPosition;
+    this->movedDistance = other->movedDistance;
 }

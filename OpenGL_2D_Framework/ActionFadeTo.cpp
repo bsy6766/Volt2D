@@ -39,15 +39,13 @@ float ActionFadeTo::getFadedOpacity(){
     return fadedOpacity;
 }
 
+void ActionFadeTo::instantUpdate(){
+    fadedOpacity = finalOpacity - originalOpacity;
+    previousOpacity = finalOpacity;
+    alive = false;
+}
+
 void ActionFadeTo::update(double elapsedTime, double unusedTime){
-    //if it's instant
-    if(elapsedTime == -1){
-        fadedOpacity = finalOpacity - originalOpacity;
-        previousOpacity = finalOpacity;
-        alive = false;
-        return;
-    }
-    
     //get time in float
     float currentTime = (float)getTotalElapsedTime() + (float)unusedTime;
     float previousTime = (float)getPreviousTime();

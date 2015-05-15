@@ -30,8 +30,9 @@ public:
     glm::vec2& getMovedDistance();
     
     //virtual
-    void update(double elapsedTime, double unusedTime);
-    void clone(ActionObject* dataPtr);
+    virtual void instantUpdate();
+    virtual void update(double elapsedTime, double unusedTime);
+    virtual void clone(ActionObject* dataPtr);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionJumpBy__) */

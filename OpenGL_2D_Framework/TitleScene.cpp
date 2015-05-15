@@ -37,20 +37,23 @@ void TitleScene::init(){
     addSprite(ground);
     
     ActionFadeTo* fadeOutDay = new ActionFadeTo();
-    fadeOutDay->initFadeTo(0, 5);
+    fadeOutDay->initFadeTo(0, 2);
 
     ActionDelay* delayBeforeFade = new ActionDelay();
     delayBeforeFade->initDelay(2);
 
     ActionFadeTo* fadeInDay = new ActionFadeTo();
-    fadeInDay->initFadeTo(255, 5);
+    fadeInDay->initFadeTo(255, 2);
+    
+    ActionRotateBy* rotateByAction = new ActionRotateBy();
+    rotateByAction->initRotateBy(180, 3);
 
     ActionDelay* delayBtwFade = new ActionDelay();
     delayBtwFade->initDelay(2);
 
     SpriteActionSchedule* dayBGSchedule = new SpriteActionSchedule();
 
-    dayBGSchedule->createSchedule({delayBeforeFade, fadeOutDay, delayBtwFade, fadeInDay}, REPEAT_FOREVER);
+    dayBGSchedule->createSchedule({delayBeforeFade, fadeOutDay, delayBtwFade, fadeInDay, rotateByAction}, REPEAT_FOREVER);
     ground->addActions(dayBGSchedule);
     ground->runAction();
     

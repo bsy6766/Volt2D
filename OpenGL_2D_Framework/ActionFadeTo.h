@@ -29,8 +29,9 @@ public:
     void setOriginalOpacity(float opacity);
     
     //virtual
-    void clone(ActionObject* dataPtr);
-    void update(double elapsedTime, double unusedTime);
+    virtual void instantUpdate();
+    virtual void update(double elapsedTime, double unusedTime);
+    virtual void clone(ActionObject* dataPtr);
     
     //override
     void revive();

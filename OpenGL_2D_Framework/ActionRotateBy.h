@@ -28,6 +28,7 @@ public:
     float getMovedAngle();
     
     //virtuals
+    virtual void instantUpdate();
     virtual void update(double elapsedTime, double unusedTime);
     virtual void clone(ActionObject* dataPtr);
     

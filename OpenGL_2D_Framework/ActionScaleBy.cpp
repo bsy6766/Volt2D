@@ -32,13 +32,12 @@ float ActionScaleBy::getScaledScale(){
     return this->scaledScale;
 }
 
+void ActionScaleBy::instantUpdate(){
+    //todo: implment this
+    alive = false;
+}
+
 void ActionScaleBy::update(double elapsedTime, double unusedTime){
-    if(elapsedTime == -1){
-        
-        alive = false;
-        return;
-    }
-    
     float duration = (float)getDuration();
     float currentTime = (float)getTotalElapsedTime();
     float time = (float)getElapsedTime() + (float)unusedTime;

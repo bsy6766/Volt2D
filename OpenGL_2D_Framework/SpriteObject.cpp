@@ -151,35 +151,36 @@ void SpriteObject::update(){
                     }
                     break;
                 }
-//                case ACTION_JUMP_BY:
-//                {
-//                    ActionJumpBy *jumpByPtr = static_cast<ActionJumpBy*>(*i);
-//                    
-//                    if(jumpByPtr->isAlive() && !jumpByPtr->isRunning()){
-//                        jumpByPtr->startAction();
-//                        jumpByPtr->setJumpingPosition(position, true);
-//                    }
-//                    
-//                    //0 second instant. if x value is same with sprite's position, no need to process thing.
-//                    //instant
-//                    if(jumpByPtr->getDuration() == 0){
-//                        //same x, just y, 0 second, stay...
-//                        if(jumpByPtr->getDistance().x == 0){
-//                            jumpByPtr->running = false;
-//                            jumpByPtr->alive = false;
-//                        }
-//                        else{
-//                            instantUpdate(jumpByPtr, ci, instantHasNext, sequence);
-//                            //update Position
-//                            position += jumpByPtr->getMovedDistance();
-//                        }
-//                    }
-//                    else{
-//                        intervalUpdate(jumpByPtr, ci, instantHasNext, sequence);
-//                    }
-//                    
-//                    break;
-//                }
+                case ACTION_JUMP_BY:
+                {
+                    ActionJumpBy *jumpByPtr = static_cast<ActionJumpBy*>(*i);
+                    
+                    if(jumpByPtr->isAlive() && !jumpByPtr->isRunning()){
+                        jumpByPtr->startAction();
+                        jumpByPtr->setJumpingPosition(glm::vec2(position.x, position.y), true);
+                    }
+                    
+                    //0 second instant. if x value is same with sprite's position, no need to process thing.
+                    //instant
+                    if(jumpByPtr->getDuration() == 0){
+                        //same x, just y, 0 second, stay...
+                        if(jumpByPtr->getDistance().x == 0){
+                            jumpByPtr->running = false;
+                            jumpByPtr->alive = false;
+                        }
+                        else{
+                            instantUpdate(jumpByPtr, ci, instantHasNext, sequence);
+                            //update Position
+                            glm::vec2 d = jumpByPtr->getMovedDistance();
+                            position += glm::vec3(d.x, d.y, 0);
+                        }
+                    }
+                    else{
+                        intervalUpdate(jumpByPtr, ci, instantHasNext, sequence);
+                    }
+                    
+                    break;
+                }
                 case ACTION_FADE_TO:
                 {
                     ActionFadeTo *fadeToPtr = static_cast<ActionFadeTo*>(*i);
@@ -192,7 +193,6 @@ void SpriteObject::update(){
                     
                     if(fadeToPtr->getDuration() == 0){
                         instantUpdate(fadeToPtr, ci, instantHasNext, sequence);
-                        
                         opacity = fadeToPtr->getFadedOpacity();
                     }
                     else{
@@ -266,7 +266,7 @@ void SpriteObject::update(){
 }
 
 void SpriteObject::instantUpdate(ActionObject *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence){
-    actionPtr->update(-1, 0);
+    actionPtr->instantUpdate();
     
     //if action is done, increment interate counter;
     if(!actionPtr->isAlive()){
@@ -393,6 +393,7 @@ void SpriteObject::updateFromSpriteAction(){
                         angle += 360;
                     
                     angle += ptr->getMovedAngle();
+                    rotateBy(ptr->getMovedAngle(), glm::vec3(0, 1, 0));
                     break;
                 }
                 case ACTION_SCALE_BY:

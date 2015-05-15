@@ -13,12 +13,13 @@ using std::cout;
 using std::endl;
 
 SpriteActionSchedule::SpriteActionSchedule() :
-        repeat(0),
-        repeatCounter(0),
-        size(0),
-        iterateCounter(0),
-        sharedUnusedTime(0),
-        readyToUseUnusedTime(false){
+repeat(0),
+repeatCounter(0),
+size(0),
+iterateCounter(0),
+sharedUnusedTime(0),
+readyToUseUnusedTime(false)
+{
     cout << "SpriteActionSchedule::Creating sprite action schedule" << endl;
             
 }
@@ -37,13 +38,13 @@ SpriteActionSchedule::SpriteActionSchedule(ActionObject* action){
 }
 
 SpriteActionSchedule::SpriteActionSchedule(const SpriteActionSchedule& other) :
-        repeat(other.repeat),
-        repeatCounter(other.repeatCounter),
-        size(other.size),
-        iterateCounter(other.iterateCounter),
-        sharedUnusedTime(other.sharedUnusedTime),
-        readyToUseUnusedTime(other.readyToUseUnusedTime){
-
+repeat(other.repeat),
+repeatCounter(other.repeatCounter),
+size(other.size),
+iterateCounter(other.iterateCounter),
+sharedUnusedTime(other.sharedUnusedTime),
+readyToUseUnusedTime(other.readyToUseUnusedTime)
+{
     for (std::list<ActionObject*>::const_iterator ci = other.actionList.begin(); ci != other.actionList.end(); ++ci){
         cout << "SpriteActionSchedule::Adding from list...action#" << (*ci)->getActionID() << endl;
         this->actionList.push_back(*ci);
@@ -76,79 +77,6 @@ void SpriteActionSchedule::createSchedule(std::vector<ActionObject*> actions, in
     this->sharedUnusedTime = 0;
     this->readyToUseUnusedTime = false;
 }
-
-/*
-void SpriteActionSchedule::createSchedule(std::vector<SpriteAction*> &actions, int repeat){
-    cout << "Creating Sprite Action Schedule..." << endl;
-    this->repeat = repeat;
-    this->repeatCounter = 0;
-    this->size = (int)actions.size();
-    this->iterateCounter = 0;
-    this->sharedUnusedTime = 0;
-    this->readyToUseUnusedTime = false;
-
-	//WIN32::avoid potentially uninitilaized local pointer
-	SpriteAction *dataPtr, *clonePtr;
-
-	for (int i = 0; i<(int)actions.size(); ++i){
-        //SpriteAction *dataPtr, *clonePtr;
-		//set pointers to 0
-		dataPtr = 0;
-		clonePtr = 0;
-
-        switch(actions.at(i)->getActionID()){
-            case ACTION_MOVE_TO:
-            {
-                cout << "\tMoveTo...";
-                //cast to actual action pointer
-                dataPtr = static_cast<ActionMoveTo*>(actions.at(i));
-                clonePtr = new ActionMoveTo();
-                //create clone
-                break;
-            }
-            case ACTION_JUMP_BY:
-            {
-                cout << "\tJumpBy...";
-                dataPtr = static_cast<ActionJumpBy*>(actions.at(i));
-                clonePtr = new ActionJumpBy();
-                break;
-            }
-            case ACTION_FADE_TO:
-            {
-                cout << "\tFadeTo...";
-                dataPtr = static_cast<ActionFadeTo*>(actions.at(i));
-                clonePtr = new ActionFadeTo();
-                break;
-            }
-            case ACTION_DELAY:
-            {
-                cout << "\tDelay...";
-                dataPtr = static_cast<ActionDelay*>(actions.at(i));
-                clonePtr = new ActionDelay();
-                break;
-            }
-            case ACTION_ROTATE_BY:
-            {
-                cout << "\tRotateBy...";
-                dataPtr = static_cast<ActionRotateBy*>(actions.at(i));
-                clonePtr = new ActionRotateBy();
-                break;
-            }
-            default:
-            {
-                std::cout << "uh...what action?" << std::endl;
-                break;
-            }
-        }
-        //copy data
-        clonePtr->clone(dataPtr);
-
-        //add ptr
-        this->actionList.push_back(clonePtr);
-        cout << "\tAdded." << endl;;
-    }
-}
-*/
 
 std::list<ActionObject*> &SpriteActionSchedule::getList(){
     return actionList;

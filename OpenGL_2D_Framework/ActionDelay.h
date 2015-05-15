@@ -27,9 +27,10 @@ public:
     double getDelayTick();
 
     //virtuals
-    void clone(ActionObject *);
-    void update(double elapsedTime, double unusedtime);
-
+    virtual void instantUpdate();
+    virtual void update(double elapsedTime, double unusedtime);
+    virtual void clone(ActionObject *);
+    
     //override
     void revive();
 };

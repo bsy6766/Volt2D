@@ -42,14 +42,7 @@ public:
     ActionObject();
     virtual ~ActionObject();
     
-    /**
-     * is currently running or not.
-     */
     bool running;
-    
-    /**
-     * is live or dead
-     */
     bool alive;
     
     double previousTime;
@@ -87,6 +80,7 @@ public:
      * Derived class
      */
     virtual void update(double elapsedTime, double unusedTime) = 0;
+    virtual void instantUpdate() = 0;
     virtual void clone(ActionObject *ptr);
     
     //kill and reset

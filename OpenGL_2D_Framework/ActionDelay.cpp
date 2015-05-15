@@ -7,17 +7,15 @@
 //
 
 #include "ActionDelay.h"
-#include <iostream>
 
-using std::cout;
-using std::endl;
-
-ActionDelay::ActionDelay(){
-    cout << "Creating action delay" << endl;
+ActionDelay::ActionDelay():
+ActionObject()
+{
+    cout << "Creating ACTION_DELAY" << endl;
 }
 
 ActionDelay::~ActionDelay(){
-    cout << "Deleting action delay" << endl;
+    cout << "Deleting ACTION_DELAY" << endl;
 }
 
 void ActionDelay::initDelay(double duration){
@@ -28,16 +26,13 @@ void ActionDelay::initDelay(double duration){
     this->delayTick = 0;
 }
 
+void ActionDelay::instantUpdate(){
+    //Finish action
+    totalDelayed = duration;
+    alive = false;
+}
+
 void ActionDelay::update(double elapsedTime, double unusedtime){
-    //if update is instant,
-    if(elapsedTime == -1){
-        //instant
-        totalDelayed = duration;
-        //dead
-        alive = false;
-        return;
-    }
-    
     //cast to float
     float dur = (float)duration;
     float currentTime = (float)(totalElapsedTime + unusedtime);
