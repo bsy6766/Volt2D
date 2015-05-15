@@ -64,12 +64,12 @@ void ActionFadeTo::update(double elapsedTime, double unusedTime){
     }
 }
 
-void ActionFadeTo::clone(SpriteAction* dataPtr){
+void ActionFadeTo::clone(ActionObject* dataPtr){
     ActionFadeTo *other = static_cast<ActionFadeTo*>(dataPtr);
     
     std::cout << "Cloning action fade to" << std::endl;
     
-    SpriteAction::clone(dataPtr);
+    ActionObject::clone(dataPtr);
     
     this->actionID = other->actionID;
     
@@ -86,5 +86,5 @@ void ActionFadeTo::revive(){
     previousOpacity = 0;
     fadedOpacity = 0;   //clear
     
-    SpriteAction::revive();
+    ActionObject::revive();
 }

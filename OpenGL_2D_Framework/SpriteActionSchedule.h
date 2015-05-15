@@ -11,7 +11,7 @@
 
 #include <list>
 #include <vector>
-#include "SpriteAction.h"
+#include "ActionObject.h"
 #include "ActionMoveTo.h"
 #include "ActionJumpBy.h"
 #include "ActionFadeTo.h"
@@ -24,7 +24,7 @@ const int REPEAT_ONCE = 0;
 class SpriteActionSchedule{
 private:
     //list of sprite actions
-    std::list<SpriteAction*> actionList;
+    std::list<ActionObject*> actionList;
 
     int repeat;
     int repeatCounter;
@@ -35,17 +35,17 @@ public:
 	//default constructor
     SpriteActionSchedule();
 	//constructor
-    SpriteActionSchedule(SpriteAction* action);
+    SpriteActionSchedule(ActionObject* action);
 	//copy constructor
     SpriteActionSchedule(const SpriteActionSchedule& other);
 	//destructor
     ~SpriteActionSchedule();
     
-	void createSchedule(SpriteAction *action);
-    void createSchedule(std::vector<SpriteAction*> actions, int repeat);
+	void createSchedule(ActionObject *action);
+    void createSchedule(std::vector<ActionObject*> actions, int repeat);
 //    void createSchedule(std::vector<SpriteAction*> &actions, int repeat);
     
-    std::list<SpriteAction*> &getList();
+    std::list<ActionObject*> &getList();
     
     double sharedUnusedTime;
     bool readyToUseUnusedTime;

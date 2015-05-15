@@ -63,7 +63,7 @@ void ActionRotateBy::update(double elapsedTime, double unusedtime){
     }
 }
 
-void ActionRotateBy::clone(SpriteAction* dataPtr){
+void ActionRotateBy::clone(ActionObject* dataPtr){
     std::cout << "Cloning action rotate by " << std::endl;
     
     ActionRotateBy *other = static_cast<ActionRotateBy*>(dataPtr);
@@ -72,7 +72,7 @@ void ActionRotateBy::clone(SpriteAction* dataPtr){
     this->previousAngle = other->previousAngle;
     this->movedAngle = other->movedAngle;
     
-    SpriteAction::clone(dataPtr);
+    ActionObject::clone(dataPtr);
 }
 
 //revive
@@ -84,5 +84,5 @@ void ActionRotateBy::revive(){
     this->alive = false;
     this->running = false;
     
-    SpriteAction::revive();
+    ActionObject::revive();
 }

@@ -12,7 +12,7 @@
 using std::cout;
 using std::endl;
 
-ActionMoveTo::ActionMoveTo():SpriteAction(){
+ActionMoveTo::ActionMoveTo():ActionObject(){
     cout << "creating MoveTo action" << endl;
 }
 
@@ -85,10 +85,10 @@ glm::vec2 ActionMoveTo::getMovedDistance(){
     return movedDistance;
 }
 
-void ActionMoveTo::clone(SpriteAction* dataPtr){
+void ActionMoveTo::clone(ActionObject* dataPtr){
     ActionMoveTo *other = static_cast<ActionMoveTo*>(dataPtr);
     
-    SpriteAction::clone(dataPtr);
+    ActionObject::clone(dataPtr);
     
     this->actionID = other->actionID;
     
@@ -102,5 +102,5 @@ void ActionMoveTo::revive(){
     previousPosition = glm::vec2();
     movedDistance = glm::vec2();
     
-    SpriteAction::revive();
+    ActionObject::revive();
 }

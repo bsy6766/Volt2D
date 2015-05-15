@@ -9,9 +9,9 @@
 #ifndef __OpenGL_2D_Framework__ActionJumpBy__
 #define __OpenGL_2D_Framework__ActionJumpBy__
 
-#include "SpriteAction.h"
+#include "ActionObject.h"
 
-class ActionJumpBy: public SpriteAction{
+class ActionJumpBy: public ActionObject{
 private:
     glm::vec2 distance;
     glm::vec2 jumpingPosition;
@@ -31,7 +31,7 @@ public:
     
     //virtual
     void update(double elapsedTime, double unusedTime);
-    void clone(SpriteAction* dataPtr);
+    void clone(ActionObject* dataPtr);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionJumpBy__) */

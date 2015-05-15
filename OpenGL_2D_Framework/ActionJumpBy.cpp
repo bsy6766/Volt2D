@@ -48,11 +48,11 @@ glm::vec2& ActionJumpBy::getMovedDistance(){
     return movedDistance;
 }
 
-void ActionJumpBy::clone(SpriteAction* dataPtr){
+void ActionJumpBy::clone(ActionObject* dataPtr){
     std::cout << "Cloning action jump by" << std::endl;
     ActionJumpBy *other = static_cast<ActionJumpBy*>(dataPtr);
     
-    SpriteAction::clone(dataPtr);
+    ActionObject::clone(dataPtr);
     
     this->actionID = other->actionID;
     

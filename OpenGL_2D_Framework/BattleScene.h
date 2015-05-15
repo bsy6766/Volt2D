@@ -13,7 +13,6 @@
 
 #include "Scene.h"
 #include "Sprite.h"
-#include "SpriteAction.h"
 #include "CommonInclude.h"
 
 class BattleScene : public Scene{

@@ -11,7 +11,7 @@
 
 //#include
 #include "Program.h"
-#include "SpriteAction.h"
+#include "ActionObject.h"
 #include "ActionMoveTo.h"
 #include "Timer.h"
 #include "ActionJumpBy.h"
@@ -35,8 +35,8 @@ private:
 	*	Instant actions are actions with 0 duration. 
 	*	
 	*/
-    void instantUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
-    void intervalUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
+    void instantUpdate(ActionObject *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
+    void intervalUpdate(ActionObject *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
 	
 //	WinSize size = Director::getInstance().getWindowSize();
 
@@ -72,13 +72,13 @@ public:
     float getZ_Depth();
     
     //sprite action
-	void addAction(SpriteAction *action);
+	void addAction(ActionObject *action);
 	void addActions(SpriteActionSchedule &actions);
 	void addActions(SpriteActionSchedule* actions);
     void runAction();
     void stopAction();
     
-    std::list<SpriteAction*> getSpriteActionList();
+    std::list<ActionObject*> getSpriteActionList();
     bool isActionRunning();
     
 //    virtual void update() = 0;

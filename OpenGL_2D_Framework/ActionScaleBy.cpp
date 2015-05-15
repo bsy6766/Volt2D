@@ -51,6 +51,6 @@ void ActionScaleBy::update(double elapsedTime, double unusedTime){
     }
 }
 
-void ActionScaleBy::clone(SpriteAction *ptr){
+void ActionScaleBy::clone(ActionObject *ptr){
     
 }

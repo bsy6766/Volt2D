@@ -22,9 +22,8 @@ TitleScene::~TitleScene(){
 void TitleScene::init(){
     cout << "TitleScene::init()" << endl;
     WinSize size = Director::getInstance().getWindowSize();
-    //init basic stuff
+
     bg = new Sprite();
-//    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/titleScene_bg.png");
     bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_bg.png");
     bg->setZ_Depth(2);
 //    bg->type = Sprite::BILLBOARD_TYPE;
@@ -33,18 +32,26 @@ void TitleScene::init(){
     ground = new Sprite();
     ground->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_bg.png");
     ground->setZ_Depth(1);
-//    ground->setPosition(glm::vec3(size.w/2, -100, 0));
-//    ground->translateTo(glm::vec3(0, -50, 0));
     ground->setPosition(glm::vec3(0, -50, 0));
     ground->rotateBy(90, glm::vec3(-1, 0, 0));
     addSprite(ground);
     
-    ActionFadeTo* fadeOutAction = new ActionFadeTo();
-    fadeOutAction->initFadeTo(0, 20);
-    ground->addAction(fadeOutAction);
-//    ActionMoveTo* moveToAction = new ActionMoveTo();
-//    moveToAction->initMoveTo(glm::vec2(0, 0), 10);
-//    ground->addAction(moveToAction);
+    ActionFadeTo* fadeOutDay = new ActionFadeTo();
+    fadeOutDay->initFadeTo(0, 5);
+
+    ActionDelay* delayBeforeFade = new ActionDelay();
+    delayBeforeFade->initDelay(2);
+
+    ActionFadeTo* fadeInDay = new ActionFadeTo();
+    fadeInDay->initFadeTo(255, 5);
+
+    ActionDelay* delayBtwFade = new ActionDelay();
+    delayBtwFade->initDelay(2);
+
+    SpriteActionSchedule* dayBGSchedule = new SpriteActionSchedule();
+
+    dayBGSchedule->createSchedule({delayBeforeFade, fadeOutDay, delayBtwFade, fadeInDay}, REPEAT_FOREVER);
+    ground->addActions(dayBGSchedule);
     ground->runAction();
     
     FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
@@ -52,9 +59,7 @@ void TitleScene::init(){
     helloWorldText = new Text();
     helloWorldText->setColor(glm::vec3(255, 255, 255));
     helloWorldText->setTextAlign(Text::TextAlign::ALIGN_LEFT);
-    //    helloWorldText->initText("HELLO WORLD! Seung Youp Baek~", "UhBee Kang-Ja.ttf");
     helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.", "UhBee Kang-Ja.ttf");
-//    helloWorldText->initText("HELLO WORLD!\nSeung Youp Baek~\nOpenGL with TTF.", "arial.ttf");
     addText(helloWorldText);
     
     glfwSetCursorPos(window, size.w/2, size.h/2);

@@ -9,9 +9,9 @@
 #ifndef __OpenGL_2D_Framework__ActionMoveTo__
 #define __OpenGL_2D_Framework__ActionMoveTo__
 
-#include "SpriteAction.h"
+#include "ActionObject.h"
 
-class ActionMoveTo :  public SpriteAction{
+class ActionMoveTo :  public ActionObject{
 private:
     glm::vec2 destination;
     glm::vec2 previousPosition;
@@ -30,7 +30,7 @@ public:
     glm::vec2 getMovedDistance();
     
     //virtuals
-    void clone(SpriteAction* dataPtr);
+    void clone(ActionObject* dataPtr);
     void update(double elapsedTime, double unusedTime);
     
     //override

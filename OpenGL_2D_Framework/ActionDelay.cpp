@@ -57,12 +57,12 @@ double ActionDelay::getDelayTick(){
     return delayTick;
 }
 
-void ActionDelay::clone(SpriteAction* dataPtr){
+void ActionDelay::clone(ActionObject* dataPtr){
     ActionDelay *other = static_cast<ActionDelay*>(dataPtr);
     
     std::cout << "Cloning action delay " << std::endl;
     
-    SpriteAction::clone(dataPtr);
+    ActionObject::clone(dataPtr);
     
     this->actionID = other->actionID;
     
@@ -79,5 +79,5 @@ void ActionDelay::revive(){
     this->alive = false;
     this->running = false;
     
-    SpriteAction::revive();
+    ActionObject::revive();
 }

@@ -57,19 +57,19 @@ float SpriteObject::getZ_Depth(){
     return z;
 }
 
-void SpriteObject::addAction(SpriteAction *action){
+void SpriteObject::addAction(ActionObject *action){
 //    SpriteActionSchedule
     cout << "Adding Action#" << action->getActionID() << " to Sprite #" << spriteID << std::endl;
     spriteActionScheduleList.push_back(new SpriteActionSchedule(action));
 }
 
 void SpriteObject::addActions(SpriteActionSchedule &actions){
-    cout << "Adding list of actions to Sprite #" << spriteID << std::endl;
+    cout << "Adding list of actions reference to Sprite #" << spriteID << std::endl;
     spriteActionScheduleList.push_back(new SpriteActionSchedule(actions));
 }
 
 void SpriteObject::addActions(SpriteActionSchedule* actions){
-	cout << "Adding list of actions to Sprite #" << spriteID << std::endl;
+	cout << "Adding list of actions pointer to Sprite #" << spriteID << std::endl;
 	spriteActionScheduleList.push_back(actions);
 }
 
@@ -81,8 +81,8 @@ void SpriteObject::stopAction(){
     actionRunning = false;
     
     for(std::list<SpriteActionSchedule*>::const_iterator ci = spriteActionScheduleList.begin(); ci != spriteActionScheduleList.end(); ++ci){
-        std::list<SpriteAction*> spriteActionList = (*ci)->getList();
-        for(std::list<SpriteAction*>::const_iterator i = spriteActionList.begin(); i != spriteActionList.end(); ++i){
+        std::list<ActionObject*> spriteActionList = (*ci)->getList();
+        for(std::list<ActionObject*>::const_iterator i = spriteActionList.begin(); i != spriteActionList.end(); ++i){
             (*i)->alive = false;
             (*i)->running = false;
             delete (*i);
@@ -107,13 +107,13 @@ void SpriteObject::update(){
     //iterate through schedule list
     for(std::list<SpriteActionSchedule*>::const_iterator ci = spriteActionScheduleList.begin(); ci != spriteActionScheduleList.end(); ++ci){
         //get first schedule from list
-        std::list<SpriteAction*> spriteActionList = (*ci)->getList();
+        std::list<ActionObject*> spriteActionList = (*ci)->getList();
         
         //iterate through the schedule(even if theres only one action!)
         bool sequence = true;
         bool instantHasNext = false;
         
-        for(std::list<SpriteAction*>::const_iterator i = spriteActionList.begin(); i != spriteActionList.end() && sequence; ++i){
+        for(std::list<ActionObject*>::const_iterator i = spriteActionList.begin(); i != spriteActionList.end() && sequence; ++i){
             //get first action
             //if action is dead(already processed), just continue to next action
             if(!(*i)->isAlive())
@@ -265,7 +265,7 @@ void SpriteObject::update(){
     }//for iterator schedule list end
 }
 
-void SpriteObject::instantUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence){
+void SpriteObject::instantUpdate(ActionObject *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence){
     actionPtr->update(-1, 0);
     
     //if action is done, increment interate counter;
@@ -287,7 +287,7 @@ void SpriteObject::instantUpdate(SpriteAction *actionPtr, std::list<SpriteAction
     actionPtr->running = false;
 }
 
-void SpriteObject::intervalUpdate(SpriteAction *actionPtr, std::list<SpriteActionSchedule *>::const_iterator &ci, bool &instantHasNext, bool &sequence){
+void SpriteObject::intervalUpdate(ActionObject *actionPtr, std::list<SpriteActionSchedule *>::const_iterator &ci, bool &instantHasNext, bool &sequence){
     if(instantHasNext && (*ci)->isRepeatDone()){
         if(!(*ci)->getList().front()->isProtected){
             delete (*ci)->getList().front();
@@ -337,7 +337,7 @@ void SpriteObject::updateFromSpriteAction(){
             continue;
         }
         
-        std::list<SpriteAction*>::const_iterator action_ci;
+        std::list<ActionObject*>::const_iterator action_ci;
         
         bool allActionDead = true;
         for(action_ci = (*ci)->getList().begin(); action_ci != (*ci)->getList().end(); ++action_ci){

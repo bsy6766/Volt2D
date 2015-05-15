@@ -9,9 +9,9 @@
 #ifndef __OpenGL_2D_Framework__ActionFadeTo__
 #define __OpenGL_2D_Framework__ActionFadeTo__
 
-#include "SpriteAction.h"
+#include "ActionObject.h"
 
-class ActionFadeTo : public SpriteAction{
+class ActionFadeTo : public ActionObject{
 private:
     float finalOpacity;
     float originalOpacity;
@@ -29,7 +29,7 @@ public:
     void setOriginalOpacity(float opacity);
     
     //virtual
-    void clone(SpriteAction* dataPtr);
+    void clone(ActionObject* dataPtr);
     void update(double elapsedTime, double unusedTime);
     
     //override

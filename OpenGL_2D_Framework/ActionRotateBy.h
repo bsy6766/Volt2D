@@ -9,9 +9,9 @@
 #ifndef __OpenGL_2D_Framework__ActionRotateBy__
 #define __OpenGL_2D_Framework__ActionRotateBy__
 
-#include "SpriteAction.h"
+#include "ActionObject.h"
 
-class ActionRotateBy :  public SpriteAction{
+class ActionRotateBy :  public ActionObject{
 private:
     float startAngle;
     float rotatingAngle;
@@ -29,7 +29,7 @@ public:
     
     //virtuals
     virtual void update(double elapsedTime, double unusedTime);
-    virtual void clone(SpriteAction* dataPtr);
+    virtual void clone(ActionObject* dataPtr);
     
     //override
     void revive();

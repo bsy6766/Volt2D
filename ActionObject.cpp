@@ -1,15 +1,14 @@
 //
-//  SpriteAction.cpp
+//  ActionObject.cpp
 //  OpenGL_2D_Framework
 //
-//  Created by Seung Youp Baek on 11/11/14.
-//  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
+//  Created by Seung Youp Baek on 5/14/15.
+//  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#include "SpriteAction.h"
-#include <iostream>
+#include "ActionObject.h"
 
-SpriteAction::SpriteAction(){
+ActionObject::ActionObject(){
     running = false;
     alive = true;
     previousTime = 0;
@@ -22,32 +21,32 @@ SpriteAction::SpriteAction(){
     std::cout << "creating action" << std::endl;
 }
 
-SpriteAction::~SpriteAction(){
+ActionObject::~ActionObject(){
     std::cout << "deleting action" << std::endl;
 }
 
-ActionID SpriteAction::getActionID(){
+ActionID ActionObject::getActionID(){
     return actionID;
 }
 
-double SpriteAction::getTotalElapsedTime(){
+double ActionObject::getTotalElapsedTime(){
     return totalElapsedTime;
 }
 
-double SpriteAction::getPreviousTime(){
+double ActionObject::getPreviousTime(){
     return previousTime;
 }
 
-double SpriteAction::getElapsedTime(){
+double ActionObject::getElapsedTime(){
     return totalElapsedTime - previousTime;
 }
 
-double SpriteAction::getDuration(){
+double ActionObject::getDuration(){
     return duration;
 }
 
 //returns unused time
-double SpriteAction::setCurrentTime(double time){
+double ActionObject::setCurrentTime(double time){
     double tempTime = totalElapsedTime;
     tempTime += time;
     
@@ -57,33 +56,33 @@ double SpriteAction::setCurrentTime(double time){
         alive = false;
         return (tempTime - duration);
     }
-
+    
     previousTime = totalElapsedTime;
     totalElapsedTime += time;
     return 0;
 }
 
 //true = active, false = done
-bool SpriteAction::isRunning(){
+bool ActionObject::isRunning(){
     return running;
 }
 
-bool SpriteAction::isAlive(){
+bool ActionObject::isAlive(){
     return alive;
 }
 
-void SpriteAction::startAction(){
+void ActionObject::startAction(){
     running = true;
 }
 
-void SpriteAction::kill(){
+void ActionObject::kill(){
     if(alive && running){
         alive = false;
         running = false;
     }
 }
 
-void SpriteAction::revive(){
+void ActionObject::revive(){
     if(!alive && !running){
         alive = true;
         running = false;
@@ -95,9 +94,9 @@ void SpriteAction::revive(){
     }
 }
 
-void SpriteAction::clone(SpriteAction *ptr){
-	//check if pointer is null!!
-
+void ActionObject::clone(ActionObject *ptr){
+    //check if pointer is null!!
+    
     std::cout << "sprite action clone base" << std::endl;
     this->actionID = ptr->actionID;
     this->duration = ptr->duration;

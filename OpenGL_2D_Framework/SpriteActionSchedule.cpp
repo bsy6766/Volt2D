@@ -23,7 +23,7 @@ SpriteActionSchedule::SpriteActionSchedule() :
             
 }
 
-SpriteActionSchedule::SpriteActionSchedule(SpriteAction* action){
+SpriteActionSchedule::SpriteActionSchedule(ActionObject* action){
     assert(action != 0);
     
     this->actionList.push_back(action);
@@ -44,7 +44,7 @@ SpriteActionSchedule::SpriteActionSchedule(const SpriteActionSchedule& other) :
         sharedUnusedTime(other.sharedUnusedTime),
         readyToUseUnusedTime(other.readyToUseUnusedTime){
 
-    for (std::list<SpriteAction*>::const_iterator ci = other.actionList.begin(); ci != other.actionList.end(); ++ci){
+    for (std::list<ActionObject*>::const_iterator ci = other.actionList.begin(); ci != other.actionList.end(); ++ci){
         cout << "SpriteActionSchedule::Adding from list...action#" << (*ci)->getActionID() << endl;
         this->actionList.push_back(*ci);
     }
@@ -60,11 +60,11 @@ SpriteActionSchedule::~SpriteActionSchedule(){
     cout << "Done." << endl;
 }
 
-void SpriteActionSchedule::createSchedule(SpriteAction *action){
+void SpriteActionSchedule::createSchedule(ActionObject *action){
     actionList.push_back(action);
 }
 
-void SpriteActionSchedule::createSchedule(std::vector<SpriteAction*> actions, int repeat){
+void SpriteActionSchedule::createSchedule(std::vector<ActionObject*> actions, int repeat){
     for(auto it : actions){
         this->actionList.push_back(it);
     }
@@ -150,7 +150,7 @@ void SpriteActionSchedule::createSchedule(std::vector<SpriteAction*> &actions, i
 }
 */
 
-std::list<SpriteAction*> &SpriteActionSchedule::getList(){
+std::list<ActionObject*> &SpriteActionSchedule::getList(){
     return actionList;
 }
 
@@ -177,7 +177,7 @@ void SpriteActionSchedule::countIterate(){
 }
 
 void SpriteActionSchedule::reviveAllActions(){
-    for(std::list<SpriteAction*>::const_iterator ci = actionList.begin(); ci != actionList.end(); ++ci){
+    for(std::list<ActionObject*>::const_iterator ci = actionList.begin(); ci != actionList.end(); ++ci){
         switch ((*ci)->getActionID()) {
             case ACTION_MOVE_TO:
                 static_cast<ActionMoveTo*>(*ci)->revive();

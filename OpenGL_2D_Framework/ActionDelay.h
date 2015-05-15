@@ -9,9 +9,9 @@
 #ifndef __OpenGL_2D_Framework__ActionDelay__
 #define __OpenGL_2D_Framework__ActionDelay__
 
-#include "SpriteAction.h"
+#include "ActionObject.h"
 
-class ActionDelay : public SpriteAction{
+class ActionDelay : public ActionObject{
 private:
 	//time
     double totalDelayed;
@@ -27,7 +27,7 @@ public:
     double getDelayTick();
 
     //virtuals
-    void clone(SpriteAction *);
+    void clone(ActionObject *);
     void update(double elapsedTime, double unusedtime);
 
     //override

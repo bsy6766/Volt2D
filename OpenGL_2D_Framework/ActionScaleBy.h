@@ -9,10 +9,10 @@
 #ifndef __OpenGL_2D_Framework__ActionScaleBy__
 #define __OpenGL_2D_Framework__ActionScaleBy__
 
-#include "SpriteAction.h"
+#include "ActionObject.h"
 #include "CommonInclude.h"
 
-class ActionScaleBy : public SpriteAction{
+class ActionScaleBy : public ActionObject{
 private:
     float startScale;
     float destScale;
@@ -30,7 +30,7 @@ public:
     float getScaledScale();
     
     virtual void update(double elapsedTiem, double unusedTime);
-    virtual void clone(SpriteAction *ptr);
+    virtual void clone(ActionObject *ptr);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionScaleBy__) */
