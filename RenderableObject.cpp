@@ -9,6 +9,7 @@
 #include "RenderableObject.h"
 
 RenderableObject::RenderableObject():
+Object(),
 vao(0),
 vbo(0),
 uvbo(0),
@@ -20,7 +21,6 @@ modelMat(glm::mat4()),
 angle(0),
 scale(glm::vec3(0, 0, 0)),
 opacity(255),
-Object(),
 boundingBox(new BoundingBox())
 {
     
@@ -30,6 +30,10 @@ RenderableObject::~RenderableObject(){
     deleteVertexData();
     cout << "Deleting Renderable Object" << endl;
     delete boundingBox;
+}
+
+void RenderableObject::setPosition(glm::vec3 position){
+    translateTo(position);
 }
 
 void RenderableObject::translateTo(glm::vec3 position){
@@ -141,4 +145,11 @@ GLfloat RenderableObject::getScaleZ(){
 
 glm::vec3 RenderableObject::getScale(){
     return this->scale;
+}
+
+void RenderableObject::initBoundingBox(int w, int h){
+    boundingBox->w = w;
+    boundingBox->h = h;
+    boundingBox->x = ((-1) * w) / 2;
+    boundingBox->y = ((-1) * h) / 2;
 }

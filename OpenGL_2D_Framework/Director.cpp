@@ -328,7 +328,7 @@ void Director::render(){
     glUniformMatrix4fv(cameraUniformLocation, 1, GL_FALSE, &cameraMat[0][0]);
     
     if(runningScene)
-        runningScene->run();
+        runningScene->render();
     
     glUseProgram(0);
 }

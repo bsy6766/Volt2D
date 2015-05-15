@@ -10,13 +10,14 @@
 
 Object::Object()
 :size(Director::getInstance().getWindowSize()),
+position(glm::vec3(0, 0, 0)),
 visible(true)
 {
-    position = glm::vec3(size.w/2, size.h/2, 0);
+    cout << "Object::Object()" << endl;
 }
 
 Object::~Object(){
-    
+    cout << "Object::~Object()" << endl;
 }
 
 void Object::setPosition(glm::vec3 position){

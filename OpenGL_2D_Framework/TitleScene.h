@@ -12,12 +12,10 @@
 #include <stdio.h>
 #include <iostream>
 
-//inherit. must need
 #include "Scene.h"
 #include "Sprite.h"
 #include "Text.h"
 #include "FontManager.h"
-
 #include "BattleScene.h"
 
 class TitleScene : public Scene{

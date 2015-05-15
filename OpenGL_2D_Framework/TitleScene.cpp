@@ -23,21 +23,29 @@ void TitleScene::init(){
     cout << "TitleScene::init()" << endl;
     WinSize size = Director::getInstance().getWindowSize();
     //init basic stuff
-//    bg = new Sprite();
-////    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/titleScene_bg.png");
-//    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/boss_creeper.png");
-//    bg->setZ_Depth(2);
+    bg = new Sprite();
+//    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/titleScene_bg.png");
+    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_bg.png");
+    bg->setZ_Depth(2);
 //    bg->type = Sprite::BILLBOARD_TYPE;
-//    bg->setPosition(glm::vec3(size.w/2-100, size.h/2, 0));
-//    addSprite(bg);
+    addSprite(bg);
 
     ground = new Sprite();
     ground->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_bg.png");
     ground->setZ_Depth(1);
 //    ground->setPosition(glm::vec3(size.w/2, -100, 0));
-    ground->translateTo(glm::vec3(0, -50, 0));
+//    ground->translateTo(glm::vec3(0, -50, 0));
+    ground->setPosition(glm::vec3(0, -50, 0));
     ground->rotateBy(90, glm::vec3(-1, 0, 0));
     addSprite(ground);
+    
+    ActionFadeTo* fadeOutAction = new ActionFadeTo();
+    fadeOutAction->initFadeTo(0, 20);
+    ground->addAction(fadeOutAction);
+//    ActionMoveTo* moveToAction = new ActionMoveTo();
+//    moveToAction->initMoveTo(glm::vec2(0, 0), 10);
+//    ground->addAction(moveToAction);
+    ground->runAction();
     
     FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
     

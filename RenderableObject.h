@@ -50,6 +50,8 @@ public:
     RenderableObject();
     virtual ~RenderableObject();
     
+    virtual void setPosition(glm::vec3 position);
+    
     //To transformation
     void rotateTo(GLfloat angle, glm::vec3 axis);
     void scaleTo(glm::vec3 scale);
@@ -76,6 +78,7 @@ public:
     
     //clear vertex std::vectors and delete buffer.
     void deleteVertexData();
+    void initBoundingBox(int w, int h);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__RenderableObject__) */

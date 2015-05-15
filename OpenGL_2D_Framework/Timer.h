@@ -10,6 +10,7 @@
 #define __OpenGL_2D_Framework__Timer__
 
 #include <GLFW/glfw3.h>
+#include <iostream>
 
 //Singleton Timer class
 class Timer{

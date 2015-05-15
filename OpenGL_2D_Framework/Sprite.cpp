@@ -9,16 +9,16 @@
 #include "Sprite.h"
 #include <cmath>
 
-Sprite::Sprite()
-:SpriteObject(),
+Sprite::Sprite():
+SpriteObject(),
 texture(0)
 {
     
 }
 
-Sprite::Sprite(Program *ptr)
-        :SpriteObject(ptr),
-		texture(0){
+Sprite::Sprite(Program *ptr):
+SpriteObject(ptr),
+texture(0){
 	std::cout << "Sprite created with ID#" << spriteID << std::endl;
 }
 
@@ -33,11 +33,6 @@ Sprite::~Sprite(){
 		texture = nullptr;
 	}
     
-    glDeleteVertexArrays(1, &vao);
-    glDeleteBuffers(1, &vbo);
-    glDeleteBuffers(1, &uvbo);
-    glDeleteBuffers(1, &ibo);
-    
     actionRunning = false;
     
     std::cout << "Sprite deleted" << std::endl;
@@ -48,9 +43,7 @@ void Sprite::initSpriteWithTexture(GLenum _textureTarget, const std::string& _fi
     texture = new Texture(_textureTarget, _fileName);
     texture->load();
     texture->getImageSize(w, h);
-//    this->boundingBox = new BoundingBox();
 
-//    position = glm::vec2(640, 360, 0);
     z = GLOBAL_Z_VALUE;
     
     computeVertexData();
@@ -63,80 +56,45 @@ void Sprite::initSpriteWithTexture(GLenum _textureTarget, const std::string& _fi
 }
 
 void Sprite::render(){
-    if(visible){
-		assert(texture != 0);
+    if(!visible) return;
+    if(!texture) return;
+    
+    texture->bind(GL_TEXTURE0);
 
-        texture->bind(GL_TEXTURE0);
-        
-//        glm::mat4 billboardCamMat = Director::getInstance().getCameraPtr()->getOrientation();
-//        billboardCamMat = glm::inverse(billboardCamMat);
-//        GLuint cameraUniformLocation = glGetUniformLocation(progPtr->getObject(), "cameraMat");
-//        glUniformMatrix4fv(cameraUniformLocation, 1, GL_FALSE, &billboardCamMat[0][0]);
-//        Camera* camera = Director::getInstance().getCameraPtr();
-//        GLfloat verticalAngle = camera->getVerticalAngle() * (-1);
-//        GLfloat horizontalAngle = camera->getHorizontalAngle() * (-1);
-        
-//        glm::mat4 orientation;
-//        orientation = glm::rotate(orientation, verticalAngle, glm::vec3(1,0,0));
-//        orientation = glm::rotate(orientation, horizontalAngle, glm::vec3(0,1,0));
-//        
-//        orientation = glm::translate(orientation, camera->getPosition());
-        
-        GLint modelUniformLocation = glGetUniformLocation(progPtr->getObject(), "modelMat");
-        if(modelUniformLocation == -1)
-            throw std::runtime_error( std::string("Program uniform not found: " ) + "modelMat");
-        glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, &modelMat[0][0]);
-        
-        GLint rotateUniformLocation = glGetUniformLocation(progPtr->getObject(), "rotateMat");
-        if(rotateUniformLocation == -1)
-            throw std::runtime_error( std::string("Program uniform not found: " ) + "rotateMat");
-        glUniformMatrix4fv(rotateUniformLocation, 1, GL_FALSE, &rotateMat[0][0]);
-        
-        GLint translateUniformLocation = glGetUniformLocation(progPtr->getObject(), "translateMat");
-        if(translateUniformLocation == -1)
-            throw std::runtime_error( std::string("Program uniform not found: " ) + "translateMat");
-        glUniformMatrix4fv(translateUniformLocation, 1, GL_FALSE, &translateMat[0][0]);
-        
-        GLint scaleUniformLocation = glGetUniformLocation(progPtr->getObject(), "scaleMat");
-        if(scaleUniformLocation == -1)
-            throw std::runtime_error( std::string("Program uniform not found: " ) + "scaleMat");
-        glUniformMatrix4fv(scaleUniformLocation, 1, GL_FALSE, &scaleMat[0][0]);
-        
-        if(actionRunning)
-            updateFromSpriteAction();
-        
-//        updateMatrix();
-//        updateBillboardMatrix(verticalAngle, horizontalAngle);
-        
-        
-        GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
-        if(opacityUniformLocation == -1)
-            throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
-        glUniform1fv(opacityUniformLocation, 1, &opacity);
-        
-        GLint particleUniformLocation = glGetUniformLocation(progPtr->getObject(), "particle");
-        if(particleUniformLocation == -1)
-            throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
-        glUniform1i(particleUniformLocation, 0);
-            
-        //bind vertex array.
-        glBindVertexArray(vao);
-        
-        //enable attribs
-        glEnableVertexAttribArray(progPtr->attrib("vert"));
-        glEnableVertexAttribArray(progPtr->attrib("uvVert"));
-        
-        //draw based on indices
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
-        glBindVertexArray(0);
-    }
+    getUniformLocation("modelMat", modelMat);
+    getUniformLocation("rotateMat", rotateMat);
+    getUniformLocation("translateMat", translateMat);
+    getUniformLocation("scaleMat", scaleMat);
+    
+    if(actionRunning)
+        updateFromSpriteAction();
+    
+    GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
+    if(opacityUniformLocation == -1)
+        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
+    glUniform1fv(opacityUniformLocation, 1, &opacity);
+    
+    GLint particleUniformLocation = glGetUniformLocation(progPtr->getObject(), "particle");
+    if(particleUniformLocation == -1)
+        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
+    glUniform1i(particleUniformLocation, 0);
+    
+    //bind vertex array.
+    glBindVertexArray(vao);
+    
+    //enable attribs
+    glEnableVertexAttribArray(progPtr->attrib("vert"));
+    glEnableVertexAttribArray(progPtr->attrib("uvVert"));
+    
+    //draw based on indices
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+    glBindVertexArray(0);
 }
 
 void Sprite::updateMatrix(){
     glm::mat4 result = glm::mat4();
     translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
     rotateMat = glm::rotate(glm::mat4(), angle, glm::vec3(0, 0, 1));
-//    scaleMat = glm::scale(glm::mat4(), glm::vec3(scaleX, scaleY, 1.0));
     scaleMat = glm::scale(glm::mat4(), scale);
     modelMat = result * translateMat * rotateMat * scaleMat;
 }
@@ -146,7 +104,6 @@ void Sprite::updateBillboardMatrix(GLfloat verticalAngle, GLfloat horizontalAngl
     translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
     rotateMat = glm::rotate(glm::mat4(), verticalAngle, glm::vec3(1, 0, 0));
     rotateMat = glm::rotate(rotateMat, horizontalAngle, glm::vec3(0, 1, 0));
-//    scaleMat = glm::scale(glm::mat4(), glm::vec3(scaleX, scaleY, 1.0));
     scaleMat = glm::scale(glm::mat4(), scale);
     modelMat = result * translateMat * rotateMat * scaleMat;
 }
@@ -217,4 +174,11 @@ void Sprite::loadVertexData(){
 
 void Sprite::setType(SpriteType type = NORMAL_TYPE){
     this->type = type;
+}
+
+void Sprite::getUniformLocation(std::string name, glm::mat4 &matrix){
+    GLint uniformLocation = glGetUniformLocation(progPtr->getObject(), name.c_str());
+    if(uniformLocation == -1)
+        throw std::runtime_error( std::string("Program uniform not found: " ) + name);
+    glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &matrix[0][0]);
 }
