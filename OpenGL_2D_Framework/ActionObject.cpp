@@ -16,7 +16,8 @@ isProtected(false),
 totalElapsedTime(0),
 unusedTime(0),
 speed(1),
-duration(-1)
+duration(-1),
+remainedTimeByDeath(0)
 {
     std::cout << "ActionObject()" << std::endl;
 }
@@ -43,6 +44,10 @@ double ActionObject::getElapsedTime(){
 
 double ActionObject::getDuration(){
     return duration;
+}
+
+double ActionObject::getRemainedTime(){
+    return remainedTimeByDeath;
 }
 
 //returns unused time
@@ -92,22 +97,4 @@ void ActionObject::revive(){
         unusedTime = 0;
         speed = 1;
     }
-}
-
-void ActionObject::clone(ActionObject *ptr){
-    //check if pointer is null!!
-    
-    std::cout << "sprite action clone base" << std::endl;
-    this->actionID = ptr->actionID;
-    this->duration = ptr->duration;
-    this->totalElapsedTime = ptr->totalElapsedTime;
-    this->unusedTime = ptr->unusedTime;
-    this->speed = ptr->speed;
-    
-    this->running = ptr->running;
-    this->alive = ptr->alive;
-    
-    this->previousTime = ptr->previousTime;
-    
-    this->isProtected = ptr->isProtected;
 }

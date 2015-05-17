@@ -32,6 +32,10 @@ void ActionDelay::instantUpdate(){
     alive = false;
 }
 
+void ActionDelay::intervalUpdate(){
+    
+}
+
 void ActionDelay::update(double elapsedTime, double unusedtime){
     //cast to float
     float dur = (float)duration;
@@ -52,20 +56,23 @@ double ActionDelay::getDelayTick(){
     return delayTick;
 }
 
-void ActionDelay::clone(ActionObject* dataPtr){
-    ActionDelay *other = static_cast<ActionDelay*>(dataPtr);
+void ActionDelay::updateAction(){
+    if(!alive)
+        return;
     
-    std::cout << "Cloning action delay " << std::endl;
+    if(!running)
+        running = true;
     
-    ActionObject::clone(dataPtr);
+    //delay doesn't need any update for initial state of action
     
-    this->actionID = other->actionID;
-    
-    this->totalDelayed = other->totalDelayed;
-    this->delayTick = other->delayTick;
+    if(duration == 0){
+        instantUpdate();
+    }
+    else{
+        intervalUpdate();
+    }
 }
 
-//revive
 void ActionDelay::revive(){
     //revive. original and previous will be updated
     this->delayTick = 0;

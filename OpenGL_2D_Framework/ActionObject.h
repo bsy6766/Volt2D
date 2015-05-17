@@ -36,6 +36,7 @@ protected:
     double duration;
     double totalElapsedTime;
     double unusedTime;
+    double remainedTimeByDeath;
     double speed;
     
 public:
@@ -69,6 +70,8 @@ public:
     
     double setCurrentTime(double time);
     
+    double getRemainedTime();
+    
     //setters
     void setSpeed(double speed);
     
@@ -81,7 +84,7 @@ public:
      */
     virtual void update(double elapsedTime, double unusedTime) = 0;
     virtual void instantUpdate() = 0;
-    virtual void clone(ActionObject *ptr);
+    virtual void intervalUpdate() = 0;
     
     //kill and reset
     void kill();

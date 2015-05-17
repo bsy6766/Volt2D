@@ -23,13 +23,17 @@ public:
 
     void initDelay(double duration);
     
+    void updateAction();
+//    void instantUpdate();
+//    void intervalUpdate();
+    
     //getter
     double getDelayTick();
 
     //virtuals
     virtual void instantUpdate();
+    virtual void intervalUpdate();
     virtual void update(double elapsedTime, double unusedtime);
-    virtual void clone(ActionObject *);
     
     //override
     void revive();

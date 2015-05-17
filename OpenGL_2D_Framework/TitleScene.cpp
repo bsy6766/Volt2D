@@ -36,26 +36,32 @@ void TitleScene::init(){
     ground->rotateBy(90, glm::vec3(-1, 0, 0));
     addSprite(ground);
     
-    ActionFadeTo* fadeOutDay = new ActionFadeTo();
-    fadeOutDay->initFadeTo(0, 2);
-
-    ActionDelay* delayBeforeFade = new ActionDelay();
-    delayBeforeFade->initDelay(2);
-
-    ActionFadeTo* fadeInDay = new ActionFadeTo();
-    fadeInDay->initFadeTo(255, 2);
-    
-    ActionRotateBy* rotateByAction = new ActionRotateBy();
-    rotateByAction->initRotateBy(180, 3);
-
-    ActionDelay* delayBtwFade = new ActionDelay();
-    delayBtwFade->initDelay(2);
-
-    SpriteActionSchedule* dayBGSchedule = new SpriteActionSchedule();
-
-    dayBGSchedule->createSchedule({delayBeforeFade, fadeOutDay, delayBtwFade, fadeInDay, rotateByAction}, REPEAT_FOREVER);
-    ground->addActions(dayBGSchedule);
-    ground->runAction();
+//    ActionMoveTo* moveRightAction = new ActionMoveTo();
+//    moveRightAction->initMoveTo(glm::vec2(0, 100), 3);
+//    
+//    ActionMoveTo* moveLeftAction = new ActionMoveTo();
+//    moveLeftAction->initMoveTo(glm::vec2(0, -50), 3);
+//    
+//    ActionFadeTo* fadeOutDay = new ActionFadeTo();
+//    fadeOutDay->initFadeTo(0, 2);
+//
+//    ActionDelay* delayBeforeFade = new ActionDelay();
+//    delayBeforeFade->initDelay(2);
+//
+//    ActionFadeTo* fadeInDay = new ActionFadeTo();
+//    fadeInDay->initFadeTo(255, 2);
+//    
+//    ActionRotateBy* rotateByAction = new ActionRotateBy();
+//    rotateByAction->initRotateBy(180, 3);
+//
+//    ActionDelay* delayBtwFade = new ActionDelay();
+//    delayBtwFade->initDelay(2);
+//
+//    SpriteActionSchedule* dayBGSchedule = new SpriteActionSchedule();
+//
+//    dayBGSchedule->createSchedule({moveRightAction, delayBeforeFade, fadeOutDay, delayBtwFade, fadeInDay, rotateByAction, moveLeftAction}, REPEAT_FOREVER);
+//    ground->addActions(dayBGSchedule);
+//    ground->runAction();
     
     FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
     

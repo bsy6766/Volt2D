@@ -11,14 +11,14 @@
 
 //#include
 #include "Program.h"
-#include "ActionObject.h"
-#include "ActionMoveTo.h"
 #include "Timer.h"
-#include "ActionJumpBy.h"
-#include "ActionFadeTo.h"
+#include "ActionObject.h"
 #include "ActionDelay.h"
-#include "ActionRotateBy.h"
-#include "ActionScaleBy.h"
+//#include "ActionMoveTo.h"
+//#include "ActionJumpBy.h"
+//#include "ActionFadeTo.h"
+//#include "ActionRotateBy.h"
+//#include "ActionScaleBy.h"
 #include "SpriteActionSchedule.h"
 
 #include <vector>

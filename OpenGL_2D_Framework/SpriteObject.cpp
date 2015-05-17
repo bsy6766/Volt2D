@@ -105,6 +105,81 @@ void SpriteObject::update(){
     }
     
     //iterate through schedule list
+    for(auto schedule_it = spriteActionScheduleList.begin(); schedule_it != spriteActionScheduleList.end(); ){
+        double remainedTimeByDeath = 0;
+        //true: schedule is done. need to revive. False: at least one action is alive.
+        bool scheduleFinished = true;
+        //get reference to list of SpriteActions
+        std::list<ActionObject*>& actionSchedule = (*schedule_it)->getList();
+        //iterate through list of SpriteActions
+        for(auto action_it = actionSchedule.begin(); action_it != actionSchedule.end(); ){
+            //get Action ID
+            ActionID actionId = (*action_it)->getActionID();
+            bool finishScheduleIteration = false;
+            
+            //before we proceed, check if action is dead. If so, continue to next action
+            //Note: action will be dead and remain on schedule only if it needs to repeat
+            if((*action_it)->isAlive())
+                continue;
+            
+            switch (actionId) {
+                case ACTION_DELAY:
+                {
+                    //cast to delay action
+                    ActionDelay *delayPtr = static_cast<ActionDelay*>(*action_it);
+                    //update current action
+                    delayPtr->updateAction();
+                    
+                    //if action is still alive after update, proceed to next schedule.
+                    if(delayPtr->isAlive()){
+                        finishScheduleIteration = true;
+                        scheduleFinished = false;
+                    }
+                    //if action is dead after update
+                    else{
+                        //action is done.
+                        //get remained time and use one next
+                        remainedTimeByDeath = delayPtr->getRemainedTime();
+                        //if the schedule needs to run only once, delete action
+                        if((*schedule_it)->isInstantSchedule()){
+                            delete *action_it;
+                            action_it = actionSchedule.erase(action_it);
+                        }
+                        //else, it needs to remain in schedule and wait to revive. so nothing to do here.
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+            
+            //if running action is still alive, break the loop(schedule)
+            if(finishScheduleIteration){
+                break;
+            }
+            
+            //manually increment schedule iterator
+            ++action_it;
+        }
+        //iteration for single schedule is done.
+        //if schedule is empty, it means schedule was meant to run only once and all actions have been proceessed. So, remove from schedule list.
+        if(actionSchedule.empty()){
+            delete &actionSchedule;
+            schedule_it = spriteActionScheduleList.erase(schedule_it);
+            continue;
+        }
+        //not empty
+        //if all action is dead == they are still there because they need to be repeated, increment repeater and revive all.
+        if(scheduleFinished){
+            (*schedule_it)->reviveAllActions();
+        }
+        ++schedule_it;
+    }
+    
+    
+    
+    
+    //iterate through schedule list
     for(std::list<SpriteActionSchedule*>::const_iterator ci = spriteActionScheduleList.begin(); ci != spriteActionScheduleList.end(); ++ci){
         //get first schedule from list
         std::list<ActionObject*> spriteActionList = (*ci)->getList();
@@ -123,121 +198,125 @@ void SpriteObject::update(){
             ActionID actionID = (*i)->getActionID();
             
             switch (actionID) {
-                case ACTION_MOVE_TO:
-                {
-                    //cast sprite action to move to
-                    ActionMoveTo *moveToPtr = static_cast<ActionMoveTo*>(*i);
-                    //if action is alive, and now running, has original position...run the algorithm.
-                    
-                    //if action is alive(probably guaranteed at this point), but isn't running yet,
-                    if(moveToPtr->isAlive() && !moveToPtr->isRunning()){
-                        //set running to true
-                        moveToPtr->startAction();
-                        //set starting point
-                        moveToPtr->setOriginalPosition(glm::vec2(position.x, position.y), true);
-                    }
-                    //but handle instant action first.
-                    if(moveToPtr->getDuration() == 0){
-                        instantUpdate(moveToPtr, ci, instantHasNext, sequence);
-                        //update position
-                        glm::vec2 d = moveToPtr->getMovedDistance();
-                        position += glm::vec3(d.x, d.y, 0);
-//                        position += moveToPtr->getMovedDistance();
-                    }
-                    else{
-                        //since instant action doesn't consume iteration and get updated right away in here, we have to delete on next action
-                        //also need to check if schedule needs to repeat
-                        intervalUpdate(moveToPtr, ci, instantHasNext, sequence);
-                    }
-                    break;
-                }
-                case ACTION_JUMP_BY:
-                {
-                    ActionJumpBy *jumpByPtr = static_cast<ActionJumpBy*>(*i);
-                    
-                    if(jumpByPtr->isAlive() && !jumpByPtr->isRunning()){
-                        jumpByPtr->startAction();
-                        jumpByPtr->setJumpingPosition(glm::vec2(position.x, position.y), true);
-                    }
-                    
-                    //0 second instant. if x value is same with sprite's position, no need to process thing.
-                    //instant
-                    if(jumpByPtr->getDuration() == 0){
-                        //same x, just y, 0 second, stay...
-                        if(jumpByPtr->getDistance().x == 0){
-                            jumpByPtr->running = false;
-                            jumpByPtr->alive = false;
-                        }
-                        else{
-                            instantUpdate(jumpByPtr, ci, instantHasNext, sequence);
-                            //update Position
-                            glm::vec2 d = jumpByPtr->getMovedDistance();
-                            position += glm::vec3(d.x, d.y, 0);
-                        }
-                    }
-                    else{
-                        intervalUpdate(jumpByPtr, ci, instantHasNext, sequence);
-                    }
-                    
-                    break;
-                }
-                case ACTION_FADE_TO:
-                {
-                    ActionFadeTo *fadeToPtr = static_cast<ActionFadeTo*>(*i);
-                    
-                    if(fadeToPtr->isAlive() && !fadeToPtr->isRunning()){
-                        cout << "Sprite #" << spriteID << " starting ACTION_FADE_TO" << endl;
-                        fadeToPtr->startAction();
-                        fadeToPtr->setOriginalOpacity(opacity);
-                    }
-                    
-                    if(fadeToPtr->getDuration() == 0){
-                        instantUpdate(fadeToPtr, ci, instantHasNext, sequence);
-                        opacity = fadeToPtr->getFadedOpacity();
-                    }
-                    else{
-                        intervalUpdate(fadeToPtr, ci, instantHasNext, sequence);
-                    }
-                    break;
-                }
-                    
-                case ACTION_DELAY:
-                {
-                    ActionDelay *delayPtr = static_cast<ActionDelay*>(*i);
-                    
-                    if(delayPtr->isAlive() && !delayPtr->isRunning()){
-                        cout << "Sprite #" << spriteID << " starting ACTION_DELAY" << endl;
-                        delayPtr->startAction();
-                    }
-                    
-                    if(delayPtr->getDuration() == 0){
-                        instantUpdate(delayPtr, ci, instantHasNext, sequence);
-                    }
-                    else{
-                        intervalUpdate(delayPtr, ci, instantHasNext, sequence);
-                    }
-                    break;
-                }
-                
-                case ACTION_ROTATE_BY:
-                {
-                    ActionRotateBy *rotateByPtr = static_cast<ActionRotateBy*>(*i);
-                    
-                    if(rotateByPtr->isAlive() && !rotateByPtr->isRunning()){
-                        rotateByPtr->startAction();
-                        rotateByPtr->setOriginalAngle(angle, true);
-                    }
-                    
-                    if(rotateByPtr->getDuration() == 0){
-                        instantUpdate(rotateByPtr, ci, instantHasNext, sequence);
-                        
-                        angle += rotateByPtr->getMovedAngle();
-                    }
-                    else{
-                        intervalUpdate(rotateByPtr, ci, instantHasNext, sequence);
-                    }
-                    break;
-                }
+//                case ACTION_MOVE_TO:
+//                {
+//                    //cast sprite action to move to
+//                    ActionMoveTo *moveToPtr = static_cast<ActionMoveTo*>(*i);
+//                    //if action is alive, and now running, has original position...run the algorithm.
+//                    
+//                    //if action is alive(probably guaranteed at this point), but isn't running yet,
+//                    if(moveToPtr->isAlive() && !moveToPtr->isRunning()){
+//                        //set running to true
+//                        moveToPtr->startAction();
+//                        //set starting point
+//                        moveToPtr->setOriginalPosition(glm::vec2(position.x, position.y), true);
+//                    }
+//                    //but handle instant action first.
+//                    if(moveToPtr->getDuration() == 0){
+//                        instantUpdate(moveToPtr, ci, instantHasNext, sequence);
+//                        //update position
+//                        glm::vec2 d = moveToPtr->getMovedDistance();
+//                        position += glm::vec3(d.x, d.y, 0);
+////                        position += moveToPtr->getMovedDistance();
+//                    }
+//                    else{
+//                        //since instant action doesn't consume iteration and get updated right away in here, we have to delete on next action
+//                        //also need to check if schedule needs to repeat
+//                        intervalUpdate(moveToPtr, ci, instantHasNext, sequence);
+//                    }
+//                    //update position.
+//                    glm::vec2 d = moveToPtr->getMovedDistance();
+//                    position += glm::vec3(d.x, d.y, 0);
+//                    setPosition(position);
+//                    break;
+//                }
+//                case ACTION_JUMP_BY:
+//                {
+//                    ActionJumpBy *jumpByPtr = static_cast<ActionJumpBy*>(*i);
+//                    
+//                    if(jumpByPtr->isAlive() && !jumpByPtr->isRunning()){
+//                        jumpByPtr->startAction();
+//                        jumpByPtr->setJumpingPosition(glm::vec2(position.x, position.y), true);
+//                    }
+//                    
+//                    if(jumpByPtr->getDuration() == 0){
+//                        //same x, just y, 0 second, stay...
+//                        if(jumpByPtr->getDistance().x == 0){
+//                            jumpByPtr->running = false;
+//                            jumpByPtr->alive = false;
+//                        }
+//                        else{
+//                            instantUpdate(jumpByPtr, ci, instantHasNext, sequence);
+//                            glm::vec2 d = jumpByPtr->getMovedDistance();
+//                            position += glm::vec3(d.x, d.y, 0);
+//                        }
+//                    }
+//                    else{
+//                        intervalUpdate(jumpByPtr, ci, instantHasNext, sequence);
+//                    }
+//                    
+//                    break;
+//                }
+//                case ACTION_FADE_TO:
+//                {
+//                    ActionFadeTo *fadeToPtr = static_cast<ActionFadeTo*>(*i);
+//                    
+//                    if(fadeToPtr->isAlive() && !fadeToPtr->isRunning()){
+//                        cout << "Sprite #" << spriteID << " starting ACTION_FADE_TO" << endl;
+//                        fadeToPtr->startAction();
+//                        fadeToPtr->setOriginalOpacity(opacity);
+//                    }
+//                    
+//                    if(fadeToPtr->getDuration() == 0){
+//                        instantUpdate(fadeToPtr, ci, instantHasNext, sequence);
+//                        opacity = fadeToPtr->getFadedOpacity();
+//                    }
+//                    else{
+//                        intervalUpdate(fadeToPtr, ci, instantHasNext, sequence);
+//                    }
+//                    //update opacity
+//                    opacity += fadeToPtr->getFadedOpacity();
+//                    break;
+//                }
+//                    
+//                case ACTION_DELAY:
+//                {
+//                    ActionDelay *delayPtr = static_cast<ActionDelay*>(*i);
+//                    
+//                    if(delayPtr->isAlive() && !delayPtr->isRunning()){
+//                        cout << "Sprite #" << spriteID << " starting ACTION_DELAY" << endl;
+//                        delayPtr->startAction();
+//                    }
+//                    
+//                    if(delayPtr->getDuration() == 0){
+//                        instantUpdate(delayPtr, ci, instantHasNext, sequence);
+//                    }
+//                    else{
+//                        intervalUpdate(delayPtr, ci, instantHasNext, sequence);
+//                    }
+//                    //nothing to update here. just delay!
+//                    break;
+//                }
+//
+//                case ACTION_ROTATE_BY:
+//                {
+//                    ActionRotateBy *rotateByPtr = static_cast<ActionRotateBy*>(*i);
+//                    
+//                    if(rotateByPtr->isAlive() && !rotateByPtr->isRunning()){
+//                        rotateByPtr->startAction();
+//                        rotateByPtr->setOriginalAngle(angle, true);
+//                    }
+//                    
+//                    if(rotateByPtr->getDuration() == 0){
+//                        instantUpdate(rotateByPtr, ci, instantHasNext, sequence);
+//                        
+//                        angle += rotateByPtr->getMovedAngle();
+//                    }
+//                    else{
+//                        intervalUpdate(rotateByPtr, ci, instantHasNext, sequence);
+//                    }
+//                    break;
+//                }
 //                case ACTION_SCALE_BY:
 //                {
 //                    ActionScaleBy *scaleByPtr = static_cast<ActionScaleBy*>(*i);
@@ -332,6 +411,8 @@ void SpriteObject::updateFromSpriteAction(){
     bool scheduleEmpty = false;
     //iterate through schedule
     for(std::list<SpriteActionSchedule*>::const_iterator ci = spriteActionScheduleList.begin(); ci != spriteActionScheduleList.end(); ++ci){
+        scheduleEmpty = false;
+        //if scheduel is empty (which is not normal), just continue;
         if((*ci)->getList().empty()){
             scheduleEmpty = true;
             continue;
@@ -352,65 +433,12 @@ void SpriteObject::updateFromSpriteAction(){
         
         //if there is at least one running(even if its dead) action
         if(!allActionDead){
-            //update
-            ActionID actionID = (*action_ci)->getActionID();
-            switch (actionID) {
-                case ACTION_MOVE_TO:
-                {
-                    ActionMoveTo *ptr = static_cast<ActionMoveTo*>(*action_ci);
-//                    position += ptr->getMovedDistance();
-                    glm::vec2 d = ptr->getMovedDistance();
-                    position += glm::vec3(d.x, d.y, 0);
-                    setPosition(position);
-                    break;
-                }
-                    
-                case ACTION_JUMP_BY:
-                {
-                    ActionJumpBy *ptr = static_cast<ActionJumpBy*>(*action_ci);
-//                    position += ptr->getMovedDistance();
-                    glm::vec2 d = ptr->getMovedDistance();
-                    position += glm::vec3(d.x, d.y, 0);
-                    break;
-                }
-                case ACTION_FADE_TO:
-                {
-                    ActionFadeTo *ptr = static_cast<ActionFadeTo*>(*action_ci);
-                    opacity += ptr->getFadedOpacity();
-                    break;
-                }
-                case ACTION_DELAY:
-                {
-                    //we do nothing...just wait and consume time!
-                    break;
-                }
-                case ACTION_ROTATE_BY:
-                {
-                    ActionRotateBy *ptr = static_cast<ActionRotateBy*>(*action_ci);
-                    if(angle > 360)
-                        angle -= 360;
-                    else if(angle < 0)
-                        angle += 360;
-                    
-                    angle += ptr->getMovedAngle();
-                    rotateBy(ptr->getMovedAngle(), glm::vec3(0, 1, 0));
-                    break;
-                }
-                case ACTION_SCALE_BY:
-                {
-//                    ActionScaleBy *ptr = static_cast<ActionScaleBy*>(*action_ci);
-//                    scale += ptr->getScaledScale();
-                }
-                default:
-                    break;
-            }
-            
             if(!(*action_ci)->isAlive() && (*ci)->isRepeatDone()){
                 if(!(*ci)->getList().front()->isProtected){
-                    cout << "sprite#" << spriteID << " deleting it's action#" << (*ci)->getList().front()->getActionID() << std::endl;
+                    cout << "sprite#" << spriteID << " deleting action#" << (*ci)->getList().front()->getActionID() << std::endl;
                     delete(*ci)->getList().front();
                 }
-                cout << "sprite#" << spriteID << " popping it's action#" << (*ci)->getList().front()->getActionID() << std::endl;
+                cout << "sprite#" << spriteID << " popping action#" << (*ci)->getList().front()->getActionID() << std::endl;
                 (*ci)->getList().pop_front();
                 if((*ci)->getList().empty()){
                     scheduleEmpty = true;

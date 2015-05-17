@@ -26,6 +26,7 @@ private:
     virtual void loadVertexData();
     virtual void render();
     
+    void getUniformLocation(std::string name, glm::mat4& matrix);
 public:
     Sprite();
     Sprite(Program *ptr);   //create with specific program pointer
@@ -38,7 +39,6 @@ public:
     
     void updateMatrix();
     void updateBillboardMatrix(GLfloat verticalAngle, GLfloat horizontalAngle);
-    void getUniformLocation(std::string name, glm::mat4& matrix);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Sprite__) */

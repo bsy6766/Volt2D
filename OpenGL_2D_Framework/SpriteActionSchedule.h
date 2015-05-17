@@ -12,10 +12,10 @@
 #include <list>
 #include <vector>
 #include "ActionObject.h"
-#include "ActionMoveTo.h"
-#include "ActionJumpBy.h"
-#include "ActionFadeTo.h"
-#include "ActionRotateBy.h"
+//#include "ActionMoveTo.h"
+//#include "ActionJumpBy.h"
+//#include "ActionFadeTo.h"
+//#include "ActionRotateBy.h"
 #include "ActionDelay.h"
 
 const int REPEAT_FOREVER = -1;
@@ -44,6 +44,7 @@ public:
 	void createSchedule(ActionObject *action);
     void createSchedule(std::vector<ActionObject*> actions, int repeat);
 //    void createSchedule(std::vector<SpriteAction*> &actions, int repeat);
+    bool isInstantSchedule();
     
     std::list<ActionObject*> &getList();
     

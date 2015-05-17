@@ -88,6 +88,12 @@ bool SpriteActionSchedule::isRepeatDone(){
     return repeat == repeatCounter;
 }
 
+bool SpriteActionSchedule::isInstantSchedule(){
+    if(repeat == REPEAT_ONCE)
+        return true;
+    return false;
+}
+
 bool SpriteActionSchedule::isIterateDone(){
     return size == iterateCounter;
 }
@@ -107,21 +113,21 @@ void SpriteActionSchedule::countIterate(){
 void SpriteActionSchedule::reviveAllActions(){
     for(std::list<ActionObject*>::const_iterator ci = actionList.begin(); ci != actionList.end(); ++ci){
         switch ((*ci)->getActionID()) {
-            case ACTION_MOVE_TO:
-                static_cast<ActionMoveTo*>(*ci)->revive();
-                break;
-            case ACTION_FADE_TO:
-                static_cast<ActionFadeTo*>(*ci)->revive();
-                break;
-            case ACTION_JUMP_BY:
-                static_cast<ActionJumpBy*>(*ci)->revive();
-                break;
             case ACTION_DELAY:
                 static_cast<ActionDelay*>(*ci)->revive();
                 break;
-            case ACTION_ROTATE_BY:
-                static_cast<ActionRotateBy*>(*ci)->revive();
-                break;
+//            case ACTION_MOVE_TO:
+//                static_cast<ActionMoveTo*>(*ci)->revive();
+//                break;
+//            case ACTION_FADE_TO:
+//                static_cast<ActionFadeTo*>(*ci)->revive();
+//                break;
+//            case ACTION_JUMP_BY:
+//                static_cast<ActionJumpBy*>(*ci)->revive();
+//                break;
+//            case ACTION_ROTATE_BY:
+//                static_cast<ActionRotateBy*>(*ci)->revive();
+//                break;
             default:
                 break;
         }
