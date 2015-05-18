@@ -10,13 +10,17 @@
 #define __OpenGL_2D_Framework__ActionSchedule__
 
 #include "CommonInclude.h"
+#include "SpriteObject.h"
 #include "ActionObject.h"
 #include "ActionDelay.h"
+#include "ActionMoveTo.h"
 #include <list>
+
+class SpriteObject;
 
 class ActionSchedule{
 protected:
-private:
+private:    
     int repeat;
     int repeatCounter;
     bool instantSchedule;
@@ -38,6 +42,8 @@ public:
     bool isFinished();
     bool needRepeat();
     void reviveSchedule();
+    std::list<ActionObject*>& getList();
+    bool isInstant();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionSchedule__) */

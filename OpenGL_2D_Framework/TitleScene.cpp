@@ -28,6 +28,16 @@ void TitleScene::init(){
     bg->setZ_Depth(2);
 //    bg->type = Sprite::BILLBOARD_TYPE;
     addSprite(bg);
+    
+    ActionDelay* delayAction4 = new ActionDelay();
+    delayAction4->initDelay(10);
+    ActionDelay* delayAction5 = new ActionDelay();
+    delayAction5->initDelay(5);
+    ActionMoveTo* moveToAction3 = new ActionMoveTo();
+    moveToAction3->initMoveTo(glm::vec3(0, 25, 0), 5);
+    ActionMoveTo* moveToAction4 = new ActionMoveTo();
+    moveToAction4->initMoveTo(glm::vec3(0, -25, 0), 5);
+    bg->addActions({delayAction4, moveToAction3, delayAction5, moveToAction4}, 1);
 
     ground = new Sprite();
     ground->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_bg.png");
@@ -44,7 +54,7 @@ void TitleScene::init(){
     delayAction2->initDelay(6);
     ActionDelay* delayAction3 = new ActionDelay();
     delayAction3->initDelay(7);
-//    ground->addAction(delayAction, 2);
+    ground->addAction(delayAction, 2);
     ground->addActions({delayAction1, delayAction2, delayAction3}, 1);
     
 //    ActionMoveTo* moveRightAction = new ActionMoveTo();

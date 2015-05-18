@@ -9,45 +9,29 @@
 #ifndef __OpenGL_2D_Framework__SpriteObject__
 #define __OpenGL_2D_Framework__SpriteObject__
 
-//#include
 #include "Program.h"
-#include "Timer.h"
+#include "RenderableObject.h"
+#include "ActionSchedule.h"
 #include "ActionObject.h"
 #include "ActionDelay.h"
-//#include "ActionMoveTo.h"
-//#include "ActionJumpBy.h"
-//#include "ActionFadeTo.h"
-//#include "ActionRotateBy.h"
-//#include "ActionScaleBy.h"
-//#include "SpriteActionSchedule.h"
-#include "ActionSchedule.h"
+#include "ActionMoveTo.h"
 
 #include <vector>
 #include <list>
+#include "Timer.h"
 
-#include "RenderableObject.h"
+class ActionSchedule;
 
 static int ID_COUNTER = 0;
 
 class SpriteObject : public RenderableObject{
 private:
-	/**
-	*	Update instant actions.
-	*	Instant actions are actions with 0 duration. 
-	*	
-	*/
-//    void instantUpdate(ActionObject *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
-//    void intervalUpdate(ActionObject *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
-	
-//	WinSize size = Director::getInstance().getWindowSize();
-
 protected:
     int spriteID;
     
     int w;
     int h;
     
-//    glm::vec2 position;
     Program *progPtr;
     
     bool actionRunning;
@@ -86,7 +70,7 @@ public:
     
 //    virtual void update() = 0;
     void update();
-    void updateFromSpriteAction();
+    void updateSpriteData(ActionObject* obj);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__SpriteObject__) */

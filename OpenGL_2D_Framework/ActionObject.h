@@ -27,6 +27,8 @@ enum ActionID{
     ACTION_FADE_TO
 };
 
+class SpriteObject;
+
 class ActionObject{
 private:
 protected:
@@ -39,9 +41,12 @@ protected:
     double duration;
     double totalElapsedTime;
     double previousTime;
+    double elapsedTime;
     double unusedTime;
     double remainedTimeByDeath;
     double speed;
+    
+    SpriteObject* owner;
     
 public:
     unsigned int objID;
@@ -62,7 +67,7 @@ public:
     ActionID getActionID();
     double getDuration();
     
-    bool isRunning();
+    bool isRunning();   //check if action object is running or not. 
     bool isAlive();
     
     //time functions
@@ -78,17 +83,16 @@ public:
     void startAction();
     void stopAction();
     
-    /**
-     * pure virtual function.
-     * Derived class
-     */
-//    virtual void update(double elapsedTime, double unusedTime) = 0;
+    virtual void updateAction(double remainedTime) = 0;
     virtual void instantUpdate() = 0;
     virtual void intervalUpdate(double remainedTime) = 0;
     
     //kill and reset
     void kill();
-    void revive();
+    virtual void revive();
+    
+    SpriteObject* getOwner();
+    void bindOwnerPtr(SpriteObject* ownerPtr);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionObject__) */

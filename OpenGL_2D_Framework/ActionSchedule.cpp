@@ -77,6 +77,10 @@ void ActionSchedule::terminateAllAction(){
     clearList();
 }
 
+bool ActionSchedule::isInstant(){
+    return instantSchedule;
+}
+
 void ActionSchedule::updateSchedule(){
     finished = true;
     for(auto action_it = actionList.begin(); action_it != actionList.end();){
@@ -95,12 +99,41 @@ void ActionSchedule::updateSchedule(){
             case ACTION_DELAY:
             {
                 ActionDelay *delayPtr = static_cast<ActionDelay*>(*action_it);
+                //check starting. if alive but not running, run
+                if(!delayPtr->isRunning()){
+                    delayPtr->startAction();
+                }
                 //update
                 delayPtr->updateAction(this->remainedTime);
                 
                 //if action is dead after update
                 if(!delayPtr->isAlive()){
                     //and don't need to be repeated, delete from list
+                    if(instantSchedule){
+                        removeAction = true;
+                    }
+                    //else, leave action.
+                }
+                else{
+                    finished = false;
+                }
+                break;
+            }
+            case ACTION_MOVE_TO:
+            {
+                ActionMoveTo *moveToPtr = static_cast<ActionMoveTo*>(*action_it);
+                
+                if(!moveToPtr->isRunning()){
+                    moveToPtr->startAction();
+                    moveToPtr->setOriginalPosition(moveToPtr->getOwner()->getPosition(), true);
+                }
+                
+                moveToPtr->updateAction(this->remainedTime);
+                
+                //update position
+                moveToPtr->getOwner()->setPosition(moveToPtr->getOwner()->getPosition() + moveToPtr->getMovedDistance());
+                
+                if(!moveToPtr->isAlive()){
                     if(instantSchedule){
                         removeAction = true;
                     }
@@ -148,4 +181,8 @@ bool ActionSchedule::needRepeat(){
         return false;
     
     return repeat != repeatCounter;
+}
+
+std::list<ActionObject*>& ActionSchedule::getList(){
+    return actionList;
 }

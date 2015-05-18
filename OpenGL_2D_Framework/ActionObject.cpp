@@ -56,7 +56,7 @@ double ActionObject::getRemainedTime(){
 
 //returns unused time
 double ActionObject::setCurrentTime(double elapsedTime){
-    cout << "ElapsedTime = " << elapsedTime << endl;
+//    cout << "ElapsedTime = " << elapsedTime << endl;
     double tempTime = totalElapsedTime;
     tempTime += elapsedTime;
     
@@ -64,22 +64,25 @@ double ActionObject::setCurrentTime(double elapsedTime){
         cout << "Total elapsedTime exceeded duration" << endl;
         previousTime = totalElapsedTime;
         totalElapsedTime = duration;
-        cout << "previousTime = " << previousTime << endl;
-        cout << "totalElapsedTime = " << totalElapsedTime << endl;
+        elapsedTime = totalElapsedTime - previousTime;
+//        cout << "previousTime = " << previousTime << endl;
+//        cout << "totalElapsedTime = " << totalElapsedTime << endl;
         cout << "remaining Time = " << tempTime - duration << endl;
         return (tempTime - duration);
     }
 
     previousTime = totalElapsedTime;
     totalElapsedTime += elapsedTime;
+    this->elapsedTime = elapsedTime;
 //    cout << "previousTime = " << previousTime << endl;
 //    cout << "totalElapsedTime = " << totalElapsedTime << endl;
     return 0;
 }
 
-//true = active, false = done
 bool ActionObject::isRunning(){
-    return running;
+    if(alive)
+        return running;
+    return false;
 }
 
 bool ActionObject::isAlive(){
@@ -107,4 +110,12 @@ void ActionObject::revive(){
         unusedTime = 0;
         speed = 1;
     }
+}
+
+SpriteObject* ActionObject::getOwner(){
+    return owner;
+}
+
+void ActionObject::bindOwnerPtr(SpriteObject *ownerPtr){
+    this->owner = ownerPtr;
 }

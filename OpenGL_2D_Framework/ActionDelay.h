@@ -22,21 +22,12 @@ public:
     ~ActionDelay();
 
     void initDelay(double duration);
-    
-    void updateAction(double remainedTime);
-//    void instantUpdate();
-//    void intervalUpdate();
-    
-    //getter
-    double getDelayTick();
 
-    //virtuals
+    //override
+    virtual void updateAction(double remainedTime);
     virtual void instantUpdate();
     virtual void intervalUpdate(double remainedTime);
-//    virtual void update(double elapsedTime, double unusedtime);
-    
-    //override
-    void revive();
+    virtual void revive();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionDelay__) */

@@ -27,7 +27,6 @@ void ActionDelay::initDelay(double duration){
 }
 
 void ActionDelay::instantUpdate(){
-    //Finish action
     totalDelayed = duration;
     alive = false;
 }
@@ -48,32 +47,9 @@ void ActionDelay::intervalUpdate(double remainedTime){
     }
 }
 
-//void ActionDelay::update(double elapsedTime, double unusedtime){
-//    //cast to float
-//    float dur = (float)duration;
-//    float currentTime = (float)(totalElapsedTime + unusedtime);
-//    
-//    if(totalDelayed == dur){
-//        delayTick = dur - totalDelayed;
-//        totalDelayed = dur;
-//        
-//    }
-//    else{
-//        delayTick = (currentTime - previousTime);
-//        totalDelayed += delayTick;
-//    }
-//}
-
-double ActionDelay::getDelayTick(){
-    return delayTick;
-}
-
 void ActionDelay::updateAction(double remainedTime){
     if(!alive)
         return;
-    
-    if(!running)
-        running = true;
     
     //delay doesn't need any update for initial state of action
     
