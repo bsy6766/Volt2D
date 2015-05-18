@@ -10,6 +10,7 @@
 #define __OpenGL_2D_Framework__ActionObject__
 
 #include "CommonInclude.h"
+#include "Timer.h"
 #include <glm/glm.hpp>
 
 //Action IDs
@@ -32,21 +33,24 @@ protected:
     //action's unique enum ID
     ActionID actionID;
     
+    static unsigned int ACTION_ID;
+    
     //item vars
     double duration;
     double totalElapsedTime;
+    double previousTime;
     double unusedTime;
     double remainedTimeByDeath;
     double speed;
     
 public:
+    unsigned int objID;
+    
     ActionObject();
     virtual ~ActionObject();
     
     bool running;
     bool alive;
-    
-    double previousTime;
     
     /**
      * action won't get deleted if it is true.
@@ -56,8 +60,6 @@ public:
     
     //getters
     ActionID getActionID();
-    glm::vec2 getDestination();
-    glm::vec2 getMovedDistance();
     double getDuration();
     
     bool isRunning();
@@ -67,9 +69,7 @@ public:
     double getPreviousTime();
     double getTotalElapsedTime();
     double getElapsedTime();
-    
-    double setCurrentTime(double time);
-    
+    double setCurrentTime(double elapsedTime);
     double getRemainedTime();
     
     //setters
@@ -82,9 +82,9 @@ public:
      * pure virtual function.
      * Derived class
      */
-    virtual void update(double elapsedTime, double unusedTime) = 0;
+//    virtual void update(double elapsedTime, double unusedTime) = 0;
     virtual void instantUpdate() = 0;
-    virtual void intervalUpdate() = 0;
+    virtual void intervalUpdate(double remainedTime) = 0;
     
     //kill and reset
     void kill();

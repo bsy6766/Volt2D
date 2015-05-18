@@ -8,6 +8,8 @@
 
 #include "ActionObject.h"
 
+unsigned int ActionObject::ACTION_ID = 0;
+
 ActionObject::ActionObject():
 running(false),
 alive(true),
@@ -20,6 +22,8 @@ duration(-1),
 remainedTimeByDeath(0)
 {
     std::cout << "ActionObject()" << std::endl;
+    ACTION_ID++;
+    objID = ACTION_ID;
 }
 
 ActionObject::~ActionObject(){
@@ -51,19 +55,25 @@ double ActionObject::getRemainedTime(){
 }
 
 //returns unused time
-double ActionObject::setCurrentTime(double time){
+double ActionObject::setCurrentTime(double elapsedTime){
+    cout << "ElapsedTime = " << elapsedTime << endl;
     double tempTime = totalElapsedTime;
-    tempTime += time;
+    tempTime += elapsedTime;
     
     if(tempTime > duration) {
+        cout << "Total elapsedTime exceeded duration" << endl;
         previousTime = totalElapsedTime;
         totalElapsedTime = duration;
-        alive = false;
+        cout << "previousTime = " << previousTime << endl;
+        cout << "totalElapsedTime = " << totalElapsedTime << endl;
+        cout << "remaining Time = " << tempTime - duration << endl;
         return (tempTime - duration);
     }
-    
+
     previousTime = totalElapsedTime;
-    totalElapsedTime += time;
+    totalElapsedTime += elapsedTime;
+//    cout << "previousTime = " << previousTime << endl;
+//    cout << "totalElapsedTime = " << totalElapsedTime << endl;
     return 0;
 }
 
@@ -88,7 +98,7 @@ void ActionObject::kill(){
 }
 
 void ActionObject::revive(){
-    if(!alive && !running){
+    if(!alive){
         alive = true;
         running = false;
         

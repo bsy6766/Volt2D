@@ -32,31 +32,43 @@ void ActionDelay::instantUpdate(){
     alive = false;
 }
 
-void ActionDelay::intervalUpdate(){
+void ActionDelay::intervalUpdate(double remainedTime){
+    float duration = (float)this->duration;
+    float currentTime = (float)this->totalElapsedTime + remainedTime;
     
-}
-
-void ActionDelay::update(double elapsedTime, double unusedtime){
-    //cast to float
-    float dur = (float)duration;
-    float currentTime = (float)(totalElapsedTime + unusedtime);
-    
-    if(totalDelayed == dur){
-        delayTick = dur - totalDelayed;
-        totalDelayed = dur;
-        
+    if(totalElapsedTime == duration){
+        //Delay ended
+        delayTick = duration - totalDelayed;
+        totalDelayed = duration;
+        alive = false;
     }
     else{
-        delayTick = (currentTime - previousTime);
+        delayTick = (currentTime - this->previousTime);
         totalDelayed += delayTick;
     }
 }
+
+//void ActionDelay::update(double elapsedTime, double unusedtime){
+//    //cast to float
+//    float dur = (float)duration;
+//    float currentTime = (float)(totalElapsedTime + unusedtime);
+//    
+//    if(totalDelayed == dur){
+//        delayTick = dur - totalDelayed;
+//        totalDelayed = dur;
+//        
+//    }
+//    else{
+//        delayTick = (currentTime - previousTime);
+//        totalDelayed += delayTick;
+//    }
+//}
 
 double ActionDelay::getDelayTick(){
     return delayTick;
 }
 
-void ActionDelay::updateAction(){
+void ActionDelay::updateAction(double remainedTime){
     if(!alive)
         return;
     
@@ -69,7 +81,7 @@ void ActionDelay::updateAction(){
         instantUpdate();
     }
     else{
-        intervalUpdate();
+        intervalUpdate(remainedTime);
     }
 }
 

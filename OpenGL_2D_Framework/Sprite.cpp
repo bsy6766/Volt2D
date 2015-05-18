@@ -66,8 +66,8 @@ void Sprite::render(){
     getUniformLocation("translateMat", translateMat);
     getUniformLocation("scaleMat", scaleMat);
     
-    if(actionRunning)
-        updateFromSpriteAction();
+//    if(actionRunning)
+//        updateFromSpriteAction();
     
     GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
     if(opacityUniformLocation == -1)

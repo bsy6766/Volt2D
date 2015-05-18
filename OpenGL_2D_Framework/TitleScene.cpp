@@ -36,6 +36,17 @@ void TitleScene::init(){
     ground->rotateBy(90, glm::vec3(-1, 0, 0));
     addSprite(ground);
     
+    ActionDelay* delayAction = new ActionDelay();
+    delayAction->initDelay(3);
+    ActionDelay* delayAction1 = new ActionDelay();
+    delayAction1->initDelay(5);
+    ActionDelay* delayAction2 = new ActionDelay();
+    delayAction2->initDelay(6);
+    ActionDelay* delayAction3 = new ActionDelay();
+    delayAction3->initDelay(7);
+//    ground->addAction(delayAction, 2);
+    ground->addActions({delayAction1, delayAction2, delayAction3}, 1);
+    
 //    ActionMoveTo* moveRightAction = new ActionMoveTo();
 //    moveRightAction->initMoveTo(glm::vec2(0, 100), 3);
 //    

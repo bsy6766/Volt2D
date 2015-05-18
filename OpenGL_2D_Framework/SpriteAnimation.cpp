@@ -136,7 +136,7 @@ void SpriteAnimation::updateFrame(){
         currentTime = nextTime;
     }
     
-    if(spriteActionScheduleList.empty()){
+    if(actionScheduleList.empty()){
         canJump = true;
     }
 }
@@ -148,8 +148,8 @@ void SpriteAnimation::render(){
     if(modelUniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + "modelMat");
     
-    if(actionRunning)
-        updateFromSpriteAction();
+//    if(actionRunning)
+//        updateFromSpriteAction();
     
     updateMatrix();
     

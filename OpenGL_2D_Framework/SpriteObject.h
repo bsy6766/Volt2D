@@ -19,7 +19,8 @@
 //#include "ActionFadeTo.h"
 //#include "ActionRotateBy.h"
 //#include "ActionScaleBy.h"
-#include "SpriteActionSchedule.h"
+//#include "SpriteActionSchedule.h"
+#include "ActionSchedule.h"
 
 #include <vector>
 #include <list>
@@ -35,8 +36,8 @@ private:
 	*	Instant actions are actions with 0 duration. 
 	*	
 	*/
-    void instantUpdate(ActionObject *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
-    void intervalUpdate(ActionObject *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
+//    void instantUpdate(ActionObject *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
+//    void intervalUpdate(ActionObject *actionPtr, std::list<SpriteActionSchedule*>::const_iterator &ci, bool &instantHasNext, bool &sequence);
 	
 //	WinSize size = Director::getInstance().getWindowSize();
 
@@ -53,7 +54,7 @@ protected:
     float z;    //each sprite can set 0~100.
     
 	//Action schedule list
-    std::list<SpriteActionSchedule *> spriteActionScheduleList;
+    std::list<ActionSchedule *> actionScheduleList;
     
 public:
     SpriteObject();	//not implemented
@@ -72,9 +73,11 @@ public:
     float getZ_Depth();
     
     //sprite action
-	void addAction(ActionObject *action);
-	void addActions(SpriteActionSchedule &actions);
-	void addActions(SpriteActionSchedule* actions);
+	void addAction(ActionObject* action);
+    void addAction(ActionObject* action, int repeat);
+    void addActions(std::initializer_list<ActionObject*> actions, int repeat);
+//	void addActions(SpriteActionSchedule &actions);
+//	void addActions(SpriteActionSchedule* actions);
     void runAction();
     void stopAction();
     

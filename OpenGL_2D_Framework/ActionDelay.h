@@ -23,7 +23,7 @@ public:
 
     void initDelay(double duration);
     
-    void updateAction();
+    void updateAction(double remainedTime);
 //    void instantUpdate();
 //    void intervalUpdate();
     
@@ -32,8 +32,8 @@ public:
 
     //virtuals
     virtual void instantUpdate();
-    virtual void intervalUpdate();
-    virtual void update(double elapsedTime, double unusedtime);
+    virtual void intervalUpdate(double remainedTime);
+//    virtual void update(double elapsedTime, double unusedtime);
     
     //override
     void revive();
