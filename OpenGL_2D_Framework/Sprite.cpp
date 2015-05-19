@@ -66,6 +66,8 @@ void Sprite::render(){
     getUniformLocation("translateMat", translateMat);
     getUniformLocation("scaleMat", scaleMat);
     
+    cout << "pos = (" << position.x << ", " << position.y << ", " << position.z << ")" << endl;
+    
 //    if(actionRunning)
 //        updateFromSpriteAction();
     

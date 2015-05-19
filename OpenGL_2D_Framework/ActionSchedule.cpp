@@ -12,7 +12,8 @@ ActionSchedule::ActionSchedule():
 repeat(0),
 repeatCounter(0),
 instantSchedule(false),
-finished(false)
+finished(false),
+remainedTime(0)
 {
     cout << "Creating action schedule" << endl;
 }
@@ -83,15 +84,20 @@ bool ActionSchedule::isInstant(){
 
 void ActionSchedule::updateSchedule(){
     finished = true;
+    
     for(auto action_it = actionList.begin(); action_it != actionList.end();){
         if(!(*action_it)->isAlive()){
             action_it++;
             continue;
         }
-        cout << "prcoessing ID = " << (*action_it)->objID << endl;
+//        cout << "prcoessing ID = " << (*action_it)->objID << endl;
         ActionID actionId = (*action_it)->getActionID();
         double elapsedTime = Timer::getInstance().getElapsedTime();
-        this->remainedTime = (*action_it)->setCurrentTime(elapsedTime);
+        double t = (*action_it)->setCurrentTime(elapsedTime);
+        if(t != 0 && this->remainedTime == 0){
+            cout << "t = " << t << endl;
+            this->remainedTime = t;
+        }
         
         bool removeAction = false;
         
@@ -102,6 +108,7 @@ void ActionSchedule::updateSchedule(){
                 //check starting. if alive but not running, run
                 if(!delayPtr->isRunning()){
                     delayPtr->startAction();
+                    this->remainedTime = 0;
                 }
                 //update
                 delayPtr->updateAction(this->remainedTime);
@@ -124,16 +131,57 @@ void ActionSchedule::updateSchedule(){
                 ActionMoveTo *moveToPtr = static_cast<ActionMoveTo*>(*action_it);
                 
                 if(!moveToPtr->isRunning()){
+                    cout << "Staring move to. rt = " << remainedTime << endl;
                     moveToPtr->startAction();
                     moveToPtr->setOriginalPosition(moveToPtr->getOwner()->getPosition(), true);
+                    moveToPtr->updateAction(this->remainedTime);
+                    this->remainedTime = 0;
                 }
-                
-                moveToPtr->updateAction(this->remainedTime);
+                else{
+                    moveToPtr->updateAction(0);
+                }
                 
                 //update position
                 moveToPtr->getOwner()->setPosition(moveToPtr->getOwner()->getPosition() + moveToPtr->getMovedDistance());
+                glm::vec3 curPos = moveToPtr->getOwner()->getPosition();
+                
+//                cout << "Moving (" << curPos.x << ", " << curPos.y << ", " << curPos.z << endl;
                 
                 if(!moveToPtr->isAlive()){
+                    if(instantSchedule){
+                        removeAction = true;
+                    }
+                    //else, leave action.
+                }
+                else{
+                    finished = false;
+                }
+                break;
+            }
+            case ACTION_MOVE_BY:
+            {
+                ActionMoveBy *moveByPtr = static_cast<ActionMoveBy*>(*action_it);
+                
+                if(!moveByPtr->isRunning()){
+                    moveByPtr->startAction();
+                    moveByPtr->setStartingPos(moveByPtr->getOwner()->getPosition());
+                    moveByPtr->updateAction(this->remainedTime);
+                    this->remainedTime = 0;
+                }
+                else{
+                    moveByPtr->updateAction(0);
+                }
+                
+                //update position
+                moveByPtr->getOwner()->setPosition(moveByPtr->getOwner()->getPosition() + moveByPtr->getMovedDistance());
+                glm::vec3 curPos = moveByPtr->getOwner()->getPosition();
+                
+                temp += moveByPtr->getMovedDistance();
+                
+//                cout << "temp = (" << temp.x << ", " << temp.y << ", " << temp.z << ")" << endl;
+//                cout << "Moving (" << curPos.x << ", " << curPos.y << ", " << curPos.z << ")" << endl;
+                
+                if(!moveByPtr->isAlive()){
                     if(instantSchedule){
                         removeAction = true;
                     }
@@ -155,7 +203,7 @@ void ActionSchedule::updateSchedule(){
         else{
             action_it++;
         }
-        this->remainedTime = 0;
+//        this->remainedTime = 0;
         if(!finished)
             break;
     }

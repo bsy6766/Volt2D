@@ -27,12 +27,6 @@ void ActionMoveTo::initMoveTo(glm::vec3 destination, double duration){
     this->duration = duration;
     this->destination = destination;
     this->actionID = ACTION_MOVE_TO;
-//
-//    this->movedDistance = glm::vec3();
-//    this->previousPosition = glm::vec3();
-//    this->originalPosition = glm::vec3();
-    
-//    this->totalDistance = destination - ori
 }
 
 void ActionMoveTo::instantUpdate(){
@@ -42,68 +36,45 @@ void ActionMoveTo::instantUpdate(){
 }
 
 void ActionMoveTo::intervalUpdate(double remainedTime){
-    //cast to float
     float duration = (float)this->duration;
-    float currentTime = (float)this->totalElapsedTime + remainedTime;
-    float elapsedTime = (float)this->elapsedTime;
-    float timeRatio = elapsedTime / duration;
     
-    
-    movedDistance = totalDistance * timeRatio;
     if(totalElapsedTime == duration){
+        movedDistance = totalDistance - previousPosition;
         alive = false;
+        return;
     }
-    //if action is done, get remaining distance between destination and prev pos
-//    if(totalElapsedTime == duration){
-//        glm::vec3 diff = destination - previousPosition;
-//        movedDistance += diff;
-//    }
-//    //else, get distance moved on current iteration
-//    else{
-//        glm::vec3 moved = totalDistance * timeRatio;
-//        previousPosition += moved;
-//        movedDistance += moved;
-//    }
+    else{
+        float currentTime = (float)(this->totalElapsedTime + remainedTime);
+        glm::vec3 curDist = totalDistance * (currentTime / duration);
+        glm::vec3 diff = curDist - previousPosition;
+        movedDistance = diff;
+        previousPosition += diff;
+    }
     
-    //    float currentTime = (float)getTotalElapsedTime() + (float)unusedTime;
-    //    float prevTime = (float)getPreviousTime();
-    //
-    //    glm::vec2 dist = destination - originalPosition;
-    //
-    //    float prevX, prevY;
-    //    float curX, curY;
-    //    float diffX, diffY;
-    //
-    //    float dur = (float)duration;
-    //
-    //    float ratioX = dist.x / dur;
-    //    float ratioY = dist.y / dur;
-    //
-    //    prevX = prevTime * ratioX;
-    //    prevY = prevTime * ratioY;
-    //
-    //    if(duration == currentTime){
-    //        //action is about to end. force sprite's position to destination
-    //        diffX = destination.x - previousPosition.x;
-    //        diffY = destination.y - previousPosition.y;
-    //    }
-    //    else{
-    //        curX = currentTime * dist.x / dur;
-    //        curY = currentTime * dist.y / dur;
-    //
-    //        diffX = curX - prevX;
-    //        diffY = curY - prevY;
-    //    }
-    //    
-    //    previousPosition += glm::vec2(diffX, diffY);
-    //    movedDistance = glm::vec2(diffX, diffY);
+    
+//    float duration = (float)this->duration;
+//    float currentTime = (float)(this->totalElapsedTime + remainedTime);
+//    
+//    glm::vec3 curDist = totalDistance * (currentTime / duration);
+//    glm::vec3 diff = curDist - previousPosition;
+//    
+//    //    movedDistance = diff;
+//    
+//    if(totalElapsedTime == duration){
+//        movedDistance = totalDistance - curDist;
+//        alive = false;
+//        return;
+//    }
+//    else{
+//        movedDistance = diff;
+//    }
+//    
+//    previousPosition += diff;
 }
 
 void ActionMoveTo::updateAction(double remainedTime){
     if(!alive)
         return;
-    
-    //delay doesn't need any update for initial state of action
     
     if(duration == 0){
         instantUpdate();
@@ -112,41 +83,6 @@ void ActionMoveTo::updateAction(double remainedTime){
         intervalUpdate(remainedTime);
     }
 }
-
-//void ActionMoveTo::update(double elapsedTime, double unusedTime){
-//    float currentTime = (float)getTotalElapsedTime() + (float)unusedTime;
-//    float prevTime = (float)getPreviousTime();
-//    
-//    glm::vec2 dist = destination - originalPosition;
-//    
-//    float prevX, prevY;
-//    float curX, curY;
-//    float diffX, diffY;
-//    
-//    float dur = (float)duration;
-//    
-//    float ratioX = dist.x / dur;
-//    float ratioY = dist.y / dur;
-//    
-//    prevX = prevTime * ratioX;
-//    prevY = prevTime * ratioY;
-//    
-//    if(duration == currentTime){
-//        //action is about to end. force sprite's position to destination
-//        diffX = destination.x - previousPosition.x;
-//        diffY = destination.y - previousPosition.y;
-//    }
-//    else{
-//        curX = currentTime * dist.x / dur;
-//        curY = currentTime * dist.y / dur;
-//        
-//        diffX = curX - prevX;
-//        diffY = curY - prevY;
-//    }
-//    
-//    previousPosition += glm::vec2(diffX, diffY);
-//    movedDistance = glm::vec2(diffX, diffY);
-//}
 
 void ActionMoveTo::setOriginalPosition(glm::vec3 pos, bool fresh){
     //set original position

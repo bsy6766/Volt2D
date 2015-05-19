@@ -30,32 +30,34 @@ void TitleScene::init(){
     addSprite(bg);
     
     ActionDelay* delayAction4 = new ActionDelay();
-    delayAction4->initDelay(10);
+    delayAction4->initDelay(2);
     ActionDelay* delayAction5 = new ActionDelay();
-    delayAction5->initDelay(5);
+    delayAction5->initDelay(2);
     ActionMoveTo* moveToAction3 = new ActionMoveTo();
-    moveToAction3->initMoveTo(glm::vec3(0, 25, 0), 5);
-    ActionMoveTo* moveToAction4 = new ActionMoveTo();
-    moveToAction4->initMoveTo(glm::vec3(0, -25, 0), 5);
-    bg->addActions({delayAction4, moveToAction3, delayAction5, moveToAction4}, 1);
+    moveToAction3->initMoveTo(glm::vec3(0, 25, 0), 4);
+    ActionMoveBy* moveByAction1 = new ActionMoveBy();
+    moveByAction1->initMoveBy(glm::vec3(0, -25, 0), 4);
+    ActionMoveBy* moveByAction2 = new ActionMoveBy();
+    moveByAction2->initMoveBy(glm::vec3(0, 25, 0), 4);
+    bg->addActions({delayAction4, moveToAction3, delayAction5, moveByAction1}, 1);
 
-    ground = new Sprite();
-    ground->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_bg.png");
-    ground->setZ_Depth(1);
-    ground->setPosition(glm::vec3(0, -50, 0));
-    ground->rotateBy(90, glm::vec3(-1, 0, 0));
-    addSprite(ground);
+//    ground = new Sprite();
+//    ground->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_bg.png");
+//    ground->setZ_Depth(1);
+//    ground->setPosition(glm::vec3(0, -50, 0));
+//    ground->rotateBy(90, glm::vec3(-1, 0, 0));
+//    addSprite(ground);
     
-    ActionDelay* delayAction = new ActionDelay();
-    delayAction->initDelay(3);
-    ActionDelay* delayAction1 = new ActionDelay();
-    delayAction1->initDelay(5);
-    ActionDelay* delayAction2 = new ActionDelay();
-    delayAction2->initDelay(6);
-    ActionDelay* delayAction3 = new ActionDelay();
-    delayAction3->initDelay(7);
-    ground->addAction(delayAction, 2);
-    ground->addActions({delayAction1, delayAction2, delayAction3}, 1);
+//    ActionDelay* delayAction = new ActionDelay();
+//    delayAction->initDelay(3);
+//    ActionDelay* delayAction1 = new ActionDelay();
+//    delayAction1->initDelay(5);
+//    ActionDelay* delayAction2 = new ActionDelay();
+//    delayAction2->initDelay(6);
+//    ActionDelay* delayAction3 = new ActionDelay();
+//    delayAction3->initDelay(7);
+//    ground->addAction(delayAction, 2);
+//    ground->addActions({delayAction1, delayAction2, delayAction3}, 1);
     
 //    ActionMoveTo* moveRightAction = new ActionMoveTo();
 //    moveRightAction->initMoveTo(glm::vec2(0, 100), 3);

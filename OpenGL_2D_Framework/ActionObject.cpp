@@ -60,11 +60,11 @@ double ActionObject::setCurrentTime(double elapsedTime){
     double tempTime = totalElapsedTime;
     tempTime += elapsedTime;
     
-    if(tempTime > duration) {
+    if(tempTime >= duration) {
         cout << "Total elapsedTime exceeded duration" << endl;
         previousTime = totalElapsedTime;
         totalElapsedTime = duration;
-        elapsedTime = totalElapsedTime - previousTime;
+        this->elapsedTime = totalElapsedTime - previousTime;
 //        cout << "previousTime = " << previousTime << endl;
 //        cout << "totalElapsedTime = " << totalElapsedTime << endl;
         cout << "remaining Time = " << tempTime - duration << endl;

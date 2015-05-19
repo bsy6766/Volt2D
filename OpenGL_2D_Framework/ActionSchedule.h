@@ -14,6 +14,7 @@
 #include "ActionObject.h"
 #include "ActionDelay.h"
 #include "ActionMoveTo.h"
+#include "ActionMoveBy.h"
 #include <list>
 
 class SpriteObject;
@@ -25,11 +26,15 @@ private:
     int repeatCounter;
     bool instantSchedule;
     bool finished;
+    bool readyToUseRemainedTime;
     
     double remainedTime;
     
+    glm::vec3 temp = glm::vec3();
+    
     std::list<ActionObject*> actionList;
-    void clearList();
+    void clearList();    
+    
 public:
     ActionSchedule();
     ~ActionSchedule();
