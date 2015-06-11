@@ -15,5 +15,4 @@
 using std::cout;
 using std::endl;
 
-
 #endif /* defined(__OpenGL_2D_Framework__CommonInclude__) */

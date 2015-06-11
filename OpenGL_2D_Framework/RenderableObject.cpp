@@ -71,9 +71,10 @@ GLfloat RenderableObject::getAngle(){
 
 void RenderableObject::rotateTo(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
     //rotate in 2d space by default
+    wrapAngle(angle);
     rotateMat = glm::rotate(glm::mat4(), angle, axis);
     this->angle = angle;
-    wrapAngle(this->angle);
+//    wrapAngle(this->angle);
 }
 
 void RenderableObject::rotateBy(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){

@@ -45,7 +45,9 @@ void TitleScene::init(){
     rotateAction1->initRotateBy(90.0, 2);
     ActionRotateBy* rotateAction2 = new ActionRotateBy();
     rotateAction2->initRotateBy(90.0, 2);
-    bg->addActions({delayAction4, rotateAction1, delayAction5, rotateAction2}, 1);
+    ActionRotateTo* rotateToAction1 = new ActionRotateTo();
+    rotateToAction1->initRotateTo(270, 4);
+    bg->addActions({delayAction4, rotateAction1, delayAction5, rotateToAction1}, 1);
     
     
     

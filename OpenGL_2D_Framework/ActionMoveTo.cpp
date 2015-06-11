@@ -50,26 +50,6 @@ void ActionMoveTo::intervalUpdate(double remainedTime){
         movedDistance = diff;
         previousPosition += diff;
     }
-    
-    
-//    float duration = (float)this->duration;
-//    float currentTime = (float)(this->totalElapsedTime + remainedTime);
-//    
-//    glm::vec3 curDist = totalDistance * (currentTime / duration);
-//    glm::vec3 diff = curDist - previousPosition;
-//    
-//    //    movedDistance = diff;
-//    
-//    if(totalElapsedTime == duration){
-//        movedDistance = totalDistance - curDist;
-//        alive = false;
-//        return;
-//    }
-//    else{
-//        movedDistance = diff;
-//    }
-//    
-//    previousPosition += diff;
 }
 
 void ActionMoveTo::updateAction(double remainedTime){

@@ -233,7 +233,7 @@ void ActionSchedule::updateSchedule(){
                 }
                 cout << "Moved angle = " << rotateToPtr->getMovedAngle() << endl;
                 //                cout << "cur angle = " << rotateToPtr->getOwner()->getAngle() << endl;
-                rotateToPtr->getOwner()->addAngle(rotateToPtr->getMovedAngle());
+                rotateToPtr->getOwner()->setAngle(rotateToPtr->getMovedAngle());
                 
                 if(!rotateToPtr->isAlive()){
                     if(instantSchedule){

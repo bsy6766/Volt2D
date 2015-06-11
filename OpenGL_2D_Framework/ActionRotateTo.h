@@ -14,14 +14,15 @@
 class ActionRotateTo :  public ActionObject{
 private:
     float startAngle;
-    float rotatingAngle;
+    float destinationAngle;
     float previousAngle;
-    float movedAngle;
+    float movedAngle;   //amount of angle moved in single iteration
+    float totalAngleToRotate;
     
 public:
     ActionRotateTo();
     ~ActionRotateTo();
-    void initRotateBy(float angle, float duration);
+    void initRotateTo(float angle, float duration);
     
     //set & get
     void setOriginalAngle(float angle, bool fresh);
