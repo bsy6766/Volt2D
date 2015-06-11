@@ -34,13 +34,13 @@ void ActionRotateTo::initRotateTo(float angle, float duration){
     this->actionID = ACTION_ROTATE_TO;
     this->destinationAngle = angle;
     this->movedAngle = 0;
-    this->previousAngle = 0;
+//    this->previousAngle = 0;
 }
 
 void ActionRotateTo::setOriginalAngle(float angle, bool fresh){
     startAngle = angle;
-    if(fresh)
-        previousAngle = angle;
+//    if(fresh)
+//        previousAngle = angle;
     
     totalAngleToRotate = destinationAngle - startAngle;
     cout << "total angle to move = " << totalAngleToRotate << endl;
@@ -60,7 +60,7 @@ void ActionRotateTo::updateAction(double remainedTime){
 
 void ActionRotateTo::instantUpdate(){
     movedAngle = totalAngleToRotate;
-    previousAngle = destinationAngle;
+//    previousAngle = destinationAngle;
     alive = false;
 }
 
@@ -88,7 +88,7 @@ float ActionRotateTo::getMovedAngle(){
 
 void ActionRotateTo::revive(){
     //revive. original and previous will be updated
-    this->previousAngle = 0;
+//    this->previousAngle = 0;
     this->movedAngle = 0;
     
     this->alive = false;

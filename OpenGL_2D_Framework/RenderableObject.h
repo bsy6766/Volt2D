@@ -70,7 +70,7 @@ public:
     void wrapAngle(GLfloat& angle);
     GLfloat getAngle();
     
-    //opacity
+    //opacity getter setter
     void setOpacity(GLfloat opacity);
     GLfloat getOpacity();
     

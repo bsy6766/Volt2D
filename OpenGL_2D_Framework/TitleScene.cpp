@@ -24,7 +24,7 @@ void TitleScene::init(){
     WinSize size = Director::getInstance().getWindowSize();
 
     bg = new Sprite();
-    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_bg.png");
+    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/boss_creeper.png");
     bg->setZ_Depth(2);
 //    bg->type = Sprite::BILLBOARD_TYPE;
     addSprite(bg);
@@ -46,8 +46,12 @@ void TitleScene::init(){
     ActionRotateBy* rotateAction2 = new ActionRotateBy();
     rotateAction2->initRotateBy(90.0, 2);
     ActionRotateTo* rotateToAction1 = new ActionRotateTo();
-    rotateToAction1->initRotateTo(270, 4);
-    bg->addActions({delayAction4, rotateAction1, delayAction5, rotateToAction1}, 1);
+    rotateToAction1->initRotateTo(270, 2);
+    ActionFadeTo* fadeOutAction1 = new ActionFadeTo();
+    fadeOutAction1->initFadeTo(127, 2);
+    ActionFadeTo* fadeInAction1 = new ActionFadeTo();
+    fadeInAction1->initFadeTo(255, 2);
+    bg->addActions({delayAction4, fadeOutAction1, rotateAction1, delayAction5, fadeInAction1, rotateToAction1}, 1);
     
     
     

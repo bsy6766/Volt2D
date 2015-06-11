@@ -231,7 +231,7 @@ void ActionSchedule::updateSchedule(){
                 else{
                     rotateToPtr->updateAction(0);
                 }
-                cout << "Moved angle = " << rotateToPtr->getMovedAngle() << endl;
+//                cout << "Moved angle = " << rotateToPtr->getMovedAngle() << endl;
                 //                cout << "cur angle = " << rotateToPtr->getOwner()->getAngle() << endl;
                 rotateToPtr->getOwner()->setAngle(rotateToPtr->getMovedAngle());
                 
@@ -244,6 +244,56 @@ void ActionSchedule::updateSchedule(){
                 else{
                     finished = false;
                 }
+                break;
+            }
+            case ACTION_FADE_TO:
+            {
+                ActionFadeTo* fadeToPtr = static_cast<ActionFadeTo*>(*action_it);
+                if(!fadeToPtr->isRunning()){
+                    fadeToPtr->startAction();
+                    fadeToPtr->setOriginalOpacity(fadeToPtr->getOwner()->getOpacity());
+                    fadeToPtr->updateAction(this->remainedTime);
+                    this->remainedTime = 0;
+                }
+                else{
+                    fadeToPtr->updateAction(0);
+                }
+                cout << "opacity = " << fadeToPtr->getFadedOpacity() << endl;
+                fadeToPtr->getOwner()->setOpacity(fadeToPtr->getFadedOpacity());
+                
+                if(!fadeToPtr->isAlive()){
+                    if(instantSchedule){
+                        removeAction = true;
+                    }
+                    //else, leave action.
+                }
+                else{
+                    finished = false;
+                }
+                break;
+            }
+            case ACTION_FADE_BY:
+            {
+                break;
+            }
+            case ACTION_JUMP_TO:
+            {
+                break;
+            }
+            case ACTION_JUMP_BY:
+            {
+                break;
+            }
+            case ACTION_SCALE_TO:
+            {
+                break;
+            }
+            case ACTION_SCALE_BY:
+            {
+                break;
+            }
+            case ACTION_BLINK:
+            {
                 break;
             }
             default:

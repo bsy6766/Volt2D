@@ -17,16 +17,25 @@
 
 //Action IDs
 enum ActionID{
+    //delay
     ACTION_DELAY = 0,
+    //move
     ACTION_MOVE_TO,
     ACTION_MOVE_BY,
+    //rotate
     ACTION_ROTATE_TO,
     ACTION_ROTATE_BY,
+    //scale
     ACTION_SCALE_TO,
     ACTION_SCALE_BY,
+    //jump
     ACTION_JUMP_TO,
     ACTION_JUMP_BY,
-    ACTION_FADE_TO
+    //fade
+    ACTION_FADE_TO,
+    ACTION_FADE_BY,
+    //blink
+    ACTION_BLINK
 };
 
 class SpriteObject;
