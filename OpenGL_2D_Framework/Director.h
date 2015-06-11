@@ -10,7 +10,6 @@
 #define __OpenGL_2D_Framework__Director__
 
 //opengl
-//opengl
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 

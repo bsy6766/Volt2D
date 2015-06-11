@@ -23,7 +23,7 @@ scale(glm::vec3(0, 0, 0)),
 opacity(255),
 boundingBox(new BoundingBox())
 {
-    
+    cout << "RenderableObject::RenderableObject()" << endl;
 }
 
 RenderableObject::~RenderableObject(){
@@ -36,6 +36,10 @@ void RenderableObject::setPosition(glm::vec3 position){
     translateTo(position);
 }
 
+void RenderableObject::addPosition(glm::vec3 position){
+    translateBy(position);
+}
+
 void RenderableObject::translateTo(glm::vec3 position){
     this->position = position;
     translateMat = glm::translate(glm::mat4(), position);
@@ -46,26 +50,37 @@ void RenderableObject::translateBy(glm::vec3 distance){
     translateMat = glm::translate(translateMat, distance);
 }
 
+void RenderableObject::setAngle(GLfloat angle, glm::vec3 axis){
+    rotateTo(angle, axis);
+}
+
+void RenderableObject::addAngle(GLfloat angle, glm::vec3 axis){
+    rotateBy(angle, axis);
+}
+
+void RenderableObject::wrapAngle(GLfloat& angle){
+    if(angle < 0)
+        angle += 360;
+    else if(angle > 360)
+        angle -= 360;
+}
+
+GLfloat RenderableObject::getAngle(){
+    return this->angle;
+}
+
 void RenderableObject::rotateTo(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
     //rotate in 2d space by default
     rotateMat = glm::rotate(glm::mat4(), angle, axis);
-    setAngle(angle);
+    this->angle = angle;
+    wrapAngle(this->angle);
 }
 
 void RenderableObject::rotateBy(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
     //rotate in 2D space by default
     rotateMat = glm::rotate(rotateMat, angle, axis);
-    setAngle(angle);
-}
-
-void RenderableObject::setAngle(GLfloat angle){
-    //wrap around angle between 0 ~ 360
-    if(angle < 0)
-        angle += 360;
-    else if(angle > 360)
-        angle -= 360;
-    
-    this->angle = angle;
+    this->angle += angle;
+    wrapAngle(this->angle);
 }
 
 void RenderableObject::scaleTo(glm::vec3 scale){

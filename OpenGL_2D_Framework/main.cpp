@@ -53,7 +53,7 @@ int main(int argc, const char * argv[]) {
     Director::getInstance().setWindowSize(1280, 720);
     
     try{
-        Director::getInstance().initApp(1280, 720, "microRaid dev");
+        Director::getInstance().initApp(1280, 720, "Layered dev");
         TitleScene* titleScene = new TitleScene();
         Director::getInstance().pushScene(titleScene);
         Director::getInstance().run();

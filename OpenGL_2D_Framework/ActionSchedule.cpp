@@ -131,7 +131,7 @@ void ActionSchedule::updateSchedule(){
                 ActionMoveTo *moveToPtr = static_cast<ActionMoveTo*>(*action_it);
                 
                 if(!moveToPtr->isRunning()){
-                    cout << "Staring move to. rt = " << remainedTime << endl;
+//                    cout << "Staring move to. rt = " << remainedTime << endl;
                     moveToPtr->startAction();
                     moveToPtr->setOriginalPosition(moveToPtr->getOwner()->getPosition(), true);
                     moveToPtr->updateAction(this->remainedTime);
@@ -143,7 +143,7 @@ void ActionSchedule::updateSchedule(){
                 
                 //update position
                 moveToPtr->getOwner()->setPosition(moveToPtr->getOwner()->getPosition() + moveToPtr->getMovedDistance());
-                glm::vec3 curPos = moveToPtr->getOwner()->getPosition();
+//                glm::vec3 curPos = moveToPtr->getOwner()->getPosition();
                 
 //                cout << "Moving (" << curPos.x << ", " << curPos.y << ", " << curPos.z << endl;
                 
@@ -173,15 +173,69 @@ void ActionSchedule::updateSchedule(){
                 }
                 
                 //update position
-                moveByPtr->getOwner()->setPosition(moveByPtr->getOwner()->getPosition() + moveByPtr->getMovedDistance());
-                glm::vec3 curPos = moveByPtr->getOwner()->getPosition();
-                
-                temp += moveByPtr->getMovedDistance();
+                moveByPtr->getOwner()->addPosition(moveByPtr->getMovedDistance());
+//                glm::vec3 curPos = moveByPtr->getOwner()->getPosition();
+//                
+//                temp += moveByPtr->getMovedDistance();
                 
 //                cout << "temp = (" << temp.x << ", " << temp.y << ", " << temp.z << ")" << endl;
 //                cout << "Moving (" << curPos.x << ", " << curPos.y << ", " << curPos.z << ")" << endl;
                 
                 if(!moveByPtr->isAlive()){
+                    if(instantSchedule){
+                        removeAction = true;
+                    }
+                    //else, leave action.
+                }
+                else{
+                    finished = false;
+                }
+                break;
+            }
+            case ACTION_ROTATE_BY:
+            {
+                ActionRotateBy* rotateByPtr = static_cast<ActionRotateBy*>(*action_it);
+                if(!rotateByPtr->isRunning()){
+                    rotateByPtr->startAction();
+//                    rotateByPtr->setOriginalAngle(rotateByPtr->getOwner()->getAngle(), true);
+                    rotateByPtr->updateAction(this->remainedTime);
+                    this->remainedTime = 0;
+                }
+                else{
+                    rotateByPtr->updateAction(0);
+                }
+                cout << "Moved angle = " << rotateByPtr->getMovedAngle() << endl;
+//                cout << "cur angle = " << rotateByPtr->getOwner()->getAngle() << endl;
+                rotateByPtr->getOwner()->addAngle(rotateByPtr->getMovedAngle());
+                
+                if(!rotateByPtr->isAlive()){
+                    if(instantSchedule){
+                        removeAction = true;
+                    }
+                    //else, leave action.
+                }
+                else{
+                    finished = false;
+                }
+                break;
+            }
+            case ACTION_ROTATE_TO:
+            {
+                ActionRotateTo* rotateToPtr = static_cast<ActionRotateTo*>(*action_it);
+                if(!rotateToPtr->isRunning()){
+                    rotateToPtr->startAction();
+                    rotateToPtr->setOriginalAngle(rotateToPtr->getOwner()->getAngle(), true);
+                    rotateToPtr->updateAction(this->remainedTime);
+                    this->remainedTime = 0;
+                }
+                else{
+                    rotateToPtr->updateAction(0);
+                }
+                cout << "Moved angle = " << rotateToPtr->getMovedAngle() << endl;
+                //                cout << "cur angle = " << rotateToPtr->getOwner()->getAngle() << endl;
+                rotateToPtr->getOwner()->addAngle(rotateToPtr->getMovedAngle());
+                
+                if(!rotateToPtr->isAlive()){
                     if(instantSchedule){
                         removeAction = true;
                     }

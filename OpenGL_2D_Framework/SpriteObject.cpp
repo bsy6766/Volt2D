@@ -20,6 +20,7 @@ RenderableObject()
 {
     progPtr = Director::getInstance().getProgramPtr();
     ID_COUNTER++;
+    cout << "SpriteObject::SpriteObject()" << endl;
 }
 
 SpriteObject::SpriteObject(Program *ptr) :
@@ -32,6 +33,7 @@ type(NORMAL_TYPE),
 RenderableObject()
 {
     ID_COUNTER++;
+    cout << "SpriteObject::SpriteObject(Program*)" << endl;
 }
 
 SpriteObject::~SpriteObject(){

@@ -9,6 +9,8 @@
 #ifndef __OpenGL_2D_Framework__Scene__
 #define __OpenGL_2D_Framework__Scene__
 
+//#define GLM_FORCE_RADIANS
+
 #include "CommonInclude.h"
 #include "SpriteManager.h"
 #include "TextManager.h"

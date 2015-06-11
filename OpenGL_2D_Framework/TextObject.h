@@ -9,6 +9,8 @@
 #ifndef __OpenGL_2D_Framework__TextObject__
 #define __OpenGL_2D_Framework__TextObject__
 
+//#define GLM_FORCE_RADIANS
+
 #include <glm/glm.hpp>
 #include "CommonInclude.h"
 #include <GL/glew.h>

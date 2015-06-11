@@ -9,6 +9,8 @@
 #ifndef __OpenGL_2D_Framework__Texture__
 #define __OpenGL_2D_Framework__Texture__
 
+//#define GLM_FORCE_RADIANS
+
 #include <GL/glew.h>
 #include <string>
 #include <stdio.h>

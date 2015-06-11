@@ -66,11 +66,6 @@ void Sprite::render(){
     getUniformLocation("translateMat", translateMat);
     getUniformLocation("scaleMat", scaleMat);
     
-    cout << "pos = (" << position.x << ", " << position.y << ", " << position.z << ")" << endl;
-    
-//    if(actionRunning)
-//        updateFromSpriteAction();
-    
     GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
     if(opacityUniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
@@ -80,6 +75,8 @@ void Sprite::render(){
     if(particleUniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
     glUniform1i(particleUniformLocation, 0);
+    
+    cout << "angle = " << this->angle << endl;
     
     //bind vertex array.
     glBindVertexArray(vao);

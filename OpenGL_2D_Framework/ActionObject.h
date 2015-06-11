@@ -9,6 +9,8 @@
 #ifndef __OpenGL_2D_Framework__ActionObject__
 #define __OpenGL_2D_Framework__ActionObject__
 
+//#define GLM_FORCE_RADIANS
+
 #include "CommonInclude.h"
 #include "Timer.h"
 #include <glm/glm.hpp>

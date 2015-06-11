@@ -29,17 +29,26 @@ void TitleScene::init(){
 //    bg->type = Sprite::BILLBOARD_TYPE;
     addSprite(bg);
     
+    //Move test
     ActionDelay* delayAction4 = new ActionDelay();
-    delayAction4->initDelay(2);
+    delayAction4->initDelay(4);
     ActionDelay* delayAction5 = new ActionDelay();
-    delayAction5->initDelay(2);
-    ActionMoveTo* moveToAction3 = new ActionMoveTo();
-    moveToAction3->initMoveTo(glm::vec3(0, 25, 0), 4);
-    ActionMoveBy* moveByAction1 = new ActionMoveBy();
-    moveByAction1->initMoveBy(glm::vec3(0, -25, 0), 4);
-    ActionMoveBy* moveByAction2 = new ActionMoveBy();
-    moveByAction2->initMoveBy(glm::vec3(0, 25, 0), 4);
-    bg->addActions({delayAction4, moveToAction3, delayAction5, moveByAction1}, 1);
+    delayAction5->initDelay(4);
+//    ActionMoveTo* moveToAction3 = new ActionMoveTo();
+//    moveToAction3->initMoveTo(glm::vec3(0, 25, 0), 4);
+//    ActionMoveBy* moveByAction1 = new ActionMoveBy();
+//    moveByAction1->initMoveBy(glm::vec3(0, -25, 0), 4);
+//    ActionMoveBy* moveByAction2 = new ActionMoveBy();
+//    moveByAction2->initMoveBy(glm::vec3(0, 25, 0), 4);
+//    bg->addActions({delayAction4, moveToAction3, delayAction5, moveByAction1}, 1);
+    ActionRotateBy* rotateAction1 = new ActionRotateBy();
+    rotateAction1->initRotateBy(90.0, 2);
+    ActionRotateBy* rotateAction2 = new ActionRotateBy();
+    rotateAction2->initRotateBy(90.0, 2);
+    bg->addActions({delayAction4, rotateAction1, delayAction5, rotateAction2}, 1);
+    
+    
+    
 
 //    ground = new Sprite();
 //    ground->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_bg.png");

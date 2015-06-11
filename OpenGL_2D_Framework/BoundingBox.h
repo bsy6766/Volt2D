@@ -9,6 +9,8 @@
 #ifndef __OpenGL_2D_Framework__BoundingBox__
 #define __OpenGL_2D_Framework__BoundingBox__
 
+//#define GLM_FORCE_RADIANS
+
 #include <glm/glm.hpp>
 
 class BoundingBox{

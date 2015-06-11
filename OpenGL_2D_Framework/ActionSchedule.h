@@ -15,6 +15,8 @@
 #include "ActionDelay.h"
 #include "ActionMoveTo.h"
 #include "ActionMoveBy.h"
+#include "ActionRotateBy.h"
+#include "ActionRotateTo.h"
 #include <list>
 
 class SpriteObject;
@@ -30,7 +32,7 @@ private:
     
     double remainedTime;
     
-    glm::vec3 temp = glm::vec3();
+//    glm::vec3 temp = glm::vec3();
     
     std::list<ActionObject*> actionList;
     void clearList();    

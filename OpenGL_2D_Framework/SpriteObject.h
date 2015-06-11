@@ -13,8 +13,8 @@
 #include "RenderableObject.h"
 #include "ActionSchedule.h"
 #include "ActionObject.h"
-#include "ActionDelay.h"
-#include "ActionMoveTo.h"
+//#include "ActionDelay.h"
+//#include "ActionMoveTo.h"
 
 #include <vector>
 #include <list>

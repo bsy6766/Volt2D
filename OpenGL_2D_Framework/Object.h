@@ -9,6 +9,7 @@
 #ifndef __OpenGL_2D_Framework__Object__
 #define __OpenGL_2D_Framework__Object__
 
+//#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include "Director.h"
 #include "CommonInclude.h"
@@ -25,6 +26,7 @@ public:
     
     //position
     void setPosition(glm::vec3 position);
+    void addPosition(glm::vec3 position);
     glm::vec3 getPosition();
     
     //visibility

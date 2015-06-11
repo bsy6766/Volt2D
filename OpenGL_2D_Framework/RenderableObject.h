@@ -9,6 +9,8 @@
 #ifndef __OpenGL_2D_Framework__RenderableObject__
 #define __OpenGL_2D_Framework__RenderableObject__
 
+//#define GLM_FORCE_RADIANS
+
 #include "Object.h"
 #include "BoundingBox.h"
 #include <vector>
@@ -43,7 +45,6 @@ protected:
     BoundingBox* boundingBox;
     
 private:
-    void setAngle(GLfloat angle);
     //check the boundary of scale value and limit to -1.0~1.0
     void checkScale(glm::vec3& scale);
 public:
@@ -51,6 +52,7 @@ public:
     virtual ~RenderableObject();
     
     virtual void setPosition(glm::vec3 position);
+    virtual void addPosition(glm::vec3 position);
     
     //To transformation
     void rotateTo(GLfloat angle, glm::vec3 axis);
@@ -61,6 +63,12 @@ public:
     void rotateBy(GLfloat angle, glm::vec3 axis);
     void scaleBy(glm::vec3 scale);
     void translateBy(glm::vec3 distance);
+    
+    //Angle getter setter
+    void setAngle(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1));
+    void addAngle(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1));
+    void wrapAngle(GLfloat& angle);
+    GLfloat getAngle();
     
     //opacity
     void setOpacity(GLfloat opacity);

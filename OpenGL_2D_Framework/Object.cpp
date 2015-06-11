@@ -24,6 +24,10 @@ void Object::setPosition(glm::vec3 position){
     this->position = position;
 }
 
+void Object::addPosition(glm::vec3 position){
+    this-> position += position;
+}
+
 glm::vec3 Object::getPosition(){
     return this->position;
 }
