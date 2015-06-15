@@ -51,10 +51,12 @@ void RenderableObject::translateBy(glm::vec3 distance){
 }
 
 void RenderableObject::setAngle(GLfloat angle, glm::vec3 axis){
+    angle *= (-1);
     rotateTo(angle, axis);
 }
 
 void RenderableObject::addAngle(GLfloat angle, glm::vec3 axis){
+    angle *= (-1);
     rotateBy(angle, axis);
 }
 

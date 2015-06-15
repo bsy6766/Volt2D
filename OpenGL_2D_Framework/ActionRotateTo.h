@@ -15,8 +15,7 @@ class ActionRotateTo :  public ActionObject{
 private:
     float startAngle;
     float destinationAngle;
-//    float previousAngle;
-    float movedAngle;   //amount of angle moved in single iteration
+    float movedAngle;
     float totalAngleToRotate;
     
 public:
@@ -25,7 +24,7 @@ public:
     void initRotateTo(float angle, float duration);
     
     //set & get
-    void setOriginalAngle(float angle, bool fresh);
+    void setOriginalAngle(float angle);
     float getMovedAngle();
     
     //virtuals

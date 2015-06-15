@@ -8,7 +8,8 @@
 
 #include "ActionRotateTo.h"
 
-ActionRotateTo::ActionRotateTo(){
+ActionRotateTo::ActionRotateTo():
+ActionObject(){
     cout << "Creating action RotateBy" << endl;
 }
 
@@ -17,6 +18,7 @@ ActionRotateTo::~ActionRotateTo(){
 }
 
 void ActionRotateTo::initRotateTo(float angle, float duration){
+    //wrap angle
     if(angle >= 360){
         while(angle >= 360){
             angle -= 360.0;
@@ -27,23 +29,16 @@ void ActionRotateTo::initRotateTo(float angle, float duration){
             angle += 360;
         }
     }
-    
-    cout << "Initializing RotateBy with angle: " << angle << " and duration: " << duration << endl;
-    
+
     this->duration = duration;
-    this->actionID = ACTION_ROTATE_TO;
-    this->destinationAngle = angle;
+    this->actionID = ActionID::ACTION_ROTATE_TO;
+    this->destinationAngle = angle * (-1);
     this->movedAngle = 0;
-//    this->previousAngle = 0;
 }
 
-void ActionRotateTo::setOriginalAngle(float angle, bool fresh){
-    startAngle = angle;
-//    if(fresh)
-//        previousAngle = angle;
-    
+void ActionRotateTo::setOriginalAngle(float angle){
+    startAngle = angle * (-1);
     totalAngleToRotate = destinationAngle - startAngle;
-    cout << "total angle to move = " << totalAngleToRotate << endl;
 }
 
 void ActionRotateTo::updateAction(double remainedTime){
@@ -60,7 +55,6 @@ void ActionRotateTo::updateAction(double remainedTime){
 
 void ActionRotateTo::instantUpdate(){
     movedAngle = totalAngleToRotate;
-//    previousAngle = destinationAngle;
     alive = false;
 }
 
@@ -74,11 +68,7 @@ void ActionRotateTo::intervalUpdate(double remainedTime){
     }
     else{
         float currentTime = (float)(this->totalElapsedTime + remainedTime);
-        float curAngle = totalAngleToRotate * (currentTime / duration);
-//        float diff = curAngle - previousAngle;
-//        movedAngle = diff;
-//        previousAngle += diff;
-        movedAngle = curAngle + startAngle;
+        movedAngle = totalAngleToRotate * (currentTime / duration) + startAngle;
     }
 }
 
@@ -87,10 +77,8 @@ float ActionRotateTo::getMovedAngle(){
 }
 
 void ActionRotateTo::revive(){
-    //revive. original and previous will be updated
-//    this->previousAngle = 0;
     this->movedAngle = 0;
-    
+    //make sure you kill it
     this->alive = false;
     this->running = false;
     

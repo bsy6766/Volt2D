@@ -8,7 +8,12 @@
 
 #include "ActionRotateBy.h"
 
-ActionRotateBy::ActionRotateBy(){
+ActionRotateBy::ActionRotateBy():
+ActionObject(),
+startAngle(0),
+rotatingAngle(0),
+previousAngle(0),
+movedAngle(0){
     cout << "Creating action RotateBy" << endl;
 }
 
@@ -17,19 +22,11 @@ ActionRotateBy::~ActionRotateBy(){
 }
 
 void ActionRotateBy::initRotateBy(float angle, float duration){
-    cout << "Initializing RotateBy with angle: " << angle << " and duration: " << duration << endl;
     this->duration = duration;
-    this->actionID = ACTION_ROTATE_BY;
-    
+    this->actionID = ActionID::ACTION_ROTATE_BY;
     this->rotatingAngle = angle;
     this->movedAngle = 0;
     this->previousAngle = 0;
-}
-
-void ActionRotateBy::setOriginalAngle(float angle, bool fresh){
-    startAngle = angle;
-    if(fresh)
-        previousAngle = angle;
 }
 
 void ActionRotateBy::updateAction(double remainedTime){
@@ -63,10 +60,6 @@ void ActionRotateBy::intervalUpdate(double remainedTime){
         float diff = curAngle - previousAngle;
         movedAngle = diff;
         previousAngle += diff;
-//        cout << "Duration = " << this->duration << endl;
-//        cout << "total elapsed time = " << this->totalElapsedTime << endl;
-//        cout << "movedAngle = " << movedAngle << endl;
-//        cout << "previousAngle = " << previousAngle << endl;
     }
 }
 
@@ -78,7 +71,7 @@ void ActionRotateBy::revive(){
     //revive. original and previous will be updated
     this->previousAngle = 0;
     this->movedAngle = 0;
-    
+    //make sure you kill it
     this->alive = false;
     this->running = false;
     

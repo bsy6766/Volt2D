@@ -24,7 +24,6 @@ public:
     void initRotateBy(float angle, float duration);
     
     //set & get
-    void setOriginalAngle(float angle, bool fresh);
     float getMovedAngle();
     
     //virtuals
