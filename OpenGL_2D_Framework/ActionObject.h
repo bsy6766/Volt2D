@@ -14,6 +14,7 @@
 #include "CommonInclude.h"
 #include "Timer.h"
 #include <glm/glm.hpp>
+//#include "ActionType.h"
 
 //Action IDs
 enum ActionID{
@@ -45,6 +46,7 @@ private:
 protected:
     //action's unique enum ID
     ActionID actionID;
+//    ActionType type;
     
     static unsigned int ACTION_ID;
     

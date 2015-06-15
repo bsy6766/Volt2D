@@ -129,6 +129,15 @@ void RenderableObject::setOpacity(GLfloat opacity){
     this->opacity = opacity;
 }
 
+void RenderableObject::addOpacity(GLfloat opacity){
+    this->opacity += opacity;
+    
+    if(this->opacity < 0)
+        this->opacity = 0;
+    else if(this->opacity > 255)
+        this->opacity = 255;
+}
+
 GLfloat RenderableObject::getOpacity(){
     return this->opacity;
 }

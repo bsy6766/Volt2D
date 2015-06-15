@@ -72,6 +72,7 @@ public:
     
     //opacity getter setter
     void setOpacity(GLfloat opacity);
+    void addOpacity(GLfloat opacity);
     GLfloat getOpacity();
     
     //scale

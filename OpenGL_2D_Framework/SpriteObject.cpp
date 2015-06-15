@@ -64,7 +64,7 @@ void SpriteObject::addAction(ActionObject* action){
 }
 
 void SpriteObject::addAction(ActionObject *action, int repeat){
-    cout << "Adding Action#" << action->getActionID() << " to Sprite #" << spriteID << std::endl;
+    cout << "Adding Action " << action->getActionID() << " to Sprite #" << spriteID << std::endl;
     //bind owner
     action->bindOwnerPtr(this);
     ActionSchedule* singleActionSchedule = new ActionSchedule();
