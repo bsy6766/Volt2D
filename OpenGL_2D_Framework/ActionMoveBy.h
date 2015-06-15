@@ -14,7 +14,6 @@
 class ActionMoveBy : public ActionObject{
 protected:
 private:
-    glm::vec3 startingPos;
     glm::vec3 distance;
     glm::vec3 movedDistance;
     glm::vec3 previousDistance;    
@@ -26,7 +25,6 @@ public:
     void initMoveBy(glm::vec3 distance, double duration);
     
     //set & get
-    void setStartingPos(glm::vec3 pos);
     glm::vec3 getMovedDistance();
     
     //virtuals
