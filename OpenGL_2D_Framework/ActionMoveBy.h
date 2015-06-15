@@ -20,6 +20,7 @@ private:
     
 public:
     ActionMoveBy();
+    ActionMoveBy(const ActionMoveBy& other);
     ~ActionMoveBy();
     
     void initMoveBy(glm::vec3 distance, double duration);

@@ -18,6 +18,13 @@ totalDistance(glm::vec3())
     cout << "creating MoveTo action" << endl;
 }
 
+ActionMoveTo::ActionMoveTo(const ActionMoveTo& other):ActionObject(other){
+    this->destination = other.destination;
+    this->originalPosition = other.originalPosition;
+    this->movedPosition = other.movedPosition;
+    this->totalDistance = other.totalDistance;
+}
+
 ActionMoveTo::~ActionMoveTo(){
     cout << "deleting MoveTo action" << endl;
 }

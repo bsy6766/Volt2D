@@ -9,8 +9,19 @@
 #include "ActionRotateTo.h"
 
 ActionRotateTo::ActionRotateTo():
-ActionObject(){
+ActionObject(),
+startAngle(0),
+destinationAngle(0),
+movedAngle(0),
+totalAngleToRotate(0){
     cout << "Creating action RotateBy" << endl;
+}
+
+ActionRotateTo::ActionRotateTo(const ActionRotateTo& other):ActionObject(other){
+    this->startAngle = other.startAngle;
+    this->destinationAngle = other.destinationAngle;
+    this->movedAngle = other.movedAngle;
+    this->totalAngleToRotate = other.totalAngleToRotate;
 }
 
 ActionRotateTo::~ActionRotateTo(){

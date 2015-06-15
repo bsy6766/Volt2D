@@ -17,6 +17,12 @@ previousDistance(glm::vec3())
     cout << "creating move by action" << endl;
 }
 
+ActionMoveBy::ActionMoveBy(const ActionMoveBy& other):ActionObject(other){
+    this->distance = other.distance;
+    this->movedDistance = other.movedDistance;
+    this->previousDistance = other.previousDistance;
+}
+
 ActionMoveBy::~ActionMoveBy(){
     cout << "deleting move by action" << endl;
 }

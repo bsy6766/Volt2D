@@ -17,6 +17,13 @@ movedAngle(0){
     cout << "Creating action RotateBy" << endl;
 }
 
+ActionRotateBy::ActionRotateBy(const ActionRotateBy& other):ActionObject(other){
+    this->startAngle = other.startAngle;
+    this->rotatingAngle = other.rotatingAngle;
+    this->previousAngle = other.previousAngle;
+    this->movedAngle = other.movedAngle;
+}
+
 ActionRotateBy::~ActionRotateBy(){
     cout << "Deleting action RotateBy" << endl;
 }

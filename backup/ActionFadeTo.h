@@ -16,11 +16,11 @@ private:
     float finalOpacity;
     float originalOpacity;
     float fadedOpacity;
-//    float previousOpacity;
     float totalOpacityToFade;
     
 public:
     ActionFadeTo();
+    ActionFadeTo(const ActionFadeTo& other);
     ~ActionFadeTo();
     
     void initFadeTo(float opacity, double duration);

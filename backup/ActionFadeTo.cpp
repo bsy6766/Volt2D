@@ -13,8 +13,19 @@
 using std::cout;
 using std::endl;
 
-ActionFadeTo::ActionFadeTo():totalOpacityToFade(0), fadedOpacity(0), finalOpacity(0){
+ActionFadeTo::ActionFadeTo():
+ActionObject(),
+totalOpacityToFade(0),
+fadedOpacity(0),
+finalOpacity(0){
     cout << "Creating action fade" << endl;
+}
+
+ActionFadeTo::ActionFadeTo(const ActionFadeTo& other){
+    this->finalOpacity = other.finalOpacity;
+    this->originalOpacity = other.originalOpacity;
+    this->fadedOpacity = other.fadedOpacity;
+    this->totalOpacityToFade = other.totalOpacityToFade;
 }
 
 ActionFadeTo::~ActionFadeTo(){
@@ -27,17 +38,15 @@ void ActionFadeTo::initFadeTo(float opacity, double duration){
     else if(opacity > 255)
         opacity = 255;
     
-    this->actionID = ACTION_FADE_TO;
+    this->actionID = ActionID::ACTION_FADE_TO;
     this->duration = duration;
     
     this->finalOpacity = opacity;
     this->fadedOpacity = 0;
-//    this->previousOpacity = 0;
 }
 
 void ActionFadeTo::setOriginalOpacity(float opacity){
     this->originalOpacity = opacity;
-//    this->previousOpacity = opacity;
     this->totalOpacityToFade = finalOpacity - originalOpacity;
 }
 
@@ -47,7 +56,6 @@ float ActionFadeTo::getFadedOpacity(){
 
 void ActionFadeTo::instantUpdate(){
     fadedOpacity = totalOpacityToFade;
-//    previousOpacity = finalOpacity;
     alive = false;
 }
 
@@ -79,10 +87,9 @@ void ActionFadeTo::updateAction(double remainedTime){
 }
 
 void ActionFadeTo::revive(){
-    //revive. original and previous will be updated
-//    originalOpacity = 0;
-//    previousOpacity = 0;
     fadedOpacity = 0;   //clear
-    
+    originalOpacity = 0;
+    this->alive = false;
+    this->running = false;
     ActionObject::revive();
 }

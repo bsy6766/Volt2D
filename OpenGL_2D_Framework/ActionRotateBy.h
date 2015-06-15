@@ -20,6 +20,7 @@ private:
     
 public:
     ActionRotateBy();
+    ActionRotateBy(const ActionRotateBy& other);
     ~ActionRotateBy();
     void initRotateBy(float angle, float duration);
     
