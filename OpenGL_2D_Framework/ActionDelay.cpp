@@ -21,6 +21,7 @@ ActionDelay::~ActionDelay(){
 void ActionDelay::initDelay(double duration){
     this->duration = duration;
     this->actionID = ACTION_DELAY;
+//    this->type = ActionType::ACTION_DELAY;
     
     this->totalDelayed = 0;
     this->delayTick = 0;

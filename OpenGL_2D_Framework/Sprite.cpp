@@ -76,7 +76,9 @@ void Sprite::render(){
         throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
     glUniform1i(particleUniformLocation, 0);
     
-    cout << "angle = " << this->angle << endl;
+//    cout << "angle = " << this->angle << endl;
+//    cout << "opacity = " << this->opacity << endl;
+//    cout << "pos = (" << this->position.x << ", " << this->position.y << ", " << this->position.z << ")" << endl;
     
     //bind vertex array.
     glBindVertexArray(vao);

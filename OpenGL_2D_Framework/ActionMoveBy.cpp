@@ -10,27 +10,21 @@
 
 ActionMoveBy::ActionMoveBy():
 ActionObject(),
-startingPos(glm::vec3()),
 distance(glm::vec3()),
 movedDistance(glm::vec3()),
 previousDistance(glm::vec3())
 {
-    
+    cout << "creating move by action" << endl;
 }
 
 ActionMoveBy::~ActionMoveBy(){
-    
+    cout << "deleting move by action" << endl;
 }
 
 void ActionMoveBy::initMoveBy(glm::vec3 distance, double duration){
     this->distance = distance;
     this->duration = duration;
-    this->actionID = ACTION_MOVE_BY;
-}
-
-void ActionMoveBy::setStartingPos(glm::vec3 pos){
-    this->startingPos = pos;
-//    this->previousDistance = pos;
+    this->actionID = ActionID::ACTION_MOVE_BY;
 }
 
 glm::vec3 ActionMoveBy::getMovedDistance(){

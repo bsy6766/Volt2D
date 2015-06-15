@@ -14,9 +14,8 @@
 class ActionMoveTo :  public ActionObject{
 private:
     glm::vec3 destination;
-    glm::vec3 previousPosition;
     glm::vec3 originalPosition;
-    glm::vec3 movedDistance;
+    glm::vec3 movedPosition;
     glm::vec3 totalDistance;
     
 public:
@@ -27,8 +26,8 @@ public:
     void initMoveTo(glm::vec3 destination, double duration);
     
     //set & get
-    void setOriginalPosition(glm::vec3 pos, bool fresh);
-    glm::vec3 getMovedDistance();
+    void setCurrentPos(glm::vec3 pos);
+    glm::vec3 getMovedPosition();
     
     //virtuals
     virtual void updateAction(double remainedTime);

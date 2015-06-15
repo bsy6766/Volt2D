@@ -10,8 +10,7 @@
 
 ActionMoveTo::ActionMoveTo():
 ActionObject(),
-movedDistance(glm::vec3()),
-previousPosition(glm::vec3()),
+movedPosition(glm::vec3()),
 originalPosition(glm::vec3()),
 destination(glm::vec3()),
 totalDistance(glm::vec3())
@@ -26,29 +25,31 @@ ActionMoveTo::~ActionMoveTo(){
 void ActionMoveTo::initMoveTo(glm::vec3 destination, double duration){
     this->duration = duration;
     this->destination = destination;
-    this->actionID = ACTION_MOVE_TO;
+    this->actionID = ActionID::ACTION_MOVE_TO;
 }
 
 void ActionMoveTo::instantUpdate(){
-    movedDistance = destination - originalPosition;
-    previousPosition = destination;
+    movedPosition = totalDistance;
     alive = false;
 }
 
 void ActionMoveTo::intervalUpdate(double remainedTime){
+    //if total distance is 0, there's nothing to do
+    if(totalDistance.x == 0 && totalDistance.y == 0 && totalDistance.z == 0){
+        movedPosition = destination;
+        return;
+    }
+    
     float duration = (float)this->duration;
     
     if(totalElapsedTime == duration){
-        movedDistance = totalDistance - previousPosition;
+        movedPosition = destination;
         alive = false;
         return;
     }
     else{
         float currentTime = (float)(this->totalElapsedTime + remainedTime);
-        glm::vec3 curDist = totalDistance * (currentTime / duration);
-        glm::vec3 diff = curDist - previousPosition;
-        movedDistance = diff;
-        previousPosition += diff;
+        movedPosition = totalDistance * (currentTime / duration) + originalPosition;
     }
 }
 
@@ -64,24 +65,18 @@ void ActionMoveTo::updateAction(double remainedTime){
     }
 }
 
-void ActionMoveTo::setOriginalPosition(glm::vec3 pos, bool fresh){
-    //set original position
+void ActionMoveTo::setCurrentPos(glm::vec3 pos){
     originalPosition = pos;
-    //if action is fresh, set previous position as well
-    if(fresh){
-        previousPosition = pos;
-    }
-    
     totalDistance = destination - originalPosition;
 }
 
-glm::vec3 ActionMoveTo::getMovedDistance(){
-    return movedDistance;
+glm::vec3 ActionMoveTo::getMovedPosition(){
+    return movedPosition;
 }
 
 void ActionMoveTo::revive(){
-    previousPosition = glm::vec3();
-    movedDistance = glm::vec3();
+    movedPosition = glm::vec3();
+    //keep destination, original position will be updated in other function.
     
     ActionObject::revive();
 }
