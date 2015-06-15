@@ -74,5 +74,8 @@ void ActionMoveBy::intervalUpdate(double remainedTime){
 void ActionMoveBy::revive(){
     movedDistance = glm::vec3();
     previousDistance = glm::vec3();
+    //confirm kill
+    this->alive = false;
+    this->running = false;
     ActionObject::revive();
 }

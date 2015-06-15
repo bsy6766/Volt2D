@@ -76,7 +76,8 @@ glm::vec3 ActionMoveTo::getMovedPosition(){
 
 void ActionMoveTo::revive(){
     movedPosition = glm::vec3();
-    //keep destination, original position will be updated in other function.
-    
+    //confirm kill
+    this->alive = false;
+    this->running = false;
     ActionObject::revive();
 }
