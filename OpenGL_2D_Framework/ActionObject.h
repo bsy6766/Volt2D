@@ -65,6 +65,7 @@ public:
     unsigned int objID;
     
     ActionObject();
+    ActionObject(const ActionObject& other);
     virtual ~ActionObject();
     
     bool running;

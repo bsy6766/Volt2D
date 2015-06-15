@@ -26,6 +26,23 @@ remainedTimeByDeath(0)
     objID = ACTION_ID;
 }
 
+ActionObject::ActionObject(const ActionObject& other){
+    this->actionID = other.actionID;
+    this->ACTION_ID = other.ACTION_ID;
+    this->duration = other.duration;
+    this->totalElapsedTime = other.totalElapsedTime;
+    this->previousTime = other.previousTime;
+    this->elapsedTime = other.elapsedTime;
+    this->unusedTime = other.unusedTime;
+    this->remainedTimeByDeath = other.remainedTimeByDeath;
+    this->speed = other.speed;
+    this->owner = other.owner;
+    this->objID = other.objID;
+    this->running = other.running;
+    this->alive = other.alive;
+    this->isProtected = other.isProtected;
+}
+
 ActionObject::~ActionObject(){
     std::cout << "~ActionObject()" << std::endl;
 }

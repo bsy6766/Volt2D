@@ -18,6 +18,12 @@ ActionDelay::~ActionDelay(){
     cout << "Deleting ACTION_DELAY" << endl;
 }
 
+ActionDelay::ActionDelay(const ActionDelay& other):ActionObject(other){
+    cout << "copying ACTION_DELAY" << endl;
+    this->totalDelayed = other.totalDelayed;
+    this->delayTick = other.delayTick;
+}
+
 void ActionDelay::initDelay(double duration){
     this->duration = duration;
     this->actionID = ACTION_DELAY;

@@ -19,6 +19,7 @@ private:
     
 public:
     ActionDelay();
+    ActionDelay(const ActionDelay& other);
     ~ActionDelay();
 
     void initDelay(double duration);
