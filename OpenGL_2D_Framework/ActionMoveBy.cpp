@@ -57,6 +57,12 @@ void ActionMoveBy::intervalUpdate(double remainedTime){
         return;
     }
     else{
+        if(distance.x == 0 && distance.y == 0 && distance.z == 0){
+            movedDistance = distance;
+            previousDistance = distance;
+            return;
+        }
+        
         float currentTime = (float)(this->totalElapsedTime + remainedTime);
         glm::vec3 curDist = distance * (currentTime / duration);
         glm::vec3 diff = curDist - previousDistance;

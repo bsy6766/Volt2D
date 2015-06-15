@@ -34,12 +34,6 @@ void ActionMoveTo::instantUpdate(){
 }
 
 void ActionMoveTo::intervalUpdate(double remainedTime){
-    //if total distance is 0, there's nothing to do
-    if(totalDistance.x == 0 && totalDistance.y == 0 && totalDistance.z == 0){
-        movedPosition = destination;
-        return;
-    }
-    
     float duration = (float)this->duration;
     
     if(totalElapsedTime == duration){
@@ -48,6 +42,12 @@ void ActionMoveTo::intervalUpdate(double remainedTime){
         return;
     }
     else{
+        //if total distance is 0, there's nothing to do
+        if(totalDistance.x == 0 && totalDistance.y == 0 && totalDistance.z == 0){
+            movedPosition = destination;
+            return;
+        }
+        
         float currentTime = (float)(this->totalElapsedTime + remainedTime);
         movedPosition = totalDistance * (currentTime / duration) + originalPosition;
     }

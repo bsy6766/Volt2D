@@ -42,7 +42,7 @@ void TitleScene::init(){
     moveToAction3->initMoveTo(glm::vec3(0, 25, 0), 2);
     
     ActionMoveBy* moveByAction1 = new ActionMoveBy();
-    moveByAction1->initMoveBy(glm::vec3(0, 50, 0), 2);
+    moveByAction1->initMoveBy(glm::vec3(0, 0, 0), 2);
     
     ActionMoveBy* moveByAction2 = new ActionMoveBy();
     moveByAction2->initMoveBy(glm::vec3(0, 25, 0), 2);
