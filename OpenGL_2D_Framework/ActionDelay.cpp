@@ -38,23 +38,27 @@ void ActionDelay::instantUpdate(){
     alive = false;
 }
 
-void ActionDelay::intervalUpdate(double remainedTime){
+void ActionDelay::intervalUpdate(double& remainedTime){
     float duration = (float)this->duration;
+    //currentTime will be total elapsed time (+ remained time)
     float currentTime = (float)this->totalElapsedTime + remainedTime;
     
-    if(totalElapsedTime == duration){
+    //if total elapsed time is equal(remainedTime == 0) or greater than(remainedTime >0) than duration,
+    if(currentTime >= duration){
         //Delay ended
         delayTick = duration - totalDelayed;
         totalDelayed = duration;
         alive = false;
+        remainedTime = currentTime - duration;
     }
     else{
+        remainedTime = 0;
         delayTick = (currentTime - this->previousTime);
         totalDelayed += delayTick;
     }
 }
 
-void ActionDelay::updateAction(double remainedTime){
+void ActionDelay::updateAction(double& remainedTime){
     if(!alive)
         return;
     

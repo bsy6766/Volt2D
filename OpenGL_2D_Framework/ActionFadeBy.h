@@ -13,7 +13,7 @@
 
 class ActionFadeBy : public ActionObject{
 private:
-    float finalOpacity;
+    float opacityToFade;
     float fadedOpacity;
     float previousOpacity;
     
@@ -28,9 +28,9 @@ public:
     float getFadedOpacity();
     
     //virtuals
-    virtual void updateAction(double remainedTime);
+    virtual void updateAction(double& remainedTime);
     virtual void instantUpdate();
-    virtual void intervalUpdate(double remainedTime);
+    virtual void intervalUpdate(double& remainedTime);
     virtual void revive();
 };
 

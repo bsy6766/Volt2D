@@ -11,12 +11,13 @@
 
 #include "CommonInclude.h"
 #include "SpriteObject.h"
-#include "ActionObject.h"
+//#include "ActionObject.h"
 #include "ActionDelay.h"
-#include "ActionMoveTo.h"
 #include "ActionMoveBy.h"
+#include "ActionMoveTo.h"
 #include "ActionRotateBy.h"
 #include "ActionRotateTo.h"
+#include "ActionFadeBy.h"
 #include "ActionFadeTo.h"
 #include <list>
 

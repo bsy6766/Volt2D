@@ -36,7 +36,7 @@ void ActionRotateBy::initRotateBy(float angle, float duration){
     this->previousAngle = 0;
 }
 
-void ActionRotateBy::updateAction(double remainedTime){
+void ActionRotateBy::updateAction(double& remainedTime){
     if(!alive)
         return;
     
@@ -53,18 +53,24 @@ void ActionRotateBy::instantUpdate(){
     alive = false;
 }
 
-void ActionRotateBy::intervalUpdate(double remainedTime){
+void ActionRotateBy::intervalUpdate(double& remainedTime){
     float duration = (float)this->duration;
+    float currentTime = (float)(this->totalElapsedTime + remainedTime);
     
-    if(totalElapsedTime == duration){
+    if(currentTime >= duration){
         movedAngle = rotatingAngle - previousAngle;
         alive = false;
+        remainedTime = currentTime - duration;
         return;
     }
     else{
-        float currentTime = (float)(this->totalElapsedTime + remainedTime);
-        float curAngle = rotatingAngle * (currentTime / duration);
-        float diff = curAngle - previousAngle;
+        remainedTime = 0;
+        if(rotatingAngle == 0){
+            movedAngle = rotatingAngle;
+            previousAngle = rotatingAngle;
+            return;
+        }
+        float diff = (rotatingAngle * (currentTime / duration)) - previousAngle;
         movedAngle = diff;
         previousAngle += diff;
     }

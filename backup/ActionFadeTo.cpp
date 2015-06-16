@@ -21,7 +21,7 @@ finalOpacity(0){
     cout << "Creating action fade" << endl;
 }
 
-ActionFadeTo::ActionFadeTo(const ActionFadeTo& other){
+ActionFadeTo::ActionFadeTo(const ActionFadeTo& other):ActionObject(other){
     this->finalOpacity = other.finalOpacity;
     this->originalOpacity = other.originalOpacity;
     this->fadedOpacity = other.fadedOpacity;
@@ -59,22 +59,29 @@ void ActionFadeTo::instantUpdate(){
     alive = false;
 }
 
-void ActionFadeTo::intervalUpdate(double remainedTime){
+void ActionFadeTo::intervalUpdate(double& remainedTime){
     //get time in float
     float duration = (float)this->duration;
+    float currentTime = (float)(this->totalElapsedTime + remainedTime);
     
-    if(totalElapsedTime == duration){
+    if(currentTime >= duration){
         fadedOpacity = totalOpacityToFade + originalOpacity;
         alive = false;
+        remainedTime = currentTime - duration;
         return;
     }
     else{
-        float currentTime = (float)(this->totalElapsedTime + remainedTime);
+        remainedTime = 0;
+        if(totalOpacityToFade == 0){
+            fadedOpacity = totalOpacityToFade;
+            return;
+        }
+        
         fadedOpacity = totalOpacityToFade * (currentTime / duration) + originalOpacity;
     }
 }
 
-void ActionFadeTo::updateAction(double remainedTime){
+void ActionFadeTo::updateAction(double& remainedTime){
     if(!alive)
         return;
     

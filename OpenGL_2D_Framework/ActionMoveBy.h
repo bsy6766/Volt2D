@@ -29,9 +29,9 @@ public:
     glm::vec3 getMovedDistance();
     
     //virtuals
-    virtual void updateAction(double remainedTime);
+    virtual void updateAction(double& remainedTime);
     virtual void instantUpdate();
-    virtual void intervalUpdate(double remainedTime);
+    virtual void intervalUpdate(double& remainedTime);
     virtual void revive();
 };
 

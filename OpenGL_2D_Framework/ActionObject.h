@@ -97,9 +97,9 @@ public:
     void startAction();
     void stopAction();
     
-    virtual void updateAction(double remainedTime) = 0;
+    virtual void updateAction(double& remainedTime) = 0;
     virtual void instantUpdate() = 0;
-    virtual void intervalUpdate(double remainedTime) = 0;
+    virtual void intervalUpdate(double& remainedTime) = 0;
     
     //kill and reset
     void kill();

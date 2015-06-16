@@ -52,7 +52,7 @@ void ActionRotateTo::setOriginalAngle(float angle){
     totalAngleToRotate = destinationAngle - startAngle;
 }
 
-void ActionRotateTo::updateAction(double remainedTime){
+void ActionRotateTo::updateAction(double& remainedTime){
     if(!alive)
         return;
     
@@ -69,16 +69,22 @@ void ActionRotateTo::instantUpdate(){
     alive = false;
 }
 
-void ActionRotateTo::intervalUpdate(double remainedTime){
+void ActionRotateTo::intervalUpdate(double& remainedTime){
     float duration = (float)this->duration;
+    float currentTime = (float)(this->totalElapsedTime + remainedTime);
     
-    if(totalElapsedTime == duration){
+    if(currentTime >= duration){
         movedAngle = totalAngleToRotate + startAngle;
         alive = false;
+        remainedTime = currentTime - duration;
         return;
     }
     else{
-        float currentTime = (float)(this->totalElapsedTime + remainedTime);
+        remainedTime = 0;
+        if(totalAngleToRotate == 0){
+            movedAngle = totalAngleToRotate;
+            return;
+        }
         movedAngle = totalAngleToRotate * (currentTime / duration) + startAngle;
     }
 }

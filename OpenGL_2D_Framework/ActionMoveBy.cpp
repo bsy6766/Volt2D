@@ -37,7 +37,7 @@ glm::vec3 ActionMoveBy::getMovedDistance(){
     return this->movedDistance;
 }
 
-void ActionMoveBy::updateAction(double remainedTime){
+void ActionMoveBy::updateAction(double& remainedTime){
     if(!alive)
         return;
     
@@ -54,24 +54,27 @@ void ActionMoveBy::instantUpdate(){
     alive = false;
 }
 
-void ActionMoveBy::intervalUpdate(double remainedTime){
+void ActionMoveBy::intervalUpdate(double& remainedTime){
     float duration = (float)this->duration;
+    float currentTime = (float)(this->totalElapsedTime + remainedTime);
     
-    if(totalElapsedTime == duration){
+    if(currentTime >= duration){
         movedDistance = distance - previousDistance;
         alive = false;
+        remainedTime = currentTime - duration;
         return;
     }
     else{
+        //consume all remained time
+        remainedTime = 0;
+        //no movement handler
         if(distance.x == 0 && distance.y == 0 && distance.z == 0){
             movedDistance = distance;
             previousDistance = distance;
             return;
         }
         
-        float currentTime = (float)(this->totalElapsedTime + remainedTime);
-        glm::vec3 curDist = distance * (currentTime / duration);
-        glm::vec3 diff = curDist - previousDistance;
+        glm::vec3 diff = (distance * (currentTime / duration)) - previousDistance;
         movedDistance = diff;
         previousDistance += diff;
     }

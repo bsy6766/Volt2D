@@ -92,6 +92,7 @@ void ActionSchedule::updateSchedule(){
         }
 //        cout << "prcoessing ID = " << (*action_it)->objID << endl;
         ActionID actionId = (*action_it)->getActionID();
+//        ActionType type = (*action_it)->getType();
         double elapsedTime = Timer::getInstance().getElapsedTime();
         double t = (*action_it)->setCurrentTime(elapsedTime);
         if(t != 0 && this->remainedTime == 0){
@@ -102,13 +103,13 @@ void ActionSchedule::updateSchedule(){
         bool removeAction = false;
         
         switch (actionId) {
-            case ACTION_DELAY:
+            case ActionID::ACTION_DELAY:
             {
                 ActionDelay *delayPtr = static_cast<ActionDelay*>(*action_it);
                 //check starting. if alive but not running, run
                 if(!delayPtr->isRunning()){
                     delayPtr->startAction();
-                    this->remainedTime = 0;
+//                    this->remainedTime = 0;
                 }
                 //update
                 delayPtr->updateAction(this->remainedTime);
@@ -126,86 +127,90 @@ void ActionSchedule::updateSchedule(){
                 }
                 break;
             }
-            case ACTION_MOVE_TO:
+            case ActionID::ACTION_MOVE_TO:
             {
                 ActionMoveTo *moveToPtr = static_cast<ActionMoveTo*>(*action_it);
                 
                 if(!moveToPtr->isRunning()){
-//                    cout << "Staring move to. rt = " << remainedTime << endl;
                     moveToPtr->startAction();
-                    moveToPtr->setOriginalPosition(moveToPtr->getOwner()->getPosition(), true);
-                    moveToPtr->updateAction(this->remainedTime);
-                    this->remainedTime = 0;
+                    moveToPtr->setCurrentPos(moveToPtr->getOwner()->getPosition());
+//                    moveToPtr->updateAction(this->remainedTime);
                 }
-                else{
-                    moveToPtr->updateAction(0);
-                }
+//                else{
+//                    moveToPtr->updateAction(0.0);
+//                }
+            
+                moveToPtr->updateAction(this->remainedTime);
                 
-                //update position
-                moveToPtr->getOwner()->setPosition(moveToPtr->getOwner()->getPosition() + moveToPtr->getMovedDistance());
-//                glm::vec3 curPos = moveToPtr->getOwner()->getPosition();
-                
-//                cout << "Moving (" << curPos.x << ", " << curPos.y << ", " << curPos.z << endl;
-                
+                moveToPtr->getOwner()->setPosition(moveToPtr->getMovedPosition());
                 if(!moveToPtr->isAlive()){
-                    if(instantSchedule){
-                        removeAction = true;
-                    }
-                    //else, leave action.
+                    if(instantSchedule) removeAction = true;
                 }
                 else{
                     finished = false;
                 }
                 break;
             }
-            case ACTION_MOVE_BY:
+            case ActionID::ACTION_MOVE_BY:
             {
                 ActionMoveBy *moveByPtr = static_cast<ActionMoveBy*>(*action_it);
                 
                 if(!moveByPtr->isRunning()){
                     moveByPtr->startAction();
-                    moveByPtr->setStartingPos(moveByPtr->getOwner()->getPosition());
-                    moveByPtr->updateAction(this->remainedTime);
-                    this->remainedTime = 0;
+//                    moveByPtr->updateAction(this->remainedTime);
+//                    this->remainedTime = 0;
                 }
-                else{
-                    moveByPtr->updateAction(0);
-                }
+//                else{
+//                    moveByPtr->updateAction(0.0);
+//                }
+            
+                moveByPtr->updateAction(this->remainedTime);
                 
-                //update position
                 moveByPtr->getOwner()->addPosition(moveByPtr->getMovedDistance());
-//                glm::vec3 curPos = moveByPtr->getOwner()->getPosition();
-//                
-//                temp += moveByPtr->getMovedDistance();
-                
-//                cout << "temp = (" << temp.x << ", " << temp.y << ", " << temp.z << ")" << endl;
-//                cout << "Moving (" << curPos.x << ", " << curPos.y << ", " << curPos.z << ")" << endl;
-                
                 if(!moveByPtr->isAlive()){
-                    if(instantSchedule){
-                        removeAction = true;
-                    }
-                    //else, leave action.
+                    if(instantSchedule) removeAction = true;
                 }
                 else{
                     finished = false;
                 }
                 break;
             }
-            case ACTION_ROTATE_BY:
+            case ActionID::ACTION_ROTATE_TO:
+            {
+                ActionRotateTo* rotateToPtr = static_cast<ActionRotateTo*>(*action_it);
+                if(!rotateToPtr->isRunning()){
+                    rotateToPtr->startAction();
+                    rotateToPtr->setOriginalAngle(rotateToPtr->getOwner()->getAngle());
+//                    rotateToPtr->updateAction(this->remainedTime);
+//                    this->remainedTime = 0;
+                }
+//                else{
+//                    rotateToPtr->updateAction(0.0);
+//                }
+                rotateToPtr->updateAction(this->remainedTime);
+                rotateToPtr->getOwner()->setAngle(rotateToPtr->getMovedAngle());
+                
+                if(!rotateToPtr->isAlive()){
+                    if(instantSchedule) removeAction = true;
+                }
+                else{
+                    finished = false;
+                }
+                break;
+            }
+            case ActionID::ACTION_ROTATE_BY:
             {
                 ActionRotateBy* rotateByPtr = static_cast<ActionRotateBy*>(*action_it);
                 if(!rotateByPtr->isRunning()){
                     rotateByPtr->startAction();
-//                    rotateByPtr->setOriginalAngle(rotateByPtr->getOwner()->getAngle(), true);
-                    rotateByPtr->updateAction(this->remainedTime);
-                    this->remainedTime = 0;
+//                    rotateByPtr->updateAction(this->remainedTime);
+//                    this->remainedTime = 0;
                 }
-                else{
-                    rotateByPtr->updateAction(0);
-                }
-                cout << "Moved angle = " << rotateByPtr->getMovedAngle() << endl;
-//                cout << "cur angle = " << rotateByPtr->getOwner()->getAngle() << endl;
+//                else{
+//                    rotateByPtr->updateAction(0.0);
+//                }
+                
+                rotateByPtr->updateAction(this->remainedTime);
                 rotateByPtr->getOwner()->addAngle(rotateByPtr->getMovedAngle());
                 
                 if(!rotateByPtr->isAlive()){
@@ -219,46 +224,20 @@ void ActionSchedule::updateSchedule(){
                 }
                 break;
             }
-            case ACTION_ROTATE_TO:
-            {
-                ActionRotateTo* rotateToPtr = static_cast<ActionRotateTo*>(*action_it);
-                if(!rotateToPtr->isRunning()){
-                    rotateToPtr->startAction();
-                    rotateToPtr->setOriginalAngle(rotateToPtr->getOwner()->getAngle(), true);
-                    rotateToPtr->updateAction(this->remainedTime);
-                    this->remainedTime = 0;
-                }
-                else{
-                    rotateToPtr->updateAction(0);
-                }
-//                cout << "Moved angle = " << rotateToPtr->getMovedAngle() << endl;
-                //                cout << "cur angle = " << rotateToPtr->getOwner()->getAngle() << endl;
-                rotateToPtr->getOwner()->setAngle(rotateToPtr->getMovedAngle());
-                
-                if(!rotateToPtr->isAlive()){
-                    if(instantSchedule){
-                        removeAction = true;
-                    }
-                    //else, leave action.
-                }
-                else{
-                    finished = false;
-                }
-                break;
-            }
-            case ACTION_FADE_TO:
+            case ActionID::ACTION_FADE_TO:
             {
                 ActionFadeTo* fadeToPtr = static_cast<ActionFadeTo*>(*action_it);
                 if(!fadeToPtr->isRunning()){
                     fadeToPtr->startAction();
                     fadeToPtr->setOriginalOpacity(fadeToPtr->getOwner()->getOpacity());
-                    fadeToPtr->updateAction(this->remainedTime);
-                    this->remainedTime = 0;
+//                    fadeToPtr->updateAction(this->remainedTime);
+//                    this->remainedTime = 0;
                 }
-                else{
-                    fadeToPtr->updateAction(0);
-                }
-                cout << "opacity = " << fadeToPtr->getFadedOpacity() << endl;
+//                else{
+//                    fadeToPtr->updateAction(0.0);
+//                }
+                
+                fadeToPtr->updateAction(this->remainedTime);
                 fadeToPtr->getOwner()->setOpacity(fadeToPtr->getFadedOpacity());
                 
                 if(!fadeToPtr->isAlive()){
@@ -272,27 +251,49 @@ void ActionSchedule::updateSchedule(){
                 }
                 break;
             }
-            case ACTION_FADE_BY:
+            case ActionID::ACTION_FADE_BY:
+            {
+                ActionFadeBy* fadeByPtr = static_cast<ActionFadeBy*>(*action_it);
+                if(!fadeByPtr->isRunning()){
+                    fadeByPtr->startAction();
+//                    fadeByPtr->updateAction(this->remainedTime);
+//                    this->remainedTime = 0;
+                }
+//                else{
+//                    fadeByPtr->updateAction(0.0);
+//                }
+                
+                fadeByPtr->updateAction(this->remainedTime);
+                fadeByPtr->getOwner()->addOpacity(fadeByPtr->getFadedOpacity());
+                
+                if(!fadeByPtr->isAlive()){
+                    if(instantSchedule){
+                        removeAction = true;
+                    }
+                    //else, leave action.
+                }
+                else{
+                    finished = false;
+                }
+                break;
+            }
+            case ActionID::ACTION_JUMP_TO:
             {
                 break;
             }
-            case ACTION_JUMP_TO:
+            case ActionID::ACTION_JUMP_BY:
             {
                 break;
             }
-            case ACTION_JUMP_BY:
+            case ActionID::ACTION_SCALE_TO:
             {
                 break;
             }
-            case ACTION_SCALE_TO:
+            case ActionID::ACTION_SCALE_BY:
             {
                 break;
             }
-            case ACTION_SCALE_BY:
-            {
-                break;
-            }
-            case ACTION_BLINK:
+            case ActionID::ACTION_BLINK:
             {
                 break;
             }

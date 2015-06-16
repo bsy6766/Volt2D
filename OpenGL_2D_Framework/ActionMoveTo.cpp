@@ -40,27 +40,31 @@ void ActionMoveTo::instantUpdate(){
     alive = false;
 }
 
-void ActionMoveTo::intervalUpdate(double remainedTime){
+void ActionMoveTo::intervalUpdate(double& remainedTime){
     float duration = (float)this->duration;
+    float currentTime = (float)(this->totalElapsedTime + remainedTime);
     
-    if(totalElapsedTime == duration){
+    if(currentTime >= duration){
         movedPosition = destination;
         alive = false;
+        remainedTime = currentTime - duration;
         return;
     }
     else{
+        //Still running action. remained time is consumed here
+        remainedTime = 0;
+        
         //if total distance is 0, there's nothing to do
         if(totalDistance.x == 0 && totalDistance.y == 0 && totalDistance.z == 0){
             movedPosition = destination;
             return;
         }
         
-        float currentTime = (float)(this->totalElapsedTime + remainedTime);
         movedPosition = totalDistance * (currentTime / duration) + originalPosition;
     }
 }
 
-void ActionMoveTo::updateAction(double remainedTime){
+void ActionMoveTo::updateAction(double& remainedTime){
     if(!alive)
         return;
     

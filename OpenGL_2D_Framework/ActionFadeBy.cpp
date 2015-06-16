@@ -11,12 +11,12 @@
 ActionFadeBy::ActionFadeBy():
 ActionObject(),
 fadedOpacity(0),
-finalOpacity(0){
+opacityToFade(0){
     cout << "Creating action fade" << endl;
 }
 
 ActionFadeBy::ActionFadeBy(const ActionFadeBy& other):ActionObject(other){
-    this->finalOpacity = other.finalOpacity;
+    this->opacityToFade = other.opacityToFade;
     this->fadedOpacity = other.fadedOpacity;
     this->previousOpacity = other.previousOpacity;
 }
@@ -28,7 +28,7 @@ ActionFadeBy::~ActionFadeBy(){
 void ActionFadeBy::initFadeBy(float opacity, double duration){
     this->actionID = ActionID::ACTION_FADE_BY;
     this->duration = duration;
-    this->finalOpacity = opacity;
+    this->opacityToFade = opacity;
     this->fadedOpacity = 0;
     this->previousOpacity = 0;
 }
@@ -38,30 +38,36 @@ float ActionFadeBy::getFadedOpacity(){
 }
 
 void ActionFadeBy::instantUpdate(){
-    fadedOpacity = finalOpacity;
+    fadedOpacity = opacityToFade;
     alive = false;
 }
 
-void ActionFadeBy::intervalUpdate(double remainedTime){
+void ActionFadeBy::intervalUpdate(double& remainedTime){
     //get time in float
     float duration = (float)this->duration;
+    float currentTime = (float)(this->totalElapsedTime + remainedTime);
     
-    if(totalElapsedTime == duration){
-        fadedOpacity = finalOpacity - previousOpacity;
+    if(currentTime >= duration){
+        fadedOpacity = opacityToFade - previousOpacity;
         alive = false;
+        remainedTime = currentTime - duration;
         return;
     }
     else{
-        float currentTime = (float)(this->totalElapsedTime + remainedTime);
-        float curOpacity = finalOpacity * (currentTime / duration);
-        float diff = curOpacity - previousOpacity;
-
+        remainedTime = 0;
+        if(opacityToFade == 0){
+            fadedOpacity = 0;
+            previousOpacity = 0;
+            return;
+        }
+        
+        float diff = (opacityToFade * (currentTime / duration)) - previousOpacity;
         fadedOpacity = diff;
         previousOpacity += diff;
     }
 }
 
-void ActionFadeBy::updateAction(double remainedTime){
+void ActionFadeBy::updateAction(double& remainedTime){
     if(!alive)
         return;
     
