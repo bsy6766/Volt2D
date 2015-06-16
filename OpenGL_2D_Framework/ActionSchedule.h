@@ -19,6 +19,8 @@
 #include "ActionRotateTo.h"
 #include "ActionFadeBy.h"
 #include "ActionFadeTo.h"
+#include "ActionScaleBy.h"
+#include "ActionScaleTo.h"
 #include <list>
 
 class SpriteObject;

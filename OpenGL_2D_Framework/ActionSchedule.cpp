@@ -134,11 +134,7 @@ void ActionSchedule::updateSchedule(){
                 if(!moveToPtr->isRunning()){
                     moveToPtr->startAction();
                     moveToPtr->setCurrentPos(moveToPtr->getOwner()->getPosition());
-//                    moveToPtr->updateAction(this->remainedTime);
                 }
-//                else{
-//                    moveToPtr->updateAction(0.0);
-//                }
             
                 moveToPtr->updateAction(this->remainedTime);
                 
@@ -157,12 +153,7 @@ void ActionSchedule::updateSchedule(){
                 
                 if(!moveByPtr->isRunning()){
                     moveByPtr->startAction();
-//                    moveByPtr->updateAction(this->remainedTime);
-//                    this->remainedTime = 0;
                 }
-//                else{
-//                    moveByPtr->updateAction(0.0);
-//                }
             
                 moveByPtr->updateAction(this->remainedTime);
                 
@@ -181,12 +172,8 @@ void ActionSchedule::updateSchedule(){
                 if(!rotateToPtr->isRunning()){
                     rotateToPtr->startAction();
                     rotateToPtr->setOriginalAngle(rotateToPtr->getOwner()->getAngle());
-//                    rotateToPtr->updateAction(this->remainedTime);
-//                    this->remainedTime = 0;
                 }
-//                else{
-//                    rotateToPtr->updateAction(0.0);
-//                }
+                
                 rotateToPtr->updateAction(this->remainedTime);
                 rotateToPtr->getOwner()->setAngle(rotateToPtr->getMovedAngle());
                 
@@ -203,12 +190,7 @@ void ActionSchedule::updateSchedule(){
                 ActionRotateBy* rotateByPtr = static_cast<ActionRotateBy*>(*action_it);
                 if(!rotateByPtr->isRunning()){
                     rotateByPtr->startAction();
-//                    rotateByPtr->updateAction(this->remainedTime);
-//                    this->remainedTime = 0;
                 }
-//                else{
-//                    rotateByPtr->updateAction(0.0);
-//                }
                 
                 rotateByPtr->updateAction(this->remainedTime);
                 rotateByPtr->getOwner()->addAngle(rotateByPtr->getMovedAngle());
@@ -230,12 +212,7 @@ void ActionSchedule::updateSchedule(){
                 if(!fadeToPtr->isRunning()){
                     fadeToPtr->startAction();
                     fadeToPtr->setOriginalOpacity(fadeToPtr->getOwner()->getOpacity());
-//                    fadeToPtr->updateAction(this->remainedTime);
-//                    this->remainedTime = 0;
                 }
-//                else{
-//                    fadeToPtr->updateAction(0.0);
-//                }
                 
                 fadeToPtr->updateAction(this->remainedTime);
                 fadeToPtr->getOwner()->setOpacity(fadeToPtr->getFadedOpacity());
@@ -256,12 +233,7 @@ void ActionSchedule::updateSchedule(){
                 ActionFadeBy* fadeByPtr = static_cast<ActionFadeBy*>(*action_it);
                 if(!fadeByPtr->isRunning()){
                     fadeByPtr->startAction();
-//                    fadeByPtr->updateAction(this->remainedTime);
-//                    this->remainedTime = 0;
                 }
-//                else{
-//                    fadeByPtr->updateAction(0.0);
-//                }
                 
                 fadeByPtr->updateAction(this->remainedTime);
                 fadeByPtr->getOwner()->addOpacity(fadeByPtr->getFadedOpacity());
@@ -277,19 +249,54 @@ void ActionSchedule::updateSchedule(){
                 }
                 break;
             }
+            case ActionID::ACTION_SCALE_TO:
+            {
+                ActionScaleTo* scaleToPtr = static_cast<ActionScaleTo*>(*action_it);
+                if(!scaleToPtr->isRunning()){
+                    scaleToPtr->startAction();
+                    scaleToPtr->setCurrentScale(scaleToPtr->getOwner()->getScale());
+                }
+                
+                scaleToPtr->updateAction(this->remainedTime);
+                scaleToPtr->getOwner()->setScale(scaleToPtr->getScaledScale());
+                
+                if(!scaleToPtr->isAlive()){
+                    if(instantSchedule){
+                        removeAction = true;
+                    }
+                    //else, leave action.
+                }
+                else{
+                    finished = false;
+                }
+                break;
+            }
+            case ActionID::ACTION_SCALE_BY:
+            {
+                ActionScaleBy* scaleByPtr = static_cast<ActionScaleBy*>(*action_it);
+                if(!scaleByPtr->isRunning()){
+                    scaleByPtr->startAction();
+                }
+                
+                scaleByPtr->updateAction(this->remainedTime);
+                scaleByPtr->getOwner()->addScale(scaleByPtr->getScaledScale());
+                
+                if(!scaleByPtr->isAlive()){
+                    if(instantSchedule){
+                        removeAction = true;
+                    }
+                    //else, leave action.
+                }
+                else{
+                    finished = false;
+                }
+                break;
+            }
             case ActionID::ACTION_JUMP_TO:
             {
                 break;
             }
             case ActionID::ACTION_JUMP_BY:
-            {
-                break;
-            }
-            case ActionID::ACTION_SCALE_TO:
-            {
-                break;
-            }
-            case ActionID::ACTION_SCALE_BY:
             {
                 break;
             }
