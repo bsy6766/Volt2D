@@ -19,11 +19,15 @@ rotateMat(glm::mat4()),
 scaleMat(glm::mat4()),
 modelMat(glm::mat4()),
 angle(0),
-scale(glm::vec3(0, 0, 0)),
+scale(glm::vec3(1, 1, 1)),
 opacity(255),
 boundingBox(new BoundingBox())
 {
     cout << "RenderableObject::RenderableObject()" << endl;
+    translateTo(position);
+    rotateTo(angle, glm::vec3(0, 0, 1));
+    scaleTo(scale);
+    setOpacity(opacity);
 }
 
 RenderableObject::~RenderableObject(){
@@ -88,38 +92,38 @@ void RenderableObject::rotateBy(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 
     rotateMat = glm::rotate(rotateMat, angle, axis);
 }
 
+glm::vec3 RenderableObject::getScale(){
+    return this->scale;
+}
+
+GLfloat RenderableObject::getScaleX(){
+    return scale.x;
+}
+
+GLfloat RenderableObject::getScaleY(){
+    return scale.y;
+}
+
+GLfloat RenderableObject::getScaleZ(){
+    return scale.z;
+}
+
+void RenderableObject::setScale(glm::vec3 scale){
+    scaleTo(scale);
+}
+
+void RenderableObject::addScale(glm::vec3 scale){
+    scaleBy(scale);
+}
+
 void RenderableObject::scaleTo(glm::vec3 scale){
-    checkScale(scale);
+    this->scale = scale;
     scaleMat = glm::scale(glm::mat4(), scale);
 }
 
 void RenderableObject::scaleBy(glm::vec3 scale){
     this->scale += scale;
-    checkScale(this->scale);
-    scaleMat = glm::scale(scaleMat, this->scale);
-}
-
-void RenderableObject::checkScale(glm::vec3& scale){
-    if(scale.x < -1.0){
-        scale.x = -1.0;
-    }
-    else if(scale.x > 1.0){
-        scale.x = 1.0;
-    }
-    
-    if(scale.y < -1.0){
-        scale.y = -1.0;
-    }
-    else if(scale.y > 1.0){
-        scale.y = 1.0;
-    }
-    
-    if(scale.z < -1.0){
-        scale.z = -1.0;
-    }
-    else if(scale.z > 1.0){
-        scale.z = 1.0;
-    }
+    scaleMat = glm::scale(glm::mat4(), this->scale);
 }
 
 void RenderableObject::setOpacity(GLfloat opacity){
@@ -158,22 +162,6 @@ void RenderableObject::deleteVertexData(){
     vbo = 0;
     uvbo = 0;
     ibo = 0;
-}
-
-GLfloat RenderableObject::getScaleX(){
-    return scale.x;
-}
-
-GLfloat RenderableObject::getScaleY(){
-    return scale.y;
-}
-
-GLfloat RenderableObject::getScaleZ(){
-    return scale.z;
-}
-
-glm::vec3 RenderableObject::getScale(){
-    return this->scale;
 }
 
 void RenderableObject::initBoundingBox(int w, int h){

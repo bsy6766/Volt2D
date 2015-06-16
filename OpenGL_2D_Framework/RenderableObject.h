@@ -45,8 +45,7 @@ protected:
     BoundingBox* boundingBox;
     
 private:
-    //check the boundary of scale value and limit to -1.0~1.0
-    void checkScale(glm::vec3& scale);
+
 public:
     RenderableObject();
     virtual ~RenderableObject();
@@ -75,11 +74,13 @@ public:
     void addOpacity(GLfloat opacity);
     GLfloat getOpacity();
     
-    //scale
+    //scale getter setter
+    void setScale(glm::vec3 scale);
+    void addScale(glm::vec3 scale);
+    glm::vec3 getScale();
     GLfloat getScaleX();
     GLfloat getScaleY();
     GLfloat getScaleZ();
-    glm::vec3 getScale();
     
     virtual void computeVertexData() = 0;
     virtual void loadVertexData() = 0;
