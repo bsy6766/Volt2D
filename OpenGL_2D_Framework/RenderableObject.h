@@ -12,10 +12,12 @@
 //#define GLM_FORCE_RADIANS
 
 #include "Object.h"
+#include "Program.h"
 #include "BoundingBox.h"
 #include <vector>
 #include <gl/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <string>
 
 class RenderableObject : public Object{
 protected:
@@ -43,6 +45,9 @@ protected:
     GLfloat opacity;
     
     BoundingBox* boundingBox;
+    
+    //for rendering with shader
+    Program *progPtr;
     
 private:
 
@@ -89,6 +94,12 @@ public:
     //clear vertex std::vectors and delete buffer.
     void deleteVertexData();
     void initBoundingBox(int w, int h);
+    
+    //program
+    void bindProgram(std::string programName);
+    
+    //visibility. Making this public because it harms nothing.
+    bool visible;
 };
 
 #endif /* defined(__OpenGL_2D_Framework__RenderableObject__) */

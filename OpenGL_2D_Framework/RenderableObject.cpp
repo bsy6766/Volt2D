@@ -21,6 +21,8 @@ modelMat(glm::mat4()),
 angle(0),
 scale(glm::vec3(1, 1, 1)),
 opacity(255),
+visible(true),
+progPtr(Director::getInstance().getProgramPtr()),   //get default program
 boundingBox(new BoundingBox())
 {
     cout << "RenderableObject::RenderableObject()" << endl;
@@ -28,6 +30,7 @@ boundingBox(new BoundingBox())
     rotateTo(angle, glm::vec3(0, 0, 1));
     scaleTo(scale);
     setOpacity(opacity);
+//    progPtr = Director::getInstance().getProgramPtr();
 }
 
 RenderableObject::~RenderableObject(){
@@ -169,4 +172,8 @@ void RenderableObject::initBoundingBox(int w, int h){
     boundingBox->h = h;
     boundingBox->x = ((-1) * w) / 2;
     boundingBox->y = ((-1) * h) / 2;
+}
+
+void RenderableObject::bindProgram(std::string programName){
+    progPtr = Director::getInstance().getProgramPtr(programName);
 }
