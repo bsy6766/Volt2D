@@ -9,7 +9,7 @@
 #include "SpriteAnimation.h"
 #include <iostream>
 
-SpriteAnimation::SpriteAnimation():SpriteObject(0){
+SpriteAnimation::SpriteAnimation():SpriteObject(){
     this->frameInterval = 0;
     this->currentTime = 0;
     this->currentFrameIndex = 0;
@@ -18,14 +18,14 @@ SpriteAnimation::SpriteAnimation():SpriteObject(0){
     this->canJump = true;
 }
 
-SpriteAnimation::SpriteAnimation(Program *progPtr):SpriteObject(progPtr){
-    this->frameInterval = 0;
-    this->currentTime = 0;
-    this->currentFrameIndex = 0;
-    this->frameListSize = 0;
-    this->totalElapsedTime = 0;
-    this->canJump = true;
-}
+//SpriteAnimation::SpriteAnimation(Program *progPtr):SpriteObject(progPtr){
+//    this->frameInterval = 0;
+//    this->currentTime = 0;
+//    this->currentFrameIndex = 0;
+//    this->frameListSize = 0;
+//    this->totalElapsedTime = 0;
+//    this->canJump = true;
+//}
 
 SpriteAnimation::~SpriteAnimation(){
     if(textureList.size() > 0){

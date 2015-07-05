@@ -41,7 +41,7 @@ private:
     
 public:
     SpriteAnimation();
-    SpriteAnimation(Program *progPtr);
+//    SpriteAnimation(Program *progPtr);
     ~SpriteAnimation();
     
     //temporary
