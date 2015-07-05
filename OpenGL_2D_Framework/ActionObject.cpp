@@ -129,10 +129,18 @@ void ActionObject::revive(){
     }
 }
 
-SpriteObject* ActionObject::getOwner(){
+RenderableObject* ActionObject::getOwner(){
     return owner;
 }
 
-void ActionObject::bindOwnerPtr(SpriteObject *ownerPtr){
+void ActionObject::bindOwnerPtr(RenderableObject *ownerPtr){
     this->owner = ownerPtr;
 }
+
+//SpriteObject* ActionObject::getOwner(){
+//    return owner;
+//}
+//
+//void ActionObject::bindOwnerPtr(SpriteObject *ownerPtr){
+//    this->owner = ownerPtr;
+//}

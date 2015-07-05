@@ -14,6 +14,7 @@
 #include "CommonInclude.h"
 #include "Timer.h"
 #include <glm/glm.hpp>
+//#include "SpriteObject.h"
 //#include "ActionType.h"
 
 //Action IDs
@@ -39,7 +40,8 @@ enum ActionID{
     ACTION_BLINK
 };
 
-class SpriteObject;
+//class SpriteObject;
+class RenderableObject;
 
 class ActionObject{
 private:
@@ -59,7 +61,8 @@ protected:
     double remainedTimeByDeath;
     double speed;
     
-    SpriteObject* owner;
+//    SpriteObject* owner;
+    RenderableObject* owner;
     
 public:
     unsigned int objID;
@@ -105,8 +108,10 @@ public:
     void kill();
     virtual void revive();
     
-    SpriteObject* getOwner();
-    void bindOwnerPtr(SpriteObject* ownerPtr);
+//    SpriteObject* getOwner();
+//    void bindOwnerPtr(SpriteObject* ownerPtr);
+    RenderableObject* getOwner();
+    void bindOwnerPtr(RenderableObject* ownerPtr);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionObject__) */
