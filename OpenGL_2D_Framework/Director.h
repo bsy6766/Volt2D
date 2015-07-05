@@ -24,7 +24,7 @@
 #include <unordered_map>
 #include "Timer.h"
 
-#include "TextManager.h"
+//#include "TextManager.h"
 
 #include <stdio.h>  /* defines FILENAME_MAX */
 #ifdef _WIN32
@@ -92,7 +92,7 @@ private:
     static void glfw_error_callback(int error, const char *description);
     
     //text test
-    TextManager* textManager;
+//    TextManager* textManager;
 public:
     static Director& getInstance(){
         static Director instance;

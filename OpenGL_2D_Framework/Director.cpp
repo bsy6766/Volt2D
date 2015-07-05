@@ -123,7 +123,7 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
     //create basic camera
     camera = new Camera();
     
-    textManager = new TextManager();
+//    textManager = new TextManager();
 }
 
 void Director::terminateApp(){
