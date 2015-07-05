@@ -29,7 +29,7 @@ private:
     void getUniformLocation(std::string name, glm::mat4& matrix);
 public:
     Sprite();
-    Sprite(Program *ptr);   //create with specific program pointer
+//    Sprite(Program *ptr);   //create with specific program pointer
     ~Sprite();
 
     //inits

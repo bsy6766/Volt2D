@@ -16,11 +16,11 @@ texture(0)
     
 }
 
-Sprite::Sprite(Program *ptr):
-SpriteObject(ptr),
-texture(0){
-	std::cout << "Sprite created with ID#" << spriteID << std::endl;
-}
+//Sprite::Sprite(Program *ptr):
+//SpriteObject(ptr),
+//texture(0){
+//	std::cout << "Sprite created with ID#" << spriteID << std::endl;
+//}
 
 Sprite::~Sprite(){
     spriteID = -1;
@@ -79,6 +79,7 @@ void Sprite::render(){
 //    cout << "angle = " << this->angle << endl;
 //    cout << "opacity = " << this->opacity << endl;
 //    cout << "pos = (" << this->position.x << ", " << this->position.y << ", " << this->position.z << ")" << endl;
+//    cout << "scale = (" << this->scale.x << ", " << this->scale.y << ", " << this->scale.z << ")" << endl;
     
     //bind vertex array.
     glBindVertexArray(vao);
