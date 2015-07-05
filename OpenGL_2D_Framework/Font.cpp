@@ -91,7 +91,27 @@ bool Font::initFont(std::string fontName, int fontSize){
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//        const unsigned char* texData = gData.bitmap_buffer;
+//        unsigned int charLen = (unsigned int)strlen((char*)texData);
+//        cout << "len = " << charLen << endl;
+//        cout << strlen((char*)texData) << endl;
+//        printf("%s\n", texData);
+//        for(unsigned int i = 0; i<charLen; i++){
+////            cout << texData[i] << endl;
+//            printf("%i", (short)texData[i]);
+//        }
+//        unsigned char* temp;
+//        int tw = (int)(gData.metrics.width >> 6);
+//        int th = (int)(gData.metrics.height >> 6)/2;
+//        cout << gData.c << ", w = " << tw << ", h = " << th << endl;
+//        temp = new unsigned char[tw*th];
+//        for(int i = 0; i<tw*th; i++){
+//            temp[i] = 127;
+////            temp[i+1] = 0;
+////            temp[i+2] = 0;
+//        }
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmap.width, bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, gData.bitmap_buffer);
+//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmap.width, bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, temp);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
         
         glyphMap.insert(std::pair<char,GlyphData>(gData.c, gData));
