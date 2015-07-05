@@ -17,7 +17,6 @@
 class Object{
 protected:
     glm::vec3 position;
-    bool visible;
     WinSize size;
 private:
 public:
@@ -28,10 +27,6 @@ public:
     void setPosition(glm::vec3 position);
     void addPosition(glm::vec3 position);
     glm::vec3 getPosition();
-    
-    //visibility
-    bool isVisible();
-    void setVisible(bool visibility);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Object__) */
