@@ -12,29 +12,28 @@
 SpriteObject::SpriteObject() :
 spriteID(ID_COUNTER),
 actionRunning(false),
-progPtr(0),
+//progPtr(0),
 w(0),
 h(0),
 type(NORMAL_TYPE),
 RenderableObject()
 {
-    progPtr = Director::getInstance().getProgramPtr();
     ID_COUNTER++;
     cout << "SpriteObject::SpriteObject()" << endl;
 }
 
-SpriteObject::SpriteObject(Program *ptr) :
-spriteID(ID_COUNTER),
-actionRunning(false),
-progPtr(ptr),
-w(0),
-h(0),
-type(NORMAL_TYPE),
-RenderableObject()
-{
-    ID_COUNTER++;
-    cout << "SpriteObject::SpriteObject(Program*)" << endl;
-}
+//SpriteObject::SpriteObject(Program *ptr) :
+//spriteID(ID_COUNTER),
+//actionRunning(false),
+//progPtr(ptr),
+//w(0),
+//h(0),
+//type(NORMAL_TYPE),
+//RenderableObject()
+//{
+//    ID_COUNTER++;
+//    cout << "SpriteObject::SpriteObject(Program*)" << endl;
+//}
 
 SpriteObject::~SpriteObject(){
 	cout << "SpriteObject::Deleting...";

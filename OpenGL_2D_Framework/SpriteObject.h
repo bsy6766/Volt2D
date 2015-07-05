@@ -9,10 +9,10 @@
 #ifndef __OpenGL_2D_Framework__SpriteObject__
 #define __OpenGL_2D_Framework__SpriteObject__
 
-#include "Program.h"
 #include "RenderableObject.h"
 #include "ActionObject.h"
 #include "ActionSchedule.h"
+//#include "test.cpp"
 //#include "ActionDelay.h"
 //#include "ActionMoveTo.h"
 
@@ -32,8 +32,6 @@ protected:
     int w;
     int h;
     
-    Program *progPtr;
-    
     bool actionRunning;
     float z;    //each sprite can set 0~100.
     
@@ -42,7 +40,7 @@ protected:
     
 public:
     SpriteObject();	//not implemented
-    SpriteObject(Program *ptr);
+//    SpriteObject(Program *ptr);
     virtual ~SpriteObject();	//virtual!
     
     enum SpriteType{
