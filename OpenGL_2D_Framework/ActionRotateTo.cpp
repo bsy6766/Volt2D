@@ -47,6 +47,10 @@ void ActionRotateTo::initRotateTo(float angle, float duration){
     this->movedAngle = 0;
 }
 
+void ActionRotateTo::startAction(){
+    ActionObject::startAction();
+}
+
 void ActionRotateTo::setOriginalAngle(float angle){
     startAngle = angle * (-1);
     totalAngleToRotate = destinationAngle - startAngle;

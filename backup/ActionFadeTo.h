@@ -30,6 +30,7 @@ public:
     void setOriginalOpacity(float opacity);
     
     //virtuals
+    virtual void startAction();
     virtual void updateAction(double& remainedTime);
     virtual void instantUpdate();
     virtual void intervalUpdate(double& remainedTime);

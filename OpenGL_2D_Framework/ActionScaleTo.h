@@ -29,6 +29,7 @@ public:
     void setCurrentScale(glm::vec3 scale);
     
     //virtuals
+    virtual void startAction();
     virtual void updateAction(double& remainedTime);
     virtual void instantUpdate();
     virtual void intervalUpdate(double& remainedTime);

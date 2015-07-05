@@ -35,6 +35,10 @@ void ActionMoveTo::initMoveTo(glm::vec3 destination, double duration){
     this->actionID = ActionID::ACTION_MOVE_TO;
 }
 
+void ActionMoveTo::startAction(){
+    ActionObject::startAction();
+}
+
 void ActionMoveTo::instantUpdate(){
     movedPosition = totalDistance;
     alive = false;

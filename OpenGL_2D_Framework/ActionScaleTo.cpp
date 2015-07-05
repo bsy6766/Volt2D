@@ -37,6 +37,10 @@ void ActionScaleTo::initScaleTo(glm::vec3 scale, double duration){
     this->scaled = glm::vec3();
 }
 
+void ActionScaleTo::startAction(){
+    ActionObject::startAction();
+}
+
 void ActionScaleTo::setCurrentScale(glm::vec3 scale){
     this->srcScale = scale;
     this->totalScalingAmount = this->destScale - scale;

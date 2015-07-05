@@ -29,6 +29,7 @@ public:
     float getMovedAngle();
     
     //virtuals
+    virtual void startAction();
     virtual void updateAction(double& remainedTime);
     virtual void instantUpdate();
     virtual void intervalUpdate(double& remainedTime);

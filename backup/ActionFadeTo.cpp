@@ -45,6 +45,10 @@ void ActionFadeTo::initFadeTo(float opacity, double duration){
     this->fadedOpacity = 0;
 }
 
+void ActionFadeTo::startAction(){
+    ActionObject::startAction();
+}
+
 void ActionFadeTo::setOriginalOpacity(float opacity){
     this->originalOpacity = opacity;
     this->totalOpacityToFade = finalOpacity - originalOpacity;

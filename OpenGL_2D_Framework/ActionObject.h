@@ -94,7 +94,7 @@ public:
     //setters
     void setSpeed(double speed);
     
-    void startAction();
+    virtual void startAction();
     void stopAction();
     
     virtual void updateAction(double& remainedTime) = 0;
