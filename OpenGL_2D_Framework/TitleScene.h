@@ -14,8 +14,8 @@
 
 #include "Scene.h"
 #include "Sprite.h"
-#include "Text.h"
 #include "FontManager.h"
+#include "Text.h"
 #include "BattleScene.h"
 
 class TitleScene : public Scene{

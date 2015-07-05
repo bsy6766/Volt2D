@@ -29,49 +29,49 @@ void TitleScene::init(){
 //    bg->type = Sprite::BILLBOARD_TYPE;
     addSprite(bg);
     
-    //Move test
-    ActionDelay* delayAction4 = new ActionDelay();
-    delayAction4->initDelay(4);
-    ActionDelay* delayAction5 = new ActionDelay();
-    delayAction5->initDelay(4);
+    //scope in init()
+    ActionDelay actionDelayBtw;
+    actionDelayBtw.initDelay(1);
     
-    ActionMoveTo* moveToAction1 = new ActionMoveTo();
-    moveToAction1->initMoveTo(glm::vec3(0, -25, 0), 2);
+    ActionDelay preDelay;
+    preDelay.initDelay(3);
     
-    ActionMoveTo* moveToAction3 = new ActionMoveTo();
-    moveToAction3->initMoveTo(glm::vec3(0, 25, 0), 2);
+    ActionRotateTo rotateToAction;
+    rotateToAction.initRotateTo(0, 1);
     
-    ActionMoveBy* moveByAction1 = new ActionMoveBy();
-    moveByAction1->initMoveBy(glm::vec3(0, 0, 0), 2);
+    ActionRotateBy rotateByAction;
+    rotateByAction.initRotateBy(90, 1);
     
-    ActionMoveBy* moveByAction2 = new ActionMoveBy();
-    moveByAction2->initMoveBy(glm::vec3(0, 25, 0), 2);
+    ActionMoveTo moveToOriginAction;
+    moveToOriginAction.initMoveTo(glm::vec3(0, 0, 0), 1);
     
-//    bg->addActions({delayAction4, moveToAction3, delayAction5, moveByAction1}, 1);
+    ActionMoveBy moveByAction;
+    moveByAction.initMoveBy(glm::vec3(0, 25, 0), 1);
     
-    ActionRotateBy* rotateAction1 = new ActionRotateBy();
-    rotateAction1->initRotateBy(-45.0, 2);
+    ActionFadeTo fadeTo;
+    fadeTo.initFadeTo(255, 1);
     
-    ActionRotateBy* rotateAction2 = new ActionRotateBy();
-    rotateAction2->initRotateBy(90.0, 2);
+    ActionFadeBy fadeBy;
+    fadeBy.initFadeBy(-127, 1);
     
-    ActionRotateTo* rotateToAction1 = new ActionRotateTo();
-    rotateToAction1->initRotateTo(270, 2);
+    ActionScaleTo scaleTo;
+    scaleTo.initScaleTo(glm::vec3(1, 1, 1), 1);
     
-    ActionFadeTo* fadeOutAction1 = new ActionFadeTo();
-    fadeOutAction1->initFadeTo(127, 2);
-    
-    ActionFadeTo* fadeInAction1 = new ActionFadeTo();
-    fadeInAction1->initFadeTo(255, 2);
-    
-    ActionFadeBy* fadeByAction1 = new ActionFadeBy();
-    fadeByAction1->initFadeBy(-255, 5);
+    ActionScaleBy scaleBy;
+    scaleBy.initScaleBy(glm::vec3(1, 1, 0), 1);
     
 //    bg->setOpacity(0);
+//    bg->setScale(glm::vec3(2, 2, 2));
+//    bg->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy)}, 0);
+    bg->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy), new ActionDelay(actionDelayBtw), new ActionRotateBy(rotateByAction), new ActionDelay(actionDelayBtw), new ActionMoveBy(moveByAction), new ActionDelay(actionDelayBtw), new ActionFadeBy(fadeBy), new ActionDelay(actionDelayBtw), new ActionScaleTo(scaleTo), new ActionDelay(actionDelayBtw), new ActionRotateTo(rotateToAction), new ActionDelay(actionDelayBtw), new ActionMoveTo(moveToOriginAction), new ActionDelay(actionDelayBtw), new ActionFadeTo(fadeTo)}, 10);
     
 //    bg->addActions({delayAction4, fadeOutAction1, rotateAction1, delayAction5, fadeInAction1, rotateToAction1}, 1);
     
-    bg->addActions({delayAction4, moveToAction3, moveByAction1}, 2);
+//    bg->addActions({delayAction4, moveToAction3, moveByAction1}, 2);
+    
+//    bg->setAngle(1);
+//    bg->addActions({delayAction4, rotateToAction1}, 2);
+//    bg->addActions({rotateAction1, rotateAction2}, 20);
     
 
 //    ground = new Sprite();
@@ -124,8 +124,9 @@ void TitleScene::init(){
     helloWorldText = new Text();
     helloWorldText->setColor(glm::vec3(255, 255, 255));
     helloWorldText->setTextAlign(Text::TextAlign::ALIGN_LEFT);
-    helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.", "UhBee Kang-Ja.ttf");
+    helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "UhBee Kang-Ja.ttf");
     addText(helloWorldText);
+//    delete helloWorldText;
     
     glfwSetCursorPos(window, size.w/2, size.h/2);
     cout << "init mouse pos with = (" << size.w/2 << ", " << size.h/2 << ")" << endl;

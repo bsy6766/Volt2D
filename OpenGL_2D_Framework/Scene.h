@@ -13,8 +13,8 @@
 
 #include "CommonInclude.h"
 #include "SpriteManager.h"
-#include "TextManager.h"
 #include "Layer.h"
+#include "TextManager.h"
 
 #include <map>
 #include <glm/glm.hpp>
@@ -55,7 +55,8 @@ public:
     
     void addLayer(Layer* childLayer);
     void addSprite(SpriteObject* childSprite);
-    void addText(TextObject* childText);
+//    void addText(TextObject* childText);
+    void addText(Text* text);
 //    void addParticleSystem();
     
 };

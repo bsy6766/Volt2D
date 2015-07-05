@@ -7,6 +7,7 @@
 //
 
 #include "TextManager.h"
+#include "Text.h"
 
 TextManager::TextManager(){
     
@@ -16,7 +17,8 @@ TextManager::~TextManager(){
     
 }
 
-void TextManager::addText(TextObject *textObj){
+//void TextManager::addText(TextObject *textObj){
+void TextManager::addText(Text *textObj){
     if(textObj)
         textObjectList.push_back(textObj);
 }

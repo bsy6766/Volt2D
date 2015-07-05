@@ -11,13 +11,14 @@
 #define VOID_OFFSET(i) (GLvoid*)(i)
 
 Text::Text()
-:TextObject(),
+//:TextObject(),
+:RenderableObject(),
 dirty(false),
 loaded(false),
 align(ALIGN_RIGHT),
 fontColor(glm::vec3(255, 255, 255)) //RGB
 {
-    prog = Director::getInstance().getProgramPtr("Text");
+    this->progPtr = Director::getInstance().getProgramPtr("Text");
 //    prog = Director::getInstance().getProgramPtr();
 }
 
@@ -35,6 +36,7 @@ void Text::initText(std::string label, std::string fontName = "arial.tff"){
         this->fontName = fontName;
         text = label;
         computeVertexData();
+        loadVertexData();
     }
 }
 
@@ -70,7 +72,7 @@ void Text::computeVertexData(){
     //clear vertex data
     vertexData.clear();
     uvVertexData.clear();
-    textureObjectData.clear();
+//    textureObjectData.clear();
     indicesData.clear();
     
     Font* font = FontManager::getInstance().getFont(fontName);
@@ -219,6 +221,10 @@ void Text::computeVertexData(){
 //        indicesIndex++;
 //    }
     
+
+}
+
+void Text::loadVertexData(){
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
     
@@ -226,13 +232,13 @@ void Text::computeVertexData(){
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * vertexData.size(), &vertexData[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(prog->attrib("vert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(progPtr->attrib("vert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
     
     //generate texture uv buffer object for quad
     glGenBuffers(1, &uvbo);
     glBindBuffer(GL_ARRAY_BUFFER, uvbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * uvVertexData.size(), &uvVertexData[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(prog->attrib("uvVert"), 2, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(progPtr->attrib("uvVert"), 2, GL_FLOAT, GL_FALSE, 0, NULL);
     
     //generate indices buffer
     glGenBuffers(1, &ibo);
@@ -362,41 +368,41 @@ bool Text::hasEmptyText(){
 }
 
 void Text::render(){
-    glUseProgram(prog->getObject());
+    glUseProgram(progPtr->getObject());
     //render text
-    GLuint cameraUniformLocation = glGetUniformLocation(prog->getObject(), "cameraMat");
+    GLuint cameraUniformLocation = glGetUniformLocation(progPtr->getObject(), "cameraMat");
     glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
     glUniformMatrix4fv(cameraUniformLocation, 1, GL_FALSE, &cameraMat[0][0]);
     
-    GLint modelUniformLocation = glGetUniformLocation(prog->getObject(), "modelMat");
+    GLint modelUniformLocation = glGetUniformLocation(progPtr->getObject(), "modelMat");
     if(modelUniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + "modelMat");
     glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, &modelMat[0][0]);
     
-    GLint rotateUniformLocation = glGetUniformLocation(prog->getObject(), "rotateMat");
+    GLint rotateUniformLocation = glGetUniformLocation(progPtr->getObject(), "rotateMat");
     if(rotateUniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + "rotateMat");
     glUniformMatrix4fv(rotateUniformLocation, 1, GL_FALSE, &rotateMat[0][0]);
     
-    GLint translateUniformLocation = glGetUniformLocation(prog->getObject(), "translateMat");
+    GLint translateUniformLocation = glGetUniformLocation(progPtr->getObject(), "translateMat");
     if(translateUniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + "translateMat");
     glUniformMatrix4fv(translateUniformLocation, 1, GL_FALSE, &translateMat[0][0]);
     
-    GLint scaleUniformLocation = glGetUniformLocation(prog->getObject(), "scaleMat");
+    GLint scaleUniformLocation = glGetUniformLocation(progPtr->getObject(), "scaleMat");
     if(scaleUniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + "scaleMat");
     glUniformMatrix4fv(scaleUniformLocation, 1, GL_FALSE, &scaleMat[0][0]);
     
-    GLint fontColorUniformLocation = glGetUniformLocation(prog->getObject(), "fontColor");
+    GLint fontColorUniformLocation = glGetUniformLocation(progPtr->getObject(), "fontColor");
     if(fontColorUniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + "fontColor");
     glUniform3fv(fontColorUniformLocation, 1, &fontColor[0]);
     
     glBindVertexArray(vao);
     
-    glEnableVertexAttribArray(prog->attrib("vert"));
-    glEnableVertexAttribArray(prog->attrib("uvVert"));
+    glEnableVertexAttribArray(progPtr->attrib("vert"));
+    glEnableVertexAttribArray(progPtr->attrib("uvVert"));
     
     glActiveTexture(GL_TEXTURE0);
     
@@ -417,7 +423,17 @@ void Text::render(){
             font->getGlyphDataFromChar(c, gData);
             GLuint texObj = gData.texObj;
             glBindTexture(GL_TEXTURE_2D, texObj);
-            glDrawRangeElements(GL_TRIANGLES, index * 4, index * 4 + 4, 6, GL_UNSIGNED_SHORT, VOID_OFFSET(index * 6 * sizeof(GLushort)));
+            glDrawRangeElements(
+                                GL_TRIANGLES/*Rendering mode. draw 2 triangles for 1 quad*/,
+                                //index * 0/*start*/,
+                                //index * 0/*end*/,
+                                //Not sure what start and end do. Gonna try static number
+                                0/*start*/,
+                                6/*end*/,
+                                6/*Count. Number of elements to be rendered. Single quad contains 6 vertexes.*/,
+                                GL_UNSIGNED_SHORT/*indices type*/,
+                                VOID_OFFSET(index * 6 * sizeof(GLushort))/*offset of each char(6 vertexes)*/
+                                );
             index++;
         }
     }

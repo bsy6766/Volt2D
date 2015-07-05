@@ -10,17 +10,21 @@
 #define __OpenGL_2D_Framework__TextManager__
 
 #include <list>
-#include "TextObject.h"
+//#include "TextObject.h"
+
+class Text;
 
 class TextManager{
 private:
-    std::list<TextObject*> textObjectList;
+//    std::list<TextObject*> textObjectList;
+    std::list<Text*> textObjectList;
 public:
     TextManager();
     ~TextManager();
     
     void render();
-    void addText(TextObject* textObj);
+//    void addText(TextObject* textObj);
+    void addText(Text* text);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__TextManager__) */

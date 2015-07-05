@@ -9,11 +9,12 @@
 #ifndef __OpenGL_2D_Framework__Text__
 #define __OpenGL_2D_Framework__Text__
 
-#include "TextObject.h"
+//#include "TextObject.h"
 #include "FontManager.h"
+#include "RenderableObject.h"
 #include <vector>
 
-class Text : public TextObject{
+class Text : public RenderableObject{
 protected:
 private:
     std::string text;
@@ -36,9 +37,12 @@ public:
     
     std::string getText();
     void setText(std::string);
-    void computeVertexData();
     bool hasEmptyText();
     void setColor(glm::vec3 textColor);
+    
+    //virtual
+    virtual void computeVertexData();
+    virtual void loadVertexData();
     virtual void render();
     
     enum TextAlign{

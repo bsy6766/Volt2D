@@ -62,8 +62,9 @@ void Scene::addSprite(SpriteObject* childSprite){
     spriteManager->addSprite(childSprite);
 }
 
-void Scene::addText(TextObject* childText){
-    textManager->addText(childText);
+//void Scene::addText(TextObject* childText){
+void Scene::addText(Text* text){
+    textManager->addText(text);
 }
 
 void Scene::addLayer(Layer *childLayer){
@@ -73,6 +74,7 @@ void Scene::addLayer(Layer *childLayer){
 
 void Scene::exit(){
     delete spriteManager;
+    delete textManager;
     
     for(auto it : layerMap){
         delete it.second;
