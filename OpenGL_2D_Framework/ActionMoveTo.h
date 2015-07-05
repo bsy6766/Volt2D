@@ -9,6 +9,7 @@
 #ifndef __OpenGL_2D_Framework__ActionMoveTo__
 #define __OpenGL_2D_Framework__ActionMoveTo__
 
+#include "SpriteObject.h"
 #include "ActionObject.h"
 
 class ActionMoveTo :  public ActionObject{

@@ -37,6 +37,9 @@ void ActionMoveTo::initMoveTo(glm::vec3 destination, double duration){
 
 void ActionMoveTo::startAction(){
     ActionObject::startAction();
+    //initialize position of sprite when action starts
+    originalPosition = this->owner->getPosition();
+    totalDistance = destination - originalPosition;
 }
 
 void ActionMoveTo::instantUpdate(){
@@ -49,7 +52,9 @@ void ActionMoveTo::intervalUpdate(double& remainedTime){
     float currentTime = (float)(this->totalElapsedTime + remainedTime);
     
     if(currentTime >= duration){
-        movedPosition = destination;
+//        movedPosition = destination;
+        //instead of updating on ActionSchedule class, do it here
+        this->owner->setPosition(destination);
         alive = false;
         remainedTime = currentTime - duration;
         return;
@@ -60,11 +65,13 @@ void ActionMoveTo::intervalUpdate(double& remainedTime){
         
         //if total distance is 0, there's nothing to do
         if(totalDistance.x == 0 && totalDistance.y == 0 && totalDistance.z == 0){
-            movedPosition = destination;
+//            movedPosition = destination;
+            this->owner->setPosition(destination);
             return;
         }
         
-        movedPosition = totalDistance * (currentTime / duration) + originalPosition;
+        this->owner->setPosition(totalDistance * (currentTime / duration) + originalPosition);
+//        movedPosition = totalDistance * (currentTime / duration) + originalPosition;
     }
 }
 
