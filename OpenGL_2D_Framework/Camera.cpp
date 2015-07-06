@@ -11,7 +11,7 @@
 
 Camera::Camera() :
     position(0, 0, -77.25),
-    verticalAngle(20),
+    verticalAngle(0),
     horizontalAngle(0),
     fovy(50.0f),
     aspect(1280.0f/720.0f),
