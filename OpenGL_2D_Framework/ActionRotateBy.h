@@ -9,6 +9,7 @@
 #ifndef __OpenGL_2D_Framework__ActionRotateBy__
 #define __OpenGL_2D_Framework__ActionRotateBy__
 
+#include "SpriteObject.h"
 #include "ActionObject.h"
 
 class ActionRotateBy :  public ActionObject{
@@ -25,7 +26,7 @@ public:
     void initRotateBy(float angle, float duration);
     
     //set & get
-    float getMovedAngle();
+//    float getMovedAngle();
     
     //virtuals
     virtual void updateAction(double& remainedTime);

@@ -9,7 +9,7 @@
 #ifndef __OpenGL_2D_Framework__ActionRotateTo__
 #define __OpenGL_2D_Framework__ActionRotateTo__
 
-//#include "SpriteObject.h"
+#include "SpriteObject.h"
 #include "ActionObject.h"
 
 class ActionRotateTo :  public ActionObject{
@@ -26,8 +26,8 @@ public:
     void initRotateTo(float angle, float duration);
     
     //set & get
-    void setOriginalAngle(float angle);
-    float getMovedAngle();
+//    void setOriginalAngle(float angle);
+//    float getMovedAngle();
     
     //virtuals
     virtual void startAction();

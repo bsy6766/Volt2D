@@ -33,9 +33,9 @@ void ActionMoveBy::initMoveBy(glm::vec3 distance, double duration){
     this->actionID = ActionID::ACTION_MOVE_BY;
 }
 
-glm::vec3 ActionMoveBy::getMovedDistance(){
-    return this->movedDistance;
-}
+//glm::vec3 ActionMoveBy::getMovedDistance(){
+//    return this->movedDistance;
+//}
 
 void ActionMoveBy::updateAction(double& remainedTime){
     if(!alive)
@@ -51,6 +51,7 @@ void ActionMoveBy::updateAction(double& remainedTime){
 
 void ActionMoveBy::instantUpdate(){
     movedDistance = distance;
+    this->owner->addPosition(movedDistance);
     alive = false;
 }
 
@@ -62,7 +63,6 @@ void ActionMoveBy::intervalUpdate(double& remainedTime){
         movedDistance = distance - previousDistance;
         alive = false;
         remainedTime = currentTime - duration;
-        return;
     }
     else{
         //consume all remained time
@@ -71,13 +71,14 @@ void ActionMoveBy::intervalUpdate(double& remainedTime){
         if(distance.x == 0 && distance.y == 0 && distance.z == 0){
             movedDistance = distance;
             previousDistance = distance;
-            return;
         }
-        
-        glm::vec3 diff = (distance * (currentTime / duration)) - previousDistance;
-        movedDistance = diff;
-        previousDistance += diff;
+        else{
+            glm::vec3 diff = (distance * (currentTime / duration)) - previousDistance;
+            movedDistance = diff;
+            previousDistance += diff;
+        }
     }
+    this->owner->addPosition(movedDistance);
 }
 
 void ActionMoveBy::revive(){

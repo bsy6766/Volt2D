@@ -9,6 +9,7 @@
 #ifndef __OpenGL_2D_Framework__ActionMoveBy__
 #define __OpenGL_2D_Framework__ActionMoveBy__
 
+#include "SpriteObject.h"
 #include "ActionObject.h"
 
 class ActionMoveBy : public ActionObject{
@@ -26,7 +27,7 @@ public:
     void initMoveBy(glm::vec3 distance, double duration);
     
     //set & get
-    glm::vec3 getMovedDistance();
+//    glm::vec3 getMovedDistance();
     
     //virtuals
     virtual void updateAction(double& remainedTime);

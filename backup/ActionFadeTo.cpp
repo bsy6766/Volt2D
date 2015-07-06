@@ -47,19 +47,22 @@ void ActionFadeTo::initFadeTo(float opacity, double duration){
 
 void ActionFadeTo::startAction(){
     ActionObject::startAction();
-}
-
-void ActionFadeTo::setOriginalOpacity(float opacity){
-    this->originalOpacity = opacity;
+    this->originalOpacity = this->owner->getOpacity();
     this->totalOpacityToFade = finalOpacity - originalOpacity;
 }
 
-float ActionFadeTo::getFadedOpacity(){
-    return fadedOpacity;
-}
+//void ActionFadeTo::setOriginalOpacity(float opacity){
+//    this->originalOpacity = opacity;
+//    this->totalOpacityToFade = finalOpacity - originalOpacity;
+//}
+//
+//float ActionFadeTo::getFadedOpacity(){
+//    return fadedOpacity;
+//}
 
 void ActionFadeTo::instantUpdate(){
     fadedOpacity = totalOpacityToFade;
+    this->owner->setOpacity(fadedOpacity);
     alive = false;
 }
 
@@ -72,17 +75,17 @@ void ActionFadeTo::intervalUpdate(double& remainedTime){
         fadedOpacity = totalOpacityToFade + originalOpacity;
         alive = false;
         remainedTime = currentTime - duration;
-        return;
     }
     else{
         remainedTime = 0;
         if(totalOpacityToFade == 0){
             fadedOpacity = totalOpacityToFade;
-            return;
         }
-        
-        fadedOpacity = totalOpacityToFade * (currentTime / duration) + originalOpacity;
+        else{
+            fadedOpacity = totalOpacityToFade * (currentTime / duration) + originalOpacity;
+        }
     }
+    this->owner->setOpacity(fadedOpacity);
 }
 
 void ActionFadeTo::updateAction(double& remainedTime){

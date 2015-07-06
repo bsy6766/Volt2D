@@ -9,6 +9,7 @@
 #ifndef __OpenGL_2D_Framework__ActionFadeTo__
 #define __OpenGL_2D_Framework__ActionFadeTo__
 
+#include "SpriteObject.h"
 #include "ActionObject.h"
 
 class ActionFadeTo : public ActionObject{
@@ -26,8 +27,8 @@ public:
     void initFadeTo(float opacity, double duration);
     
     //get & set
-    float getFadedOpacity();
-    void setOriginalOpacity(float opacity);
+//    float getFadedOpacity();
+//    void setOriginalOpacity(float opacity);
     
     //virtuals
     virtual void startAction();

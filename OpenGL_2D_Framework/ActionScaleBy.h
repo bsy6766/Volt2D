@@ -9,8 +9,8 @@
 #ifndef __OpenGL_2D_Framework__ActionScaleBy__
 #define __OpenGL_2D_Framework__ActionScaleBy__
 
+#include "SpriteObject.h"
 #include "ActionObject.h"
-#include "CommonInclude.h"
 
 class ActionScaleBy : public ActionObject{
 private:
@@ -26,7 +26,7 @@ public:
     //scale 0.0 ~ 1.0
     void initScaleBy(glm::vec3 scale, double duration);
     
-    glm::vec3 getScaledScale();
+//    glm::vec3 getScaledScale();
     
     //virtuals
     virtual void updateAction(double& remainedTime);

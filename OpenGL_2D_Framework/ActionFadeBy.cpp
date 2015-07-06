@@ -40,6 +40,7 @@ float ActionFadeBy::getFadedOpacity(){
 void ActionFadeBy::instantUpdate(){
     fadedOpacity = opacityToFade;
     alive = false;
+    this->owner->addOpacity(fadedOpacity);
 }
 
 void ActionFadeBy::intervalUpdate(double& remainedTime){
@@ -51,20 +52,20 @@ void ActionFadeBy::intervalUpdate(double& remainedTime){
         fadedOpacity = opacityToFade - previousOpacity;
         alive = false;
         remainedTime = currentTime - duration;
-        return;
     }
     else{
         remainedTime = 0;
         if(opacityToFade == 0){
             fadedOpacity = 0;
             previousOpacity = 0;
-            return;
         }
-        
-        float diff = (opacityToFade * (currentTime / duration)) - previousOpacity;
-        fadedOpacity = diff;
-        previousOpacity += diff;
+        else{
+            float diff = (opacityToFade * (currentTime / duration)) - previousOpacity;
+            fadedOpacity = diff;
+            previousOpacity += diff;
+        }
     }
+    this->owner->addOpacity(fadedOpacity);
 }
 
 void ActionFadeBy::updateAction(double& remainedTime){

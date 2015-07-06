@@ -50,6 +50,7 @@ void ActionRotateBy::updateAction(double& remainedTime){
 
 void ActionRotateBy::instantUpdate(){
     movedAngle = rotatingAngle;
+    this->owner->addAngle(rotatingAngle);
     alive = false;
 }
 
@@ -61,24 +62,25 @@ void ActionRotateBy::intervalUpdate(double& remainedTime){
         movedAngle = rotatingAngle - previousAngle;
         alive = false;
         remainedTime = currentTime - duration;
-        return;
     }
     else{
         remainedTime = 0;
         if(rotatingAngle == 0){
             movedAngle = rotatingAngle;
             previousAngle = rotatingAngle;
-            return;
         }
-        float diff = (rotatingAngle * (currentTime / duration)) - previousAngle;
-        movedAngle = diff;
-        previousAngle += diff;
+        else{
+            float diff = (rotatingAngle * (currentTime / duration)) - previousAngle;
+            movedAngle = diff;
+            previousAngle += diff;
+        }
     }
+    this->owner->addAngle(movedAngle);
 }
 
-float ActionRotateBy::getMovedAngle(){
-    return movedAngle;
-}
+//float ActionRotateBy::getMovedAngle(){
+//    return movedAngle;
+//}
 
 void ActionRotateBy::revive(){
     //revive. original and previous will be updated

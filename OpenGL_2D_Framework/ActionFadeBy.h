@@ -9,6 +9,7 @@
 #ifndef __OpenGL_2D_Framework__ActionFadeBy__
 #define __OpenGL_2D_Framework__ActionFadeBy__
 
+#include "SpriteObject.h"
 #include "ActionObject.h"
 
 class ActionFadeBy : public ActionObject{

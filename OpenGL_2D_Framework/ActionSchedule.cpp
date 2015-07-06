@@ -91,7 +91,7 @@ void ActionSchedule::updateSchedule(){
             continue;
         }
 //        cout << "prcoessing ID = " << (*action_it)->objID << endl;
-        ActionID actionId = (*action_it)->getActionID();
+//        ActionID actionId = (*action_it)->getActionID();
 //        ActionType type = (*action_it)->getType();
         double elapsedTime = Timer::getInstance().getElapsedTime();
         double t = (*action_it)->setCurrentTime(elapsedTime);
@@ -102,6 +102,26 @@ void ActionSchedule::updateSchedule(){
         
         bool removeAction = false;
         
+        //now no need to check aciton id
+        if(!(*action_it)->isRunning()){
+            (*action_it)->startAction();
+        }
+        //update
+        (*action_it)->updateAction(this->remainedTime);
+        
+        //if action is dead after update
+        if(!(*action_it)->isAlive()){
+            //and don't need to be repeated, delete from list
+            if(instantSchedule){
+                removeAction = true;
+            }
+            //else, leave action.
+        }
+        else{
+            finished = false;
+        }
+        
+        /*
         switch (actionId) {
             case ActionID::ACTION_DELAY:
             {
@@ -157,7 +177,7 @@ void ActionSchedule::updateSchedule(){
             
                 moveByPtr->updateAction(this->remainedTime);
                 
-                moveByPtr->getOwner()->addPosition(moveByPtr->getMovedDistance());
+//                moveByPtr->getOwner()->addPosition(moveByPtr->getMovedDistance());
                 if(!moveByPtr->isAlive()){
                     if(instantSchedule) removeAction = true;
                 }
@@ -171,11 +191,11 @@ void ActionSchedule::updateSchedule(){
                 ActionRotateTo* rotateToPtr = static_cast<ActionRotateTo*>(*action_it);
                 if(!rotateToPtr->isRunning()){
                     rotateToPtr->startAction();
-                    rotateToPtr->setOriginalAngle(rotateToPtr->getOwner()->getAngle());
+//                    rotateToPtr->setOriginalAngle(rotateToPtr->getOwner()->getAngle());
                 }
                 
                 rotateToPtr->updateAction(this->remainedTime);
-                rotateToPtr->getOwner()->setAngle(rotateToPtr->getMovedAngle());
+//                rotateToPtr->getOwner()->setAngle(rotateToPtr->getMovedAngle());
                 
                 if(!rotateToPtr->isAlive()){
                     if(instantSchedule) removeAction = true;
@@ -193,7 +213,7 @@ void ActionSchedule::updateSchedule(){
                 }
                 
                 rotateByPtr->updateAction(this->remainedTime);
-                rotateByPtr->getOwner()->addAngle(rotateByPtr->getMovedAngle());
+//                rotateByPtr->getOwner()->addAngle(rotateByPtr->getMovedAngle());
                 
                 if(!rotateByPtr->isAlive()){
                     if(instantSchedule){
@@ -211,11 +231,11 @@ void ActionSchedule::updateSchedule(){
                 ActionFadeTo* fadeToPtr = static_cast<ActionFadeTo*>(*action_it);
                 if(!fadeToPtr->isRunning()){
                     fadeToPtr->startAction();
-                    fadeToPtr->setOriginalOpacity(fadeToPtr->getOwner()->getOpacity());
+//                    fadeToPtr->setOriginalOpacity(fadeToPtr->getOwner()->getOpacity());
                 }
                 
                 fadeToPtr->updateAction(this->remainedTime);
-                fadeToPtr->getOwner()->setOpacity(fadeToPtr->getFadedOpacity());
+//                fadeToPtr->getOwner()->setOpacity(fadeToPtr->getFadedOpacity());
                 
                 if(!fadeToPtr->isAlive()){
                     if(instantSchedule){
@@ -254,11 +274,11 @@ void ActionSchedule::updateSchedule(){
                 ActionScaleTo* scaleToPtr = static_cast<ActionScaleTo*>(*action_it);
                 if(!scaleToPtr->isRunning()){
                     scaleToPtr->startAction();
-                    scaleToPtr->setCurrentScale(scaleToPtr->getOwner()->getScale());
+//                    scaleToPtr->setCurrentScale(scaleToPtr->getOwner()->getScale());
                 }
                 
                 scaleToPtr->updateAction(this->remainedTime);
-                scaleToPtr->getOwner()->setScale(scaleToPtr->getScaledScale());
+//                scaleToPtr->getOwner()->setScale(scaleToPtr->getScaledScale());
                 
                 if(!scaleToPtr->isAlive()){
                     if(instantSchedule){
@@ -279,7 +299,7 @@ void ActionSchedule::updateSchedule(){
                 }
                 
                 scaleByPtr->updateAction(this->remainedTime);
-                scaleByPtr->getOwner()->addScale(scaleByPtr->getScaledScale());
+//                scaleByPtr->getOwner()->addScale(scaleByPtr->getScaledScale());
                 
                 if(!scaleByPtr->isAlive()){
                     if(instantSchedule){
@@ -307,7 +327,7 @@ void ActionSchedule::updateSchedule(){
             default:
                 break;
         }
-        
+        */
         if(removeAction){
             delete *action_it;
             action_it = actionList.erase(action_it);
