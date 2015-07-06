@@ -9,7 +9,7 @@
 #ifndef __OpenGL_2D_Framework__ProgressBar__
 #define __OpenGL_2D_Framework__ProgressBar__
 
-#include <iostream>
+#include "CommonInclude.h"
 #include "ProgressObject.h"
 
 class ProgressBar: public ProgressObject{
@@ -20,8 +20,9 @@ public:
     ~ProgressBar();
     
     //virtual
-    void update();
-    void render();
+    virtual void computeVertexData();
+    virtual void loadVertex();
+    virtual void render();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ProgressBar__) */

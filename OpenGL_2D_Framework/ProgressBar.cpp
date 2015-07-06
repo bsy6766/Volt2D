@@ -8,9 +8,6 @@
 
 #include "ProgressBar.h"
 
-using std::cout;
-using std::endl;
-
 ProgressBar::ProgressBar(){
     cout << "Creating Progress Bar" << endl;
 }
@@ -19,13 +16,12 @@ ProgressBar::~ProgressBar(){
     cout << "Deleting Progress Bar" << endl;
 }
 
-void ProgressBar::update(){
-//    double elapsedTime = Timer::getInstance().getElapsedTime();
+void ProgressBar::computeVertexData(){
     
-    //if progress bar is still alive
-    if(totalElapsedTime < duration){
-        //update
-    }
+}
+
+void ProgressBar::loadVertex(){
+    
 }
 
 void ProgressBar::render(){

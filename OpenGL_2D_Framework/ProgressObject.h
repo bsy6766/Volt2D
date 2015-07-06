@@ -9,45 +9,33 @@
 #ifndef __OpenGL_2D_Framework__ProgressObject__
 #define __OpenGL_2D_Framework__ProgressObject__
 
-#include <iostream>
+#include "CommonInclude.h"
 #include "Texture.h"
 #include "Timer.h"
+#include "RenderableObject.h"
 
-const float PRECENTAGE_MAX = 100.0;
-const float PERCENTAGE_MIN = 0.0;
-
-/*
-    Base class to each type of progress objects
-    BAR: Typical bar type 
-    RADIAN: Clock-like type
-    BLOCK: Stacking block type
+/**
+ *  Ratio and Incrementation
+ *  All progress type objects(bar, radian) has ratio for
+ *  increments and total capacity.
+ *
+ *  Progress Sprite will be divided in to max 100 steps.
  */
 
-class ProgressObject{
+class ProgressObject : public RenderableObject{
 protected:
-    double duration;
-    double totalElapsedTime;
-    
-    //0.0 ~ 100.0
-    float percentage;
-    
-    enum ProgressType{
-        BAR = 0,
-        RADIAL,
-        BLOCK
-    };
-    
-    bool reverse;
+    int totalSteps; // total steps of progress bar. Can't exceed 100
+    int currentStep;
     
 private:
 public:
     ProgressObject();
     virtual ~ProgressObject();
     
-    bool isReverse();
-    
-    virtual void update() = 0;
-    virtual void render() = 0;
+    //get current percentage of progress
+    int getPercentage();
+    //reset progress bar to initial state
+    void reset();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ProgressObject__) */
