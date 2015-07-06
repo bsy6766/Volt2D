@@ -408,7 +408,10 @@ void Director::updateKeyInput(){
 }
 
 Program* Director::getProgramPtr(std::string programName){
-    return programs.at(programName);
+    if(programs.find(programName) != programs.end())
+        return programs.at(programName);
+    else
+        return 0;
 }
 
 Camera* Director::getCameraPtr(){
