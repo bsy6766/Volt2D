@@ -9,6 +9,7 @@
 #ifndef __OpenGL_2D_Framework__ActionRotateTo__
 #define __OpenGL_2D_Framework__ActionRotateTo__
 
+//#include "SpriteObject.h"
 #include "ActionObject.h"
 
 class ActionRotateTo :  public ActionObject{

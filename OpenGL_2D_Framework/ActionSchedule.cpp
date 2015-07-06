@@ -133,12 +133,12 @@ void ActionSchedule::updateSchedule(){
                 
                 if(!moveToPtr->isRunning()){
                     moveToPtr->startAction();
-                    moveToPtr->setCurrentPos(moveToPtr->getOwner()->getPosition());
+//                    moveToPtr->setCurrentPos(moveToPtr->getOwner()->getPosition());
                 }
             
                 moveToPtr->updateAction(this->remainedTime);
                 
-                moveToPtr->getOwner()->setPosition(moveToPtr->getMovedPosition());
+//                moveToPtr->getOwner()->setPosition(moveToPtr->getMovedPosition());
                 if(!moveToPtr->isAlive()){
                     if(instantSchedule) removeAction = true;
                 }

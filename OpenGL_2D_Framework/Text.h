@@ -29,6 +29,10 @@ private:
     void splitByNewLine();
     glm::vec3 fontColor;    //RGB
     
+    //vertex trnslate matrix buffer object
+//    GLuint vtbo;
+    std::vector<glm::mat4> translationData;
+    
 public:
     Text();
     ~Text();

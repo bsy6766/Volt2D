@@ -23,11 +23,13 @@ fontColor(glm::vec3(255, 255, 255)) //RGB
 }
 
 Text::~Text(){
-    
-    glDeleteVertexArrays(1, &vao);
-    glDeleteBuffers(1, &vbo);
-    glDeleteBuffers(1, &uvbo);
-    glDeleteBuffers(1, &ibo);
+        //RenderableObject deletes buffer on destructor
+//    glDeleteVertexArrays(1, &vao);
+//    glDeleteBuffers(1, &vbo);
+//    glDeleteBuffers(1, &uvbo);
+//    glDeleteBuffers(1, &ibo);
+    translationData.clear();
+//    glDeleteBuffers(1, &vtbo);
 }
 
 void Text::initText(std::string label, std::string fontName = "arial.tff"){
@@ -97,7 +99,9 @@ void Text::computeVertexData(){
     
     unsigned short indicesIndex = 0;
     int index = 0;
+    //iterate text splitted by new line char (\n)
     for(auto it : splittedText){
+        //get the origin of the each line
         glm::vec2 origin = originList.at(index);
         index++;
         for(unsigned int i =0; i<it.length(); i++){
@@ -118,14 +122,27 @@ void Text::computeVertexData(){
             int height = (int)(gData.metrics.height >> 6);
             int width = (int)(gData.metrics.width >> 6);
             
-            glm::vec2 p1 = glm::vec2(origin.x, origin.y - (height - bearingY)); //left bottom
-            glm::vec2 p2 = glm::vec2(origin.x + width, origin.y + bearingY);
+//            glm::vec2 p1 = glm::vec2(origin.x, origin.y - (height - bearingY)); //left bottom
+//            glm::vec2 p2 = glm::vec2(origin.x + width, origin.y + bearingY);
+            //compute vertex quad at origin.
+            glm::vec2 p1 = glm::vec2((-1) * width / 2, (-1) * (height - bearingY)); //left bottom
+            glm::vec2 p2 = glm::vec2(width / 2, bearingY);
+            
+            p1 /= 10;
+            p2 /= 10;
 //            cout << "char = " << c << endl;
 //            cout << "p1 = (" << p1.x << ", " << p1.y << ", 0)" << endl;
 //            cout << "p2 = (" << p2.x << ", " << p2.y << ", 0)" << endl;
             
-            p1 /= 10;
-            p2 /= 10;
+            //get point where each char has to move
+            glm::vec3 fPos = glm::vec3(origin.x + width/2, origin.y, 0);
+            glm::vec3 distance = (fPos - this->position);
+            distance.x /= 10;
+            distance.y /= 10;
+            glm::mat4 transMatToFPos = glm::translate(glm::mat4(), distance);
+            //compute translate matrix to fPos from origin
+            translationData.push_back(transMatToFPos);
+
             
             vertexData.push_back(glm::vec3(p1.x, p1.y, 0)); //Left bottom
             vertexData.push_back(glm::vec3(p1.x, p2.y, 0)); //Left top
@@ -245,7 +262,13 @@ void Text::loadVertexData(){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), &indicesData[0], GL_STATIC_DRAW);
     
-    glBindVertexArray(0);
+    //generate translation buffer
+//    glGenBuffers(1, &vtbo);
+//    glBindBuffer(GL_ARRAY_BUFFER, vtbo);
+//    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * translationData.size(), &translationData[0], GL_STATIC_DRAW);
+//    glVertexAttribPointer(progPtr->attrib("charTransVert"), 2, GL_FLOAT, GL_FALSE, 0, NULL);
+//    //
+//    glBindVertexArray(0);
     
     loaded = true;
 }
@@ -290,13 +313,17 @@ void Text::getMaxValues(Font* font, int &width, int &height, std::vector<glm::ve
     int totalHeight = 0;
     int maxWidth = 0;
     int bearingY = 0;
+    int maxBotY = 0;
     
     std::vector<int> offsetY;
     std::vector<int> widthList;
     
+    //iterate text that is separated by new line
     for(auto it : splittedText){
+        //reset width and height
         w = 0;
         h = 0;
+        //iterate each line by char
         for(unsigned int i = 0; i < it.length(); i++){
             const char* cStr = it.c_str();
             char c = cStr[i];
@@ -306,19 +333,27 @@ void Text::getMaxValues(Font* font, int &width, int &height, std::vector<glm::ve
             gData.valid = false;
             font->getGlyphDataFromChar(c, gData);
             
-            w += (gData.metrics.width >> 6);
+            //sum up all char's width
+            w += (gData.metrics.horiAdvance >> 6);
             
             int newHeight = (int)(gData.metrics.height >> 6);
+            //store highest height among the chars.
             if(newHeight >= h)
                 h = newHeight;
             
             int newBearingY = (int)(gData.metrics.horiBearingY >> 6);
+            //store highest bearingY among the chars.
+            int botY = newHeight - newBearingY;
+            if(botY > maxBotY)
+                maxBotY = botY;
+            
             if(newBearingY >= bearingY)
                 bearingY = newBearingY;
             
-            if(w >= maxWidth)
-                maxWidth = w;
         }
+        //check if this line has max width
+        if(w >= maxWidth)
+            maxWidth = w;
         
         //sum total hiehgt
         totalHeight += h;
@@ -331,27 +366,35 @@ void Text::getMaxValues(Font* font, int &width, int &height, std::vector<glm::ve
         
         //save offsets
         offsetY.push_back(bearingY);
-        offsetY.push_back(h - bearingY);
+//        offsetY.push_back(h - bearingY);
+        offsetY.push_back(maxBotY);
         
         widthList.push_back(w);
     }
 //    
 //    int offset = 0;
 //    int index = 0;
+    int lineNumber = (int)originList.size();
+    int lineSpace = font->getLineSpace();
+
+    totalHeight = ((lineNumber - 1) * lineSpace) + offsetY.at(0) + offsetY.at(offsetY.size() - 1);
     int baseY = totalHeight / 2;
     
     int newY = 0 - offsetY.at(0) + baseY;
-    int lineSpace = font->getLineSpace();
 
-    for(unsigned int i = 0; i<originList.size(); i++){
+//    for(unsigned int i = 0; i<originList.size(); i++){
+    int originIndex = 0;
+    for (unsigned int i = 0; i < offsetY.size(); i+=2){
         if(align == ALIGN_RIGHT){
-            originList.at(i).x = ((-1) * (maxWidth / 2)) + (maxWidth - widthList.at(i));
+            originList.at(originIndex).x = ((-1) * (maxWidth / 2)) + (maxWidth - widthList.at(i));
         }
         else if(align == ALIGN_LEFT){
-            originList.at(i).x = maxWidth / 2 * (-1);
+            originList.at(originIndex).x = maxWidth / 2 * (-1);
         }
-        originList.at(i).y = newY;
-        newY -= lineSpace;
+        originList.at(originIndex).y = newY;
+//        newY -= lineSpace;
+        newY -= (offsetY.at(i) + offsetY.at(i + 1));
+        originIndex++;
     }
     
 //    for(auto it = offsetY.begin(); it != offsetY.end(); it++){
@@ -403,6 +446,8 @@ void Text::render(){
     
     glEnableVertexAttribArray(progPtr->attrib("vert"));
     glEnableVertexAttribArray(progPtr->attrib("uvVert"));
+//    glEnableVertexAttribArray(progPtr->attrib("charTransVert"));
+//    glEnableVertexAttribArray(2);
     
     glActiveTexture(GL_TEXTURE0);
     
@@ -410,6 +455,13 @@ void Text::render(){
     unsigned int index = 0;
     for(auto it : splittedText){
         for(unsigned int i = 0; i<it.length(); i++){
+            //send translate matrix for each char
+            GLint charTransMatUniformLocation = glGetUniformLocation(progPtr->getObject(), "charTransMat");
+            if(scaleUniformLocation == -1)
+                throw std::runtime_error( std::string("Program uniform not found: " ) + "charTransMat");
+            glUniformMatrix4fv(charTransMatUniformLocation, 1, GL_FALSE, &translationData.at(index)[0][0]);
+            
+            //get char and check validation.
             const char* cStr = it.c_str();
             char c = cStr[i];
             int cInt = (int)c;

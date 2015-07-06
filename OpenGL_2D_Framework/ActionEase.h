@@ -19,7 +19,7 @@ protected:
     //determines the rate of ease
     float rate;
 public:
-    virtual float update(float elapsedTime);
+//    virtual float update(float elapsedTime);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionEase__) */

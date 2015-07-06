@@ -24,6 +24,7 @@ void main(){
         finalPosition = vec4(vert, 1.0f);
     }
     mat4 objectMat = modelMat * translateMat * rotateMat * scaleMat;
+//    mat4 objectMat = modelMat * rotateMat * translateMat * scaleMat;
     gl_Position = cameraMat * objectMat * finalPosition;
     fragTexCoord = uvVert;
 }
