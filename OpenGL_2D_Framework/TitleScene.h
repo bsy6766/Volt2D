@@ -22,6 +22,7 @@ class TitleScene : public Scene{
 protected:
 private:
     Sprite* bg;
+    Sprite* creeper;
     Sprite* ground;
     Text* helloWorldText;
     

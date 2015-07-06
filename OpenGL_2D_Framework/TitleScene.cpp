@@ -24,10 +24,15 @@ void TitleScene::init(){
     WinSize size = Director::getInstance().getWindowSize();
 
     bg = new Sprite();
-    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/boss_creeper.png");
-    bg->setZ_Depth(2);
-//    bg->type = Sprite::BILLBOARD_TYPE;
+    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/bg_grid.png");
+    bg->setZ_Depth(0);
     addSprite(bg);
+    
+    creeper = new Sprite();
+    creeper->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/boss_creeper.png");
+    creeper->setZ_Depth(2);
+//    creeper->type = Sprite::BILLBOARD_TYPE;
+    addSprite(creeper);
     
     //scope in init()
     ActionDelay actionDelayBtw;
@@ -60,10 +65,10 @@ void TitleScene::init(){
     ActionScaleBy scaleBy;
     scaleBy.initScaleBy(glm::vec3(1, 1, 0), 1);
     
-//    bg->setOpacity(0);
-//    bg->setScale(glm::vec3(2, 2, 2));
-//    bg->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy)}, 0);
-    bg->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy), new ActionDelay(actionDelayBtw), new ActionRotateBy(rotateByAction), new ActionDelay(actionDelayBtw), new ActionMoveBy(moveByAction), new ActionDelay(actionDelayBtw), new ActionFadeBy(fadeBy), new ActionDelay(actionDelayBtw), new ActionScaleTo(scaleTo), new ActionDelay(actionDelayBtw), new ActionRotateTo(rotateToAction), new ActionDelay(actionDelayBtw), new ActionMoveTo(moveToOriginAction), new ActionDelay(actionDelayBtw), new ActionFadeTo(fadeTo)}, 10);
+//    creeper->setOpacity(0);
+//    creeper->setScale(glm::vec3(2, 2, 2));
+//    creeper->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy)}, 0);
+    creeper->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy), new ActionDelay(actionDelayBtw), new ActionRotateBy(rotateByAction), new ActionDelay(actionDelayBtw), new ActionMoveBy(moveByAction), new ActionDelay(actionDelayBtw), new ActionFadeBy(fadeBy), new ActionDelay(actionDelayBtw), new ActionScaleTo(scaleTo), new ActionDelay(actionDelayBtw), new ActionRotateTo(rotateToAction), new ActionDelay(actionDelayBtw), new ActionMoveTo(moveToOriginAction), new ActionDelay(actionDelayBtw), new ActionFadeTo(fadeTo)}, 10);
     
 //    bg->addActions({delayAction4, fadeOutAction1, rotateAction1, delayAction5, fadeInAction1, rotateToAction1}, 1);
     
@@ -120,10 +125,12 @@ void TitleScene::init(){
 //    ground->runAction();
     
     FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
+//    FontManager::getInstance().addFont("Arial.ttf", 50);
     
     helloWorldText = new Text();
     helloWorldText->setColor(glm::vec3(255, 255, 255));
     helloWorldText->setTextAlign(Text::TextAlign::ALIGN_LEFT);
+//    helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "Arial.ttf");
     helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "UhBee Kang-Ja.ttf");
     addText(helloWorldText);
 //    delete helloWorldText;
