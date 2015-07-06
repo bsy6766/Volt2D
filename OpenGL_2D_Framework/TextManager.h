@@ -22,6 +22,7 @@ public:
     TextManager();
     ~TextManager();
     
+    void update();
     void render();
 //    void addText(TextObject* textObj);
     void addText(Text* text);

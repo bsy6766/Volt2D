@@ -34,6 +34,7 @@ void Scene::boundWindow(GLFWwindow *window){
 void Scene::update(){
     //update scene stuff first
     spriteManager->update();
+    textManager->update();
     
     //update layers
     for(auto it : layerMap){

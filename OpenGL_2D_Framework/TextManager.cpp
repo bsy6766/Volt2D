@@ -30,3 +30,17 @@ void TextManager::render(){
         }
 }
 
+void TextManager::update(){
+    //iterating through list. update and delete nulls(0)
+    for (std::list<Text *>::const_iterator ci = textObjectList.begin(); ci != textObjectList.end();){
+        //if pointer is null, delete pointer and remove from the list.
+        if((*ci) == 0){
+            delete (*ci);
+            ci = textObjectList.erase(ci);  //returns next element
+        }
+        else{
+            (*ci)->update();
+            ++ci;
+        }
+    }
+}

@@ -134,6 +134,7 @@ void TitleScene::init(){
     helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "UhBee Kang-Ja.ttf");
     addText(helloWorldText);
 //    delete helloWorldText;
+    helloWorldText->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy), new ActionDelay(actionDelayBtw), new ActionRotateBy(rotateByAction), new ActionDelay(actionDelayBtw), new ActionMoveBy(moveByAction), new ActionDelay(actionDelayBtw), new ActionFadeBy(fadeBy), new ActionDelay(actionDelayBtw), new ActionScaleTo(scaleTo), new ActionDelay(actionDelayBtw), new ActionRotateTo(rotateToAction), new ActionDelay(actionDelayBtw), new ActionMoveTo(moveToOriginAction), new ActionDelay(actionDelayBtw), new ActionFadeTo(fadeTo)}, 10);
     
     glfwSetCursorPos(window, size.w/2, size.h/2);
     cout << "init mouse pos with = (" << size.w/2 << ", " << size.h/2 << ")" << endl;
