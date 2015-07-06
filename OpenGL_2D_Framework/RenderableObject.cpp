@@ -23,6 +23,7 @@ scale(glm::vec3(1, 1, 1)),
 opacity(255),
 visible(true),
 progPtr(Director::getInstance().getProgramPtr()),   //get default program
+actionRunning(false),
 boundingBox(new BoundingBox())
 {
     cout << "RenderableObject::RenderableObject()" << endl;
@@ -36,6 +37,9 @@ boundingBox(new BoundingBox())
 RenderableObject::~RenderableObject(){
     deleteVertexData();
     cout << "Deleting Renderable Object" << endl;
+    for (std::list<ActionSchedule*>::const_iterator ci = actionScheduleList.begin(); ci != actionScheduleList.end(); ++ci){
+        delete (*ci);
+    }
     delete boundingBox;
 }
 
@@ -176,4 +180,87 @@ void RenderableObject::initBoundingBox(int w, int h){
 
 void RenderableObject::bindProgram(std::string programName){
     progPtr = Director::getInstance().getProgramPtr(programName);
+}
+
+void RenderableObject::addAction(ActionObject* action){
+    addAction(action, 0);
+}
+
+void RenderableObject::addAction(ActionObject *action, int repeat){
+//    cout << "Adding Action " << action->getActionID() << " to Sprite #" << spriteID << std::endl;
+    //bind owner
+//    action->bindOwnerPtr(this);
+//    ActionSchedule* singleActionSchedule = new ActionSchedule();
+//    singleActionSchedule->createSchedule(action, repeat);
+//    actionScheduleList.push_back(singleActionSchedule);
+    addActions({action}, repeat);
+}
+
+void RenderableObject::addActions(std::initializer_list<ActionObject *> actions, int repeat){
+    for(auto it:actions){
+        it->bindOwnerPtr(this);
+    }
+    ActionSchedule* singleActionSchedule = new ActionSchedule();
+    singleActionSchedule->createSchedule(actions, repeat);
+    actionScheduleList.push_back(singleActionSchedule);
+}
+
+void RenderableObject::runAction(){
+    actionRunning = true;
+}
+
+void RenderableObject::stopAction(){
+    actionRunning = false;
+    
+    for(std::list<ActionSchedule*>::const_iterator ci = actionScheduleList.begin(); ci != actionScheduleList.end(); ++ci){
+        (*ci)->terminateAllAction();
+        delete (*ci);
+    }
+    actionScheduleList.clear();
+}
+
+bool RenderableObject::isActionRunning(){
+    return actionRunning;
+}
+
+void RenderableObject::update(){
+    //if there is no action, set running to false and return
+    if(actionScheduleList.empty()){
+        actionRunning = false;
+        return;
+    }
+    
+    //    //iterate through schedule list
+    for(auto schedule_it = actionScheduleList.begin(); schedule_it != actionScheduleList.end(); ){
+        //        cout << "Updating schedule" << endl;
+        (*schedule_it)->updateSchedule();
+        
+        if((*schedule_it)->isEmpty()){
+            delete *schedule_it;
+            schedule_it = actionScheduleList.erase(schedule_it);
+            continue;
+        }
+        else{
+            //not empty, but is done?
+            if((*schedule_it)->isFinished()){
+                if((*schedule_it)->needRepeat()){
+                    //revive, increment counter
+                    cout << "Reviving schedule." << endl;
+                    (*schedule_it)->reviveSchedule();
+                    schedule_it++;
+                }
+                else{
+                    //repeat done. delete list
+                    cout << "Repeat done. deleting list." << endl;
+                    delete *schedule_it;
+                    schedule_it = actionScheduleList.erase(schedule_it);
+                    continue;
+                }
+                
+            }
+            else{
+                schedule_it++;
+            }
+        }
+    }
 }

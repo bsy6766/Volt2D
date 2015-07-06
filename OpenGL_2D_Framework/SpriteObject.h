@@ -10,8 +10,7 @@
 #define __OpenGL_2D_Framework__SpriteObject__
 
 #include "RenderableObject.h"
-#include "ActionObject.h"
-#include "ActionSchedule.h"
+//#include "ActionObject.h"
 //#include "test.cpp"
 //#include "ActionDelay.h"
 //#include "ActionMoveTo.h"
@@ -20,7 +19,7 @@
 #include <list>
 #include "Timer.h"
 
-class ActionSchedule;
+//class ActionSchedule;
 
 static int ID_COUNTER = 0;
 
@@ -32,12 +31,10 @@ protected:
     int w;
     int h;
     
-    bool actionRunning;
+
     float z;    //each sprite can set 0~100.
     
 	//Action schedule list
-    std::list<ActionSchedule *> actionScheduleList;
-    
 public:
     SpriteObject();	//not implemented
 //    SpriteObject(Program *ptr);
@@ -54,21 +51,15 @@ public:
     void setZ_Depth(float value);
     float getZ_Depth();
     
-    //sprite action
-	void addAction(ActionObject* action);
-    void addAction(ActionObject* action, int repeat);
-    void addActions(std::initializer_list<ActionObject*> actions, int repeat);
-//	void addActions(SpriteActionSchedule &actions);
-//	void addActions(SpriteActionSchedule* actions);
-    void runAction();
-    void stopAction();
-    
-    std::list<ActionObject*> getSpriteActionList();
-    bool isActionRunning();
-    
-//    virtual void update() = 0;
-    void update();
-    void updateSpriteData(ActionObject* obj);
+//    //sprite action
+//	void addAction(ActionObject* action);
+//    void addAction(ActionObject* action, int repeat);
+//    void addActions(std::initializer_list<ActionObject*> actions, int repeat);
+//    void runAction();
+//    void stopAction();
+//    bool isActionRunning();
+//    void update();
+//    void updateSpriteData(ActionObject* obj);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__SpriteObject__) */

@@ -17,6 +17,15 @@
 #include "FontManager.h"
 #include "Text.h"
 #include "BattleScene.h"
+#include "ActionDelay.h"
+#include "ActionMoveBy.h"
+#include "ActionMoveTo.h"
+#include "ActionRotateBy.h"
+#include "ActionRotateTo.h"
+#include "ActionFadeBy.h"
+#include "ActionFadeTo.h"
+#include "ActionScaleBy.h"
+#include "ActionScaleTo.h"
 
 class TitleScene : public Scene{
 protected:

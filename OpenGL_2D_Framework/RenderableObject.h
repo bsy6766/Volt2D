@@ -14,6 +14,7 @@
 #include "Object.h"
 #include "Program.h"
 #include "BoundingBox.h"
+#include "ActionSchedule.h"
 #include <vector>
 #include <gl/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -49,6 +50,9 @@ protected:
     //for rendering with shader
     Program *progPtr;
     
+    //Action
+    bool actionRunning;
+    std::list<ActionSchedule *> actionScheduleList;
 private:
 
 public:
@@ -100,6 +104,15 @@ public:
     
     //visibility. Making this public because it harms nothing.
     bool visible;
+    
+    // action
+    void addAction(ActionObject* action);
+    void addAction(ActionObject* action, int repeat);
+    void addActions(std::initializer_list<ActionObject*> actions, int repeat);
+    void runAction();
+    void stopAction();
+    bool isActionRunning();
+    void update();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__RenderableObject__) */
