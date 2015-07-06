@@ -412,35 +412,48 @@ bool Text::hasEmptyText(){
 
 void Text::render(){
     glUseProgram(progPtr->getObject());
-    //render text
-    GLuint cameraUniformLocation = glGetUniformLocation(progPtr->getObject(), "cameraMat");
+    //render text. need to specify camera again because we are using different shader
+//    GLuint cameraUniformLocation = glGetUniformLocation(progPtr->getObject(), "cameraMat");
     glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
-    glUniformMatrix4fv(cameraUniformLocation, 1, GL_FALSE, &cameraMat[0][0]);
+//    glUniformMatrix4fv(cameraUniformLocation, 1, GL_FALSE, &cameraMat[0][0]);
+    matrixUniformLocation("cameraMat", cameraMat);
+//
+//    GLint modelUniformLocation = glGetUniformLocation(progPtr->getObject(), "modelMat");
+//    if(modelUniformLocation == -1)
+//        throw std::runtime_error( std::string("Program uniform not found: " ) + "modelMat");
+//    glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, &modelMat[0][0]);
+//    
+//    GLint rotateUniformLocation = glGetUniformLocation(progPtr->getObject(), "rotateMat");
+//    if(rotateUniformLocation == -1)
+//        throw std::runtime_error( std::string("Program uniform not found: " ) + "rotateMat");
+//    glUniformMatrix4fv(rotateUniformLocation, 1, GL_FALSE, &rotateMat[0][0]);
+//    
+//    GLint translateUniformLocation = glGetUniformLocation(progPtr->getObject(), "translateMat");
+//    if(translateUniformLocation == -1)
+//        throw std::runtime_error( std::string("Program uniform not found: " ) + "translateMat");
+//    glUniformMatrix4fv(translateUniformLocation, 1, GL_FALSE, &translateMat[0][0]);
+//    
+//    GLint scaleUniformLocation = glGetUniformLocation(progPtr->getObject(), "scaleMat");
+//    if(scaleUniformLocation == -1)
+//        throw std::runtime_error( std::string("Program uniform not found: " ) + "scaleMat");
+//    glUniformMatrix4fv(scaleUniformLocation, 1, GL_FALSE, &scaleMat[0][0]);
     
-    GLint modelUniformLocation = glGetUniformLocation(progPtr->getObject(), "modelMat");
-    if(modelUniformLocation == -1)
-        throw std::runtime_error( std::string("Program uniform not found: " ) + "modelMat");
-    glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, &modelMat[0][0]);
+//    GLint fontColorUniformLocation = glGetUniformLocation(progPtr->getObject(), "fontColor");
+//    if(fontColorUniformLocation == -1)
+//        throw std::runtime_error( std::string("Program uniform not found: " ) + "fontColor");
+//    glUniform3fv(fontColorUniformLocation, 1, &fontColor[0]);
     
-    GLint rotateUniformLocation = glGetUniformLocation(progPtr->getObject(), "rotateMat");
-    if(rotateUniformLocation == -1)
-        throw std::runtime_error( std::string("Program uniform not found: " ) + "rotateMat");
-    glUniformMatrix4fv(rotateUniformLocation, 1, GL_FALSE, &rotateMat[0][0]);
+//    GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
+//    if(opacityUniformLocation == -1)
+//        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
+//    glUniform1fv(opacityUniformLocation, 1, &opacity);
     
-    GLint translateUniformLocation = glGetUniformLocation(progPtr->getObject(), "translateMat");
-    if(translateUniformLocation == -1)
-        throw std::runtime_error( std::string("Program uniform not found: " ) + "translateMat");
-    glUniformMatrix4fv(translateUniformLocation, 1, GL_FALSE, &translateMat[0][0]);
-    
-    GLint scaleUniformLocation = glGetUniformLocation(progPtr->getObject(), "scaleMat");
-    if(scaleUniformLocation == -1)
-        throw std::runtime_error( std::string("Program uniform not found: " ) + "scaleMat");
-    glUniformMatrix4fv(scaleUniformLocation, 1, GL_FALSE, &scaleMat[0][0]);
-    
-    GLint fontColorUniformLocation = glGetUniformLocation(progPtr->getObject(), "fontColor");
-    if(fontColorUniformLocation == -1)
-        throw std::runtime_error( std::string("Program uniform not found: " ) + "fontColor");
-    glUniform3fv(fontColorUniformLocation, 1, &fontColor[0]);
+    matrixUniformLocation("modelMat", modelMat);
+    matrixUniformLocation("rotateMat", rotateMat);
+    matrixUniformLocation("translateMat", translateMat);
+    matrixUniformLocation("scaleMat", scaleMat);
+    floatUniformLocation("opacity", opacity);
+    vec3UniformLocation("fontColor", fontColor);
     
     glBindVertexArray(vao);
     
@@ -456,10 +469,12 @@ void Text::render(){
     for(auto it : splittedText){
         for(unsigned int i = 0; i<it.length(); i++){
             //send translate matrix for each char
-            GLint charTransMatUniformLocation = glGetUniformLocation(progPtr->getObject(), "charTransMat");
-            if(scaleUniformLocation == -1)
-                throw std::runtime_error( std::string("Program uniform not found: " ) + "charTransMat");
-            glUniformMatrix4fv(charTransMatUniformLocation, 1, GL_FALSE, &translationData.at(index)[0][0]);
+//            GLint charTransMatUniformLocation = glGetUniformLocation(progPtr->getObject(), "charTransMat");
+//            if(charTransMatUniformLocation == -1)
+//                throw std::runtime_error( std::string("Program uniform not found: " ) + "charTransMat");
+//            glUniformMatrix4fv(charTransMatUniformLocation, 1, GL_FALSE, &translationData.at(index)[0][0]);
+            
+            matrixUniformLocation("charTransMat", translationData.at(index));
             
             //get char and check validation.
             const char* cStr = it.c_str();

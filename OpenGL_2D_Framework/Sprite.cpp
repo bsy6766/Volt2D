@@ -61,20 +61,22 @@ void Sprite::render(){
     
     texture->bind(GL_TEXTURE0);
 
-    getUniformLocation("modelMat", modelMat);
-    getUniformLocation("rotateMat", rotateMat);
-    getUniformLocation("translateMat", translateMat);
-    getUniformLocation("scaleMat", scaleMat);
+    matrixUniformLocation("modelMat", modelMat);
+    matrixUniformLocation("rotateMat", rotateMat);
+    matrixUniformLocation("translateMat", translateMat);
+    matrixUniformLocation("scaleMat", scaleMat);
+    floatUniformLocation("opacity", opacity);
+    boolUniformLocation("particle", false);
     
-    GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
-    if(opacityUniformLocation == -1)
-        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
-    glUniform1fv(opacityUniformLocation, 1, &opacity);
-    
-    GLint particleUniformLocation = glGetUniformLocation(progPtr->getObject(), "particle");
-    if(particleUniformLocation == -1)
-        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
-    glUniform1i(particleUniformLocation, 0);
+//    GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
+//    if(opacityUniformLocation == -1)
+//        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
+//    glUniform1fv(opacityUniformLocation, 1, &opacity);
+//    
+//    GLint particleUniformLocation = glGetUniformLocation(progPtr->getObject(), "particle");
+//    if(particleUniformLocation == -1)
+//        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
+//    glUniform1i(particleUniformLocation, 0);
     
 //    cout << "angle = " << this->angle << endl;
 //    cout << "opacity = " << this->opacity << endl;
@@ -176,11 +178,4 @@ void Sprite::loadVertexData(){
 
 void Sprite::setType(SpriteType type = NORMAL_TYPE){
     this->type = type;
-}
-
-void Sprite::getUniformLocation(std::string name, glm::mat4 &matrix){
-    GLint uniformLocation = glGetUniformLocation(progPtr->getObject(), name.c_str());
-    if(uniformLocation == -1)
-        throw std::runtime_error( std::string("Program uniform not found: " ) + name);
-    glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &matrix[0][0]);
 }

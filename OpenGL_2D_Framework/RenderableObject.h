@@ -53,6 +53,12 @@ protected:
     //Action
     bool actionRunning;
     std::list<ActionSchedule *> actionScheduleList;
+    
+    //Rendering
+    void floatUniformLocation(std::string name, float& f);
+    void boolUniformLocation(std::string name, bool b);
+    void vec3UniformLocation(std::string name, glm::vec3& vec);
+    void matrixUniformLocation(std::string name, glm::mat4& matrix);
 private:
 
 public:

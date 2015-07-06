@@ -264,3 +264,34 @@ void RenderableObject::update(){
         }
     }
 }
+
+void RenderableObject::floatUniformLocation(std::string name, float& f){
+    GLint uniformLocation = glGetUniformLocation(progPtr->getObject(), name.c_str());
+    if(uniformLocation == -1)
+        throw std::runtime_error( std::string("Program uniform not found: " ) + name);
+    glUniform1fv(uniformLocation, 1, &f);
+}
+
+void RenderableObject::boolUniformLocation(std::string name, bool b){
+    GLint uniformLocation = glGetUniformLocation(progPtr->getObject(), name.c_str());
+    if(uniformLocation == -1)
+        throw std::runtime_error( std::string("Program uniform not found: " ) + name);
+    if(b)
+        glUniform1i(uniformLocation, 1);
+    else
+        glUniform1i(uniformLocation, 0);
+}
+
+void RenderableObject::vec3UniformLocation(std::string name, glm::vec3 &vec){
+    GLint uniformLocation = glGetUniformLocation(progPtr->getObject(), name.c_str());
+    if(uniformLocation == -1)
+        throw std::runtime_error( std::string("Program uniform not found: " ) + name);
+    glUniform3fv(uniformLocation, 1, &vec[0]);
+}
+
+void RenderableObject::matrixUniformLocation(std::string name, glm::mat4 &matrix){
+    GLint uniformLocation = glGetUniformLocation(progPtr->getObject(), name.c_str());
+    if(uniformLocation == -1)
+        throw std::runtime_error( std::string("Program uniform not found: " ) + name);
+    glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &matrix[0][0]);
+}
