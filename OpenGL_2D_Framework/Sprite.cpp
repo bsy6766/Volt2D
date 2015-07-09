@@ -67,6 +67,8 @@ void Sprite::render(){
     floatUniformLocation("opacity", opacity);
     boolUniformLocation("particle", false);
     
+//    cout << "pos = (" << position.x << ", " << position.y << ", " << position.z << ")" << endl;
+    
     //bind vertex array.
     glBindVertexArray(vao);
     
