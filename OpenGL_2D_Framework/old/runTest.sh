@@ -1,0 +1,3 @@
+#!/bin/bash
+g++ -std=c++11 -w Sprite.cpp SpriteObject.cpp Texture.cpp Program.cpp RenderableObject.cpp Object.cpp ActionObject.cpp BoundingBox.cpp Shader.cpp ActionSchedule.cpp Director.cpp Timer.cpp ActionMoveTo.cpp ActionMoveBy.cpp Scene.cpp Camera.cpp TextManager.cpp SpriteManager.cpp Layer.cpp stb_image.cpp gtest.cpp -o gtest -L/usr/local/lib -I/usr/local/include -framework gtest -framework opengl -lglfw -lglew -framework Cocoa -framework IOKit -framework CoreVideo
+./gtest
