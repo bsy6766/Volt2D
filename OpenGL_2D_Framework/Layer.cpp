@@ -40,7 +40,7 @@ int Layer::getZorder(){
 }
 
 void Layer::addObject(std::string objectName, RenderableObject *object){
-    renderableObjectManager->addObject(objectName, object, false);
+    renderableObjectManager->addObject(nullptr, objectName, object, false);
 }
 
 void Layer::exit(){

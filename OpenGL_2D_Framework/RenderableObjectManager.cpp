@@ -17,7 +17,7 @@ RenderableObjectManager::~RenderableObjectManager(){
     cout << "~RenderableObjectManager()" << endl;
 }
 
-bool RenderableObjectManager::addObject(std::string objectName, RenderableObject *object, bool replace){
+bool RenderableObjectManager::addObject(Scene* scenePtr, std::string objectName, RenderableObject *object, bool replace){
     assert(!objectName.empty());
     
     object->setName(objectName);
@@ -42,12 +42,29 @@ bool RenderableObjectManager::addObject(std::string objectName, RenderableObject
     
     //add to manager and add to LUT
     objNameLUT.insert(std::pair<std::string, RenderableObject*>(objectName, object));
-    objMap.insert(std::pair<float, RenderableObject*>(object->z, object));
+    float objectZ;
+    //get Z. If fails, set z as +1 from highest z to render to the most top of scene
+    if(!object->getZDepth(objectZ)){
+        if(objMap.empty()){
+            objectZ = 0;
+        }
+        else{
+            auto end_it = objMap.end();
+            end_it--;
+            float lastZ = end_it->first;
+            objectZ = lastZ + 1;
+            //assign z value because it didn't had one
+            object->setZDepth(objectZ);
+        }
+    }
+    if(scenePtr)
+        object->bindScene(scenePtr);
+    objMap.insert(std::pair<float, RenderableObject*>(objectZ, object));
     
     return true;
 }
 
-bool RenderableObjectManager::removeObject(RenderableObject *object){
+bool RenderableObjectManager::removeObject(RenderableObject *object, bool deleteObject){
     std::string objName = object->getName();
     auto objNameIt = objNameLUT.find(objName);
     if(objNameIt == objNameLUT.end()){
@@ -58,7 +75,12 @@ bool RenderableObjectManager::removeObject(RenderableObject *object){
         cout << "Removing object named \"" << objName << "\"." << endl;
         objNameLUT.erase(objNameIt);
         for(auto objMapIt = objMap.begin(); objMapIt != objMap.end(); ++objMapIt){
-            if(objMapIt->first == object->z && objMapIt->second->getName() == objName){
+            float z;
+            object->getZDepth(z);
+            
+            if(objMapIt->first == z && objMapIt->second->getName() == objName){
+                if(deleteObject)
+                    delete objMapIt->second;
                 objMap.erase(objMapIt);
                 break;
             }
@@ -97,5 +119,42 @@ void RenderableObjectManager::render(){
             (it->second)->render();
             ++it;
         }
+    }
+}
+
+//This function is only called when z_depth has been set. No need to check if it's none
+void RenderableObjectManager::changeZ(RenderableObject *object, float z){
+    //check if z is valid
+    if(object->isZValid()){
+        //if so, check if it can get z
+        float curZ;
+        if(object->getZDepth(curZ)){
+            //check if object is on LUT
+            std::string name = object->getName();
+            auto nameIt = objNameLUT.find(name);
+            if(nameIt != objNameLUT.end()){
+                //check if
+                auto changingIt = objMap.find(curZ);
+                if(changingIt != objMap.end()){
+//                    changingIt->second->changeZDepth(z);
+                    objMap.erase(changingIt);
+                    object->changeZDepth(z);
+                    objMap.insert(std::pair<float, RenderableObject*>(z, object));
+                }
+                else{
+                    cout << "object not found in system" << endl;
+                }
+            }
+            else{
+                cout << "Object name not found in LUT" << endl;
+            }
+        }
+        else{
+            cout << "Z_Depth ERROR: Failed to get z depth value" << endl;
+        }
+    }
+    else{
+        //this object doens't have 
+        cout << "Z_Deprth ERROR: z_depth value not found for this object" << endl;
     }
 }

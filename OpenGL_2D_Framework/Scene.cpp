@@ -58,7 +58,7 @@ void Scene::run(){
 }
 
 void Scene::addObject(std::string objectName, RenderableObject* object){
-    renderableObjectManager->addObject(objectName, object, false);
+    renderableObjectManager->addObject(this, objectName, object, false);
 }
 
 void Scene::addLayer(Layer *childLayer){
@@ -74,3 +74,8 @@ void Scene::exit(){
         delete it.second;
     }
 }
+
+RenderableObjectManager* Scene::getRenderableObjectManager(){
+    return renderableObjectManager;
+}
+

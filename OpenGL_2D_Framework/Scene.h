@@ -47,6 +47,8 @@ public:
     virtual void injectKey() = 0;
     virtual void injectMouseMove() = 0;
     
+    RenderableObjectManager* getRenderableObjectManager();
+    
     void run();
     
     void boundWindow(GLFWwindow* window);

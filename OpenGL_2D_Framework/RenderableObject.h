@@ -15,13 +15,21 @@
 #include "Program.h"
 #include "BoundingBox.h"
 #include "ActionSchedule.h"
+#include "Z_Float.h"
+#include "Scene.h"
 #include <vector>
 #include <gl/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
 
 class RenderableObject : public Object{
+friend class RenderableObjectManager;
 protected:
+    //global z depth
+    Z_Float z_depth;
+    
+    //scene bounded to
+    Scene* scene;
     
     //vertex array and buffers
     GLuint vao;		//vertex array object
@@ -62,13 +70,11 @@ protected:
     void vec3UniformLocation(std::string name, glm::vec3& vec);
     void matrixUniformLocation(std::string name, glm::mat4& matrix);
 private:
+    void changeZDepth(float z);
 
 public:
     RenderableObject();
     virtual ~RenderableObject();
-    
-    //global z depth. Making public. no harm.
-    float z;
     
     virtual void setPosition(glm::vec3 position);
     virtual void addPosition(glm::vec3 position);
@@ -101,6 +107,15 @@ public:
     GLfloat getScaleX();
     GLfloat getScaleY();
     GLfloat getScaleZ();
+    
+    //z depth
+    void setZDepth(float z);
+    bool getZDepth(float& z);
+    bool isZValid();
+    
+    //scene
+    void bindScene(Scene* scenePtr);
+    void unbindScene();
     
     virtual void computeVertexData() = 0;
     virtual void loadVertexData() = 0;

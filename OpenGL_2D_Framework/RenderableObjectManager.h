@@ -14,6 +14,7 @@
 #include <unordered_set>
 
 class RenderableObject;
+class Scene;
 
 class RenderableObjectManager{
 private:
@@ -24,11 +25,12 @@ public:
     RenderableObjectManager();
     ~RenderableObjectManager();
     
-    bool addObject(std::string objectName, RenderableObject* object, bool replace);
-    bool removeObject(RenderableObject* object);
+    bool addObject(Scene* scenePtr, std::string objectName, RenderableObject* object, bool replace);
+    bool removeObject(RenderableObject* object, bool deleteObject);
     bool removeObject(std::string objectName);
     void update();
     void render();
+    void changeZ(RenderableObject* object, float z);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__RenderableObjectManager__) */

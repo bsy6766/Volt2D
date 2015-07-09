@@ -25,18 +25,21 @@ void TitleScene::init(){
 
     bg = new Sprite();
     bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/bg_grid.png");
-    bg->z = 0;
+//    bg->z.setZ(0);
+    bg->setZDepth(0);
 //    addSprite(bg);
 //    this->addSprite(bg);
     this->addObject("bg", bg);
     
     creeper = new Sprite();
     creeper->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/boss_creeper.png");
-    creeper->z = 0;
+//    creeper->z.setZ(1);
+    creeper->setZDepth(1);
 //    creeper->type = Sprite::BILLBOARD_TYPE;
 //    addSprite(creeper);
 //    this->addSprite(creeper);
     this->addObject("creeper", creeper);
+    creeper->setZDepth(99);
     
     //scope in init()
     ActionDelay actionDelayBtw;
@@ -74,60 +77,6 @@ void TitleScene::init(){
 //    creeper->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy)}, 0);
     creeper->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy), new ActionDelay(actionDelayBtw), new ActionRotateBy(rotateByAction), new ActionDelay(actionDelayBtw), new ActionMoveBy(moveByAction), new ActionDelay(actionDelayBtw), new ActionFadeBy(fadeBy), new ActionDelay(actionDelayBtw), new ActionScaleTo(scaleTo), new ActionDelay(actionDelayBtw), new ActionRotateTo(rotateToAction), new ActionDelay(actionDelayBtw), new ActionMoveTo(moveToOriginAction), new ActionDelay(actionDelayBtw), new ActionFadeTo(fadeTo)}, 10);
     
-//    bg->addActions({delayAction4, fadeOutAction1, rotateAction1, delayAction5, fadeInAction1, rotateToAction1}, 1);
-    
-//    bg->addActions({delayAction4, moveToAction3, moveByAction1}, 2);
-    
-//    bg->setAngle(1);
-//    bg->addActions({delayAction4, rotateToAction1}, 2);
-//    bg->addActions({rotateAction1, rotateAction2}, 20);
-    
-
-//    ground = new Sprite();
-//    ground->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/battle_scene_bg.png");
-//    ground->setZ_Depth(1);
-//    ground->setPosition(glm::vec3(0, -50, 0));
-//    ground->rotateBy(90, glm::vec3(-1, 0, 0));
-//    addSprite(ground);
-    
-//    ActionDelay* delayAction = new ActionDelay();
-//    delayAction->initDelay(3);
-//    ActionDelay* delayAction1 = new ActionDelay();
-//    delayAction1->initDelay(5);
-//    ActionDelay* delayAction2 = new ActionDelay();
-//    delayAction2->initDelay(6);
-//    ActionDelay* delayAction3 = new ActionDelay();
-//    delayAction3->initDelay(7);
-//    ground->addAction(delayAction, 2);
-//    ground->addActions({delayAction1, delayAction2, delayAction3}, 1);
-    
-//    ActionMoveTo* moveRightAction = new ActionMoveTo();
-//    moveRightAction->initMoveTo(glm::vec2(0, 100), 3);
-//    
-//    ActionMoveTo* moveLeftAction = new ActionMoveTo();
-//    moveLeftAction->initMoveTo(glm::vec2(0, -50), 3);
-//    
-//    ActionFadeTo* fadeOutDay = new ActionFadeTo();
-//    fadeOutDay->initFadeTo(0, 2);
-//
-//    ActionDelay* delayBeforeFade = new ActionDelay();
-//    delayBeforeFade->initDelay(2);
-//
-//    ActionFadeTo* fadeInDay = new ActionFadeTo();
-//    fadeInDay->initFadeTo(255, 2);
-//    
-//    ActionRotateBy* rotateByAction = new ActionRotateBy();
-//    rotateByAction->initRotateBy(180, 3);
-//
-//    ActionDelay* delayBtwFade = new ActionDelay();
-//    delayBtwFade->initDelay(2);
-//
-//    SpriteActionSchedule* dayBGSchedule = new SpriteActionSchedule();
-//
-//    dayBGSchedule->createSchedule({moveRightAction, delayBeforeFade, fadeOutDay, delayBtwFade, fadeInDay, rotateByAction, moveLeftAction}, REPEAT_FOREVER);
-//    ground->addActions(dayBGSchedule);
-//    ground->runAction();
-    
     FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
 //    FontManager::getInstance().addFont("Arial.ttf", 50);
     
@@ -136,9 +85,10 @@ void TitleScene::init(){
     helloWorldText->setTextAlign(Text::TextAlign::ALIGN_LEFT);
 //    helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "Arial.ttf");
     helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "UhBee Kang-Ja.ttf");
-//    addText(helloWorldText);
+    //    addText(helloWorldText);
+    helloWorldText->setZDepth(10);
+//    helloWorldText->z.setZ(99);
     this->addObject("hellowWorldText", helloWorldText);
-    helloWorldText->z = 99;
 //    delete helloWorldText;
     helloWorldText->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy), new ActionDelay(actionDelayBtw), new ActionRotateBy(rotateByAction), new ActionDelay(actionDelayBtw), new ActionMoveBy(moveByAction), new ActionDelay(actionDelayBtw), new ActionFadeBy(fadeBy), new ActionDelay(actionDelayBtw), new ActionScaleTo(scaleTo), new ActionDelay(actionDelayBtw), new ActionRotateTo(rotateToAction), new ActionDelay(actionDelayBtw), new ActionMoveTo(moveToOriginAction), new ActionDelay(actionDelayBtw), new ActionFadeTo(fadeTo)}, 10);
 //    helloWorldText->setTextRange(1, 20);

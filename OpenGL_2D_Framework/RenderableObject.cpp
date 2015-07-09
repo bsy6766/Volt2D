@@ -24,8 +24,7 @@ opacity(255),
 visible(true),
 progPtr(Director::getInstance().getProgramPtr()),   //get default program
 actionRunning(false),
-boundingBox(new BoundingBox()),
-z(0)
+boundingBox(new BoundingBox())
 {
     cout << "RenderableObject::RenderableObject()" << endl;
     translateTo(position);
@@ -295,4 +294,44 @@ void RenderableObject::matrixUniformLocation(std::string name, glm::mat4 &matrix
     if(uniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + name);
     glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &matrix[0][0]);
+}
+
+void RenderableObject::setZDepth(float z){
+    //if this object already had z value, then change in the manager
+    if(this->z_depth.dirty){
+        //use scene that is bound to this object to call renderable manager
+        this->scene->getRenderableObjectManager()->changeZ(this, z);
+    }
+    //else, change it self.
+    else{
+        this->z_depth.dirty = true;
+        this->z_depth.z = z;
+    }
+}
+
+//only
+void RenderableObject::changeZDepth(float z){
+    this->z_depth.z = z;
+}
+
+bool RenderableObject::getZDepth(float& z){
+    if(this->z_depth.dirty){
+        z = this->z_depth.z;
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool RenderableObject::isZValid(){
+    return this->z_depth.dirty;
+}
+
+void RenderableObject::bindScene(Scene *scenePtr){
+    this->scene = scenePtr;
+}
+
+void RenderableObject::unbindScene(){
+    this->scene = 0;
 }
