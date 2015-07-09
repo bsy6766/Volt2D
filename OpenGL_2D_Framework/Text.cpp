@@ -16,6 +16,8 @@ Text::Text()
 dirty(false),
 loaded(false),
 align(ALIGN_RIGHT),
+start(-1),
+end(-1),
 fontColor(glm::vec3(255, 255, 255)) //RGB
 {
     this->progPtr = Director::getInstance().getProgramPtr("Text");
@@ -37,6 +39,8 @@ void Text::initText(std::string label, std::string fontName = "arial.tff"){
         dirty = true;
         this->fontName = fontName;
         text = label;
+        start = 0;
+        end = (int)strlen(label.c_str()) - 1;
         computeVertexData();
         loadVertexData();
     }
@@ -465,9 +469,16 @@ void Text::render(){
     glActiveTexture(GL_TEXTURE0);
     
     Font* font = FontManager::getInstance().getFont(fontName);
-    unsigned int index = 0;
+    unsigned int index = -1;
+    int rangeCounter = -1;
     for(auto it : splittedText){
         for(unsigned int i = 0; i<it.length(); i++){
+            rangeCounter++;
+            index++;
+            if(rangeCounter < start)
+                continue;
+            if(rangeCounter > end)
+                break;
             //send translate matrix for each char
 //            GLint charTransMatUniformLocation = glGetUniformLocation(progPtr->getObject(), "charTransMat");
 //            if(charTransMatUniformLocation == -1)
@@ -501,7 +512,6 @@ void Text::render(){
                                 GL_UNSIGNED_SHORT/*indices type*/,
                                 VOID_OFFSET(index * 6 * sizeof(GLushort))/*offset of each char(6 vertexes)*/
                                 );
-            index++;
         }
     }
     
@@ -540,4 +550,15 @@ void Text::splitByNewLine(){
 
 void Text::setTextAlign(Text::TextAlign mode){
     this->align = mode;
+}
+
+void Text::setTextRange(int start, int end){
+    if(start < 0)
+        start = 0;
+    this->start = start;
+    
+    int strLen = (int)strlen(text.c_str());
+    if(end > strLen)
+        end = strLen;
+    this->end = end;
 }

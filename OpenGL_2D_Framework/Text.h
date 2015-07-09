@@ -23,6 +23,8 @@ private:
     bool dirty;
     bool loaded;
     std::string fontName;
+    int start;
+    int end;
     
     void getMaxValues(Font* font, int& width, int& height,
                       std::vector<glm::vec2>& originList);
@@ -57,6 +59,7 @@ public:
     
     TextAlign align;
     void setTextAlign(TextAlign mode);
+    void setTextRange(int start, int end);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Text__) */
