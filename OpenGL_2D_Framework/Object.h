@@ -18,6 +18,8 @@ class Object{
 protected:
     glm::vec3 position;
     WinSize size;
+    std::string objectName;
+    
 private:
 public:
     Object();
@@ -27,6 +29,10 @@ public:
     void setPosition(glm::vec3 position);
     void addPosition(glm::vec3 position);
     glm::vec3 getPosition();
+    
+    //name
+    std::string getName();
+    void setName(std::string objectName);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Object__) */

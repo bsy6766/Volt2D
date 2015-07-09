@@ -48,14 +48,14 @@ void SpriteManager::update(){
 }
 
 //sort compare function
-bool compareZ(SpriteObject* lhs, SpriteObject* rhs){
-    return lhs->getZ_Depth() < rhs->getZ_Depth();
-}
+//bool compareZ(SpriteObject* lhs, SpriteObject* rhs){
+//    return lhs->getZ_Depth() < rhs->getZ_Depth();
+//}
 
 //add sprtie and sort by z depth
 void SpriteManager::addSprite(SpriteObject *pSpriteObj){
     assert(pSpriteObj != 0);
     
     spriteList.push_back(pSpriteObj);
-    spriteList.sort(compareZ);
+//    spriteList.sort(compareZ);
 }

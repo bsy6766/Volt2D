@@ -319,13 +319,7 @@ void Director::render(){
 //    font->Render("hello world!", 15);
 //    glPopAttrib();
 
-    
-    //Camera
-    glUseProgram(programs.at("Default")->getObject());
-    //Camera Matrix. Projection * view.
-    GLuint cameraUniformLocation = glGetUniformLocation(programs.at("Default")->getObject(), "cameraMat");
-    glm::mat4 cameraMat = camera->getMatrix();
-    glUniformMatrix4fv(cameraUniformLocation, 1, GL_FALSE, &cameraMat[0][0]);
+    //each render function in Sprite, Text, Progress will enable program
     
     if(runningScene)
         runningScene->render();

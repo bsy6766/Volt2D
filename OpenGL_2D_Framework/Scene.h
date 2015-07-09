@@ -12,9 +12,8 @@
 //#define GLM_FORCE_RADIANS
 
 #include "CommonInclude.h"
-#include "SpriteManager.h"
+#include "RenderableObjectManager.h"
 #include "Layer.h"
-#include "TextManager.h"
 
 #include <map>
 #include <glm/glm.hpp>
@@ -24,8 +23,7 @@ class GLFWwindow;
 
 class Scene{
 protected:
-    SpriteManager *spriteManager;
-    TextManager *textManager;
+    RenderableObjectManager* renderableObjectManager;
     GLFWwindow* window;
     glm::vec2 prevMousePos;
     glm::vec2 curMousePos;
@@ -54,10 +52,7 @@ public:
     void boundWindow(GLFWwindow* window);
     
     void addLayer(Layer* childLayer);
-    void addSprite(SpriteObject* childSprite);
-//    void addText(TextObject* childText);
-    void addText(Text* text);
-//    void addParticleSystem();
+    void addObject(std::string objectName, RenderableObject* object);
     
 };
 

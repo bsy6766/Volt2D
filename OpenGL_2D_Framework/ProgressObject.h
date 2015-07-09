@@ -14,18 +14,18 @@
 #include "Timer.h"
 #include "RenderableObject.h"
 
-/**
- *  Ratio and Incrementation
- *  All progress type objects(bar, radian) has ratio for
- *  increments and total capacity.
- *
- *  Progress Sprite will be divided in to max 100 steps.
- */
-
 class ProgressObject : public RenderableObject{
 protected:
-    int totalSteps; // total steps of progress bar. Can't exceed 100
-    int currentStep;
+    Texture* texture;
+    Texture* bgTexture;
+    
+    int totalPercentage;    //total percentage. defautl 100%
+    int percentageRate;     //rate of each step. default 1%
+    
+    int currentPercentage;  //default 100%
+    
+    bool bgEnabled;
+    float bgOpacity;    //defautl 255(1)
     
 private:
 public:
@@ -36,6 +36,9 @@ public:
     int getPercentage();
     //reset progress bar to initial state
     void reset();
+    void enableBg();
+    void disableBg();
+    void setBgOpacity(float opacity);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ProgressObject__) */

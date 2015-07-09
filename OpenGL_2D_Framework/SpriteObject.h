@@ -32,7 +32,7 @@ protected:
     int h;
     
 
-    float z;    //each sprite can set 0~100.
+//    float z;    //each sprite can set 0~100.
     
 	//Action schedule list
 public:
@@ -48,8 +48,8 @@ public:
     SpriteType type;
     
     //z depth
-    void setZ_Depth(float value);
-    float getZ_Depth();
+//    void setZ_Depth(float value);
+//    float getZ_Depth();
     
 //    //sprite action
 //	void addAction(ActionObject* action);

@@ -416,42 +416,8 @@ bool Text::hasEmptyText(){
 
 void Text::render(){
     glUseProgram(progPtr->getObject());
-    //render text. need to specify camera again because we are using different shader
-//    GLuint cameraUniformLocation = glGetUniformLocation(progPtr->getObject(), "cameraMat");
     glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
-//    glUniformMatrix4fv(cameraUniformLocation, 1, GL_FALSE, &cameraMat[0][0]);
     matrixUniformLocation("cameraMat", cameraMat);
-//
-//    GLint modelUniformLocation = glGetUniformLocation(progPtr->getObject(), "modelMat");
-//    if(modelUniformLocation == -1)
-//        throw std::runtime_error( std::string("Program uniform not found: " ) + "modelMat");
-//    glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, &modelMat[0][0]);
-//    
-//    GLint rotateUniformLocation = glGetUniformLocation(progPtr->getObject(), "rotateMat");
-//    if(rotateUniformLocation == -1)
-//        throw std::runtime_error( std::string("Program uniform not found: " ) + "rotateMat");
-//    glUniformMatrix4fv(rotateUniformLocation, 1, GL_FALSE, &rotateMat[0][0]);
-//    
-//    GLint translateUniformLocation = glGetUniformLocation(progPtr->getObject(), "translateMat");
-//    if(translateUniformLocation == -1)
-//        throw std::runtime_error( std::string("Program uniform not found: " ) + "translateMat");
-//    glUniformMatrix4fv(translateUniformLocation, 1, GL_FALSE, &translateMat[0][0]);
-//    
-//    GLint scaleUniformLocation = glGetUniformLocation(progPtr->getObject(), "scaleMat");
-//    if(scaleUniformLocation == -1)
-//        throw std::runtime_error( std::string("Program uniform not found: " ) + "scaleMat");
-//    glUniformMatrix4fv(scaleUniformLocation, 1, GL_FALSE, &scaleMat[0][0]);
-    
-//    GLint fontColorUniformLocation = glGetUniformLocation(progPtr->getObject(), "fontColor");
-//    if(fontColorUniformLocation == -1)
-//        throw std::runtime_error( std::string("Program uniform not found: " ) + "fontColor");
-//    glUniform3fv(fontColorUniformLocation, 1, &fontColor[0]);
-    
-//    GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
-//    if(opacityUniformLocation == -1)
-//        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
-//    glUniform1fv(opacityUniformLocation, 1, &opacity);
-    
     matrixUniformLocation("modelMat", modelMat);
     matrixUniformLocation("rotateMat", rotateMat);
     matrixUniformLocation("translateMat", translateMat);
@@ -463,8 +429,6 @@ void Text::render(){
     
     glEnableVertexAttribArray(progPtr->attrib("vert"));
     glEnableVertexAttribArray(progPtr->attrib("uvVert"));
-//    glEnableVertexAttribArray(progPtr->attrib("charTransVert"));
-//    glEnableVertexAttribArray(2);
     
     glActiveTexture(GL_TEXTURE0);
     
@@ -479,11 +443,6 @@ void Text::render(){
                 continue;
             if(rangeCounter > end)
                 break;
-            //send translate matrix for each char
-//            GLint charTransMatUniformLocation = glGetUniformLocation(progPtr->getObject(), "charTransMat");
-//            if(charTransMatUniformLocation == -1)
-//                throw std::runtime_error( std::string("Program uniform not found: " ) + "charTransMat");
-//            glUniformMatrix4fv(charTransMatUniformLocation, 1, GL_FALSE, &translationData.at(index)[0][0]);
             
             matrixUniformLocation("charTransMat", translationData.at(index));
             
@@ -514,28 +473,9 @@ void Text::render(){
                                 );
         }
     }
-    
-//    unsigned int textLength = (unsigned int)text.length();
-//    const char* textCStr = text.c_str();
-//    for(unsigned int i = 0; i<textLength; i++){
-//        //for each character
-//        char c = textCStr[i];
-//        int cInt = (int)c;
-////        cout << "rendering = " << cInt << endl;
-//        if(cInt < 32 || cInt > 126){
-//            cout << "Unsupported text" << endl;
-//            exit(1);
-//        }
-////        get GlyphData
-//        GlyphData gData;
-//        //set validation to false
-//        gData.valid = false;
-//        font->getGlyphDataFromChar(c, gData);
-//        GLuint texObj = gData.texObj;
-//        glBindTexture(GL_TEXTURE_2D, texObj);
-//        glDrawRangeElements(GL_TRIANGLES, i*4, i*4+4, 6, GL_UNSIGNED_SHORT, VOID_OFFSET(i * 6 * sizeof(GLushort)));
-//    }
+
     glBindVertexArray(0);
+    glUseProgram(0);
 }
 
 void Text::splitByNewLine(){

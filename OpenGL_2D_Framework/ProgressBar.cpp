@@ -16,6 +16,10 @@ ProgressBar::~ProgressBar(){
     cout << "Deleting Progress Bar" << endl;
 }
 
+void ProgressBar::initProgressBar(GLenum textureTarget, const std::string barTextureName){
+    
+}
+
 void ProgressBar::computeVertexData(){
     
 }

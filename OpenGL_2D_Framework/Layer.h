@@ -13,13 +13,15 @@
  *  Layer can be inherited by other class or be the class it self
  */
 
-#include "SpriteManager.h"
+//#include "SpriteManager.h"
+#include "RenderableObjectManager.h"
 #include "CommonInclude.h"
 
 class Layer{
 protected:
 private:
-    SpriteManager* spriteManager;
+//    SpriteManager* spriteManager;
+    RenderableObjectManager* renderableObjectManager;
     int z;
     
 public:
@@ -34,7 +36,7 @@ public:
     void setZorder(int z);
     int getZorder();
     
-    void addSprite(SpriteObject* childSprite);
+    void addObject(std::string objectName, RenderableObject* object);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Layer__) */

@@ -28,7 +28,6 @@ private:
     
 public:
     Sprite();
-//    Sprite(Program *ptr);   //create with specific program pointer
     ~Sprite();
 
     //inits

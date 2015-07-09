@@ -22,6 +22,8 @@
 
 class RenderableObject : public Object{
 protected:
+    
+    //vertex array and buffers
     GLuint vao;		//vertex array object
     GLuint vbo;		//vertex buffer object
     GLuint uvbo;	//uv vert buffer object
@@ -64,6 +66,9 @@ private:
 public:
     RenderableObject();
     virtual ~RenderableObject();
+    
+    //global z depth. Making public. no harm.
+    float z;
     
     virtual void setPosition(glm::vec3 position);
     virtual void addPosition(glm::vec3 position);

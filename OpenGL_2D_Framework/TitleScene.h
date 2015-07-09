@@ -51,6 +51,7 @@ public:
 //    virtual void render();
     virtual void injectKey();
     virtual void injectMouseMove();
+    virtual void update() override;
     
     void updateMouseInput();
 };

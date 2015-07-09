@@ -25,14 +25,18 @@ void TitleScene::init(){
 
     bg = new Sprite();
     bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/bg_grid.png");
-    bg->setZ_Depth(0);
-    addSprite(bg);
+    bg->z = 0;
+//    addSprite(bg);
+//    this->addSprite(bg);
+    this->addObject("bg", bg);
     
     creeper = new Sprite();
     creeper->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/battle scene/boss_creeper.png");
-    creeper->setZ_Depth(2);
+    creeper->z = 0;
 //    creeper->type = Sprite::BILLBOARD_TYPE;
-    addSprite(creeper);
+//    addSprite(creeper);
+//    this->addSprite(creeper);
+    this->addObject("creeper", creeper);
     
     //scope in init()
     ActionDelay actionDelayBtw;
@@ -132,12 +136,20 @@ void TitleScene::init(){
     helloWorldText->setTextAlign(Text::TextAlign::ALIGN_LEFT);
 //    helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "Arial.ttf");
     helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "UhBee Kang-Ja.ttf");
-    addText(helloWorldText);
+//    addText(helloWorldText);
+    this->addObject("hellowWorldText", helloWorldText);
+    helloWorldText->z = 99;
 //    delete helloWorldText;
     helloWorldText->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy), new ActionDelay(actionDelayBtw), new ActionRotateBy(rotateByAction), new ActionDelay(actionDelayBtw), new ActionMoveBy(moveByAction), new ActionDelay(actionDelayBtw), new ActionFadeBy(fadeBy), new ActionDelay(actionDelayBtw), new ActionScaleTo(scaleTo), new ActionDelay(actionDelayBtw), new ActionRotateTo(rotateToAction), new ActionDelay(actionDelayBtw), new ActionMoveTo(moveToOriginAction), new ActionDelay(actionDelayBtw), new ActionFadeTo(fadeTo)}, 10);
+//    helloWorldText->setTextRange(1, 20);
     
     glfwSetCursorPos(window, size.w/2, size.h/2);
     cout << "init mouse pos with = (" << size.w/2 << ", " << size.h/2 << ")" << endl;
+}
+
+void TitleScene::update(){
+    Scene::update();
+//    creeper->addPosition(glm::vec3(0, 1, 0));
 }
 
 void TitleScene::keyPressed(int key){

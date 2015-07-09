@@ -24,7 +24,8 @@ opacity(255),
 visible(true),
 progPtr(Director::getInstance().getProgramPtr()),   //get default program
 actionRunning(false),
-boundingBox(new BoundingBox())
+boundingBox(new BoundingBox()),
+z(0)
 {
     cout << "RenderableObject::RenderableObject()" << endl;
     translateTo(position);

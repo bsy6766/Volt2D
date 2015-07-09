@@ -30,3 +30,11 @@ void Object::addPosition(glm::vec3 position){
 glm::vec3 Object::getPosition(){
     return this->position;
 }
+
+std::string Object::getName(){
+    return this->objectName;
+}
+
+void Object::setName(std::string objectName){
+    this->objectName = objectName;
+}

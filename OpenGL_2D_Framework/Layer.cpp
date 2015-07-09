@@ -20,15 +20,15 @@ Layer::~Layer(){
 
 void Layer::init(){
     cout << "Layer init()" << endl;
-    spriteManager = new SpriteManager();
+    renderableObjectManager = new RenderableObjectManager();
 }
 
 void Layer::update(){
-    spriteManager->update();
+    renderableObjectManager->update();
 }
 
 void Layer::render(){
-    spriteManager->render();
+    renderableObjectManager->render();
 }
 
 void Layer::setZorder(int z){
@@ -39,11 +39,11 @@ int Layer::getZorder(){
     return this->z;
 }
 
-void Layer::addSprite(SpriteObject *childSprite){
-    spriteManager->addSprite(childSprite);
+void Layer::addObject(std::string objectName, RenderableObject *object){
+    renderableObjectManager->addObject(objectName, object, false);
 }
 
 void Layer::exit(){
-    if(spriteManager)
-        delete spriteManager;
+    if(renderableObjectManager)
+        delete renderableObjectManager;
 }

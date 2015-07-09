@@ -10,11 +10,13 @@
 #include <GLFW/glfw3.h>
 
 Scene::Scene():
-window(0)
+window(0),
+renderableObjectManager(0),
+prevMousePos(glm::vec2()),
+curMousePos(glm::vec2())
 {
     cout << "Scene()" << endl;
-    spriteManager = new SpriteManager();
-    textManager = new TextManager();
+    renderableObjectManager = new RenderableObjectManager();
 }
 
 Scene::~Scene(){
@@ -32,9 +34,7 @@ void Scene::boundWindow(GLFWwindow *window){
 }
 
 void Scene::update(){
-    //update scene stuff first
-    spriteManager->update();
-    textManager->update();
+    renderableObjectManager->update();
     
     //update layers
     for(auto it : layerMap){
@@ -43,9 +43,7 @@ void Scene::update(){
 }
 
 void Scene::render(){
-    //render scene stuff first
-    spriteManager->render();
-    textManager->render();
+    renderableObjectManager->render();
     
     //render layers
     for(auto it : layerMap){
@@ -59,13 +57,8 @@ void Scene::run(){
     render();
 }
 
-void Scene::addSprite(SpriteObject* childSprite){
-    spriteManager->addSprite(childSprite);
-}
-
-//void Scene::addText(TextObject* childText){
-void Scene::addText(Text* text){
-    textManager->addText(text);
+void Scene::addObject(std::string objectName, RenderableObject* object){
+    renderableObjectManager->addObject(objectName, object, false);
 }
 
 void Scene::addLayer(Layer *childLayer){
@@ -74,8 +67,8 @@ void Scene::addLayer(Layer *childLayer){
 }
 
 void Scene::exit(){
-    delete spriteManager;
-    delete textManager;
+    if(renderableObjectManager)
+        delete renderableObjectManager;
     
     for(auto it : layerMap){
         delete it.second;

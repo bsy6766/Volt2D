@@ -39,20 +39,20 @@ SpriteObject::~SpriteObject(){
 	cout << "Done." << endl;
 }
 
-void SpriteObject::setZ_Depth(float value){
-    if(value >= 100){
-        value = 99;
-    }
-    else if(value < 0){
-        value = 0;
-    }
-    
-    z = value;
-}
-
-float SpriteObject::getZ_Depth(){
-    return z;
-}
+//void SpriteObject::setZ_Depth(float value){
+//    if(value >= 100){
+//        value = 99;
+//    }
+//    else if(value < 0){
+//        value = 0;
+//    }
+//    
+//    z = value;
+//}
+//
+//float SpriteObject::getZ_Depth(){
+//    return z;
+//}
 
 //void SpriteObject::addAction(ActionObject* action){
 //    addAction(action, 0);

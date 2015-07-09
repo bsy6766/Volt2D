@@ -16,12 +16,6 @@ texture(0)
     
 }
 
-//Sprite::Sprite(Program *ptr):
-//SpriteObject(ptr),
-//texture(0){
-//	std::cout << "Sprite created with ID#" << spriteID << std::endl;
-//}
-
 Sprite::~Sprite(){
     spriteID = -1;
 
@@ -44,7 +38,7 @@ void Sprite::initSpriteWithTexture(GLenum _textureTarget, const std::string& _fi
     texture->load();
     texture->getImageSize(w, h);
 
-    z = GLOBAL_Z_VALUE;
+//    z = GLOBAL_Z_VALUE;
     
     computeVertexData();
     loadVertexData();
@@ -59,29 +53,19 @@ void Sprite::render(){
     if(!visible) return;
     if(!texture) return;
     
+    //Camera
+    glUseProgram(progPtr->getObject());
+    
     texture->bind(GL_TEXTURE0);
 
+    glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
+    matrixUniformLocation("cameraMat", cameraMat);
     matrixUniformLocation("modelMat", modelMat);
     matrixUniformLocation("rotateMat", rotateMat);
     matrixUniformLocation("translateMat", translateMat);
     matrixUniformLocation("scaleMat", scaleMat);
     floatUniformLocation("opacity", opacity);
     boolUniformLocation("particle", false);
-    
-//    GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
-//    if(opacityUniformLocation == -1)
-//        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
-//    glUniform1fv(opacityUniformLocation, 1, &opacity);
-//    
-//    GLint particleUniformLocation = glGetUniformLocation(progPtr->getObject(), "particle");
-//    if(particleUniformLocation == -1)
-//        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
-//    glUniform1i(particleUniformLocation, 0);
-    
-//    cout << "angle = " << this->angle << endl;
-//    cout << "opacity = " << this->opacity << endl;
-//    cout << "pos = (" << this->position.x << ", " << this->position.y << ", " << this->position.z << ")" << endl;
-//    cout << "scale = (" << this->scale.x << ", " << this->scale.y << ", " << this->scale.z << ")" << endl;
     
     //bind vertex array.
     glBindVertexArray(vao);
@@ -93,6 +77,7 @@ void Sprite::render(){
     //draw based on indices
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
     glBindVertexArray(0);
+    glUseProgram(0);
 }
 
 void Sprite::updateMatrix(){
