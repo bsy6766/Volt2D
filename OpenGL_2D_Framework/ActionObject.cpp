@@ -16,10 +16,10 @@ alive(true),
 previousTime(0),
 isProtected(false),
 totalElapsedTime(0),
-unusedTime(0),
+//unusedTime(0),
 speed(1),
-duration(-1),
-remainedTimeByDeath(0)
+duration(-1)
+//remainedTimeByDeath(0)
 {
     std::cout << "ActionObject()" << std::endl;
     ACTION_ID++;
@@ -32,9 +32,9 @@ ActionObject::ActionObject(const ActionObject& other){
     this->duration = other.duration;
     this->totalElapsedTime = other.totalElapsedTime;
     this->previousTime = other.previousTime;
-    this->elapsedTime = other.elapsedTime;
-    this->unusedTime = other.unusedTime;
-    this->remainedTimeByDeath = other.remainedTimeByDeath;
+//    this->elapsedTime = other.elapsedTime;
+//    this->unusedTime = other.unusedTime;
+//    this->remainedTimeByDeath = other.remainedTimeByDeath;
     this->speed = other.speed;
     this->owner = other.owner;
     this->objID = other.objID;
@@ -51,25 +51,13 @@ ActionID ActionObject::getActionID(){
     return actionID;
 }
 
-double ActionObject::getTotalElapsedTime(){
-    return totalElapsedTime;
-}
-
-double ActionObject::getPreviousTime(){
-    return previousTime;
-}
-
-double ActionObject::getElapsedTime(){
-    return totalElapsedTime - previousTime;
-}
-
 double ActionObject::getDuration(){
     return duration;
 }
 
-double ActionObject::getRemainedTime(){
-    return remainedTimeByDeath;
-}
+//double ActionObject::getRemainedTime(){
+//    return remainedTimeByDeath;
+//}
 
 //returns unused time
 double ActionObject::setCurrentTime(double elapsedTime){
@@ -81,7 +69,7 @@ double ActionObject::setCurrentTime(double elapsedTime){
         cout << "Total elapsedTime exceeded duration" << endl;
         previousTime = totalElapsedTime;
         totalElapsedTime = duration;
-        this->elapsedTime = totalElapsedTime - previousTime;
+//        this->elapsedTime = totalElapsedTime - previousTime;
 //        cout << "previousTime = " << previousTime << endl;
 //        cout << "totalElapsedTime = " << totalElapsedTime << endl;
         cout << "remaining Time = " << tempTime - duration << endl;
@@ -90,7 +78,7 @@ double ActionObject::setCurrentTime(double elapsedTime){
 
     previousTime = totalElapsedTime;
     totalElapsedTime += elapsedTime;
-    this->elapsedTime = elapsedTime;
+//    this->elapsedTime = elapsedTime;
 //    cout << "previousTime = " << previousTime << endl;
 //    cout << "totalElapsedTime = " << totalElapsedTime << endl;
     return 0;
@@ -124,7 +112,7 @@ void ActionObject::revive(){
         
         totalElapsedTime = 0;
         previousTime = 0;
-        unusedTime = 0;
+//        unusedTime = 0;
         speed = 1;
     }
 }

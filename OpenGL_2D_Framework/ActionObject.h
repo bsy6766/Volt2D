@@ -56,9 +56,9 @@ protected:
     double duration;
     double totalElapsedTime;
     double previousTime;
-    double elapsedTime;
-    double unusedTime;
-    double remainedTimeByDeath;
+//    double elapsedTime;
+//    double unusedTime;
+//    double remainedTimeByDeath;
     double speed;
     
 //    SpriteObject* owner;
@@ -88,11 +88,8 @@ public:
     bool isAlive();
     
     //time functions
-    double getPreviousTime();
-    double getTotalElapsedTime();
-    double getElapsedTime();
     double setCurrentTime(double elapsedTime);
-    double getRemainedTime();
+//    double getRemainedTime();
     
     //setters
     void setSpeed(double speed);
