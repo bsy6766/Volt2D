@@ -20,11 +20,11 @@ public:
     ~ProgressBar();
     
     void initProgressBar(GLenum textureTarget, const std::string barTextureName);
-    void setProgressRate(int rate);
+//    void setProgressRate(int rate);
     
     //virtual
     virtual void computeVertexData();
-    virtual void loadVertex();
+    virtual void loadVertexData();
     virtual void render();
 };
 

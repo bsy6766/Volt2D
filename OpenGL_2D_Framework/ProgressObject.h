@@ -17,28 +17,32 @@
 class ProgressObject : public RenderableObject{
 protected:
     Texture* texture;
-    Texture* bgTexture;
+    
+    int w;
+    int h;
     
     int totalPercentage;    //total percentage. defautl 100%
     int percentageRate;     //rate of each step. default 1%
+    int totalSteps;
     
     int currentPercentage;  //default 100%
-    
-    bool bgEnabled;
-    float bgOpacity;    //defautl 255(1)
     
 private:
 public:
     ProgressObject();
     virtual ~ProgressObject();
     
-    //get current percentage of progress
-    int getPercentage();
     //reset progress bar to initial state
-    void reset();
-    void enableBg();
-    void disableBg();
-    void setBgOpacity(float opacity);
+//    void reset();
+//    void enableBg();
+//    void disableBg();
+//    void setBgOpacity(float opacity);
+    
+//    void setTotalPercentage(int totalPercentage);
+//    void setPercentageRate(int rate);
+    void setPercentage(int percentage);
+//    int getPercentage();
+    
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ProgressObject__) */

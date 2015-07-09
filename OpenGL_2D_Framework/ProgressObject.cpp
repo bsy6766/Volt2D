@@ -13,10 +13,10 @@ RenderableObject(),
 totalPercentage(100),
 percentageRate(1),
 currentPercentage(100),
+totalSteps(100),
 texture(0),
-bgTexture(0),
-bgEnabled(false),
-bgOpacity(255)
+w(-1),
+h(-1)
 {
     cout << "Creating ProgressObject" << endl;
 
@@ -28,25 +28,30 @@ ProgressObject::~ProgressObject(){
         delete texture;
         texture = nullptr;
     }
-    
-    if(bgTexture){
-        delete bgTexture;
-        bgTexture = 0;
-    }
 }
 
-int ProgressObject::getPercentage(){
-    return this->currentPercentage;
+//int ProgressObject::getPercentage(){
+//    return this->currentPercentage;
+//}
+//
+void ProgressObject::setPercentage(int percentage){
+    if(percentage > totalPercentage)
+        percentage = totalPercentage;
+    this->currentPercentage = percentage;
 }
 
-void ProgressObject::enableBg(){
-    this->bgEnabled = true;
-}
+//void ProgressObject::setTotalPercentage(int totalPercentage){
+//    this->totalPercentage
+//}
 
-void ProgressObject::disableBg(){
-    this->bgEnabled = false;
-}
-
-void ProgressObject::setBgOpacity(float opacity){
-    this->bgOpacity = opacity;
-}
+//void ProgressObject::enableBg(){
+//    this->bgEnabled = true;
+//}
+//
+//void ProgressObject::disableBg(){
+//    this->bgEnabled = false;
+//}
+//
+//void ProgressObject::setBgOpacity(float opacity){
+//    this->bgOpacity = opacity;
+//}
