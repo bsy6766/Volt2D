@@ -44,20 +44,22 @@ RenderableObject::~RenderableObject(){
 }
 
 void RenderableObject::setPosition(glm::vec3 position){
-    translateTo(position);
+    this->position = position;
+    glm::vec3 scaledPos = glm::vec3(position.x / 10, position.y / 10, position.z / 10);
+    translateTo(scaledPos);
 }
 
 void RenderableObject::addPosition(glm::vec3 position){
-    translateBy(position);
+    this->position += position;
+    glm::vec3 scaledPos = glm::vec3(position.x / 10, position.y / 10, position.z / 10);
+    translateBy(scaledPos);
 }
 
 void RenderableObject::translateTo(glm::vec3 position){
-    this->position = position;
     translateMat = glm::translate(glm::mat4(), position);
 }
 
 void RenderableObject::translateBy(glm::vec3 distance){
-    this->position += distance;
     translateMat = glm::translate(translateMat, distance);
 }
 
