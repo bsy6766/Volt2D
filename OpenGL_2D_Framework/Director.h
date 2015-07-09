@@ -53,7 +53,8 @@ protected:
     //no one derives from this class!
 private:
     WinSize winSize;
-//    FTFont *font;
+    
+    bool debugMovement = false;
     
     std::string workingDirectory;
     
@@ -117,8 +118,8 @@ public:
     
     void render();
     void update();
-    void updateMouseInput();
-    void updateKeyInput();
+//    void updateMouseInput();
+//    void updateKeyInput();
     std::string getWorkingDir();
 //
 //    /**

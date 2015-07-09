@@ -13,7 +13,8 @@ Scene::Scene():
 window(0),
 renderableObjectManager(0),
 prevMousePos(glm::vec2()),
-curMousePos(glm::vec2())
+curMousePos(glm::vec2()),
+canMoveCamera(false)
 {
     cout << "Scene()" << endl;
     renderableObjectManager = new RenderableObjectManager();

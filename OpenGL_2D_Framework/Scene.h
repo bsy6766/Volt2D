@@ -37,6 +37,8 @@ public:
 //	Scene(Scene const& other);
 //	void operator=(Scene const& other);
     
+    bool canMoveCamera;
+    
     virtual void init() = 0;
     virtual void update();
     virtual void render();

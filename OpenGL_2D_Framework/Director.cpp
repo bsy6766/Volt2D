@@ -335,16 +335,18 @@ void Director::update(){
     }
 }
 
-void Director::updateMouseInput(){
-    double x, y;
-    glfwGetCursorPos(window, &x, &y);
-    prevMousePos = curMousePos;
-    curMousePos.x = x;
-    curMousePos.y = y;
+//void Director::updateMouseInput(){
+//    if(debugMovement){
+//        double x, y;
+//        glfwGetCursorPos(window, &x, &y);
+//        prevMousePos = curMousePos;
+//        curMousePos.x = x;
+//        curMousePos.y = y;
+//        
+//        glm::vec2 mouseDelta = curMousePos - prevMousePos;
+//        camera->changeAngle(0.15f * mouseDelta.y, 0.15f * mouseDelta.x);
+//    }
 
-    glm::vec2 mouseDelta = curMousePos - prevMousePos;
-    camera->changeAngle(0.15f * mouseDelta.y, 0.15f * mouseDelta.x);
-    
 //    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS){
 //        double x, y;
 //        glfwGetCursorPos(window, &x, &y);
@@ -362,44 +364,53 @@ void Director::updateMouseInput(){
 //        prevMousePos.x = x;
 //        prevMousePos.y = y;
 //    }
-}
+//}
 
-void Director::updateKeyInput(){
-    //W,S
-    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-        camera->moveFoward();
-    }
-    else if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
-        camera->moveBackward();
-    }
-    
-    //A,D
-    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-        camera->moveLeft();
-    }
-    else if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-        camera->moveRight();
-    }
-    
-    //Lshift, space
-    if(glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS){
-        camera->moveDown();
-    }
-    else if(glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS){
-        camera->moveUp();
-    }
-    
-    if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS){
-        camera->increaseSpeed();
-    }
-    else if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS){
-        camera->decreaseSpeed();
-    }
-    
-    if(glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS){
-        camera->setPosition(glm::vec3(0, 0, -77.25));
-    }
-}
+//void Director::updateKeyInput(){
+//    //W,S
+//    if(debugMovement) {
+//        if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
+//            camera->moveFoward();
+//        }
+//        else if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
+//            camera->moveBackward();
+//        }
+//        
+//        //A,D
+//        if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
+//            camera->moveLeft();
+//        }
+//        else if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
+//            camera->moveRight();
+//        }
+//        
+//        //Lshift, space
+//        if(glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS){
+//            camera->moveDown();
+//        }
+//        else if(glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS){
+//            camera->moveUp();
+//        }
+//        
+//        if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS){
+//            camera->increaseSpeed();
+//        }
+//        else if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS){
+//            camera->decreaseSpeed();
+//        }
+//    }
+//
+//    if(glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS){
+//        camera->setPosition(glm::vec3(0, 0, -77.25));
+//    }
+//    
+//    if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS){
+//        if(debugMovement)
+//            debugMovement = false;
+//        else
+//            debugMovement = true;
+//    }
+//}
 
 Program* Director::getProgramPtr(std::string programName){
     if(programs.find(programName) != programs.end())

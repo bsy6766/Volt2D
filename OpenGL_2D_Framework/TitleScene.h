@@ -14,6 +14,7 @@
 
 #include "Scene.h"
 #include "Sprite.h"
+#include "ProgressBar.h"
 #include "FontManager.h"
 #include "Text.h"
 #include "BattleScene.h"
@@ -33,6 +34,8 @@ private:
     Sprite* bg;
     Sprite* creeper;
     Sprite* ground;
+    ProgressBar* loadingBar;
+    Sprite* loadingBarBg;
     Text* helloWorldText;
     
     virtual void exit();
