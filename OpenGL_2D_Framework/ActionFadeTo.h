@@ -25,11 +25,7 @@ public:
     ~ActionFadeTo();
     
     void initFadeTo(float opacity, double duration);
-    
-    //get & set
-//    float getFadedOpacity();
-//    void setOriginalOpacity(float opacity);
-    
+
     //virtuals
     virtual void startAction();
     virtual void updateAction(double& remainedTime);

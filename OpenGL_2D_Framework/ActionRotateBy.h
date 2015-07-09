@@ -25,9 +25,6 @@ public:
     ~ActionRotateBy();
     void initRotateBy(float angle, float duration);
     
-    //set & get
-//    float getMovedAngle();
-    
     //virtuals
     virtual void updateAction(double& remainedTime);
     virtual void instantUpdate();

@@ -33,10 +33,6 @@ void ActionFadeBy::initFadeBy(float opacity, double duration){
     this->previousOpacity = 0;
 }
 
-float ActionFadeBy::getFadedOpacity(){
-    return fadedOpacity;
-}
-
 void ActionFadeBy::instantUpdate(){
     fadedOpacity = opacityToFade;
     alive = false;

@@ -36,10 +36,6 @@ void ActionScaleBy::initScaleBy(glm::vec3 scale, double duration){
     this->scaled = glm::vec3();
 }
 
-//glm::vec3 ActionScaleBy::getScaledScale(){
-//    return this->scaled;
-//}
-
 void ActionScaleBy::instantUpdate(){
     scaled = totalScalingAmount;
     this->owner->addScale(scaled);

@@ -25,9 +25,6 @@ public:
     
     void initFadeBy(float opacity, double duration);
     
-    //get & set
-    float getFadedOpacity();
-    
     //virtuals
     virtual void updateAction(double& remainedTime);
     virtual void instantUpdate();

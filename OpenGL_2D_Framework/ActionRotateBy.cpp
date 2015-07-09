@@ -78,10 +78,6 @@ void ActionRotateBy::intervalUpdate(double& remainedTime){
     this->owner->addAngle(movedAngle);
 }
 
-//float ActionRotateBy::getMovedAngle(){
-//    return movedAngle;
-//}
-
 void ActionRotateBy::revive(){
     //revive. original and previous will be updated
     this->previousAngle = 0;

@@ -25,10 +25,6 @@ public:
     
     void initScaleTo(glm::vec3 scale, double duration);
     
-    //get & set
-//    glm::vec3 getScaledScale();
-//    void setCurrentScale(glm::vec3 scale);
-    
     //virtuals
     virtual void startAction();
     virtual void updateAction(double& remainedTime);

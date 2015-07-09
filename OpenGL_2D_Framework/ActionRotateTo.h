@@ -25,10 +25,6 @@ public:
     ~ActionRotateTo();
     void initRotateTo(float angle, float duration);
     
-    //set & get
-//    void setOriginalAngle(float angle);
-//    float getMovedAngle();
-    
     //virtuals
     virtual void startAction();
     virtual void updateAction(double& remainedTime);

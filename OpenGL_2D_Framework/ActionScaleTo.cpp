@@ -44,15 +44,6 @@ void ActionScaleTo::startAction(){
     this->totalScalingAmount = this->destScale - scale;
 }
 
-//void ActionScaleTo::setCurrentScale(glm::vec3 scale){
-//    this->srcScale = scale;
-//    this->totalScalingAmount = this->destScale - scale;
-//}
-//
-//glm::vec3 ActionScaleTo::getScaledScale(){
-//    return this->scaled;
-//}
-
 void ActionScaleTo::instantUpdate(){
     scaled = totalScalingAmount;
     this->owner->setScale(scaled);

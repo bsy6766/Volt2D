@@ -84,15 +84,6 @@ void ActionMoveTo::updateAction(double& remainedTime){
     }
 }
 
-//void ActionMoveTo::setCurrentPos(glm::vec3 pos){
-//    originalPosition = pos;
-//    totalDistance = destination - originalPosition;
-//}
-//
-//glm::vec3 ActionMoveTo::getMovedPosition(){
-//    return movedPosition;
-//}
-
 void ActionMoveTo::revive(){
     movedPosition = glm::vec3();
     //confirm kill

@@ -26,9 +26,6 @@ public:
     
     void initMoveBy(glm::vec3 distance, double duration);
     
-    //set & get
-//    glm::vec3 getMovedDistance();
-    
     //virtuals
     virtual void updateAction(double& remainedTime);
     virtual void instantUpdate();

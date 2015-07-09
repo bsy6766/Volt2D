@@ -26,10 +26,6 @@ public:
     
     void initMoveTo(glm::vec3 destination, double duration);
     
-    //set & get
-//    void setCurrentPos(glm::vec3 pos);
-//    glm::vec3 getMovedPosition();
-    
     //virtuals
     virtual void startAction();
     virtual void updateAction(double& remainedTime);

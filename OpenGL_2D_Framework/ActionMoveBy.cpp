@@ -33,10 +33,6 @@ void ActionMoveBy::initMoveBy(glm::vec3 distance, double duration){
     this->actionID = ActionID::ACTION_MOVE_BY;
 }
 
-//glm::vec3 ActionMoveBy::getMovedDistance(){
-//    return this->movedDistance;
-//}
-
 void ActionMoveBy::updateAction(double& remainedTime){
     if(!alive)
         return;

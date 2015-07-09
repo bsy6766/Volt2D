@@ -53,11 +53,6 @@ void ActionRotateTo::startAction(){
     totalAngleToRotate = destinationAngle - startAngle;
 }
 
-//void ActionRotateTo::setOriginalAngle(float angle){
-//    startAngle = angle * (-1);
-//    totalAngleToRotate = destinationAngle - startAngle;
-//}
-
 void ActionRotateTo::updateAction(double& remainedTime){
     if(!alive)
         return;

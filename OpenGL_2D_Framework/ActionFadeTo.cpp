@@ -51,15 +51,6 @@ void ActionFadeTo::startAction(){
     this->totalOpacityToFade = finalOpacity - originalOpacity;
 }
 
-//void ActionFadeTo::setOriginalOpacity(float opacity){
-//    this->originalOpacity = opacity;
-//    this->totalOpacityToFade = finalOpacity - originalOpacity;
-//}
-//
-//float ActionFadeTo::getFadedOpacity(){
-//    return fadedOpacity;
-//}
-
 void ActionFadeTo::instantUpdate(){
     fadedOpacity = totalOpacityToFade;
     this->owner->setOpacity(fadedOpacity);
