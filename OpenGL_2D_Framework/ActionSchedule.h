@@ -10,17 +10,7 @@
 #define __OpenGL_2D_Framework__ActionSchedule__
 
 #include "CommonInclude.h"
-//#include "SpriteObject.h"
 #include "ActionObject.h"
-//#include "ActionDelay.h"
-//#include "ActionMoveBy.h"
-//#include "ActionMoveTo.h"
-//#include "ActionRotateBy.h"
-//#include "ActionRotateTo.h"
-//#include "ActionFadeBy.h"
-//#include "ActionFadeTo.h"
-//#include "ActionScaleBy.h"
-//#include "ActionScaleTo.h"
 #include <list>
 
 //class SpriteObject;
