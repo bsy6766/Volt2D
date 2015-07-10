@@ -15,6 +15,7 @@
 #include "Scene.h"
 #include "Sprite.h"
 #include "ProgressBar.h"
+#include "progressRadian.h"
 #include "FontManager.h"
 #include "Text.h"
 #include "BattleScene.h"
@@ -35,6 +36,7 @@ private:
     Sprite* creeper;
     Sprite* ground;
     ProgressBar* loadingBar;
+    ProgressRadian* cooldownIcon;
     Sprite* loadingBarBg;
     Text* helloWorldText;
     

@@ -48,6 +48,9 @@ void TitleScene::init(){
     loadingBarBg->setZDepth(1);
     this->addObject("loadingBarBg", loadingBarBg);
     
+    cooldownIcon = new ProgressRadian();
+    cooldownIcon->initProgressRadian(GL_TEXTURE_2D, "../Texture/battle scene/fireball_icon.png");
+    
     //scope in init()
     ActionDelay actionDelayBtw;
     actionDelayBtw.initDelay(1);
@@ -89,11 +92,9 @@ void TitleScene::init(){
     helloWorldText->setTextAlign(Text::TextAlign::ALIGN_LEFT);
 //    helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "Arial.ttf");
     helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "UhBee Kang-Ja.ttf");
-    //    addText(helloWorldText);
     helloWorldText->setZDepth(10);
-//    helloWorldText->z.setZ(99);
     this->addObject("hellowWorldText", helloWorldText);
-//    delete helloWorldText;
+    
     helloWorldText->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy), new ActionDelay(actionDelayBtw), new ActionRotateBy(rotateByAction), new ActionDelay(actionDelayBtw), new ActionMoveBy(moveByAction), new ActionDelay(actionDelayBtw), new ActionFadeBy(fadeBy), new ActionDelay(actionDelayBtw), new ActionScaleTo(scaleTo), new ActionDelay(actionDelayBtw), new ActionRotateTo(rotateToAction), new ActionDelay(actionDelayBtw), new ActionMoveTo(moveToOriginAction), new ActionDelay(actionDelayBtw), new ActionFadeTo(fadeTo)}, 10);
 //    helloWorldText->setTextRange(1, 20);
     
