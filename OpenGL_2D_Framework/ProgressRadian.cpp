@@ -80,11 +80,11 @@ void ProgressRadian::computeVertexData(){
     int indicesIndex = 0;
     //iterate through 100 step and compute vertex
     for(int i = 0; i<100; i++){
-        cout << "i = " << i << endl;
+//        cout << "i = " << i << endl;
         //check corner
         if(i == 12){
             //(2)first corner (top right);
-            cout << "------ Top Right Corner -------" << endl;
+//            cout << "------ Top Right Corner -------" << endl;
             sectionIndex++;
             //set the index to the last element to list.
             gapIndex = (int)heightGapList.size() - 1;
@@ -93,15 +93,15 @@ void ProgressRadian::computeVertexData(){
             //add point after corner point. use the last element of height gap and decrement index for next
             vertexData.push_back(glm::vec3(width/2, heightGapList.at(gapIndex), 0));
             
-            cout << "pos " << indicesIndex << " = (" << width/2 << ", " << height/2 << ", " << 0 << ")" << endl;
-            cout << "pos " << indicesIndex+1 << " = (" << width/2 << ", " << heightGapList.at(gapIndex) << ", " << 0 << ")" << endl;
+//            cout << "pos " << indicesIndex << " = (" << width/2 << ", " << height/2 << ", " << 0 << ")" << endl;
+//            cout << "pos " << indicesIndex+1 << " = (" << width/2 << ", " << heightGapList.at(gapIndex) << ", " << 0 << ")" << endl;
             //same here. add corner point for uv
             uvVertexData.push_back(glm::vec2(1.0, 1.0));
             //add point after corner. use the last element in uvGapList. share index since size of lists are same.
             uvVertexData.push_back(glm::vec2(1.0, 0.5 + uvGapList.at(gapIndex)));
             
-            cout << "uv pos " << indicesIndex << " = (" << 1.0 << ", " << 1.0 << ")" << endl;
-            cout << "uv pos " << indicesIndex << " = (" << 1.0 << ", " << 0.5 + uvGapList.at(gapIndex) << ")" << endl;
+//            cout << "uv pos " << indicesIndex << " = (" << 1.0 << ", " << 1.0 << ")" << endl;
+//            cout << "uv pos " << indicesIndex << " = (" << 1.0 << ", " << 0.5 + uvGapList.at(gapIndex) << ")" << endl;
             
             //now we decrement index
             gapIndex--;
@@ -111,19 +111,19 @@ void ProgressRadian::computeVertexData(){
             indicesData.push_back(0);
             indicesData.push_back(indicesIndex+1);
             indicesData.push_back(indicesIndex+2);
-            cout << "Adding indices" << endl;
-            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
+//            cout << "Adding indices" << endl;
+//            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
             indicesIndex++;
             indicesData.push_back(0);
             indicesData.push_back(indicesIndex+1);
             indicesData.push_back(indicesIndex+2);
-            cout << "Adding indices" << endl;
-            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
+//            cout << "Adding indices" << endl;
+//            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
             indicesIndex++;
         }
         else if(i == 37){
             //bot right corner
-            cout << "------ Bottom Right Corner -------" << endl;
+//            cout << "------ Bottom Right Corner -------" << endl;
             sectionIndex++;
             //next section need to reverse width gap list.
             gapIndex = (int)widthGapList.size() - 1;
@@ -132,15 +132,15 @@ void ProgressRadian::computeVertexData(){
             //add the one next from corner point.(height remains same)
             vertexData.push_back(glm::vec3(widthGapList.at(gapIndex), -height/2, 0));
             
-            cout << "pos " << indicesIndex << " = (" << width/2 << ", " << -height/2 << ", " << 0 << ")" << endl;
-            cout << "pos " << indicesIndex+1 << " = (" << widthGapList.at(gapIndex) << ", " << -height/2 << ", " << 0 << ")" << endl;
+//            cout << "pos " << indicesIndex << " = (" << width/2 << ", " << -height/2 << ", " << 0 << ")" << endl;
+//            cout << "pos " << indicesIndex+1 << " = (" << widthGapList.at(gapIndex) << ", " << -height/2 << ", " << 0 << ")" << endl;
             
             //same here. add corner point for uv
             uvVertexData.push_back(glm::vec2(1.0, 0));
             uvVertexData.push_back(glm::vec2(0.5 + uvGapList.at(gapIndex), 0));
             
-            cout << "uv pos " << indicesIndex << " = (" << 1.0 << ", " << 0 << ")" << endl;
-            cout << "uv pos " << indicesIndex << " = (" << 0.5 + uvGapList.at(gapIndex) << ", " << 0 << ")" << endl;
+//            cout << "uv pos " << indicesIndex << " = (" << 1.0 << ", " << 0 << ")" << endl;
+//            cout << "uv pos " << indicesIndex << " = (" << 0.5 + uvGapList.at(gapIndex) << ", " << 0 << ")" << endl;
             
             //now we decrement index
             gapIndex--;
@@ -149,19 +149,19 @@ void ProgressRadian::computeVertexData(){
             indicesData.push_back(0);
             indicesData.push_back(indicesIndex+1);
             indicesData.push_back(indicesIndex+2);
-            cout << "Adding indices" << endl;
-            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
+//            cout << "Adding indices" << endl;
+//            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
             indicesIndex++;
             indicesData.push_back(0);
             indicesData.push_back(indicesIndex+1);
             indicesData.push_back(indicesIndex+2);
-            cout << "Adding indices" << endl;
-            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
+//            cout << "Adding indices" << endl;
+//            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
             indicesIndex++;
         }
         else if(i == 62){
             //bot left corner
-            cout << "------ Bottom Left Corner -------" << endl;
+//            cout << "------ Bottom Left Corner -------" << endl;
             sectionIndex++;
             //next section need to reverse with gap list
             gapIndex = (int)heightGapList.size() - 1;
@@ -169,14 +169,14 @@ void ProgressRadian::computeVertexData(){
             vertexData.push_back(glm::vec3(-width/2, -height/2, 0));
             vertexData.push_back(glm::vec3(-width/2, (-1) * heightGapList.at(gapIndex), 0));
             
-            cout << "pos " << indicesIndex << " = (" << -width/2 << ", " << -height/2 << ", " << 0 << ")" << endl;
-            cout << "pos " << indicesIndex+1 << " = (" << -width/2 << ", " << (-1) * heightGapList.at(gapIndex) << ", " << 0 << ")" << endl;
+//            cout << "pos " << indicesIndex << " = (" << -width/2 << ", " << -height/2 << ", " << 0 << ")" << endl;
+//            cout << "pos " << indicesIndex+1 << " = (" << -width/2 << ", " << (-1) * heightGapList.at(gapIndex) << ", " << 0 << ")" << endl;
             
             uvVertexData.push_back(glm::vec2(0, 0));
             uvVertexData.push_back(glm::vec2(0, 0.5 - uvGapList.at(gapIndex)));
             
-            cout << "uv pos " << indicesIndex << " = (" << 0 << ", " << 0 << ")" << endl;
-            cout << "uv pos " << indicesIndex << " = (" << 0 << ", " << 0.5 - uvGapList.at(gapIndex) << ")" << endl;
+//            cout << "uv pos " << indicesIndex << " = (" << 0 << ", " << 0 << ")" << endl;
+//            cout << "uv pos " << indicesIndex << " = (" << 0 << ", " << 0.5 - uvGapList.at(gapIndex) << ")" << endl;
             
             gapIndex--;
             
@@ -184,19 +184,19 @@ void ProgressRadian::computeVertexData(){
             indicesData.push_back(0);
             indicesData.push_back(indicesIndex+1);
             indicesData.push_back(indicesIndex+2);
-            cout << "Adding indices" << endl;
-            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
+//            cout << "Adding indices" << endl;
+//            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
             indicesIndex++;
             indicesData.push_back(0);
             indicesData.push_back(indicesIndex+1);
             indicesData.push_back(indicesIndex+2);
-            cout << "Adding indices" << endl;
-            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
+//            cout << "Adding indices" << endl;
+//            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
             indicesIndex++;
         }
         else if(i == 87){
             //top left corner
-            cout << "Top Left Corner" << endl;
+//            cout << "Top Left Corner" << endl;
             sectionIndex++;
             //next section need to reverse with width gap list
             gapIndex = (int)widthGapList.size() - 1;
@@ -204,13 +204,13 @@ void ProgressRadian::computeVertexData(){
             vertexData.push_back(glm::vec3(-width/2, height/2, 0));
             vertexData.push_back(glm::vec3( (-1) * widthGapList.at(gapIndex), height/2, 0));
             
-            cout << "pos " << indicesIndex << " = (" << -width/2 << ", " << height/2 << ", " << 0 << ")" << endl;
-            cout << "pos " << indicesIndex+1 << " = (" << (-1) * widthGapList.at(gapIndex) << ", " << height/2 << ", " << 0 << ")" << endl;
+//            cout << "pos " << indicesIndex << " = (" << -width/2 << ", " << height/2 << ", " << 0 << ")" << endl;
+//            cout << "pos " << indicesIndex+1 << " = (" << (-1) * widthGapList.at(gapIndex) << ", " << height/2 << ", " << 0 << ")" << endl;
             
             uvVertexData.push_back(glm::vec2(0, 1));
             uvVertexData.push_back(glm::vec2(0.5 - uvGapList.at(gapIndex), 1));
-            cout << "uv pos " << indicesIndex << " = (" << 0 << ", " << 1 << ")" << endl;
-            cout << "uv pos " << indicesIndex << " = (" << 0.5 - uvGapList.at(gapIndex) << ", " << 1 << ")" << endl;
+//            cout << "uv pos " << indicesIndex << " = (" << 0 << ", " << 1 << ")" << endl;
+//            cout << "uv pos " << indicesIndex << " = (" << 0.5 - uvGapList.at(gapIndex) << ", " << 1 << ")" << endl;
             
             gapIndex--;
             
@@ -218,14 +218,14 @@ void ProgressRadian::computeVertexData(){
             indicesData.push_back(0);
             indicesData.push_back(indicesIndex+1);
             indicesData.push_back(indicesIndex+2);
-            cout << "Adding indices" << endl;
-            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
+//            cout << "Adding indices" << endl;
+//            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
             indicesIndex++;
             indicesData.push_back(0);
             indicesData.push_back(indicesIndex+1);
             indicesData.push_back(indicesIndex+2);
-            cout << "Adding indices" << endl;
-            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
+//            cout << "Adding indices" << endl;
+//            cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
             indicesIndex++;
         }
         else{
@@ -242,20 +242,20 @@ void ProgressRadian::computeVertexData(){
                         vertexData.push_back(glm::vec3(widthGapList.at(0), height/2, 0));
 //                        indicesData.push_back(1);
 //                        indicesData.push_back(2);
-                        cout << "Adding starting pos" << endl;
-                        cout << "pos " << 1 << " = (" << 0 << ", " << height/2 << ", " << 0 << ")" << endl;
-                        cout << "pos " << 2 << " = (" << widthGapList.at(0) << ", " << height/2 << ", " << 0 << ")" << endl;
+//                        cout << "Adding starting pos" << endl;
+//                        cout << "pos " << 1 << " = (" << 0 << ", " << height/2 << ", " << 0 << ")" << endl;
+//                        cout << "pos " << 2 << " = (" << widthGapList.at(0) << ", " << height/2 << ", " << 0 << ")" << endl;
                         uvVertexData.push_back(glm::vec2(0.5, 1.0));
                         uvVertexData.push_back(glm::vec2(0.5 + uvGapList.at(0), 1.0));
-                        cout << "uv pos " << 1 << " = (" << 0.5 << ", " << 1.0 << ")" << endl;
-                        cout << "uv pos " << 2 << " = (" << 0.5 + uvGapList.at(0) << ", " << 1.0 << ")" << endl;
+//                        cout << "uv pos " << 1 << " = (" << 0.5 << ", " << 1.0 << ")" << endl;
+//                        cout << "uv pos " << 2 << " = (" << 0.5 + uvGapList.at(0) << ", " << 1.0 << ")" << endl;
                     }
                     else{
                         //(1-2)from the starting point to right before the top right corner
                         vertexData.push_back(glm::vec3(widthGapList.at(gapIndex), height/2, 0));
-                        cout << "pos " << indicesIndex << " = (" << widthGapList.at(gapIndex) << ", " << height/2 << ", " << 0 << ")" << endl;
+//                        cout << "pos " << indicesIndex << " = (" << widthGapList.at(gapIndex) << ", " << height/2 << ", " << 0 << ")" << endl;
                         uvVertexData.push_back(glm::vec2(0.5 + uvGapList.at(gapIndex), 1.0));
-                        cout << "uv pos " << indicesIndex << " = (" << 0.5 + uvGapList.at(gapIndex)<< ", " << 1.0 << ")" << endl;
+//                        cout << "uv pos " << indicesIndex << " = (" << 0.5 + uvGapList.at(gapIndex)<< ", " << 1.0 << ")" << endl;
                     }
                     gapIndex++;
                     break;
@@ -267,12 +267,12 @@ void ProgressRadian::computeVertexData(){
 
                     if(gapIndex == -1){
                         //add right mid point
-                        cout << "right mid point" << endl;
+//                        cout << "right mid point" << endl;
                         vertexData.push_back(glm::vec3(width/2, 0, 0));
                         uvVertexData.push_back(glm::vec2(1.0, 0.5));
                         
-                        cout << "pos " << indicesIndex << " = (" << width/2 << ", " << 0 << ", " << 0 << ")" << endl;
-                        cout << "uv pos " << indicesIndex << " = (" << 1.0 << ", " << 0.5 << ")" << endl;
+//                        cout << "pos " << indicesIndex << " = (" << width/2 << ", " << 0 << ", " << 0 << ")" << endl;
+//                        cout << "uv pos " << indicesIndex << " = (" << 1.0 << ", " << 0.5 << ")" << endl;
                         //now increment index
                         gapIndex++;
                     }
@@ -282,8 +282,8 @@ void ProgressRadian::computeVertexData(){
                             vertexData.push_back(glm::vec3(width/2, heightGapList.at(gapIndex), 0));
                             uvVertexData.push_back(glm::vec2(1.0, 0.5 + uvGapList.at(gapIndex)));
                             
-                            cout << "pos " << indicesIndex << " = (" << width/2 << ", " << heightGapList.at(gapIndex) << ", " << 0 << ")" << endl;
-                            cout << "uv pos " << indicesIndex << " = (" << 1 << ", " << 0.5 + uvGapList.at(gapIndex) << ")" << endl;
+//                            cout << "pos " << indicesIndex << " = (" << width/2 << ", " << heightGapList.at(gapIndex) << ", " << 0 << ")" << endl;
+//                            cout << "uv pos " << indicesIndex << " = (" << 1 << ", " << 0.5 + uvGapList.at(gapIndex) << ")" << endl;
                             gapIndex--;
                         }
                         else{
@@ -291,8 +291,8 @@ void ProgressRadian::computeVertexData(){
                             vertexData.push_back(glm::vec3(width/2, (-1) * heightGapList.at(gapIndex) , 0));
                             uvVertexData.push_back(glm::vec2(1.0, 0.5 - uvGapList.at(gapIndex)));
                             
-                            cout << "pos " << indicesIndex << " = (" << width/2 << ", " << (-1) * heightGapList.at(gapIndex) << ", " << 0 << ")" << endl;
-                            cout << "uv pos " << indicesIndex << " = (" << 1.0 << ", " << 0.5 - uvGapList.at(gapIndex) << ")" << endl;
+//                            cout << "pos " << indicesIndex << " = (" << width/2 << ", " << (-1) * heightGapList.at(gapIndex) << ", " << 0 << ")" << endl;
+//                            cout << "uv pos " << indicesIndex << " = (" << 1.0 << ", " << 0.5 - uvGapList.at(gapIndex) << ")" << endl;
                             gapIndex++;
                         }
                     }
@@ -306,12 +306,12 @@ void ProgressRadian::computeVertexData(){
                     
                     if(gapIndex == -1){
                         //add bottom mid point
-                        cout << "bottom mid point" << endl;
+//                        cout << "bottom mid point" << endl;
                         vertexData.push_back(glm::vec3(0, -height/2, 0));
                         uvVertexData.push_back(glm::vec2(0.5, 0));
                         
-                        cout << "pos " << indicesIndex << " = (" << 0 << ", " << -height/2 << ", " << 0 << ")" << endl;
-                        cout << "uv pos " << indicesIndex << " = (" << 0.5 << ", " << 0 << ")" << endl;
+//                        cout << "pos " << indicesIndex << " = (" << 0 << ", " << -height/2 << ", " << 0 << ")" << endl;
+//                        cout << "uv pos " << indicesIndex << " = (" << 0.5 << ", " << 0 << ")" << endl;
                         gapIndex++;
                     }
                     else{
@@ -319,16 +319,16 @@ void ProgressRadian::computeVertexData(){
                             //right of bottom side
                             vertexData.push_back(glm::vec3(widthGapList.at(gapIndex), -width/2, 0));
                             uvVertexData.push_back(glm::vec2(0.5 + uvGapList.at(gapIndex), 0));
-                            cout << "pos " << indicesIndex << " = (" << widthGapList.at(gapIndex) << ", " << -width/2 << ", " << 0 << ")" << endl;
-                            cout << "uv pos " << indicesIndex << " = (" << 0.5 + uvGapList.at(gapIndex) << ", " << 0 << ", " << 0 << ")" << endl;
+//                            cout << "pos " << indicesIndex << " = (" << widthGapList.at(gapIndex) << ", " << -width/2 << ", " << 0 << ")" << endl;
+//                            cout << "uv pos " << indicesIndex << " = (" << 0.5 + uvGapList.at(gapIndex) << ", " << 0 << ", " << 0 << ")" << endl;
                             gapIndex--;
                         }
                         else{
                             //left of bototm side
                             vertexData.push_back(glm::vec3( (-1) * widthGapList.at(gapIndex), -width/2, 0));
                             uvVertexData.push_back(glm::vec2(0.5 - uvGapList.at(gapIndex), 0));
-                            cout << "pos " << indicesIndex << " = (" << (-1) * widthGapList.at(gapIndex) << ", " << -width/2 << ", " << 0 << ")" << endl;
-                            cout << "uv pos " << indicesIndex << " = (" << 0.5 - uvGapList.at(gapIndex) << ", " << 0 << ", " << 0 << ")" << endl;
+//                            cout << "pos " << indicesIndex << " = (" << (-1) * widthGapList.at(gapIndex) << ", " << -width/2 << ", " << 0 << ")" << endl;
+//                            cout << "uv pos " << indicesIndex << " = (" << 0.5 - uvGapList.at(gapIndex) << ", " << 0 << ", " << 0 << ")" << endl;
                             gapIndex++;
                         }
                     }
@@ -339,26 +339,26 @@ void ProgressRadian::computeVertexData(){
                     //left side. Same -width, height varies
                     
                     if(gapIndex == -1){
-                        cout << "left mid point" << endl;
+//                        cout << "left mid point" << endl;
                         vertexData.push_back(glm::vec3(-width/2, 0, 0));
                         uvVertexData.push_back(glm::vec2(0, 0.5));
-                        cout << "pos " << indicesIndex << " = (" << -width/2 << ", " << 0 << ", " << 0 << ")" << endl;
-                        cout << "uv pos " << indicesIndex << " = (" << 0 << ", " << 0.5 << ")" << endl;
+//                        cout << "pos " << indicesIndex << " = (" << -width/2 << ", " << 0 << ", " << 0 << ")" << endl;
+//                        cout << "uv pos " << indicesIndex << " = (" << 0 << ", " << 0.5 << ")" << endl;
                         gapIndex++;
                     }
                     else{
                         if(i <= 73){
                             vertexData.push_back(glm::vec3(-width/2, (-1) * heightGapList.at(gapIndex), 0));
                             uvVertexData.push_back(glm::vec2(0, 0.5 - uvGapList.at(gapIndex)));
-                            cout << "pos " << indicesIndex << " = (" << -width/2 << ", " << (-1) * heightGapList.at(gapIndex) << ", " << 0 << ")" << endl;
-                            cout << "uv pos " << indicesIndex << " = (" << 0 << ", " << 0.5 - uvGapList.at(gapIndex) << ")" << endl;
+//                            cout << "pos " << indicesIndex << " = (" << -width/2 << ", " << (-1) * heightGapList.at(gapIndex) << ", " << 0 << ")" << endl;
+//                            cout << "uv pos " << indicesIndex << " = (" << 0 << ", " << 0.5 - uvGapList.at(gapIndex) << ")" << endl;
                             gapIndex--;
                         }
                         else{
                             vertexData.push_back(glm::vec3(-width/2, heightGapList.at(gapIndex), 0));
                             uvVertexData.push_back(glm::vec2(0, 0.5 + uvGapList.at(gapIndex)));
-                            cout << "pos " << indicesIndex << " = (" << -width/2 << ", " << heightGapList.at(gapIndex) << ", " << 0 << ")" << endl;
-                            cout << "uv pos " << indicesIndex << " = (" << 0 << ", " << 0.5 + uvGapList.at(gapIndex) << ")" << endl;
+//                            cout << "pos " << indicesIndex << " = (" << -width/2 << ", " << heightGapList.at(gapIndex) << ", " << 0 << ")" << endl;
+//                            cout << "uv pos " << indicesIndex << " = (" << 0 << ", " << 0.5 + uvGapList.at(gapIndex) << ")" << endl;
                             gapIndex++;
                         }
                     }
@@ -370,14 +370,14 @@ void ProgressRadian::computeVertexData(){
                     if(i != 99){
                         vertexData.push_back(glm::vec3( -widthGapList.at(gapIndex), height/2, 0));
                         uvVertexData.push_back(glm::vec2( 0.5-uvGapList.at(gapIndex), 1.0));
-                        cout << "pos " << indicesIndex << " = (" << -widthGapList.at(gapIndex) << ", " << height/2 << ", " << 0 << ")" << endl;
-                        cout << "uv pos " << indicesIndex << " = (" << 0.5-uvGapList.at(gapIndex) << ", " << 1.0 << ")" << endl;
+//                        cout << "pos " << indicesIndex << " = (" << -widthGapList.at(gapIndex) << ", " << height/2 << ", " << 0 << ")" << endl;
+//                        cout << "uv pos " << indicesIndex << " = (" << 0.5-uvGapList.at(gapIndex) << ", " << 1.0 << ")" << endl;
                         gapIndex--;
                     }
-                    else{
-                        //last point is same as starting pos.
-                        cout << "skipping last spot. shares the starting one" << endl;
-                    }
+//                    else{
+//                        //last point is same as starting pos.
+//                        cout << "skipping last spot. shares the starting one" << endl;
+//                    }
                     
                     break;
                 }
@@ -388,21 +388,19 @@ void ProgressRadian::computeVertexData(){
                 }
             }//switch end
             
-            cout << "Adding indices" << endl;
+//            cout << "Adding indices" << endl;
             indicesData.push_back(0);
             indicesData.push_back(indicesIndex+1);
             if(i == 99){
                 indicesData.push_back(1);
-                cout << 0 << ", " << indicesIndex+1 << ", " << 1 << endl;
+//                cout << 0 << ", " << indicesIndex+1 << ", " << 1 << endl;
             }
             else{
                 indicesData.push_back(indicesIndex+2);
-                cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
+//                cout << 0 << ", " << indicesIndex+1 << ", " << indicesIndex + 2 << endl;
             }
             
-//            gapIndex++;
             indicesIndex++;
-//            curAngle+=3.6f;
         }//if end
     }//for end
 }

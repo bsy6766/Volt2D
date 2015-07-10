@@ -33,15 +33,7 @@ private:
 public:
     ProgressObject();
     virtual ~ProgressObject();
-    
-    //reset progress bar to initial state
-//    void reset();
-//    void enableBg();
-//    void disableBg();
-//    void setBgOpacity(float opacity);
-    
-//    void setTotalPercentage(int totalPercentage);
-//    void setPercentageRate(int rate);
+
     void setPercentage(int percentage);
     void addPercentage(int percentage);
     int getPercentage();

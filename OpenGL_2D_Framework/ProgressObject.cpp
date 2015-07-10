@@ -46,19 +46,3 @@ void ProgressObject::addPercentage(int percentage){
         sum = totalPercentage;
     currentPercentage = sum;
 }
-
-//void ProgressObject::setTotalPercentage(int totalPercentage){
-//    this->totalPercentage
-//}
-
-//void ProgressObject::enableBg(){
-//    this->bgEnabled = true;
-//}
-//
-//void ProgressObject::disableBg(){
-//    this->bgEnabled = false;
-//}
-//
-//void ProgressObject::setBgOpacity(float opacity){
-//    this->bgOpacity = opacity;
-//}
