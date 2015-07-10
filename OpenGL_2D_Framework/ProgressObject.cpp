@@ -30,14 +30,21 @@ ProgressObject::~ProgressObject(){
     }
 }
 
-//int ProgressObject::getPercentage(){
-//    return this->currentPercentage;
-//}
-//
+int ProgressObject::getPercentage(){
+    return this->currentPercentage;
+}
+
 void ProgressObject::setPercentage(int percentage){
     if(percentage > totalPercentage)
         percentage = totalPercentage;
     this->currentPercentage = percentage;
+}
+
+void ProgressObject::addPercentage(int percentage){
+    int sum = percentage + this->currentPercentage;
+    if(sum > totalPercentage)
+        sum = totalPercentage;
+    currentPercentage = sum;
 }
 
 //void ProgressObject::setTotalPercentage(int totalPercentage){

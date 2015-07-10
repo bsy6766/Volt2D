@@ -8,8 +8,6 @@
 
 #include "ProgressBar.h"
 
-#define VOID_OFFSET(i) (GLvoid*)(i)
-
 ProgressBar::ProgressBar(){
     cout << "Creating Progress Bar" << endl;
 }

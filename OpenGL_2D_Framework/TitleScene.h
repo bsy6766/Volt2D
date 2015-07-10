@@ -40,6 +40,8 @@ private:
     Sprite* loadingBarBg;
     Text* helloWorldText;
     
+    bool keyLockL = false;
+    
     virtual void exit();
     
 public:

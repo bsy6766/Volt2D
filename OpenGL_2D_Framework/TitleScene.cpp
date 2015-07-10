@@ -50,6 +50,10 @@ void TitleScene::init(){
     
     cooldownIcon = new ProgressRadian();
     cooldownIcon->initProgressRadian(GL_TEXTURE_2D, "../Texture/battle scene/fireball_icon.png");
+    cooldownIcon->setPosition(glm::vec3(200, -150, 0));
+    cooldownIcon->setZDepth(30);
+    cooldownIcon->setPercentage(0);
+    this->addObject("cooldownIcon", cooldownIcon);
     
     //scope in init()
     ActionDelay actionDelayBtw;
@@ -177,6 +181,15 @@ void TitleScene::injectKey(){
     }
     else if(glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE){
         loadingBar->setPercentage(25);
+    }
+    
+    if(!keyLockL && glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS){
+        cooldownIcon->addPercentage(1);
+        cout << "cur % = " << cooldownIcon->getPercentage() << endl;
+        keyLockL = true;
+    }
+    else if(keyLockL && glfwGetKey(window, GLFW_KEY_L) == GLFW_RELEASE){
+        keyLockL = false;
     }
 }
 

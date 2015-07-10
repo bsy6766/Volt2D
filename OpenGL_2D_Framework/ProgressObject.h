@@ -14,6 +14,8 @@
 #include "Timer.h"
 #include "RenderableObject.h"
 
+#define VOID_OFFSET(i) (GLvoid*)(i)
+
 class ProgressObject : public RenderableObject{
 protected:
     Texture* texture;
@@ -41,7 +43,8 @@ public:
 //    void setTotalPercentage(int totalPercentage);
 //    void setPercentageRate(int rate);
     void setPercentage(int percentage);
-//    int getPercentage();
+    void addPercentage(int percentage);
+    int getPercentage();
     
 };
 
