@@ -18,6 +18,8 @@ loaded(false),
 align(ALIGN_RIGHT),
 start(-1),
 end(-1),
+width(0),
+height(0),
 fontColor(glm::vec3(255, 255, 255)) //RGB
 {
     this->progPtr = Director::getInstance().getProgramPtr("Text");
@@ -26,12 +28,7 @@ fontColor(glm::vec3(255, 255, 255)) //RGB
 
 Text::~Text(){
         //RenderableObject deletes buffer on destructor
-//    glDeleteVertexArrays(1, &vao);
-//    glDeleteBuffers(1, &vbo);
-//    glDeleteBuffers(1, &uvbo);
-//    glDeleteBuffers(1, &ibo);
     translationData.clear();
-//    glDeleteBuffers(1, &vtbo);
 }
 
 void Text::initText(std::string label, std::string fontName = "arial.tff"){
@@ -43,6 +40,8 @@ void Text::initText(std::string label, std::string fontName = "arial.tff"){
         end = (int)strlen(label.c_str()) - 1;
         computeVertexData();
         loadVertexData();
+        
+        this->boundingBox = new BoundingBox(-width/2, -height/2, width/2, height/2);
     }
 }
 
@@ -78,7 +77,6 @@ void Text::computeVertexData(){
     //clear vertex data
     vertexData.clear();
     uvVertexData.clear();
-//    textureObjectData.clear();
     indicesData.clear();
     
     Font* font = FontManager::getInstance().getFont(fontName);
@@ -94,12 +92,6 @@ void Text::computeVertexData(){
     std::vector<glm::vec2> originList;
     splitByNewLine();
     getMaxValues(font, totalWidth, maxHeight, originList);
-    
-//    if(maxHeight == 0 || totalWidth == 0)
-//        return;
-//    
-//    cout << "totalWidth = " << totalWidth << endl;
-//    cout << "maxHeight = " << maxHeight << endl;
     
     unsigned short indicesIndex = 0;
     int index = 0;
@@ -178,71 +170,6 @@ void Text::computeVertexData(){
             indicesIndex++;
         }
     }
-    
-//    for(unsigned int i = 0; i<text.length(); i++){
-//        //for each character
-//        char c = text[i];
-//        //get GlyphData
-//        GlyphData gData;
-//        //set validation to false
-//        gData.valid = false;
-//        font->getGlyphDataFromChar(c, gData);
-//        //if validation is still false, this char doesn't exist in font. Ignore it
-//        //TODO: let user to choose wheter to break the loop and leave as unloaded text or ignore missing chars
-//        if(!gData.valid)
-//            continue;
-//        
-////        //add texture object for that char
-////        textureObjectData.push_back(gData.texObj);
-//        
-//        //add vertex data
-//        int bearingY = (int)(gData.metrics.horiBearingY >> 6);
-//        int height = (int)(gData.metrics.height >> 6);
-//        int width = (int)(gData.metrics.width >> 6);
-//        
-//        if(c == ' ')
-//            width = 15;
-//        
-//        glm::vec2 p1 = glm::vec2(origin.x, origin.y - (height - bearingY)); //left bottom
-//        glm::vec2 p2 = glm::vec2(origin.x + width, origin.y + bearingY);
-//        
-//        cout << "p1 = (" << p1.x << ", " << p1.y << ", 0)" << endl;
-//        cout << "p2 = (" << p2.x << ", " << p2.y << ", 0)" << endl;
-//        p1 /= 10;
-//        p2 /= 10;
-//        
-//        vertexData.push_back(glm::vec3(p1.x, p1.y, 0)); //Left bottom
-//        vertexData.push_back(glm::vec3(p1.x, p2.y, 0)); //Left top
-//        vertexData.push_back(glm::vec3(p2.x, p1.y, 0)); //Right bottom
-//        vertexData.push_back(glm::vec3(p2.x, p2.y, 0)); //Right top
-//        
-//        
-////        cout << "bot left: ( " << p1.x << ", " << p1.y << ", 0)" << endl;
-////        cout << "top left: ( " << p1.x << ", " << p2.y << ", 0)" << endl;
-////        cout << "bot right: ( " << p2.x << ", " << p1.y << ", 0)" << endl;
-////        cout << "top right: ( " << p2.x << ", " << p2.y << ", 0)" << endl;
-//        
-//        //add uv coord. This is different from Sprite class because we didn't use stb_image to load and flip font texture.
-//        uvVertexData.push_back(glm::vec2(0, 1));	//top left
-//        uvVertexData.push_back(glm::vec2(0, 0));	//bot left
-//        uvVertexData.push_back(glm::vec2(1, 1));	//top right
-//        uvVertexData.push_back(glm::vec2(1, 0));	//bot right
-//        
-//        //add indices based on char
-//        indicesData.push_back(indicesIndex * 4);
-//        indicesData.push_back(indicesIndex * 4 + 1);
-//        indicesData.push_back(indicesIndex * 4 + 2);
-//        indicesData.push_back(indicesIndex * 4 + 1);
-//        indicesData.push_back(indicesIndex * 4 + 2);
-//        indicesData.push_back(indicesIndex * 4 + 3);
-//        
-//        //advance origin
-//        origin.x += (gData.metrics.horiAdvance >> 6);
-//        
-//        indicesIndex++;
-//    }
-    
-
 }
 
 void Text::loadVertexData(){
@@ -279,38 +206,6 @@ void Text::loadVertexData(){
 
 void Text::getMaxValues(Font* font, int &width, int &height, std::vector<glm::vec2>& originList){
     originList.clear();
-//    width = 0;
-//    height = 0;
-//    int bearingY = 0;
-//    origin = glm::vec2(0, 0);
-    
-//    for(unsigned int i = 0; i<text.length(); i++){
-//        //for each character
-//        char c = text[i];
-//        //get GlyphData
-//        GlyphData gData;
-//        //set validation to false
-//        gData.valid = false;
-//        font->getGlyphDataFromChar(c, gData);
-//        //if validation is still false, this char doesn't exist in font. Ignore it
-//        //TODO: let user to choose wheter to break the loop and leave as unloaded text or ignore missing chars
-//        if(!gData.valid)
-//            continue;
-//        
-//        width += (gData.metrics.width >> 6);
-//        int newHeight = (int)(gData.metrics.height >> 6);
-//        if(newHeight >= height)
-//            height = newHeight;
-//        
-//        int newBearingY = (int)(gData.metrics.horiBearingY >> 6);
-//        if(newBearingY >= bearingY){
-//            bearingY = newBearingY;
-//        }
-//    }
-    
-//    int bottomY = height - bearingY;
-//    origin.x = width/2 * (-1);
-//    origin.y = 0 - (height/2 - bottomY);
     
     int w = 0;
     int h = 0;
@@ -375,9 +270,7 @@ void Text::getMaxValues(Font* font, int &width, int &height, std::vector<glm::ve
         
         widthList.push_back(w);
     }
-//    
-//    int offset = 0;
-//    int index = 0;
+//
     int lineNumber = (int)originList.size();
     int lineSpace = font->getLineSpace();
 
@@ -401,13 +294,8 @@ void Text::getMaxValues(Font* font, int &width, int &height, std::vector<glm::ve
         originIndex++;
     }
     
-//    for(auto it = offsetY.begin(); it != offsetY.end(); it++){
-//        offset -= (*it);
-//        originList.at(index).y = (offset + baseY);
-//        index++;
-//        it++;
-//        offset -= (*it);
-//    }
+    this->width = maxWidth;
+    this->height = totalHeight;
 }
 
 bool Text::hasEmptyText(){

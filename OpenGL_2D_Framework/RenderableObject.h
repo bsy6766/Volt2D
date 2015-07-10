@@ -56,6 +56,7 @@ protected:
     GLfloat opacity;
     
     BoundingBox* boundingBox;
+    bool needToUpdateBB;
     
     //for rendering with shader
     Program *progPtr;
@@ -107,6 +108,9 @@ public:
     GLfloat getScaleX();
     GLfloat getScaleY();
     GLfloat getScaleZ();
+    
+    //bounding box
+    BoundingBox* const getBoundingBox();
     
     //z depth
     void setZDepth(float z);

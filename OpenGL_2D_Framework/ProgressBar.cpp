@@ -24,10 +24,7 @@ void ProgressBar::initProgressBar(GLenum textureTarget, const std::string barTex
     computeVertexData();
     loadVertexData();
     
-    boundingBox->x = vertexData.at(0).x;
-    boundingBox->y = vertexData.at(0).y;
-    boundingBox->w = w;
-    boundingBox->h = h;
+    this->boundingBox = new BoundingBox(-this->w/2, -this->h/2, this->w/2, this->h/2);
 }
 
 void ProgressBar::computeVertexData(){

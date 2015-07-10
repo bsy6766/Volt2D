@@ -24,13 +24,14 @@ opacity(255),
 visible(true),
 progPtr(Director::getInstance().getProgramPtr()),   //get default program
 actionRunning(false),
-boundingBox(new BoundingBox())
+needToUpdateBB(false),
+boundingBox(0)
 {
     cout << "RenderableObject::RenderableObject()" << endl;
-    translateTo(position);
-    rotateTo(angle, glm::vec3(0, 0, 1));
-    scaleTo(scale);
-    setOpacity(opacity);
+//    translateTo(position);
+//    rotateTo(angle, glm::vec3(0, 0, 1));
+//    scaleTo(scale);
+//    setOpacity(opacity);
 //    progPtr = Director::getInstance().getProgramPtr();
 }
 
@@ -45,22 +46,24 @@ RenderableObject::~RenderableObject(){
 
 void RenderableObject::setPosition(glm::vec3 position){
     this->position = position;
-    glm::vec3 scaledPos = glm::vec3(position.x / 10, position.y / 10, position.z / 10);
-    translateTo(scaledPos);
+    translateTo(position);
 }
 
 void RenderableObject::addPosition(glm::vec3 position){
     this->position += position;
-    glm::vec3 scaledPos = glm::vec3(position.x / 10, position.y / 10, position.z / 10);
-    translateBy(scaledPos);
+    translateBy(position);
 }
 
 void RenderableObject::translateTo(glm::vec3 position){
-    translateMat = glm::translate(glm::mat4(), position);
+    glm::vec3 scaledPos = glm::vec3(position.x / 10, position.y / 10, position.z / 10);
+    translateMat = glm::translate(glm::mat4(), scaledPos);
+    needToUpdateBB = true;
 }
 
 void RenderableObject::translateBy(glm::vec3 distance){
-    translateMat = glm::translate(translateMat, distance);
+    glm::vec3 scaledDistance = glm::vec3(distance.x / 10, distance.y / 10, distance.z / 10);
+    translateMat = glm::translate(translateMat, scaledDistance);
+    needToUpdateBB = true;
 }
 
 void RenderableObject::setAngle(GLfloat angle, glm::vec3 axis){
@@ -91,7 +94,7 @@ void RenderableObject::rotateTo(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 
     wrapAngle(angle);
     rotateMat = glm::rotate(glm::mat4(), angle, axis);
     this->angle = angle;
-//    wrapAngle(this->angle);
+    needToUpdateBB = true;
 }
 
 void RenderableObject::rotateBy(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
@@ -99,6 +102,7 @@ void RenderableObject::rotateBy(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 
     this->angle += angle;
     wrapAngle(this->angle);
     rotateMat = glm::rotate(rotateMat, angle, axis);
+    needToUpdateBB = true;
 }
 
 glm::vec3 RenderableObject::getScale(){
@@ -128,11 +132,13 @@ void RenderableObject::addScale(glm::vec3 scale){
 void RenderableObject::scaleTo(glm::vec3 scale){
     this->scale = scale;
     scaleMat = glm::scale(glm::mat4(), scale);
+    needToUpdateBB = true;
 }
 
 void RenderableObject::scaleBy(glm::vec3 scale){
     this->scale += scale;
     scaleMat = glm::scale(glm::mat4(), this->scale);
+    needToUpdateBB = true;
 }
 
 void RenderableObject::setOpacity(GLfloat opacity){
@@ -336,4 +342,14 @@ void RenderableObject::bindScene(Scene *scenePtr){
 
 void RenderableObject::unbindScene(){
     this->scene = 0;
+}
+
+BoundingBox* const RenderableObject::getBoundingBox(){
+    if(this->boundingBox && needToUpdateBB)
+        this->boundingBox->updateBoundingBox(
+                                             glm::translate(glm::mat4(), this->position),
+                                             this->scaleMat,
+                                             this->rotateMat);
+    needToUpdateBB = false;
+    return this->boundingBox;
 }

@@ -55,6 +55,21 @@ void TitleScene::init(){
     cooldownIcon->setPercentage(0);
     this->addObject("cooldownIcon", cooldownIcon);
     
+    mouseCursor = new Sprite();
+    mouseCursor->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/mouse_icon.png");
+    mouseCursor->setZDepth(9999);
+    this->addObject("mouseCursor", mouseCursor);
+    
+    originPoint = new Sprite();
+    originPoint->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/point.png");
+    originPoint->setZDepth(998);
+    this->addObject("originPoint", originPoint);
+    
+    endPoint = new Sprite();
+    endPoint->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/point.png");
+    endPoint->setZDepth(999);
+    this->addObject("endPoint", endPoint);
+    
     //scope in init()
     ActionDelay actionDelayBtw;
     actionDelayBtw.initDelay(1);
@@ -97,9 +112,10 @@ void TitleScene::init(){
 //    helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "Arial.ttf");
     helloWorldText->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "UhBee Kang-Ja.ttf");
     helloWorldText->setZDepth(10);
+    helloWorldText->setPosition(glm::vec3(-200, -200, 0));
     this->addObject("hellowWorldText", helloWorldText);
     
-    helloWorldText->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy), new ActionDelay(actionDelayBtw), new ActionRotateBy(rotateByAction), new ActionDelay(actionDelayBtw), new ActionMoveBy(moveByAction), new ActionDelay(actionDelayBtw), new ActionFadeBy(fadeBy), new ActionDelay(actionDelayBtw), new ActionScaleTo(scaleTo), new ActionDelay(actionDelayBtw), new ActionRotateTo(rotateToAction), new ActionDelay(actionDelayBtw), new ActionMoveTo(moveToOriginAction), new ActionDelay(actionDelayBtw), new ActionFadeTo(fadeTo)}, 10);
+//    helloWorldText->addActions({new ActionDelay(preDelay), new ActionScaleBy(scaleBy), new ActionDelay(actionDelayBtw), new ActionRotateBy(rotateByAction), new ActionDelay(actionDelayBtw), new ActionMoveBy(moveByAction), new ActionDelay(actionDelayBtw), new ActionFadeBy(fadeBy), new ActionDelay(actionDelayBtw), new ActionScaleTo(scaleTo), new ActionDelay(actionDelayBtw), new ActionRotateTo(rotateToAction), new ActionDelay(actionDelayBtw), new ActionMoveTo(moveToOriginAction), new ActionDelay(actionDelayBtw), new ActionFadeTo(fadeTo)}, 10);
 //    helloWorldText->setTextRange(1, 20);
     
     glfwSetCursorPos(window, size.w/2, size.h/2);
@@ -109,6 +125,9 @@ void TitleScene::init(){
 void TitleScene::update(){
     Scene::update();
 //    creeper->addPosition(glm::vec3(0, 1, 0));
+    BoundingBox* bb = creeper->getBoundingBox();
+    originPoint->setPosition(glm::vec3(bb->origin.x, bb->origin.y, 0));
+    endPoint->setPosition(glm::vec3(bb->end.x, bb->end.y, 0));
 }
 
 void TitleScene::keyPressed(int key){
@@ -122,12 +141,42 @@ void TitleScene::keyReleased(int key){
     
 }
 
-void TitleScene::mouseButton(int button, int action){
-    
+void TitleScene::mouseButton(double x, double y, int button, int action){
+    if(action == GLFW_PRESS){
+        cout << "clicked (" << x << ", " << y << ")" << endl;
+        if(cooldownIcon->getBoundingBox()->containsPoint(glm::vec2(x, y))){
+            cout << "progress radian detected!" << endl;
+        }
+        if(helloWorldText->getBoundingBox()->containsPoint(glm::vec2(x, y))){
+            cout << "text click detected!" << endl;
+        }
+        if(creeper->getBoundingBox()->containsPoint(glm::vec2(x, y))){
+            cout << "creeper clicked detected!" << endl;
+        }
+        if(loadingBar->getBoundingBox()->containsPoint(glm::vec2(x, y))){
+            cout << "loaidng bar clicked detected!" << endl;
+        }
+    }
 }
 
 void TitleScene::mouseMove(double x, double y){
-    
+    if(x <= -640){
+        x = -640;
+        glfwSetCursorPos(window, x, -y);
+    }
+    if(x >= 640){
+        x = 640;
+        glfwSetCursorPos(window, x, -y);
+    }
+    if(y <= -360){
+        y = -360;
+        glfwSetCursorPos(window, x, -y);
+    }
+    if(y >= 360){
+        y = 360;
+        glfwSetCursorPos(window, x, -y);
+    }
+    mouseCursor->setPosition(glm::vec3(x, y, 0));
 }
 
 void TitleScene::injectKey(){

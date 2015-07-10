@@ -7,6 +7,7 @@
 //
 
 #include "Director.h"
+#include "Sprite.h"
 
 Director::Director():
 winSize({ 0, 0 }),
@@ -249,13 +250,15 @@ void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos)
     Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
 //    directorPtr->prevMousePos = glm::vec2((float)x, (float)y);
     
-    directorPtr->runningScene->mouseMove(x, y);
+    directorPtr->runningScene->mouseMove(x, -y);
 //    cout << "(" << x << ", " << y << ")" << endl;
 }
 
 void Director::mouse_button_callback(GLFWwindow *window, int button, int action, int mods){
     Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
-    directorPtr->runningScene->mouseButton(button, action);
+    double x, y;
+    glfwGetCursorPos(window, &x, &y);
+    directorPtr->runningScene->mouseButton(x, -y, button, action);
     
 //    if(button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS){
 //        double curMouseX, curMouseY;
@@ -290,12 +293,6 @@ void Director::transitionToNextScene(bool wait = true){
 }
 
 void Director::run(){
-    //    textManager->initFreeType();
-    //    textManager->loadFreeTypeFont("../Font/UhBee Kang-Ja.ttf", 50);
-    //    textManager->loadFreeTypeFont("../Font/AnjaEliane.ttf", 50);
-//        textManager->loadFont("../Font/UhBee Kang-Ja.ttf", 200);
-//    textManager->loadFont("../Font/anjaEliane.ttf", 50);
-//    textManager->setText("!");
     while (!glfwWindowShouldClose(window)){
         Timer::getInstance().recordTime();
         
@@ -309,21 +306,11 @@ void Director::run(){
 }
 
 void Director::render(){
-//    glClearColor(0, 0, 0, 1); //black
     glClearColor(0.5, 0.5, 0.5, 1);
-//    glClearColor(1, 1, 1, 1); //white
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-//    glColor4f(1, 1, 1, 1);
-//     glPushAttrib(GL_ALL_ATTRIB_BITS);
-//    font->Render("hello world!", 15);
-//    glPopAttrib();
-
-    //each render function in Sprite, Text, Progress will enable program
     
     if(runningScene)
         runningScene->render();
-    
     glUseProgram(0);
 }
 
@@ -334,83 +321,6 @@ void Director::update(){
         runningScene->update();
     }
 }
-
-//void Director::updateMouseInput(){
-//    if(debugMovement){
-//        double x, y;
-//        glfwGetCursorPos(window, &x, &y);
-//        prevMousePos = curMousePos;
-//        curMousePos.x = x;
-//        curMousePos.y = y;
-//        
-//        glm::vec2 mouseDelta = curMousePos - prevMousePos;
-//        camera->changeAngle(0.15f * mouseDelta.y, 0.15f * mouseDelta.x);
-//    }
-
-//    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS){
-//        double x, y;
-//        glfwGetCursorPos(window, &x, &y);
-//        prevMousePos = curMousePos;
-//        curMousePos.x = x;
-//        curMousePos.y = y;
-//        
-//        glm::vec2 mouseDelta = curMousePos - prevMousePos;
-//        camera->changeAngle(0.15f * mouseDelta.y, 0.15f * mouseDelta.x);
-//
-//    }
-//    else{
-//        double x, y;
-//        glfwGetCursorPos(window, &x, &y);
-//        prevMousePos.x = x;
-//        prevMousePos.y = y;
-//    }
-//}
-
-//void Director::updateKeyInput(){
-//    //W,S
-//    if(debugMovement) {
-//        if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-//            camera->moveFoward();
-//        }
-//        else if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
-//            camera->moveBackward();
-//        }
-//        
-//        //A,D
-//        if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-//            camera->moveLeft();
-//        }
-//        else if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-//            camera->moveRight();
-//        }
-//        
-//        //Lshift, space
-//        if(glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS){
-//            camera->moveDown();
-//        }
-//        else if(glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS){
-//            camera->moveUp();
-//        }
-//        
-//        if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS){
-//            camera->increaseSpeed();
-//        }
-//        else if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS){
-//            camera->decreaseSpeed();
-//        }
-//    }
-//
-//    if(glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS){
-//        camera->setPosition(glm::vec3(0, 0, -77.25));
-//    }
-//    
-//    if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS){
-//        if(debugMovement)
-//            debugMovement = false;
-//        else
-//            debugMovement = true;
-//    }
-//}
 
 Program* Director::getProgramPtr(std::string programName){
     if(programs.find(programName) != programs.end())

@@ -62,7 +62,7 @@ void BattleScene::keyReleased(int key){
     
 }
 
-void BattleScene::mouseButton(int button, int action){
+void BattleScene::mouseButton(double x, double y, int button, int action){
     if(action == GLFW_PRESS)
         mouseClicked = true;
     else if(action == GLFW_RELEASE)

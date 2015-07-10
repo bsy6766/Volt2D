@@ -25,6 +25,8 @@ private:
     std::string fontName;
     int start;
     int end;
+    int width;
+    int height;
     
     void getMaxValues(Font* font, int& width, int& height,
                       std::vector<glm::vec2>& originList);
@@ -32,7 +34,6 @@ private:
     glm::vec3 fontColor;    //RGB
     
     //vertex trnslate matrix buffer object
-//    GLuint vtbo;
     std::vector<glm::mat4> translationData;
     
 public:

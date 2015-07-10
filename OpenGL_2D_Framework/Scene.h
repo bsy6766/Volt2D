@@ -44,7 +44,7 @@ public:
     virtual void render();
     virtual void keyPressed(int key) = 0;
     virtual void keyReleased(int key) = 0;
-    virtual void mouseButton(int button, int action) = 0;
+    virtual void mouseButton(double x, double y, int button, int action) = 0;
     virtual void mouseMove(double x, double y) = 0;
     virtual void injectKey() = 0;
     virtual void injectMouseMove() = 0;

@@ -35,10 +35,12 @@ private:
     Sprite* bg;
     Sprite* creeper;
     Sprite* ground;
+    Sprite* mouseCursor;
     ProgressBar* loadingBar;
     ProgressRadian* cooldownIcon;
     Sprite* loadingBarBg;
     Text* helloWorldText;
+    Sprite* originPoint, *endPoint;
     
     bool keyLockL = false;
     
@@ -52,7 +54,7 @@ public:
     virtual void init();
     virtual void keyPressed(int key);
     virtual void keyReleased(int key);
-    virtual void mouseButton(int button, int action);
+    virtual void mouseButton(double x, double y, int button, int action);
     virtual void mouseMove(double x, double y);
 //    virtual void update();
 //    virtual void render();
