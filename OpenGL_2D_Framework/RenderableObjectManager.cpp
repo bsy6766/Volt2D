@@ -15,6 +15,9 @@ RenderableObjectManager::RenderableObjectManager(){
 
 RenderableObjectManager::~RenderableObjectManager(){
     cout << "~RenderableObjectManager()" << endl;
+    for(auto it : objMap){
+        delete it.second;
+    }
 }
 
 bool RenderableObjectManager::addObject(Scene* scenePtr, std::string objectName, RenderableObject *object, bool replace){
