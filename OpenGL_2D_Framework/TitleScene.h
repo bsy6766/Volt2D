@@ -28,23 +28,25 @@
 #include "ActionFadeTo.h"
 #include "ActionScaleBy.h"
 #include "ActionScaleTo.h"
+#include "SoundManager.h"
+
+#include "TitleButtonLayer.h"
 
 class TitleScene : public Scene{
 protected:
 private:
     Sprite* bg;
-    Sprite* creeper;
-    Sprite* ground;
-    Sprite* mouseCursor;
-    ProgressBar* loadingBar;
-    ProgressRadian* cooldownIcon;
-    Sprite* loadingBarBg;
-    Text* helloWorldText;
-    Sprite* originPoint, *endPoint;
     
-    bool keyLockL = false;
+    TitleButtonLayer* titleButtonLayer;
     
     virtual void exit();
+    
+    enum TitleSceneZ{
+        z_bg = 0,
+        z_button_layer
+    };
+    
+    void initLayers();
     
 public:
     TitleScene();
@@ -52,12 +54,11 @@ public:
     
     //override pure
     virtual void init();
-    virtual void keyPressed(int key);
-    virtual void keyReleased(int key);
-    virtual void mouseButton(double x, double y, int button, int action);
-    virtual void mouseMove(double x, double y);
-//    virtual void update();
-//    virtual void render();
+//    virtual void keyPressed(int key);
+//    virtual void keyReleased(int key);
+//    virtual void mouseButton(double x, double y, int button, int action);
+//    virtual void mouseMove(double x, double y);
+    
     virtual void injectKey();
     virtual void injectMouseMove();
     virtual void update() override;
