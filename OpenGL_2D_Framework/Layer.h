@@ -16,14 +16,14 @@
 //#include "SpriteManager.h"
 #include "RenderableObjectManager.h"
 #include "CommonInclude.h"
+#include "Z_Float.h"
 
 class Layer{
 protected:
 private:
-//    SpriteManager* spriteManager;
     RenderableObjectManager* renderableObjectManager;
-    int z;
-    
+    Z_Float z;
+    bool inputListenable;
 public:
     Layer();
     ~Layer();
@@ -33,10 +33,19 @@ public:
     virtual void render();
     virtual void exit();
     
-    void setZorder(int z);
-    int getZorder();
+    //for layer
+    virtual void keyPressed(int key){};
+    virtual void keyReleased(int key){};
+    virtual void mouseButton(double x, double y, int button, int action){};
+    virtual void mouseMove(double x, double y){};
+    
+    void setZorder(float z);
+    bool getZorder(float& z);
     
     void addObject(std::string objectName, RenderableObject* object);
+    
+    bool isLayerInputListenable();
+    void setInputListenable(bool mode);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Layer__) */

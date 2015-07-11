@@ -8,7 +8,9 @@
 
 #include "Layer.h"
 
-Layer::Layer(){
+Layer::Layer():
+inputListenable(false)
+{
     cout << "Layer()" << endl;
     init();
 }
@@ -31,12 +33,18 @@ void Layer::render(){
     renderableObjectManager->render();
 }
 
-void Layer::setZorder(int z){
-    this->z = z;
+void Layer::setZorder(float z){
+    this->z.setZ(z);
 }
 
-int Layer::getZorder(){
-    return this->z;
+bool Layer::getZorder(float& z){
+    if(this->z.dirty){
+        this->z.getZ(z);
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 void Layer::addObject(std::string objectName, RenderableObject *object){
@@ -46,4 +54,12 @@ void Layer::addObject(std::string objectName, RenderableObject *object){
 void Layer::exit(){
     if(renderableObjectManager)
         delete renderableObjectManager;
+}
+
+bool Layer::isLayerInputListenable(){
+    return this->inputListenable;
+}
+
+void Layer::setInputListenable(bool mode){
+    this->inputListenable = mode;
 }
