@@ -54,6 +54,16 @@ void RenderableObject::addPosition(glm::vec3 position){
     translateBy(position);
 }
 
+void RenderableObject::setX(float x){
+    this->position.x = x;
+    translateTo(this->position);
+}
+
+void RenderableObject::setY(float y){
+    this->position.y = y;
+    translateTo(this->position);
+}
+
 void RenderableObject::translateTo(glm::vec3 position){
     glm::vec3 scaledPos = glm::vec3(position.x / 10, position.y / 10, position.z / 10);
     translateMat = glm::translate(glm::mat4(), scaledPos);

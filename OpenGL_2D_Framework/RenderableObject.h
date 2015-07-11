@@ -79,6 +79,8 @@ public:
     
     virtual void setPosition(glm::vec3 position);
     virtual void addPosition(glm::vec3 position);
+    void setX(float x);
+    void setY(float y);
     
     //To transformation
     void rotateTo(GLfloat angle, glm::vec3 axis);
