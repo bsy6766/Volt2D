@@ -19,6 +19,7 @@
 #include "Shader.h"
 #include "Program.h"
 #include "Camera.h"
+#include "SoundManager.h"
 
 #include <string>
 #include <unordered_map>
@@ -70,7 +71,7 @@ private:
     Scene* runningScene;
     Scene* nextScene;
     Scene* dyingScene;
-//
+    
     //shader & program
     std::unordered_map<std::string, Program*> programs;
 

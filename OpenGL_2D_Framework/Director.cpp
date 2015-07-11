@@ -41,6 +41,8 @@ Director::~Director(){
     if(camera)
         delete camera;
     
+    SoundManager::getInstance().terminateSoundManager();
+    
     cout << "GLFW window...";
     //delete window and terminate. This must be processed at last.
     if (window){
@@ -124,11 +126,11 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
     //create basic camera
     camera = new Camera();
     
-//    textManager = new TextManager();
+    SoundManager::getInstance().initSoundManager();
 }
 
 void Director::terminateApp(){
-    
+    glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
 void Director::initOpenGL(){
@@ -236,21 +238,45 @@ void Director::glfw_error_callback(int error, const char *description){
 }
 
 void Director::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
-//    Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
+    Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
     if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
-    
-
+    if(action == GLFW_PRESS){
+        directorPtr->runningScene->keyPressed(key);
+//        directorPtr->runningScene->Scene::keyPressed(key);
+    }
+    else{
+        directorPtr->runningScene->keyReleased(key);
+//        directorPtr->runningScene->Scene::keyReleased(key);
+    }
 }
 
 void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos){
     double x, y;
     glfwGetCursorPos(window, &x, &y);
     Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
-//    directorPtr->prevMousePos = glm::vec2((float)x, (float)y);
+    directorPtr->prevMousePos = glm::vec2((float)x, (float)y);
+    
+    if(x <= -640){
+        x = -640;
+        glfwSetCursorPos(window, x, y);
+    }
+    if(x >= 640){
+        x = 640;
+        glfwSetCursorPos(window, x, y);
+    }
+    if(y <= -360){
+        y = -360;
+        glfwSetCursorPos(window, x, y);
+    }
+    if(y >= 360){
+        y = 360;
+        glfwSetCursorPos(window, x, y);
+    }
     
     directorPtr->runningScene->mouseMove(x, -y);
+    directorPtr->runningScene->Scene::mouseMove(x, -y);
 //    cout << "(" << x << ", " << y << ")" << endl;
 }
 
@@ -293,6 +319,9 @@ void Director::transitionToNextScene(bool wait = true){
 }
 
 void Director::run(){
+    int fps = 0;
+    double timeCounter=  0;
+    
     while (!glfwWindowShouldClose(window)){
         Timer::getInstance().recordTime();
         
@@ -302,6 +331,16 @@ void Director::run(){
         glfwSwapBuffers(window);
         glfwPollEvents();
         
+        timeCounter += Timer::getInstance().getElapsedTime();
+        if(timeCounter > 1){
+            fps++;
+            cout << "fps = " << fps << endl;
+            fps = 0;
+            timeCounter--;
+        }
+        else{
+            fps++;
+        }
     }
 }
 
