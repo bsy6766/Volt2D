@@ -63,8 +63,23 @@ void Scene::addObject(std::string objectName, RenderableObject* object){
 }
 
 void Scene::addLayer(Layer *childLayer){
-//    int layerMapSize = layerMap.size();
-    layerMap.insert(std::pair<int, Layer*>(childLayer->getZorder(), childLayer));
+    float layerZ;
+    //get Z. If fails, set z as +1 from highest z to render to the most top of scene
+    if(!childLayer->getZorder(layerZ)){
+        if(layerMap.empty()){
+            layerZ = 0;
+        }
+        else{
+            auto end_it = layerMap.end();
+            end_it--;
+            float lastZ = end_it->first;
+            layerZ = lastZ + 1;
+            //assign z value because it didn't had one
+            childLayer->setZorder(layerZ);
+        }
+    }
+    childLayer->init();
+    layerMap.insert(std::pair<int, Layer*>(layerZ, childLayer));
 }
 
 void Scene::exit(){
@@ -80,3 +95,34 @@ RenderableObjectManager* Scene::getRenderableObjectManager(){
     return renderableObjectManager;
 }
 
+void Scene::keyPressed(int key){
+    for(auto it : layerMap){
+        if((it.second)->isLayerInputListenable()){
+            (it.second)->keyPressed(key);
+        }
+    }
+}
+
+void Scene::keyReleased(int key){
+    for(auto it : layerMap){
+        if((it.second)->isLayerInputListenable()){
+            (it.second)->keyReleased(key);
+        }
+    }
+}
+
+void Scene::mouseButton(double x, double y, int button, int action){
+    for(auto it : layerMap){
+        if((it.second)->isLayerInputListenable()){
+            (it.second)->mouseButton(x, y, button, action);
+        }
+    }
+}
+
+void Scene::mouseMove(double x, double y){
+    for(auto it : layerMap){
+        if((it.second)->isLayerInputListenable()){
+            (it.second)->mouseMove(x, y);
+        }
+    }
+}

@@ -29,8 +29,8 @@ protected:
     glm::vec2 curMousePos;
 private:
     std::multimap<int/*z order*/, Layer*> layerMap;
+    std::map<std::string, bool> inputReceived;
     
-    virtual void exit();
 public:
 	Scene();
 	virtual ~Scene();
@@ -40,12 +40,15 @@ public:
     bool canMoveCamera;
     
     virtual void init() = 0;
+    virtual void exit();
     virtual void update();
     virtual void render();
-    virtual void keyPressed(int key) = 0;
-    virtual void keyReleased(int key) = 0;
-    virtual void mouseButton(double x, double y, int button, int action) = 0;
-    virtual void mouseMove(double x, double y) = 0;
+    //these are input callback functions
+    virtual void keyPressed(int key);
+    virtual void keyReleased(int key);
+    virtual void mouseButton(double x, double y, int button, int action);
+    virtual void mouseMove(double x, double y);
+    //these are the function that are used to implement own key and mouse handler. this runs every iteration
     virtual void injectKey() = 0;
     virtual void injectMouseMove() = 0;
     
