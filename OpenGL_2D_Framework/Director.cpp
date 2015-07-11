@@ -276,7 +276,7 @@ void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos)
     }
     
     directorPtr->runningScene->mouseMove(x, -y);
-    directorPtr->runningScene->Scene::mouseMove(x, -y);
+//    directorPtr->runningScene->Scene::mouseMove(x, -y);
 //    cout << "(" << x << ", " << y << ")" << endl;
 }
 
