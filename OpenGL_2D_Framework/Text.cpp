@@ -320,6 +320,26 @@ void Text::render(){
     
     glActiveTexture(GL_TEXTURE0);
     
+//    //한글 확인
+//    std::wstring wStr(L"한글 출력 입니다요 walla!");
+//    const wchar_t* wCharStr = wStr.c_str();
+//
+//    for(int i = 0; i < wcslen(wCharStr); i++){
+//        cout << "char = " << wCharStr[i] << endl;
+//        if(wCharStr[i] < 0xAC00 || wCharStr[i] > 0xD7A3){
+//            if(wCharStr[i] == 0x20){
+//                cout << "space!"<< endl;
+//            }
+//            else{
+//                cout << "not korean!" << endl;
+//            }
+//        }
+//        else{
+//            cout << "korean!" << endl;
+//            
+//        }
+//    }
+    
     Font* font = FontManager::getInstance().getFont(fontName);
     unsigned int index = -1;
     int rangeCounter = -1;
@@ -340,7 +360,8 @@ void Text::render(){
             int cInt = (int)c;
             if(cInt < 32 || cInt > 126){
                 cout << "Unsupported text" << endl;
-                exit(1);
+//                exit(1);
+                continue;
             }
             
             GlyphData gData;

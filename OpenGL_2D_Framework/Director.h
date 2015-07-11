@@ -9,6 +9,8 @@
 #ifndef __OpenGL_2D_Framework__Director__
 #define __OpenGL_2D_Framework__Director__
 
+#define GLM_FORCE_RADIANS
+
 //opengl
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -109,7 +111,7 @@ public:
 //     *	init GLFW
 //     *	throw error exception if fail to initialize.
 //     */
-    void initApp(const int screenWidth, const int screenHeight, const std::string& windowTitle);
+    void initApp(const int screenWidth, const int screenHeight, const std::string windowTitle);
 
     void terminateApp();
     
@@ -123,6 +125,7 @@ public:
 //    void updateMouseInput();
 //    void updateKeyInput();
     std::string getWorkingDir();
+    void setWorkingDir(std::string wd);
 //
 //    /**
 //     *	Pause game loop

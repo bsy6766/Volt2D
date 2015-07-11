@@ -14,20 +14,20 @@
 
 #include "Scene.h"
 #include "Sprite.h"
-#include "ProgressBar.h"
-#include "progressRadian.h"
+//#include "ProgressBar.h"
+//#include "progressRadian.h"
 #include "FontManager.h"
 #include "Text.h"
 #include "BattleScene.h"
-#include "ActionDelay.h"
-#include "ActionMoveBy.h"
-#include "ActionMoveTo.h"
-#include "ActionRotateBy.h"
-#include "ActionRotateTo.h"
-#include "ActionFadeBy.h"
-#include "ActionFadeTo.h"
-#include "ActionScaleBy.h"
-#include "ActionScaleTo.h"
+//#include "ActionDelay.h"
+//#include "ActionMoveBy.h"
+//#include "ActionMoveTo.h"
+//#include "ActionRotateBy.h"
+//#include "ActionRotateTo.h"
+//#include "ActionFadeBy.h"
+//#include "ActionFadeTo.h"
+//#include "ActionScaleBy.h"
+//#include "ActionScaleTo.h"
 #include "SoundManager.h"
 
 #include "TitleButtonLayer.h"
@@ -36,6 +36,7 @@ class TitleScene : public Scene{
 protected:
 private:
     Sprite* bg;
+    Text* title;
     
     TitleButtonLayer* titleButtonLayer;
     
@@ -54,7 +55,7 @@ public:
     
     //override pure
     virtual void init();
-//    virtual void keyPressed(int key);
+    virtual void keyPressed(int key);
 //    virtual void keyReleased(int key);
 //    virtual void mouseButton(double x, double y, int button, int action);
 //    virtual void mouseMove(double x, double y);

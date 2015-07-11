@@ -25,14 +25,25 @@ TitleScene::~TitleScene(){
 void TitleScene::init(){
     cout << "TitleScene::init()" << endl;
 //    WinSize size = Director::getInstance().getWindowSize();
-    
-    SoundManager::getInstance().createBGM("../Sound/title bgm.mp3");
-    SoundManager::getInstance().playBGM();
+//    SoundManager::getInstance().createChannelGroup("bgmChannelGroup");
+    SoundManager::getInstance().createNewSound("titleSceneBgm", "titleSceneBgm", "title bgm.mp3");
+//    SoundManager::getInstance().addSoundToChannelGroup("bgmChannelGroup", "titleSceneBgm");
 
     bg = new Sprite();
-    bg->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/title_scene_bg.png");
+    bg->initSpriteWithTexture(GL_TEXTURE_2D, "title scene/title_scene_bg.png");
     bg->setZDepth(z_bg);
     this->addObject("title_scene_bg", bg);
+    
+    
+    FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
+    title = new Text();
+    title->setColor(glm::vec3(255, 255, 255));
+    title->setTextAlign(Text::TextAlign::ALIGN_LEFT);
+    //    title->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "Arial.ttf");
+    title->initText("Engine Test", "UhBee Kang-Ja.ttf");
+    title->setZDepth(10);
+    title->setPosition(glm::vec3(0, 200, 0));
+    this->addObject("hellowWorldText", title);
     
     initLayers();
 }
@@ -46,6 +57,16 @@ void TitleScene::initLayers(){
 void TitleScene::update(){
     Scene::update();
 
+}
+
+void TitleScene::keyPressed(int key){
+    if(key == GLFW_KEY_0){
+        SoundManager::getInstance().playSound("titleSceneBgm");
+    }
+    else if(key == GLFW_KEY_9){
+        SoundManager::getInstance().pauseSound("titleSceneBgm");
+    }
+    Scene::keyPressed(key);
 }
 
 void TitleScene::injectKey(){

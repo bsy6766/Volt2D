@@ -34,54 +34,54 @@ void TitleButtonLayer::init(){
     float buttonsYStarting = -41;
     
     newGameButton = new Sprite();
-    newGameButton->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/new_game_button.png");
+    newGameButton->initSpriteWithTexture(GL_TEXTURE_2D, "title scene/new_game_button.png");
     newGameButton->setZDepth(z_buttons);
     newGameButton->setPosition(glm::vec3(buttonsX, buttonsYStarting, 0));
     this->addObject("newGameButton", newGameButton);
     
     optionsButton = new Sprite();
-    optionsButton->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/options_button.png");
+    optionsButton->initSpriteWithTexture(GL_TEXTURE_2D, "title scene/options_button.png");
     optionsButton->setZDepth(z_buttons);
     optionsButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap, 0));
     this->addObject("optionsButton", optionsButton);
     
     creditsButton = new Sprite();
-    creditsButton->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/credits_button.png");
+    creditsButton->initSpriteWithTexture(GL_TEXTURE_2D, "title scene/credits_button.png");
     creditsButton->setZDepth(z_buttons);
     creditsButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 2, 0));
     this->addObject("creditsButton", creditsButton);
     
     exitGameButton = new Sprite();
-    exitGameButton->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/exit_game_button.png");
+    exitGameButton->initSpriteWithTexture(GL_TEXTURE_2D, "title scene/exit_game_button.png");
     exitGameButton->setZDepth(z_buttons);
     exitGameButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 3, 0));
     this->addObject("exitGameButton", exitGameButton);
     
     mouseCursor = new Sprite();
-    mouseCursor->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/mouse_icon.png");
+    mouseCursor->initSpriteWithTexture(GL_TEXTURE_2D, "mouse_icon.png");
     mouseCursor->setZDepth(z_mouse_cursor);
     this->addObject("mouseCursor", mouseCursor);
     
     selectingArrowIcon = new Sprite();
-    selectingArrowIcon->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/selecting_arrow_icon.png");
+    selectingArrowIcon->initSpriteWithTexture(GL_TEXTURE_2D, "title scene/selecting_arrow_icon.png");
     selectingArrowIcon->setZDepth(z_selecting_icon);
     selectingArrowIcon->setPosition(glm::vec3(selectingArrowIconX, newGameButton->getPosition().y, 0));
     this->addObject("selectingArrowIcon", selectingArrowIcon);
     
     creditScreen = new Sprite();
-    creditScreen->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/title scene/credit_screen.png");
+    creditScreen->initSpriteWithTexture(GL_TEXTURE_2D, "title scene/credit_screen.png");
     creditScreen->setZDepth(z_credit_screen);
     this->addObject("creditScreen", creditScreen);
     creditScreen->setOpacity(0);
     creditScreen->setScale(glm::vec3(0, 0, 1));
     
     originPoint = new Sprite();
-    originPoint->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/test/point.png");
+    originPoint->initSpriteWithTexture(GL_TEXTURE_2D, "test/point.png");
     originPoint->setZDepth(998);
     this->addObject("originPoint", originPoint);
     
     endPoint = new Sprite();
-    endPoint->initSpriteWithTexture(GL_TEXTURE_2D, "../Texture/test/point.png");
+    endPoint->initSpriteWithTexture(GL_TEXTURE_2D, "test/point.png");
     endPoint->setZDepth(999);
     this->addObject("endPoint", endPoint);
 }

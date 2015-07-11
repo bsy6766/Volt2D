@@ -11,9 +11,9 @@
 
 #include "CommonInclude.h"
 
-#include <ft2build.h>
+#include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
-#include <freetype.h>
+#include <freetype2/freetype.h>
 #include <ftglyph.h>
 #include "Director.h"
 
@@ -21,16 +21,8 @@ class GlyphData {
 public:
     bool valid;
     char c;     // the character of this glyph
-//    int size;   // font size
-//    
-//    int bitmap_width;   // texture width
-//    int bitmap_rows;    // texture height
     unsigned char *bitmap_buffer;   // texture data
-//    FT_Vector advance;  // this variable contains the information of how much we need to move to the right from the last character
     FT_Glyph_Metrics metrics;
-//    int bitmap_left;    // width of the glyph in pixels
-//    int bitmap_top;     // height of the glyph in pixels
-//    
     //Texture
     GLuint texObj;
 };

@@ -34,7 +34,8 @@ Sprite::~Sprite(){
 
 void Sprite::initSpriteWithTexture(GLenum _textureTarget, const std::string& _fileName){
     std::cout << "init sprite with texture with path of " << _fileName << std::endl;
-    texture = new Texture(_textureTarget, _fileName);
+    std::string textureDir = Director::getInstance().getWorkingDir() + "/../Texture/";
+    texture = new Texture(_textureTarget, textureDir + _fileName);
     texture->load();
     texture->getImageSize(w, h);
 

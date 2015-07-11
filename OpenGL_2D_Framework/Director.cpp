@@ -31,6 +31,8 @@ nextScene(0)
 
 Director::~Director(){
     cout << "Director::Deleting...";
+    SoundManager::getInstance().terminateSoundManager();
+    
     //delete all remaing scenes
     if(runningScene) delete runningScene;
 //    if(nextScene) delete nextScene;
@@ -41,7 +43,6 @@ Director::~Director(){
     if(camera)
         delete camera;
     
-    SoundManager::getInstance().terminateSoundManager();
     
     cout << "GLFW window...";
     //delete window and terminate. This must be processed at last.
@@ -67,13 +68,14 @@ std::string Director::getWorkingDir(){
 }
 
 void Director::addProgramWithShader(const std::string programName, const std::string vertexShaderPath, const std::string fragmentShaderPath){
+    std::string shaderPath = workingDirectory + "/../Shader/";
     Program* newProgram = new Program();
     
     Shader* vertexShader = new Shader();
-    vertexShader->createShader(vertexShaderPath, GL_VERTEX_SHADER);
+    vertexShader->createShader(shaderPath + vertexShaderPath, GL_VERTEX_SHADER);
     
     Shader* fragmentShader = new Shader();
-    fragmentShader->createShader(fragmentShaderPath, GL_FRAGMENT_SHADER);
+    fragmentShader->createShader(shaderPath + fragmentShaderPath, GL_FRAGMENT_SHADER);
     
     newProgram->createProgram(vertexShader, fragmentShader);
     programs[programName] = newProgram;
@@ -111,7 +113,7 @@ void Director::pushScene(Scene* newScene){
 //    }
 //}
 
-void Director::initApp(const int screenWidth = 100, const int screenHeight = 100, const std::string& windowTitle = "noName"){
+void Director::initApp(const int screenWidth = 100, const int screenHeight = 100, const std::string windowTitle = "noName"){
     std::cout << "Director: initializing app" << std::endl;
     initGLFW();
     createWindow(screenWidth, screenHeight, windowTitle);
@@ -120,8 +122,8 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
     initOpenGL();
     
     //create basic shader
-    addProgramWithShader("Default", "../Shader/vertexShader.glsl", "../Shader/fragmentShader.glsl");
-    addProgramWithShader("Text", "../Shader/textVertexShader.glsl", "../Shader/textFragmentShader.glsl");
+    addProgramWithShader("Default", "vertexShader.glsl", "fragmentShader.glsl");
+    addProgramWithShader("Text",  "textVertexShader.glsl", "textFragmentShader.glsl");
     
     //create basic camera
     camera = new Camera();
@@ -370,4 +372,8 @@ Program* Director::getProgramPtr(std::string programName){
 
 Camera* Director::getCameraPtr(){
     return camera;
+}
+
+void Director::setWorkingDir(std::string wd){
+    workingDirectory = wd;
 }

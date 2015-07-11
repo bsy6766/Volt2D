@@ -74,12 +74,12 @@ void SpriteAnimation::createVertexData(){
     float width = w / 10;
     float height = h / 10;
     
-    z = GLOBAL_Z_VALUE;
+//    z = GLOBAL_Z_VALUE;
     
-    vertexData.push_back(glm::vec3(-(width/2), -(height/2), z));
-    vertexData.push_back(glm::vec3(-(width/2), height/2, z));
-    vertexData.push_back(glm::vec3(width/2, -(height/2), z));
-    vertexData.push_back(glm::vec3(width/2, height/2, z));
+    vertexData.push_back(glm::vec3(-(width/2), -(height/2), GLOBAL_Z_VALUE));
+    vertexData.push_back(glm::vec3(-(width/2), height/2, GLOBAL_Z_VALUE));
+    vertexData.push_back(glm::vec3(width/2, -(height/2), GLOBAL_Z_VALUE));
+    vertexData.push_back(glm::vec3(width/2, height/2, GLOBAL_Z_VALUE));
     
     uvVertexData.push_back(glm::vec2(0, 0));
     uvVertexData.push_back(glm::vec2(0, 1));
