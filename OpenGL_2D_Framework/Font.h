@@ -10,10 +10,15 @@
 #define __OpenGL_2D_Framework__Font__
 
 #include "CommonInclude.h"
-
+#ifdef _WIN32
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include <freetype.h>
+#elif __APPLE__
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
 #include <freetype2/freetype.h>
+#endif
 #include <ftglyph.h>
 #include "Director.h"
 

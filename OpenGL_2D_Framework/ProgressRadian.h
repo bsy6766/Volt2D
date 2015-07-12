@@ -9,6 +9,11 @@
 #ifndef __OpenGL_2D_Framework__ProgressRadian__
 #define __OpenGL_2D_Framework__ProgressRadian__
 
+
+#ifdef _WIN32
+#define _USE_MATH_DEFINES
+#include <cmath>
+#endif
 #include "ProgressObject.h"
 
 class ProgressRadian: public ProgressObject{

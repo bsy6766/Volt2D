@@ -9,7 +9,7 @@
 #ifndef __OpenGL_2D_Framework__SpriteSheet__
 #define __OpenGL_2D_Framework__SpriteSheet__
 
-#include <rapidxml/rapidxml.hpp>
+#include <rapidxml.hpp>
 #include <fstream>
 #include <iostream>
 #include <string>

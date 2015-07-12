@@ -12,8 +12,13 @@
 #include <map>
 #include "Director.h"
 #include "CommonInclude.h"
+#ifdef _WIN32
+#include <fmod.hpp>
+#include <fmod_errors.h>
+#elif __APPLE__
 #include "fmod/fmod.hpp"
 #include "fmod/fmod_errors.h"
+#endif
 #include "Sound.h"
 
 class ChannelGroup{

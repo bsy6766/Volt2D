@@ -39,6 +39,7 @@ void ProgressRadian::computeVertexData(){
     float angle = 0;
     for(int i = 0; i<12; i++){
         angle+=3.6;
+		//Windows need to define M_PI
         float radianAngle = angle * M_PI / 180;
         float curWidthGap = tan(radianAngle) * (width/2);
         widthGapList.push_back(curWidthGap);

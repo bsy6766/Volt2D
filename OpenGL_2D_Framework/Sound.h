@@ -9,8 +9,13 @@
 #ifndef __OpenGL_2D_Framework__Sound__
 #define __OpenGL_2D_Framework__Sound__
 
+#ifdef _WIN32
+#include <fmod.hpp>
+#include <fmod_errors.h>
+#elif __APPLE__
 #include "fmod/fmod.hpp"
 #include "fmod/fmod_errors.h"
+#endif
 #include <string>
 
 class Sound{
