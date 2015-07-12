@@ -14,7 +14,3 @@ channel(0)
 {
     
 }
-
-Sound::~Sound(){
-    
-}

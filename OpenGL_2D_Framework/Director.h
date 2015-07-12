@@ -79,6 +79,9 @@ private:
 
     //camera
     Camera* camera;
+    
+    //SoundManager
+    SoundManager* soundManager;
 
     void initOpenGL();
     void initGLEW();
@@ -170,6 +173,8 @@ public:
 //    void releaseShaders();
 //    void releasePrograms();
 //    void releaseScenes();
+    
+    SoundManager* getSoundManager();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Director__) */

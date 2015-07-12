@@ -22,8 +22,9 @@ class Sound{
 private:
     
     Sound();
-    ~Sound();
 public:
+    ~Sound(){};
+    
     FMOD::Sound* sound;
     FMOD::Channel* channel;
     

@@ -12,7 +12,8 @@
 Director::Director():
 winSize({ 0, 0 }),
 runningScene(0),
-nextScene(0)
+nextScene(0),
+soundManager(0)
 //dyingScene(0)
 {
     char cCurrentPath[FILENAME_MAX];
@@ -31,15 +32,11 @@ nextScene(0)
 
 Director::~Director(){
     cout << "Director::Deleting...";
-    SoundManager::getInstance().terminateSoundManager();
     
-    //delete all remaing scenes
-    if(runningScene) delete runningScene;
-//    if(nextScene) delete nextScene;
     
     for(auto it = programs.begin(); it != programs.end(); ++it )
         delete it->second;
-        
+    
     if(camera)
         delete camera;
     
@@ -51,7 +48,14 @@ Director::~Director(){
         window = 0;
     }
     glfwTerminate();
-
+    
+//    SoundManager::getInstance().terminateSoundManager();
+    soundManager->release();
+    delete soundManager;
+    //delete all remaing scenes
+    if(runningScene) delete runningScene;
+    //    if(nextScene) delete nextScene;
+    
     cout << "Done." << endl;
 }
 
@@ -128,7 +132,7 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
     //create basic camera
     camera = new Camera();
     
-    SoundManager::getInstance().initSoundManager();
+    soundManager = SoundManager::createSoundManager();
 }
 
 void Director::terminateApp(){
@@ -376,4 +380,8 @@ Camera* Director::getCameraPtr(){
 
 void Director::setWorkingDir(std::string wd){
     workingDirectory = wd;
+}
+
+SoundManager* Director::getSoundManager(){
+    return this->soundManager;
 }

@@ -26,7 +26,8 @@ void TitleScene::init(){
     cout << "TitleScene::init()" << endl;
 //    WinSize size = Director::getInstance().getWindowSize();
 //    SoundManager::getInstance().createChannelGroup("bgmChannelGroup");
-    SoundManager::getInstance().createNewSound("titleSceneBgm", "titleSceneBgm", "title bgm.mp3");
+//    SoundManager::getInstance().createNewSound("titleSceneBgm", "titleSceneBgm", "title bgm.mp3");
+    Director::getInstance().getSoundManager()->createSound("titleSceneBgm", "title bgm.mp3");
 //    SoundManager::getInstance().addSoundToChannelGroup("bgmChannelGroup", "titleSceneBgm");
 
     bg = new Sprite();
@@ -61,10 +62,10 @@ void TitleScene::update(){
 
 void TitleScene::keyPressed(int key){
     if(key == GLFW_KEY_0){
-        SoundManager::getInstance().playSound("titleSceneBgm");
+        Director::getInstance().getSoundManager()->playSound("titleSceneBgm");
     }
     else if(key == GLFW_KEY_9){
-        SoundManager::getInstance().pauseSound("titleSceneBgm");
+        Director::getInstance().getSoundManager()->pauseSound("titleSceneBgm");
     }
     Scene::keyPressed(key);
 }
