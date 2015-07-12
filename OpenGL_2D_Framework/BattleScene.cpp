@@ -54,11 +54,11 @@ void BattleScene::init(){
 //    spriteManager->render();
 //}
 
-void BattleScene::keyPressed(int key){
+void BattleScene::keyPressed(int key, int mods){
     
 }
 
-void BattleScene::keyReleased(int key){
+void BattleScene::keyReleased(int key, int mods){
     
 }
 

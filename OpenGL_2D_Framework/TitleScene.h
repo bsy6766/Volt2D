@@ -55,8 +55,8 @@ public:
     
     //override pure
     virtual void init();
-    virtual void keyPressed(int key);
-//    virtual void keyReleased(int key);
+	virtual void keyPressed(int key, int mode);
+//    virtual void keyReleased(int key, int mode);
 //    virtual void mouseButton(double x, double y, int button, int action);
 //    virtual void mouseMove(double x, double y);
     

@@ -125,68 +125,97 @@ void TitleButtonLayer::closeCredits(){
     }
 }
 
-void TitleButtonLayer::keyPressed(int key){
+void TitleButtonLayer::keyPressed(int key, int mods){
     if(key == GLFW_KEY_ENTER){
         //        Director::getInstance().pushScene(new BattleScene());
         //        Director::getInstance().transitionToNextScene(true);
         switch (selectingButtonID) {
             case EXIT_GAME:
-                Director::getInstance().terminateApp();
+				if (!openingCredits)
+					Director::getInstance().terminateApp();
                 break;
                 
             default:
                 break;
         }
     }
-    
-    if(key == GLFW_KEY_UP){
-        if(selectingButtonID > 0){
-            selectingButtonID--;
-            float y;
-            switch (selectingButtonID) {
-                case NEW_GAME:
-                    y = newGameButton->getPosition().y;
-                    break;
-                case OPTIONS:
-                    y = optionsButton->getPosition().y;
-                    break;
-                case CREDITS:
-                    y = creditsButton->getPosition().y;
-                    break;
-                case EXIT_GAME:
-                    y = exitGameButton->getPosition().y;
-                    break;
-                    
-                default:
-                    break;
-            }
-            selectingArrowIcon->setPosition(glm::vec3(selectingArrowIconX, y, 0));
-        }
-    }
-    else if(key == GLFW_KEY_DOWN){
-        if(selectingButtonID < EXIT_GAME){
-            selectingButtonID++;
-            float y;
-            switch (selectingButtonID) {
-                case NEW_GAME:
-                    y = newGameButton->getPosition().y;
-                    break;
-                case OPTIONS:
-                    y = optionsButton->getPosition().y;
-                    break;
-                case CREDITS:
-                    y = creditsButton->getPosition().y;
-                    break;
-                case EXIT_GAME:
-                    y = exitGameButton->getPosition().y;
-                    break;
-                    
-                default:
-                    break;
-            }
-            selectingArrowIcon->setPosition(glm::vec3(selectingArrowIconX, y, 0));
-        }
-    }
+	if (!openingCredits){
+		if (key == GLFW_KEY_UP){
+			if (selectingButtonID > 0){
+				selectingButtonID--;
+				float y;
+				switch (selectingButtonID) {
+				case NEW_GAME:
+					y = newGameButton->getPosition().y;
+					break;
+				case OPTIONS:
+					y = optionsButton->getPosition().y;
+					break;
+				case CREDITS:
+					y = creditsButton->getPosition().y;
+					break;
+				case EXIT_GAME:
+					y = exitGameButton->getPosition().y;
+					break;
+
+				default:
+					break;
+				}
+				selectingArrowIcon->setPosition(glm::vec3(selectingArrowIconX, y, 0));
+			}
+		}
+		else if (key == GLFW_KEY_DOWN){
+			if (selectingButtonID < EXIT_GAME){
+				selectingButtonID++;
+				float y;
+				switch (selectingButtonID) {
+				case NEW_GAME:
+					y = newGameButton->getPosition().y;
+					break;
+				case OPTIONS:
+					y = optionsButton->getPosition().y;
+					break;
+				case CREDITS:
+					y = creditsButton->getPosition().y;
+					break;
+				case EXIT_GAME:
+					y = exitGameButton->getPosition().y;
+					break;
+
+				default:
+					break;
+				}
+				selectingArrowIcon->setPosition(glm::vec3(selectingArrowIconX, y, 0));
+			}
+		}
+	}
+	else{
+		if (key == GLFW_KEY_ESCAPE){
+			closeCredits();
+			openingCredits = false;
+		}
+	}
+
+	if (key == GLFW_KEY_KP_SUBTRACT){
+		SoundManager* sm = Director::getInstance().getSoundManager();
+		float curVolume = sm->getVolume("titleSceneBgm");
+		cout << "cur vol = " << curVolume << endl;
+		curVolume -= 0.1f;
+		if (curVolume < 0)
+			curVolume = 0;
+		sm->setVolume("titleSceneBgm", curVolume);
+	}
+	else if (key == GLFW_KEY_KP_ADD){
+		SoundManager* sm = Director::getInstance().getSoundManager();
+		float curVolume = sm->getVolume("titleSceneBgm");
+		cout << "cur vol = " << curVolume << endl;
+		curVolume += 0.1f;
+		if (curVolume > 1)
+			curVolume = 1;
+		sm->setVolume("titleSceneBgm", curVolume);
+	}
+
+	cout << "key #" << key << endl;
 }
 
 void TitleButtonLayer::mouseButton(double x, double y, int button, int action){
@@ -224,23 +253,24 @@ void TitleButtonLayer::mouseButton(double x, double y, int button, int action){
 }
 
 void TitleButtonLayer::mouseMove(double x, double y){
-    glm::vec3 mousePoint = glm::vec3(x, y, 0);
-    mouseCursor->setPosition(mousePoint);
-    
-    if(newGameButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
-        selectingButtonID = NEW_GAME;
-        selectingArrowIcon->setY(newGameButton->getPosition().y);
-    }
-    else if(optionsButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
-        selectingButtonID = OPTIONS;
-        selectingArrowIcon->setY(optionsButton->getPosition().y);
-    }
-    else if(creditsButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
-        selectingButtonID = CREDITS;
-        selectingArrowIcon->setY(creditsButton->getPosition().y);
-    }
-    else if(exitGameButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
-        selectingButtonID = EXIT_GAME;
-        selectingArrowIcon->setY(exitGameButton->getPosition().y);
-    }
+	glm::vec3 mousePoint = glm::vec3(x, y, 0);
+	mouseCursor->setPosition(mousePoint);
+	if (!openingCredits){
+		if (newGameButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
+			selectingButtonID = NEW_GAME;
+			selectingArrowIcon->setY(newGameButton->getPosition().y);
+		}
+		else if (optionsButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
+			selectingButtonID = OPTIONS;
+			selectingArrowIcon->setY(optionsButton->getPosition().y);
+		}
+		else if (creditsButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
+			selectingButtonID = CREDITS;
+			selectingArrowIcon->setY(creditsButton->getPosition().y);
+		}
+		else if (exitGameButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
+			selectingButtonID = EXIT_GAME;
+			selectingArrowIcon->setY(exitGameButton->getPosition().y);
+		}
+	}
 }

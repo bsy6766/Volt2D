@@ -245,15 +245,16 @@ void Director::glfw_error_callback(int error, const char *description){
 
 void Director::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
     Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
-    if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
-        glfwSetWindowShouldClose(window, GL_TRUE);
-    }
+	//ESC key won't termiate app unless it's on main screen
+    //if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
+    //    glfwSetWindowShouldClose(window, GL_TRUE);
+    //}
     if(action == GLFW_PRESS){
-        directorPtr->runningScene->keyPressed(key);
+        directorPtr->runningScene->keyPressed(key, mods);
 //        directorPtr->runningScene->Scene::keyPressed(key);
     }
     else{
-        directorPtr->runningScene->keyReleased(key);
+        directorPtr->runningScene->keyReleased(key, mods);
 //        directorPtr->runningScene->Scene::keyReleased(key);
     }
 }

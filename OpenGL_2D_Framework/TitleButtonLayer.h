@@ -59,7 +59,7 @@ public:
     
     virtual void update();
     
-    virtual void keyPressed(int key);
+	virtual void keyPressed(int key, int mods);
     virtual void mouseButton(double x, double y, int button, int aciton);
     virtual void mouseMove(double x, double y);
 };

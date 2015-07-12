@@ -44,8 +44,8 @@ public:
     virtual void update();
     virtual void render();
     //these are input callback functions
-    virtual void keyPressed(int key);
-    virtual void keyReleased(int key);
+	virtual void keyPressed(int key, int mods);
+	virtual void keyReleased(int key, int mods);
     virtual void mouseButton(double x, double y, int button, int action);
     virtual void mouseMove(double x, double y);
     //these are the function that are used to implement own key and mouse handler. this runs every iteration

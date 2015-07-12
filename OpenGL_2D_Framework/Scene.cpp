@@ -95,18 +95,18 @@ RenderableObjectManager* Scene::getRenderableObjectManager(){
     return renderableObjectManager;
 }
 
-void Scene::keyPressed(int key){
+void Scene::keyPressed(int key, int mods){
     for(auto it : layerMap){
         if((it.second)->isLayerInputListenable()){
-            (it.second)->keyPressed(key);
+			(it.second)->keyPressed(key, mods);
         }
     }
 }
 
-void Scene::keyReleased(int key){
+void Scene::keyReleased(int key, int mods){
     for(auto it : layerMap){
         if((it.second)->isLayerInputListenable()){
-            (it.second)->keyReleased(key);
+			(it.second)->keyReleased(key, mods);
         }
     }
 }

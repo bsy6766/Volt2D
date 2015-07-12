@@ -29,8 +29,8 @@ public:
     virtual void init();
 //    virtual void update();
 //    virtual void render();
-    virtual void keyPressed(int key);
-    virtual void keyReleased(int key);
+	virtual void keyPressed(int key, int mods);
+	virtual void keyReleased(int key, int mods);
     virtual void mouseButton(double x, double y, int button, int action);
     virtual void mouseMove(double x, double y);
     virtual void injectKey();

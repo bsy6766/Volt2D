@@ -60,14 +60,14 @@ void TitleScene::update(){
 
 }
 
-void TitleScene::keyPressed(int key){
+void TitleScene::keyPressed(int key, int mods){
     if(key == GLFW_KEY_0){
         Director::getInstance().getSoundManager()->playSound("titleSceneBgm");
     }
     else if(key == GLFW_KEY_9){
         Director::getInstance().getSoundManager()->pauseSound("titleSceneBgm");
     }
-    Scene::keyPressed(key);
+	Scene::keyPressed(key, mods);
 }
 
 void TitleScene::injectKey(){
