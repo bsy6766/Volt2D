@@ -117,3 +117,15 @@ void SoundManager::release(){
         delete (s_it->second);
     }
 }
+
+void SoundManager::setVolume(std::string soundName, float volume){
+	Sound* targetSound = findSound(soundName);
+	FMODErrorCheck(targetSound->channel->setVolume(volume));
+}
+
+float SoundManager::getVolume(std::string soundName){
+	Sound* targetSound = findSound(soundName);
+	float curVolume;
+	FMODErrorCheck(targetSound->channel->getVolume(&curVolume));
+	return curVolume;
+}

@@ -44,6 +44,8 @@ public:
     void createSound(std::string soundName, const char* soundFileName);
     void playSound(std::string soundName);
     void pauseSound(std::string soundName);
+	void setVolume(std::string soundName, float volume);
+	float getVolume(std::string soundName);
     
     void release();
 };
