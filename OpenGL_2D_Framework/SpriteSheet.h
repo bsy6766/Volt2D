@@ -9,7 +9,11 @@
 #ifndef __OpenGL_2D_Framework__SpriteSheet__
 #define __OpenGL_2D_Framework__SpriteSheet__
 
+#ifdef _WIN32
 #include <rapidxml.hpp>
+#elif __APPLE__
+#include "rapidxml/rapidxml.hpp"
+#endif
 #include <fstream>
 #include <iostream>
 #include <string>
