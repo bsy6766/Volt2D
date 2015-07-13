@@ -18,15 +18,6 @@ SpriteAnimation::SpriteAnimation():SpriteObject(){
     this->canJump = true;
 }
 
-//SpriteAnimation::SpriteAnimation(Program *progPtr):SpriteObject(progPtr){
-//    this->frameInterval = 0;
-//    this->currentTime = 0;
-//    this->currentFrameIndex = 0;
-//    this->frameListSize = 0;
-//    this->totalElapsedTime = 0;
-//    this->canJump = true;
-//}
-
 SpriteAnimation::~SpriteAnimation(){
     if(textureList.size() > 0){
         for(int i = 0 ;i<(int)textureList.size(); i++){

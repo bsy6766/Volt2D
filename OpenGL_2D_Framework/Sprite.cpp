@@ -17,8 +17,6 @@ texture(0)
 }
 
 Sprite::~Sprite(){
-    spriteID = -1;
-
     GLuint textureObj = texture->getObject();
     glDeleteTextures(1, &textureObj);
 
@@ -39,8 +37,6 @@ void Sprite::initSpriteWithTexture(GLenum _textureTarget, const std::string& _fi
     texture->load();
     texture->getImageSize(w, h);
 
-//    z = GLOBAL_Z_VALUE;
-    
     computeVertexData();
     loadVertexData();
     
