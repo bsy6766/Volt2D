@@ -216,7 +216,7 @@ void RenderableObject::addAction(ActionObject *action, int repeat){
 
 void RenderableObject::addActions(std::initializer_list<ActionObject *> actions, int repeat){
     for(auto it:actions){
-        it->bindOwnerPtr(this);
+        it->bindTarget(this);
     }
     ActionSchedule* singleActionSchedule = new ActionSchedule();
     singleActionSchedule->createSchedule(actions, repeat);

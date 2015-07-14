@@ -14,31 +14,6 @@
 #include "CommonInclude.h"
 #include "Timer.h"
 #include <glm/glm.hpp>
-//#include "SpriteObject.h"
-//#include "ActionType.h"
-
-//Action IDs
-enum ActionID{
-    //delay
-    ACTION_DELAY = 0,
-    //move
-    ACTION_MOVE_TO,
-    ACTION_MOVE_BY,
-    //rotate
-    ACTION_ROTATE_TO,
-    ACTION_ROTATE_BY,
-    //scale
-    ACTION_SCALE_TO,
-    ACTION_SCALE_BY,
-    //jump
-    ACTION_JUMP_TO,
-    ACTION_JUMP_BY,
-    //fade
-    ACTION_FADE_TO,
-    ACTION_FADE_BY,
-    //blink
-    ACTION_BLINK
-};
 
 //class SpriteObject;
 class RenderableObject;
@@ -46,23 +21,13 @@ class RenderableObject;
 class ActionObject{
 private:
 protected:
-    //action's unique enum ID
-    ActionID actionID;
-//    ActionType type;
-    
-    static unsigned int ACTION_ID;
-    
     //item vars
     double duration;
     double totalElapsedTime;
     double previousTime;
-//    double elapsedTime;
-//    double unusedTime;
-//    double remainedTimeByDeath;
     double speed;
     
-//    SpriteObject* owner;
-    RenderableObject* owner;
+    RenderableObject* target;
     
 public:
     unsigned int objID;
@@ -81,7 +46,6 @@ public:
     bool isProtected;
     
     //getters
-    ActionID getActionID();
     double getDuration();
     
     bool isRunning();   //check if action object is running or not. 
@@ -89,7 +53,6 @@ public:
     
     //time functions
     double setCurrentTime(double elapsedTime);
-//    double getRemainedTime();
     
     //setters
     void setSpeed(double speed);
@@ -105,10 +68,8 @@ public:
     void kill();
     virtual void revive();
     
-//    SpriteObject* getOwner();
-//    void bindOwnerPtr(SpriteObject* ownerPtr);
-    RenderableObject* getOwner();
-    void bindOwnerPtr(RenderableObject* ownerPtr);
+    RenderableObject* getTarget();
+    void bindTarget(RenderableObject* target);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionObject__) */
