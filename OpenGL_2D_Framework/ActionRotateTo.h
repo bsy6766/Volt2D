@@ -19,6 +19,9 @@ private:
     float movedAngle;
     float totalAngleToRotate;
     
+    void instantUpdate();
+    void intervalUpdate(double& remainedTime);
+    
 public:
     ActionRotateTo();
     ActionRotateTo(const ActionRotateTo& other);
@@ -28,8 +31,6 @@ public:
     //virtuals
     virtual void startAction();
     virtual void updateAction(double& remainedTime);
-    virtual void instantUpdate();
-    virtual void intervalUpdate(double& remainedTime);
     virtual void revive();
 };
 

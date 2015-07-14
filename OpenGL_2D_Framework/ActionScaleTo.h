@@ -18,6 +18,9 @@ private:
     glm::vec3 srcScale;
     glm::vec3 scaled;
     glm::vec3 totalScalingAmount;
+    
+    void instantUpdate();
+    void intervalUpdate(double& remainedTime);
 public:
     ActionScaleTo();
     ActionScaleTo(const ActionScaleTo& other);
@@ -28,8 +31,6 @@ public:
     //virtuals
     virtual void startAction();
     virtual void updateAction(double& remainedTime);
-    virtual void instantUpdate();
-    virtual void intervalUpdate(double& remainedTime);
     virtual void revive();
     
 };

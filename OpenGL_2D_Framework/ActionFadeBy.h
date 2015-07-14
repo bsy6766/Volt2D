@@ -18,6 +18,9 @@ private:
     float fadedOpacity;
     float previousOpacity;
     
+    void instantUpdate();
+    void intervalUpdate(double& remainedTime);
+    
 public:
     ActionFadeBy();
     ActionFadeBy(const ActionFadeBy& other);
@@ -27,8 +30,6 @@ public:
     
     //virtuals
     virtual void updateAction(double& remainedTime);
-    virtual void instantUpdate();
-    virtual void intervalUpdate(double& remainedTime);
     virtual void revive();
 };
 

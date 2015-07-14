@@ -30,7 +30,6 @@ ActionMoveBy::~ActionMoveBy(){
 void ActionMoveBy::initMoveBy(glm::vec3 distance, double duration){
     this->distance = distance;
     this->duration = duration;
-//    this->actionID = ActionID::ACTION_MOVE_BY;
 }
 
 void ActionMoveBy::updateAction(double& remainedTime){

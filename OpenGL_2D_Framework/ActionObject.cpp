@@ -13,11 +13,11 @@
 ActionObject::ActionObject():
 running(false),
 alive(true),
-previousTime(0),
+//previousTime(0),
 isProtected(false),
 totalElapsedTime(0),
 speed(1),
-duration(-1)
+duration(0)
 {
     std::cout << "ActionObject()" << std::endl;
 }
@@ -25,10 +25,10 @@ duration(-1)
 ActionObject::ActionObject(const ActionObject& other){
     this->duration = other.duration;
     this->totalElapsedTime = other.totalElapsedTime;
-    this->previousTime = other.previousTime;
+//    this->previousTime = other.previousTime;
     this->speed = other.speed;
     this->target = other.target;
-    this->objID = other.objID;
+//    this->objID = other.objID;
     this->running = other.running;
     this->alive = other.alive;
     this->isProtected = other.isProtected;
@@ -44,16 +44,18 @@ double ActionObject::getDuration(){
 
 //returns unused time
 double ActionObject::setCurrentTime(double elapsedTime){
+    assert(duration >= -1);
+    
     double tempTime = totalElapsedTime;
     tempTime += elapsedTime;
     
     if(tempTime >= duration) {
-        previousTime = totalElapsedTime;
+//        previousTime = totalElapsedTime;
         totalElapsedTime = duration;
         return (tempTime - duration);
     }
 
-    previousTime = totalElapsedTime;
+//    previousTime = totalElapsedTime;
     totalElapsedTime += elapsedTime;
     return 0;
 }
@@ -85,7 +87,7 @@ void ActionObject::revive(){
         running = false;
         
         totalElapsedTime = 0;
-        previousTime = 0;
+//        previousTime = 0;
         speed = 1;
     }
 }

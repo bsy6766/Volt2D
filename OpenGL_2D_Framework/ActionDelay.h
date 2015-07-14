@@ -14,6 +14,8 @@
 class ActionDelay : public ActionObject{
 private:
     //delay has nothing...just consuming time. yolo
+    void instantUpdate();
+    void intervalUpdate(double& remainedTime);
     
 public:
     ActionDelay();
@@ -24,8 +26,6 @@ public:
 
     //override
     virtual void updateAction(double& remainedTime);
-    virtual void instantUpdate();
-    virtual void intervalUpdate(double& remainedTime);
     virtual void revive();
 };
 

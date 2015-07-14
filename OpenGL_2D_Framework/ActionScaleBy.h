@@ -18,6 +18,9 @@ private:
     glm::vec3 prevScale;
     glm::vec3 scaled;
     
+    void instantUpdate();
+    void intervalUpdate(double& remainedTime);
+    
 public:
     ActionScaleBy();
     ActionScaleBy(const ActionScaleBy& other);
@@ -28,8 +31,6 @@ public:
     
     //virtuals
     virtual void updateAction(double& remainedTime);
-    virtual void instantUpdate();
-    virtual void intervalUpdate(double& remainedTime);
     virtual void revive();
 };
 

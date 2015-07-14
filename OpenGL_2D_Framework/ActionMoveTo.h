@@ -19,6 +19,9 @@ private:
     glm::vec3 movedPosition;
     glm::vec3 totalDistance;
     
+    void instantUpdate();
+    void intervalUpdate(double& remainedTime);
+    
 public:
     ActionMoveTo();
     ActionMoveTo(const ActionMoveTo& other);
@@ -29,8 +32,6 @@ public:
     //virtuals
     virtual void startAction();
     virtual void updateAction(double& remainedTime);
-    virtual void instantUpdate();
-    virtual void intervalUpdate(double& remainedTime);
     virtual void revive();
 };
 

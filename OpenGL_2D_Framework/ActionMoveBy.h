@@ -17,7 +17,10 @@ protected:
 private:
     glm::vec3 distance;
     glm::vec3 movedDistance;
-    glm::vec3 previousDistance;    
+    glm::vec3 previousDistance;
+    
+    void instantUpdate();
+    void intervalUpdate(double& remainedTime);
     
 public:
     ActionMoveBy();
@@ -28,8 +31,6 @@ public:
     
     //virtuals
     virtual void updateAction(double& remainedTime);
-    virtual void instantUpdate();
-    virtual void intervalUpdate(double& remainedTime);
     virtual void revive();
 };
 

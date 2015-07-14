@@ -24,13 +24,13 @@ protected:
     //item vars
     double duration;
     double totalElapsedTime;
-    double previousTime;
+//    double previousTime;
     double speed;
     
     RenderableObject* target;
     
 public:
-    unsigned int objID;
+//    unsigned int objID;
     
     ActionObject();
     ActionObject(const ActionObject& other);
@@ -61,8 +61,8 @@ public:
     void stopAction();
     
     virtual void updateAction(double& remainedTime) = 0;
-    virtual void instantUpdate() = 0;
-    virtual void intervalUpdate(double& remainedTime) = 0;
+//    virtual void instantUpdate() = 0;
+//    virtual void intervalUpdate(double& remainedTime) = 0;
     
     //kill and reset
     void kill();

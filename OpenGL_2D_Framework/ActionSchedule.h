@@ -22,7 +22,6 @@ private:
     int repeatCounter;
     bool instantSchedule;
     bool finished;
-    bool readyToUseRemainedTime;
     
     double remainedTime;
     

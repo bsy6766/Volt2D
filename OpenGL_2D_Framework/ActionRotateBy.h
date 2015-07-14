@@ -19,6 +19,9 @@ private:
     float previousAngle;
     float movedAngle;
     
+    void instantUpdate();
+    void intervalUpdate(double& remainedTime);
+    
 public:
     ActionRotateBy();
     ActionRotateBy(const ActionRotateBy& other);
@@ -27,8 +30,6 @@ public:
     
     //virtuals
     virtual void updateAction(double& remainedTime);
-    virtual void instantUpdate();
-    virtual void intervalUpdate(double& remainedTime);
     virtual void revive();
 };
 
