@@ -32,21 +32,21 @@ ActionScaleTo::~ActionScaleTo(){
 
 void ActionScaleTo::initScaleTo(glm::vec3 scale, double duration){
     this->duration = duration;
-    this->actionID = ACTION_SCALE_TO;
+//    this->actionID = ACTION_SCALE_TO;
     this->destScale = scale;
     this->scaled = glm::vec3();
 }
 
 void ActionScaleTo::startAction(){
     ActionObject::startAction();
-    glm::vec3 scale = this->owner->getScale();
+    glm::vec3 scale = this->target->getScale();
     this->srcScale = scale;
     this->totalScalingAmount = this->destScale - scale;
 }
 
 void ActionScaleTo::instantUpdate(){
     scaled = totalScalingAmount;
-    this->owner->setScale(scaled);
+    this->target->setScale(scaled);
     alive = false;
 }
 
@@ -69,7 +69,7 @@ void ActionScaleTo::intervalUpdate(double& remainedTime){
             scaled = totalScalingAmount * (currentTime / duration) + srcScale;
         }
     }
-    this->owner->setScale(scaled);
+    this->target->setScale(scaled);
 }
 
 void ActionScaleTo::updateAction(double& remainedTime){

@@ -14,6 +14,7 @@
 #include "Sprite.h"
 #include "ActionFadeTo.h"
 #include "ActionScaleTo.h"
+#include "ActionDelay.h"
 
 class TitleButtonLayer : public Layer{
 private:

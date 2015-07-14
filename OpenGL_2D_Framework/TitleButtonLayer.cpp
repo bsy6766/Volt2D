@@ -91,9 +91,9 @@ void TitleButtonLayer::exit(){
 }
 
 void TitleButtonLayer::update(){
-    BoundingBox* bb = creditScreen->getBoundingBox();
-    originPoint->setPosition(glm::vec3(bb->origin.x, bb->origin.y, 0));
-    endPoint->setPosition(glm::vec3(bb->end.x, bb->end.y, 0));
+//    BoundingBox* bb = creditScreen->getBoundingBox();
+//    originPoint->setPosition(glm::vec3(bb->origin.x, bb->origin.y, 0));
+//    endPoint->setPosition(glm::vec3(bb->end.x, bb->end.y, 0));
     
     //must call base class update()
     Layer::update();

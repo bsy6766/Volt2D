@@ -30,7 +30,7 @@ ActionScaleBy::~ActionScaleBy(){
 
 void ActionScaleBy::initScaleBy(glm::vec3 scale, double duration){
     this->duration = duration;
-    this->actionID = ACTION_SCALE_BY;
+//    this->actionID = ACTION_SCALE_BY;
     this->totalScalingAmount = scale;
     this->prevScale = glm::vec3();
     this->scaled = glm::vec3();
@@ -38,7 +38,7 @@ void ActionScaleBy::initScaleBy(glm::vec3 scale, double duration){
 
 void ActionScaleBy::instantUpdate(){
     scaled = totalScalingAmount;
-    this->owner->addScale(scaled);
+    this->target->addScale(scaled);
     alive = false;
 }
 
@@ -64,7 +64,7 @@ void ActionScaleBy::intervalUpdate(double& remainedTime){
             prevScale += diff;
         }
     }
-    this->owner->addScale(scaled);
+    this->target->addScale(scaled);
 }
 
 void ActionScaleBy::updateAction(double& remainedTime){

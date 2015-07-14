@@ -13,9 +13,7 @@
 
 class ActionDelay : public ActionObject{
 private:
-	//time
-    double totalDelayed;
-    double delayTick;
+    //delay has nothing...just consuming time. yolo
     
 public:
     ActionDelay();

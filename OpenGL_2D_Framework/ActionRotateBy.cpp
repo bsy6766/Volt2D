@@ -30,7 +30,7 @@ ActionRotateBy::~ActionRotateBy(){
 
 void ActionRotateBy::initRotateBy(float angle, float duration){
     this->duration = duration;
-    this->actionID = ActionID::ACTION_ROTATE_BY;
+//    this->actionID = ActionID::ACTION_ROTATE_BY;
     this->rotatingAngle = angle;
     this->movedAngle = 0;
     this->previousAngle = 0;
@@ -50,7 +50,7 @@ void ActionRotateBy::updateAction(double& remainedTime){
 
 void ActionRotateBy::instantUpdate(){
     movedAngle = rotatingAngle;
-    this->owner->addAngle(rotatingAngle);
+    this->target->addAngle(rotatingAngle);
     alive = false;
 }
 
@@ -75,7 +75,7 @@ void ActionRotateBy::intervalUpdate(double& remainedTime){
             previousAngle += diff;
         }
     }
-    this->owner->addAngle(movedAngle);
+    this->target->addAngle(movedAngle);
 }
 
 void ActionRotateBy::revive(){

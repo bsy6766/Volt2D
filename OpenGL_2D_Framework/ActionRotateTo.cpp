@@ -42,14 +42,14 @@ void ActionRotateTo::initRotateTo(float angle, float duration){
     }
 
     this->duration = duration;
-    this->actionID = ActionID::ACTION_ROTATE_TO;
+//    this->actionID = ActionID::ACTION_ROTATE_TO;
     this->destinationAngle = angle * (-1);
     this->movedAngle = 0;
 }
 
 void ActionRotateTo::startAction(){
     ActionObject::startAction();
-    startAngle = this->owner->getAngle() * (-1);
+    startAngle = this->target->getAngle() * (-1);
     totalAngleToRotate = destinationAngle - startAngle;
 }
 
@@ -67,7 +67,7 @@ void ActionRotateTo::updateAction(double& remainedTime){
 
 void ActionRotateTo::instantUpdate(){
     movedAngle = totalAngleToRotate;
-    this->owner->setAngle(movedAngle);
+    this->target->setAngle(movedAngle);
     alive = false;
 }
 
@@ -89,7 +89,7 @@ void ActionRotateTo::intervalUpdate(double& remainedTime){
             movedAngle = totalAngleToRotate * (currentTime / duration) + startAngle;
         }
     }
-    this->owner->setAngle(movedAngle);
+    this->target->setAngle(movedAngle);
 }
 
 //float ActionRotateTo::getMovedAngle(){

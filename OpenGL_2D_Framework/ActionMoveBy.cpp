@@ -30,7 +30,7 @@ ActionMoveBy::~ActionMoveBy(){
 void ActionMoveBy::initMoveBy(glm::vec3 distance, double duration){
     this->distance = distance;
     this->duration = duration;
-    this->actionID = ActionID::ACTION_MOVE_BY;
+//    this->actionID = ActionID::ACTION_MOVE_BY;
 }
 
 void ActionMoveBy::updateAction(double& remainedTime){
@@ -47,7 +47,7 @@ void ActionMoveBy::updateAction(double& remainedTime){
 
 void ActionMoveBy::instantUpdate(){
     movedDistance = distance;
-    this->owner->addPosition(movedDistance);
+    this->target->addPosition(movedDistance);
     alive = false;
 }
 
@@ -74,7 +74,7 @@ void ActionMoveBy::intervalUpdate(double& remainedTime){
             previousDistance += diff;
         }
     }
-    this->owner->addPosition(movedDistance);
+    this->target->addPosition(movedDistance);
 }
 
 void ActionMoveBy::revive(){

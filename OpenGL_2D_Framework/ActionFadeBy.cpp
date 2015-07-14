@@ -26,7 +26,7 @@ ActionFadeBy::~ActionFadeBy(){
 }
 
 void ActionFadeBy::initFadeBy(float opacity, double duration){
-    this->actionID = ActionID::ACTION_FADE_BY;
+//    this->actionID = ActionID::ACTION_FADE_BY;
     this->duration = duration;
     this->opacityToFade = opacity;
     this->fadedOpacity = 0;
@@ -36,7 +36,7 @@ void ActionFadeBy::initFadeBy(float opacity, double duration){
 void ActionFadeBy::instantUpdate(){
     fadedOpacity = opacityToFade;
     alive = false;
-    this->owner->addOpacity(fadedOpacity);
+    this->target->addOpacity(fadedOpacity);
 }
 
 void ActionFadeBy::intervalUpdate(double& remainedTime){
@@ -61,7 +61,7 @@ void ActionFadeBy::intervalUpdate(double& remainedTime){
             previousOpacity += diff;
         }
     }
-    this->owner->addOpacity(fadedOpacity);
+    this->target->addOpacity(fadedOpacity);
 }
 
 void ActionFadeBy::updateAction(double& remainedTime){

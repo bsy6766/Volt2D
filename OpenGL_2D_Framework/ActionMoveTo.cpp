@@ -32,19 +32,19 @@ ActionMoveTo::~ActionMoveTo(){
 void ActionMoveTo::initMoveTo(glm::vec3 destination, double duration){
     this->duration = duration;
     this->destination = destination;
-    this->actionID = ActionID::ACTION_MOVE_TO;
+//    this->actionID = ActionID::ACTION_MOVE_TO;
 }
 
 void ActionMoveTo::startAction(){
     ActionObject::startAction();
     //initialize position of sprite when action starts
-    originalPosition = this->owner->getPosition();
+    originalPosition = this->target->getPosition();
     totalDistance = destination - originalPosition;
 }
 
 void ActionMoveTo::instantUpdate(){
     movedPosition = totalDistance;
-    this->owner->setPosition(movedPosition);
+    this->target->setPosition(movedPosition);
     alive = false;
 }
 
@@ -69,7 +69,7 @@ void ActionMoveTo::intervalUpdate(double& remainedTime){
             movedPosition = totalDistance * (currentTime / duration) + originalPosition;
         }
     }
-    this->owner->setPosition(movedPosition);
+    this->target->setPosition(movedPosition);
 }
 
 void ActionMoveTo::updateAction(double& remainedTime){
