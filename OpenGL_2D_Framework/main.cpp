@@ -69,9 +69,9 @@ int main(int argc, const char * argv[]) {
 //    ss->initSpriteSheetWithXML("battle scene.xml");
 //    delete ss;
     
-    Director::getInstance().setWindowSize(1280, 720);
+    Director::getInstance().setWindowSize(1440, 900);
     try{
-        Director::getInstance().initApp(1280, 720, "JB_Engine(OpenGL4) test game build");
+        Director::getInstance().initApp(1440, 900, "JB_Engine(OpenGL4) test game build");
         TitleScene* titleScene = new TitleScene();
         Director::getInstance().pushScene(titleScene);
         Director::getInstance().run();
