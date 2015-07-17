@@ -82,7 +82,7 @@ void ProgressFromTo::intervalUpdate(double& remainedTime){
         }
     }
     static_cast<ProgressObject*>(this->target)->addPercentage(changedPercentage);
-    cout << "cur % = " << static_cast<ProgressObject*>(this->target)->getPercentage() << endl;
+//    cout << "cur % = " << static_cast<ProgressObject*>(this->target)->getPercentage() << endl;
 }
 
 void ProgressFromTo::updateAction(double& remainedTime){
