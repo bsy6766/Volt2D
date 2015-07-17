@@ -92,6 +92,7 @@ public:
     /**
      *  Create a non-looping sound.\n
      *  Calls SoundManager::createSound(std::string, FMOD_MODE, const char*).
+     *  Since SFX are mostly has short duration, it will set the volume on the play.
      *
      *  @param sfxName A name for sfx sound object.
      *  @param sfxFileName A file name for sfx sound.
@@ -104,8 +105,9 @@ public:
      *  
      *  @param bgmName A name for bgm sound object.
      *  @param bgmFileName A file name for bgm sound.
+     *  @param volume A desired volume to be set on creation. 1.0 by default.
      */
-    void createBGM(std::string bgmName, const char* bgmFileName);
+    void createBGM(std::string bgmName, const char* bgmFileName, float volume = 1.0);
     
     /**
      *  Create sounds and store.
@@ -114,8 +116,9 @@ public:
      *  @param modes FMOD modes. 
      *  @param soundFileName A name for sound object file.
      *  @param pause true to play sound and pause on creation. false to just create sound only
+     *  @param volume A desired volume to be set on creation. 1.0 by default.
      */
-    void createSound(std::string soundName, FMOD_MODE modes, const char* soundFileName, bool pause);
+    void createSound(std::string soundName, FMOD_MODE modes, const char* soundFileName, bool pause, float volume = 1.0);
     
     /**
      *  Creates a channel group with name.
@@ -125,36 +128,47 @@ public:
     
     /**
      *  Bind existing sound's channel to channelGroup.
-     *  If channelGroup doesn't exist, then it will create new one with name as an ID.
      *  You can create new FMOD channel group with SoundManager::createChannelGroup(std::string)
      */
     void bindSoundToChannelGroup(std::string soundName, std::string channelGroupName);
     
     /**
      *  Stops sound.
+     *  @param soundName A sound object name to stop.
      */
     void stopSound(std::string soundName);
     
     /**
      *  Play SFX.
      *  Plays SFX only if SFX is not playing.
+     *  @param sfxName A sound object name to play.
+     *  @param volume A desired volume to be set on creation. 1.0 by default.
      */
-    void playSFX(std::string sfxName);
+    void playSFX(std::string sfxName, float volume = 1.0);
     
     /**
      *  Play BGM.
      *  If sound is not playing, it will play newly. If sound is playing but paused, it will unpause.
+     *  @Param bgmName A sound object name to play
      */
     void playBGM(std::string bgmName);
     
     /**
-     *
+     *  Pause BGM
+     *  @Param bgmName A sound object name to pause
      */
     void pauseBGM(std::string bgmName);
     
     /**
+     *  Resume BGM
+     *  @Param bgmName A sound object name to resume
+     */
+    void resumeBGM(std::string bgmName);
+    
+    /**
      *  Get volume of sound
-     *  @return Volume of sound. Default is 1.0.
+     *  @param volume A ref float to get volume.
+     *  @return true if successfully get volume. Else, false.
      */
     bool getSoundVolume(std::string soundName, float& volume);
     
@@ -163,13 +177,26 @@ public:
      *  
      *  @param Name for sound object to set volume
      *  @param volume A new volume value to set. Default is 1.0
+     *  @return true if successfully set volume. Else, false.
      */
     bool setSoundVolume(std::string soundName, float volume);
     
     /**
-     *
+     *  Get volume of channel group
+     *  @param channelGroupName A name of channel group
+     *  @param volume A ref float to get volume.
+
+     *  @return true if successfully get volume. Else, false.
      */
-    bool getChannelGroupVolume(std::string channelGroupName, float volume);
+    bool getChannelGroupVolume(std::string channelGroupName, float& volume);
+    
+    /**
+     *  Set volume of channel group
+     *  @param channelGroupName A name of channel group
+     *  @param volume A new volume value to set. Default is 1.0
+     *  @return true if successfully set volume. Else, false.
+     */
+    bool setChannelGroupVolume(std::string channelGroupName, float volume);
     
     /**
      *  Update FMOD System.

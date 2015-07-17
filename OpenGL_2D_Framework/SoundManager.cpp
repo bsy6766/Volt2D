@@ -18,7 +18,11 @@ SoundManager::~SoundManager(){
 }
 
 bool SoundManager::FMODErrorCheck(FMOD_RESULT result){
-    if (result != FMOD_OK){
+    if(result == FMOD_ERR_INVALID_HANDLE){
+//        cout << "FMOD_RESULT = " << FMOD_ErrorString(result) << endl;
+        return false;
+    }
+    else if (result != FMOD_OK){
         std::cout << "FMOD error! (" << result << ") " << FMOD_ErrorString(result) << std::endl;
         return false;
     }
@@ -61,11 +65,11 @@ void SoundManager::createSFX(std::string sfxName, const char *sfxFileName){
     createSound(sfxName, FMOD_DEFAULT, sfxFileName, false);
 }
 
-void SoundManager::createBGM(std::string bgmName, const char *bgmFileName){
+void SoundManager::createBGM(std::string bgmName, const char *bgmFileName, float volume){
     createSound(bgmName, FMOD_LOOP_NORMAL | FMOD_2D, bgmFileName, true);
 }
 
-void SoundManager::createSound(std::string soundName, FMOD_MODE modes, const char *soundFileName, bool pause){
+void SoundManager::createSound(std::string soundName, FMOD_MODE modes, const char *soundFileName, bool pause, float volume){
     if(!findSound(soundName)) {
         //create sound if there isn't a object with same name
         Sound* newSound = Sound::createSound(); //new Sound
@@ -81,8 +85,14 @@ void SoundManager::createSound(std::string soundName, FMOD_MODE modes, const cha
                 //this will pause the sound at start.
                 result = fmodSystem->playSound(newSound->sound, nullptr, true, &newSound->channel);
                 if(FMODErrorCheck(result)){
-                    //store sound on map
-                    soundMap.insert(std::pair<std::string, Sound*>(soundName, newSound));
+                    //set volume
+                    if(FMODErrorCheck(newSound->channel->setVolume(volume))){
+                        //store sound on map
+                        soundMap.insert(std::pair<std::string, Sound*>(soundName, newSound));
+                    }
+                    else{
+                        cout << "Failed to set volume on creation" << endl;
+                    }
                 }
                 else{
                     cout << "failed to play and pause bgm on creation" << endl;
@@ -126,7 +136,7 @@ void SoundManager::stopSound(std::string soundName){
     }
 }
 
-void SoundManager::playSFX(std::string sfxName){
+void SoundManager::playSFX(std::string sfxName, float volume){
     //get sound
     Sound* sound = findSound(sfxName);
     if(sound){
@@ -137,7 +147,18 @@ void SoundManager::playSFX(std::string sfxName){
             //then stop and play new
             if(FMODErrorCheck(sound->channel->stop())){
                 cout << "Stopping and playing new" << endl;
-                FMODErrorCheck(fmodSystem->playSound(sound->sound, nullptr, false, &sound->channel));
+                if(FMODErrorCheck(fmodSystem->playSound(sound->sound, nullptr, false, &sound->channel))){
+                    if(FMODErrorCheck(sound->channel->setVolume(volume))){
+                        cout << "Succesfully played" << endl;
+                    }
+                    else{
+                        cout << "Failed to set volume" << endl;
+                    }
+                }
+                else{
+                    cout << "Failed to play" << endl;
+                }
+                
             }
             else{
                 cout << "Failed to stop to play new" << endl;
@@ -146,7 +167,17 @@ void SoundManager::playSFX(std::string sfxName){
         else{
             //failed to get info. channel is invalid(free).
             cout << "SFX not playing. so play!" << endl;
-            FMODErrorCheck(fmodSystem->playSound(sound->sound, nullptr, false, &sound->channel));
+            if(FMODErrorCheck(fmodSystem->playSound(sound->sound, nullptr, false, &sound->channel))){
+                if(FMODErrorCheck(sound->channel->setVolume(volume))){
+                    cout << "Succesfully played" << endl;
+                }
+                else{
+                    cout << "Failed to set volume" << endl;
+                }
+            }
+            else{
+                cout << "Failed to play" << endl;
+            }
         }
     }
 }
@@ -157,26 +188,49 @@ void SoundManager::playBGM(std::string bgmName){
     if(sound){
         //check if playing
         bool playing = false;
-        FMODErrorCheck(sound->channel->isPlaying(&playing));
-        if(playing){
-            //check if it's paused
-            cout << "PlayBGM(). bgm is playing" << endl;
-            bool paused = false;
-            FMODErrorCheck(sound->channel->getPaused(&paused));
-            if(paused){
-                //playing but paused. set paused to false.
-                cout << "it's paused" << endl;
-                FMODErrorCheck(sound->channel->setPaused(false));
+        if(FMODErrorCheck(sound->channel->isPlaying(&playing))){
+            if(playing){
+                //channel is already playing.
+                bool paused = false;
+                if(FMODErrorCheck(sound->channel->getPaused(&paused))){
+                    if(paused){
+                        //channel is playing and paused. unpause then.
+                        if(FMODErrorCheck(sound->channel->setPaused(false))){
+                            //everything fine
+                            cout << "succesfully unpaused bgm" << endl;
+                        }
+                        else{
+                            cout << "bgm is playing and paused but failed to unpause" << endl;
+                        }
+                    }
+                    else{
+                        //channel is playing and not paused. so do nothing
+                        cout << "bgm is playing but unpaused(already playing?)" << endl;
+                    }
+                }
+                else{
+                    //sould not reach here.
+                    cout << "bgm is playing but failed to get pause info" << endl;
+                }
             }
             else{
-                cout << "it's already playing wtf?" << endl;
+                //channel is not playing. never reach here?
+                cout << "bgm is not playing." << endl;
             }
         }
         else{
-            //not playing. play it new.
-            cout << "PlayBGM(). bgm isn't playing. so play!" << endl;
-            FMODErrorCheck(fmodSystem->playSound(sound->sound, nullptr, true, &sound->channel));
+            //channel is free.
+            cout << "channel is free. play fresh?" << endl;
+            if(FMODErrorCheck(fmodSystem->playSound(sound->sound, nullptr, false, &sound->channel))){
+                cout << "playing fresh!" << endl;
+            }
+            else{
+                cout << "failed to play fresh" << endl;
+            }
         }
+    }
+    else{
+        cout << "bgm doesn't exist" << endl;
     }
 }
 
@@ -186,13 +240,106 @@ void SoundManager::pauseBGM(std::string bgmName){
     if(sound){
         //check if playing
         bool playing = false;
-        FMODErrorCheck(sound->channel->isPlaying(&playing));
-        if(playing){
-            FMODErrorCheck(sound->channel->setPaused(false));
+        if(FMODErrorCheck(sound->channel->isPlaying(&playing))){
+            bool paused = false;
+            if(FMODErrorCheck(sound->channel->getPaused(&paused))){
+                if(paused){
+                    cout << "already paused" << endl;
+                }
+                else{
+                    if(FMODErrorCheck(sound->channel->setPaused(true))){
+                        cout << "pausing bgm" << endl;
+                    }
+                    else{
+                        cout << "failed to pause bgm" << endl;
+                    }
+                }
+            }
+            else{
+                cout << "Channel is free" << endl;
+            }
         }
         else{
-            cout << "can't pause sound that isn't playing" << endl;
+            cout << "Channel is free" << endl;
         }
+    }
+    else{
+        cout << "No sound found" << endl;
+    }
+}
+
+void SoundManager::resumeBGM(std::string bgmName){
+    //get sound
+    Sound* sound = findSound(bgmName);
+    if(sound){
+        //check if playing
+        bool playing = false;
+        if(FMODErrorCheck(sound->channel->isPlaying(&playing))){
+            bool paused = false;
+            if(FMODErrorCheck(sound->channel->getPaused(&paused))){
+                if(paused){
+                    if(FMODErrorCheck(sound->channel->setPaused(false))){
+                        cout << "resuming bgm" << endl;
+                    }
+                    else{
+                        cout << "failed to resume bgm" << endl;
+                    }
+                }
+                else{
+                    cout << "already playing" << endl;
+                }
+            }
+            else{
+                cout << "Channel is free" << endl;
+            }
+        }
+        else{
+            cout << "Channel is free" << endl;
+        }
+    }
+    else{
+        cout << "No sound found" << endl;
+    }
+}
+
+void SoundManager::createChannelGroup(std::string channelGroupName){
+    auto find_it = this->channelGroupMap.find(channelGroupName);
+    if(find_it == this->channelGroupMap.end()){
+        FMOD::ChannelGroup* newChGroup;
+        if(FMODErrorCheck(fmodSystem->createChannelGroup(channelGroupName.c_str(), &newChGroup))){
+            //store in ch group map
+            channelGroupMap[channelGroupName] = newChGroup;
+            cout << "successfully create channel group" << endl;
+        }
+        else{
+            cout << "Failed to create channel group" << endl;
+        }
+    }
+    else{
+        cout << "Channel Group with same name already exists" << endl;
+    }
+}
+
+void SoundManager::bindSoundToChannelGroup(std::string soundName, std::string channelGroupName){
+    //get sound
+    Sound* sound = findSound(soundName);
+    if(sound){
+        //check ch group
+        auto find_it = this->channelGroupMap.find(channelGroupName);
+        if(find_it != this->channelGroupMap.end()){
+            if(FMODErrorCheck(sound->channel->setChannelGroup(find_it->second))){
+                cout << "Successfully added sound's channel to channel group" << endl;
+            }
+            else{
+                cout << "Failed to add sound's channel to channel group" << endl;
+            }
+        }
+        else{
+            cout << "No channel group found" << endl;
+        }
+    }
+    else{
+        cout << "No sound found" << endl;
     }
 }
 
@@ -208,15 +355,48 @@ Sound* SoundManager::findSound(std::string soundName){
 }
 
 void SoundManager::release(){
+    updateSystem();
+    //release sound
     std::map<std::string, Sound*>::iterator s_it;
     for(s_it = soundMap.begin(); s_it != soundMap.end(); s_it++){
         bool playing = false;
-        FMODErrorCheck((s_it->second)->channel->isPlaying(&playing));
-        if(playing){
-            FMODErrorCheck((s_it->second)->channel->stop());
+        if(FMODErrorCheck((s_it->second)->channel->isPlaying(&playing))){
+            if(playing){
+                if(FMODErrorCheck((s_it->second)->channel->stop())){
+                    if(FMODErrorCheck((s_it->second)->sound->release())){
+                        cout << "successfully released " << s_it->first << endl;
+                    }
+                    else{
+                        cout << "failed to release sound" << endl;
+                    }
+                }
+            }
+            else{
+                assert(false);
+            }
         }
-        FMODErrorCheck((s_it->second)->sound->release());
+        else{
+            if(FMODErrorCheck((s_it->second)->sound->release())){
+                cout << "successfully released " << s_it->first << endl;
+            }
+            else{
+                cout << "failed to release sound" << endl;
+            }
+        }
         delete (s_it->second);
+    }
+    
+    updateSystem();
+    //release channel group
+    std::map<std::string, FMOD::ChannelGroup*>::iterator ch_g_it;
+    for(ch_g_it = channelGroupMap.begin(); ch_g_it != channelGroupMap.end(); ch_g_it++){
+        
+    }
+    
+    updateSystem();
+    //release system
+    if(FMODErrorCheck(fmodSystem->release())){
+        cout << "Successfully released fmod system" << endl;
     }
 }
 
@@ -244,6 +424,43 @@ bool SoundManager::getSoundVolume(std::string soundName, float &volume){
     }
 }
 
+bool SoundManager::setChannelGroupVolume(std::string channelGroupName, float volume){
+    auto find_it = this->channelGroupMap.find(channelGroupName);
+    if(find_it != this->channelGroupMap.end()){
+        if(FMODErrorCheck((find_it->second)->setVolume(volume))){
+            cout << "Successfully set new volume" << endl;
+            return true;
+        }
+        else{
+            cout << "Failed to set volume" << endl;
+        }
+    }
+    else{
+        cout << "Failed to find channel group" << endl;
+    }
+    return false;
+}
+
+bool SoundManager::getChannelGroupVolume(std::string channelGroupName, float& volume){
+    auto find_it = this->channelGroupMap.find(channelGroupName);
+    if(find_it != this->channelGroupMap.end()){
+        if(FMODErrorCheck((find_it->second)->getVolume(&volume))){
+            cout << "Successfully got new volume" << endl;
+            return true;
+        }
+        else{
+            cout << "Failed to set volume" << endl;
+        }
+    }
+    else{
+        cout << "Failed to find channel group" << endl;
+    }
+    return false;
+}
+
+
 void SoundManager::updateSystem(){
     fmodSystem->update();
 }
+
+
