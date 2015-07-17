@@ -50,24 +50,30 @@ void SoundManager::initSoundManager(){
         result = fmodSystem->setOutput(FMOD_OUTPUTTYPE_NOSOUND);
         FMODErrorCheck(result);
     }
-    
     // Initialize our Instance with 36 Channels
     fmodSystem->init(36, FMOD_INIT_NORMAL, NULL);
 }
 
-void SoundManager::createSound(std::string soundName, const char *soundFileName){
+void SoundManager::createSFX(std::string sfxName, const char *sfxFileName){
+    createSound(sfxName, FMOD_DEFAULT, sfxFileName);
+}
+
+void SoundManager::createBGM(std::string bgmName, const char *bgmFileName){
+    createSound(bgmName, FMOD_LOOP_NORMAL | FMOD_2D, bgmFileName);
+}
+
+void SoundManager::createSound(std::string soundName, FMOD_MODE modes, const char *soundFileName){
     auto find_it = soundMap.find(soundName);
     if(find_it == soundMap.end()){
         Sound* newSound = Sound::createSound();
         FMOD::Sound* newFMODSound = newSound->sound;
         std::string bgmDir = Director::getInstance().getWorkingDir() + "/../Sound/" + std::string(soundFileName);
-        FMOD_RESULT result = fmodSystem->createSound(bgmDir.c_str(), FMOD_LOOP_NORMAL, 0, &newFMODSound);
+        FMOD_RESULT result = fmodSystem->createSound(bgmDir.c_str(), modes, 0, &newFMODSound);
         FMODErrorCheck(result);
         FMOD::Channel* newFMODChannel = newSound->channel;
         //this will pause the sound at start.
         result = fmodSystem->playSound(newFMODSound, nullptr, true, &newFMODChannel);
         FMODErrorCheck(result);
-        fmodSystem->update();
         newSound->sound = newFMODSound;
         newSound->channel = newFMODChannel;
         soundMap.insert(std::pair<std::string, Sound*>(soundName, newSound));
@@ -76,21 +82,27 @@ void SoundManager::createSound(std::string soundName, const char *soundFileName)
         cout << "Sound object with same name already exists." << endl;
         return;
     }
+//    updateSystem();
+}
+
+void SoundManager::test(){
+    Sound* sound = findSound("titleSceneMenuBrowse");
+    FMODErrorCheck(fmodSystem->playSound(sound->sound, nullptr, true, &sound->channel));
 }
 
 void SoundManager::playSound(std::string soundName){
     Sound* sound = findSound(soundName);
     if(sound){
-        sound->channel->setPaused(false);
-        fmodSystem->update();
+        FMODErrorCheck(sound->channel->setPaused(false));
+//        updateSystem();
     }
 }
 
 void SoundManager::pauseSound(std::string soundName){
     Sound* sound = findSound(soundName);
     if(sound){
-        sound->channel->setPaused(true);
-        fmodSystem->update();
+        FMODErrorCheck(sound->channel->setPaused(true));
+//        updateSystem();
     }
 }
 
@@ -128,4 +140,8 @@ float SoundManager::getVolume(std::string soundName){
 	float curVolume;
 	FMODErrorCheck(targetSound->channel->getVolume(&curVolume));
 	return curVolume;
+}
+
+void SoundManager::updateSystem(){
+    fmodSystem->update();
 }

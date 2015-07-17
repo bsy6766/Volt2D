@@ -41,11 +41,26 @@ public:
         return newInstance;
     }
     
-    void createSound(std::string soundName, const char* soundFileName);
+    void createSFX(std::string sfxName, const char* sfxFileName);
+    /**
+     *  Create a looping sound.\n
+     *  Calls SoundManager::createSound(std::string, FMOD_MODE, const char*).
+     *  
+     *  @param bgmName A name for bgm sound object.
+     *  @param bgmFileName A file name for bgm sound.
+     */
+    void createBGM(std::string bgmName, const char* bgmFileName);
+    
+    /**
+     *  Create sound
+     */
+    void createSound(std::string soundName, FMOD_MODE modes, const char* soundFileName);
     void playSound(std::string soundName);
     void pauseSound(std::string soundName);
 	void setVolume(std::string soundName, float volume);
 	float getVolume(std::string soundName);
+    void updateSystem();
+    void test();
     
     void release();
 };
