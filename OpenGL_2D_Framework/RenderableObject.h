@@ -140,7 +140,8 @@ public:
     // action
     void addAction(ActionObject* action);
     void addAction(ActionObject* action, int repeat);
-    void addActions(std::initializer_list<ActionObject*> actions, int repeat);
+    //some child class can override for their own protection of adding actions
+    virtual void addActions(std::initializer_list<ActionObject*> actions, int repeat);
     void runAction();
     void stopAction();
     bool isActionRunning();

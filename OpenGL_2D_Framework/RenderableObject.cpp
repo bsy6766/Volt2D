@@ -215,6 +215,9 @@ void RenderableObject::addAction(ActionObject *action, int repeat){
 }
 
 void RenderableObject::addActions(std::initializer_list<ActionObject *> actions, int repeat){
+    //TODO:: point where I can block bad actions
+    //pseudocode
+    //if action is progressFromTo or progressTo, and if this is progress object, 
     for(auto it:actions){
         it->bindTarget(this);
     }
@@ -263,13 +266,13 @@ void RenderableObject::update(){
             if((*schedule_it)->isFinished()){
                 if((*schedule_it)->needRepeat()){
                     //revive, increment counter
-                    cout << "Reviving schedule." << endl;
+//                    cout << "Reviving schedule." << endl;
                     (*schedule_it)->reviveSchedule();
                     schedule_it++;
                 }
                 else{
                     //repeat done. delete list
-                    cout << "Repeat done. deleting list." << endl;
+//                    cout << "Repeat done. deleting list." << endl;
                     delete *schedule_it;
                     schedule_it = actionScheduleList.erase(schedule_it);
                     continue;
