@@ -19,11 +19,13 @@ align(ALIGN_RIGHT),
 start(-1),
 end(-1),
 width(0),
-height(0),
-fontColor(glm::vec3(255, 255, 255)) //RGB
+height(0)
+//fontColor(Color::WHITE.getColor()) //RGB
 {
     this->progPtr = Director::getInstance().getProgramPtr("Text");
 //    prog = Director::getInstance().getProgramPtr();
+    Color textColor = Color::WHITE;
+    fontColor = textColor.getColor();
 }
 
 Text::~Text(){

@@ -13,6 +13,7 @@
 #include "FontManager.h"
 #include "RenderableObject.h"
 #include <vector>
+#include "Color.h"
 
 class Text : public RenderableObject{
 protected:
