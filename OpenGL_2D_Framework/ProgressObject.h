@@ -9,10 +9,11 @@
 #ifndef __OpenGL_2D_Framework__ProgressObject__
 #define __OpenGL_2D_Framework__ProgressObject__
 
-#include "CommonInclude.h"
 #include "Texture.h"
-#include "Timer.h"
 #include "RenderableObject.h"
+#include "ProgressFromTo.h"
+#include "CommonInclude.h"
+#include "Timer.h"
 
 #define VOID_OFFSET(i) (GLvoid*)(i)
 
@@ -38,6 +39,7 @@ public:
     void addPercentage(int percentage);
     int getPercentage();
     
+//    virtual void addActions(std::initializer_list<ActionObject*> actions, int repeat);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ProgressObject__) */

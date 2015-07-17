@@ -46,3 +46,16 @@ void ProgressObject::addPercentage(int percentage){
         sum = totalPercentage;
     currentPercentage = sum;
 }
+
+//void ProgressObject::addActions(std::initializer_list<ActionObject *> actions, int repeat){
+//    //if 
+////    std::initializer_list<ActionObject*>::iterator iter;
+////    std::list<ActionObject*> newActionList;
+////    for(iter = actions.begin(); iter != actions.end();){
+////        //if it's
+////        if(dynamic_cast<ProgressFromTo*>(*iter) == nullptr){
+////            
+////        }
+////        iter++;
+////    }
+//}
