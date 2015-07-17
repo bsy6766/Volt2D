@@ -13,8 +13,10 @@ Director::Director():
 winSize({ 0, 0 }),
 runningScene(0),
 nextScene(0),
-soundManager(0)
-//dyingScene(0)
+soundManager(0),
+ps3Joysticks(),   //init all to 0,
+joystickEnabled(false),
+paused(false)
 {
     char cCurrentPath[FILENAME_MAX];
     
@@ -56,6 +58,11 @@ Director::~Director(){
     if(runningScene) delete runningScene;
     //    if(nextScene) delete nextScene;
     
+    for(int i = 0; i < MAX_JOYSTICK; i++){
+        if(ps3Joysticks[i])
+            delete ps3Joysticks[i];
+    }
+    
     cout << "Done." << endl;
 }
 
@@ -90,6 +97,7 @@ void Director::pushScene(Scene* newScene){
         cout << "No running scene exists. Pushing new scene to running scene" << endl;
         runningScene = newScene;
         runningScene->boundWindow(window);
+        //if no scene exist, call init right now
         runningScene->init();
     }
     else{
@@ -100,7 +108,8 @@ void Director::pushScene(Scene* newScene){
         
         nextScene = newScene;
         nextScene->boundWindow(window);
-        nextScene->init();
+        //call init on switching
+//        nextScene->init();
     }
 }
 
@@ -133,6 +142,27 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
     camera = new Camera();
     
     soundManager = SoundManager::createSoundManager();
+    
+    //create joystick wrapper(PS3)
+    
+    //detect joystick. GLFW has max 16 joystick module connections
+    //Assume we are only using PS3 for this moment
+    for(int i = 0; i<16; i++){
+        if(glfwJoystickPresent(i) == GL_TRUE){
+            int buttonCount, axisCount;
+            glfwGetJoystickButtons(i, &buttonCount);
+            glfwGetJoystickAxes(i, &axisCount);
+            if(ps3Joysticks[i])
+                delete ps3Joysticks[i];
+            ps3Joysticks[i] = new PS3ControllerWrapper(i, buttonCount, axisCount);
+            cout << "Detected joystick on #" << i << ". Name = " << glfwGetJoystickName(i) << ". button = " << buttonCount << ", axis = " << axisCount << "." << endl;
+            joystickEnabled = true;
+            //TODO: Remove this for multiple controller
+            break;
+        }
+    }
+    
+    
 }
 
 void Director::terminateApp(){
@@ -322,6 +352,7 @@ void Director::transitionToNextScene(bool wait = true){
     runningScene = nextScene;
     nextScene = 0;
     
+    runningScene->init();
     delete dyingScene;
 }
 
@@ -332,8 +363,27 @@ void Director::run(){
     while (!glfwWindowShouldClose(window)){
         Timer::getInstance().recordTime();
         
+        //update joystick
+        if(joystickEnabled){
+            for(int i = 0; i<MAX_JOYSTICK; i++){
+                if(ps3Joysticks[i]){
+                    int buttonCount;
+                    const unsigned char* buttonInputs = glfwGetJoystickButtons(i, &buttonCount);
+                    if(buttonCount)
+                        ps3Joysticks[i]->receiveButtonInput(buttonInputs);
+                    
+                    int axisCount;
+                    const float* axisInputs = glfwGetJoystickAxes(i, &axisCount);
+                    if(axisCount)
+                        ps3Joysticks[i]->receiveAxisInput(axisInputs);
+                    break;
+                }
+            }
+        }
+        
         update();
-        render();
+        if(!paused)
+            render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -364,7 +414,10 @@ void Director::update(){
     if(runningScene){
         runningScene->injectKey();
         runningScene->injectMouseMove();
-        runningScene->update();
+        if(!paused)
+            runningScene->update();
+        //at least once per frame. update it
+        soundManager->updateSystem();
     }
 }
 
@@ -385,4 +438,13 @@ void Director::setWorkingDir(std::string wd){
 
 SoundManager* Director::getSoundManager(){
     return this->soundManager;
+}
+
+void Director::changeWindowSize(int w, int h){
+    glfwSetWindowSize(window, w, h);
+    
+}
+
+PS3ControllerWrapper* Director::getJoyStick(int num){
+    return this->ps3Joysticks[num];
 }

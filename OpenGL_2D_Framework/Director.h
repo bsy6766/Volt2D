@@ -26,7 +26,9 @@
 #include <string>
 #include <unordered_map>
 #include "Timer.h"
+#include "PS3ControllerWrapper.h"
 
+#define MAX_JOYSTICK 16
 
 //#include "TextManager.h"
 
@@ -60,6 +62,8 @@ private:
     
     bool debugMovement = false;
     
+    bool paused;
+    
     std::string workingDirectory;
     
     glm::vec2 prevMousePos;
@@ -82,6 +86,10 @@ private:
     
     //SoundManager
     SoundManager* soundManager;
+    
+    //PS3 Controller.
+    bool joystickEnabled;
+    PS3ControllerWrapper* ps3Joysticks[16];
 
     void initOpenGL();
     void initGLEW();
@@ -99,8 +107,6 @@ private:
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     static void glfw_error_callback(int error, const char *description);
     
-    //text test
-//    TextManager* textManager;
 public:
     static Director& getInstance(){
         static Director instance;
@@ -129,12 +135,14 @@ public:
 //    void updateKeyInput();
     std::string getWorkingDir();
     void setWorkingDir(std::string wd);
+
+    /**
+     *	Pause game loop
+     */
+    void pause(){this->paused = true;}
+    bool isScenePaused(){return this->paused;}
+    void resume(){this->paused = false;}
 //
-//    /**
-//     *	Pause game loop
-//     */
-//    void pause();
-//    
 //    /**
 //     *  Stop the game loop
 //     */
@@ -145,6 +153,7 @@ public:
      *   This will replace the current running scene if exists
      */
     void pushScene(Scene* pScene);
+    Scene* getRunningScene(){return this->runningScene;};
     
 //    /**
 //     *  Terminate current running scene,
@@ -175,6 +184,10 @@ public:
 //    void releaseScenes();
     
     SoundManager* getSoundManager();
+    
+    void changeWindowSize(int w, int h);
+    
+    PS3ControllerWrapper* getJoyStick(int num);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Director__) */
