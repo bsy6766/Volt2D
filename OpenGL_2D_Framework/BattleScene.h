@@ -9,30 +9,26 @@
 #ifndef __OpenGL_2D_Framework__BattleScene__
 #define __OpenGL_2D_Framework__BattleScene__
 
-#include <stdio.h>
-
 #include "Scene.h"
 #include "Sprite.h"
 #include "CommonInclude.h"
+#include "BattleHUDLayer.h"
 
 class BattleScene : public Scene{
 private:
     Sprite* bg;
-    bool mouseClicked = false;
-    glm::vec2 prevMousePos;
-    glm::vec2 curMousePos;
+    BattleHUDLayer* HUD_Layer;
     
 public:
     BattleScene();
     ~BattleScene();
     
     virtual void init();
-//    virtual void update();
-//    virtual void render();
-	virtual void keyPressed(int key, int mods);
-	virtual void keyReleased(int key, int mods);
-    virtual void mouseButton(double x, double y, int button, int action);
-    virtual void mouseMove(double x, double y);
+    virtual void update();
+//	virtual void keyPressed(int key, int mods);
+//	virtual void keyReleased(int key, int mods);
+//    virtual void mouseButton(double x, double y, int button, int action);
+//    virtual void mouseMove(double x, double y);
     virtual void injectKey();
     virtual void injectMouseMove();
     
