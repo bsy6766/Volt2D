@@ -15,6 +15,11 @@
 #include "ActionFadeTo.h"
 #include "ActionScaleTo.h"
 #include "ActionDelay.h"
+#include "ProgressBar.h"
+#include "ProgressFromTo.h"
+#include "ActionCallFunc.h"
+#include <map>
+#include "BattleScene.h"
 
 class TitleButtonLayer : public Layer{
 private:
@@ -25,9 +30,14 @@ private:
     Sprite* exitGameButton;
     Sprite* selectingArrowIcon;
     Sprite* creditScreen;
+    Sprite* continueButton;
     
     Sprite* originPoint;
     Sprite* endPoint;
+    
+    bool hasSavedData;
+    
+    std::unordered_map<unsigned int, bool> joystickMap;
     
     float selectingArrowIconX;
     int selectingButtonID;
@@ -42,7 +52,8 @@ private:
     };
     
     enum ButtonID{
-        NEW_GAME = 0,
+        CONTINUE = 0,
+        NEW_GAME,
         OPTIONS,
         CREDITS,
         EXIT_GAME
@@ -51,6 +62,9 @@ private:
     bool openingCredits;
     void openCredits();
     void closeCredits();
+    
+    void testFunc();
+    void testFunc2(int num);
     
 public:
     TitleButtonLayer();

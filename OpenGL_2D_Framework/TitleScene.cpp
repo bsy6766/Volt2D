@@ -27,11 +27,13 @@ void TitleScene::init(){
 //    WinSize size = Director::getInstance().getWindowSize();
 //    SoundManager::getInstance().createChannelGroup("bgmChannelGroup");
 //    SoundManager::getInstance().createNewSound("titleSceneBgm", "titleSceneBgm", "title bgm.mp3");
-    Director::getInstance().getSoundManager()->createSound("titleSceneBgm", "title bgm.mp3");
+    Director::getInstance().getSoundManager()->createBGM("titleSceneBgm", "title bgm.mp3");
+    Director::getInstance().getSoundManager()->createSFX("titleSceneMenuBrowse", "title_scene_menu_browse.mp3");
+    Director::getInstance().getSoundManager()->createSFX("titleSceneMenuSelect", "title_scene_menu_select.mp3");
 //    SoundManager::getInstance().addSoundToChannelGroup("bgmChannelGroup", "titleSceneBgm");
 
     bg = new Sprite();
-    bg->initSpriteWithTexture(GL_TEXTURE_2D, "title scene/title_scene_bg.png");
+    bg->initSpriteWithTexture("title scene/title_scene_bg.png");
     bg->setZDepth(z_bg);
     this->addObject("title_scene_bg", bg);
     
@@ -56,8 +58,10 @@ void TitleScene::initLayers(){
 }
 
 void TitleScene::update(){
+//    if(Director::getInstance().getJoyStick(0)->keyPressed(CIRCLE)){
+//        cout << "circle pressed" << endl;
+//    }
     Scene::update();
-
 }
 
 void TitleScene::keyPressed(int key, int mods){
