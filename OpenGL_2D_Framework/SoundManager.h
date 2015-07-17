@@ -91,7 +91,7 @@ public:
     
     /**
      *  Create a non-looping sound.\n
-     *  Calls SoundManager::createSound(std::string, FMOD_MODE, const char*).
+     *  Calls SoundManager::createSound(std::string, FMOD_MODE, const char*, bool, float).
      *  Since SFX are mostly has short duration, it will set the volume on the play.
      *
      *  @param sfxName A name for sfx sound object.
@@ -101,7 +101,7 @@ public:
     
     /**
      *  Create a looping sound.\n
-     *  Calls SoundManager::createSound(std::string, FMOD_MODE, const char*).
+     *  Calls SoundManager::createSound(std::string, FMOD_MODE, const char*, bool, float).
      *  
      *  @param bgmName A name for bgm sound object.
      *  @param bgmFileName A file name for bgm sound.
@@ -122,7 +122,7 @@ public:
     
     /**
      *  Creates a channel group with name.
-     *  You can bind existing channel by calling SoundManager::bindSoundToChannelGroup(std::string soundName, std::channelGroupName)
+     *  You can bind existing channel by calling SoundManager::bindSoundToChannelGroup(std::string, std::string)
      */
     void createChannelGroup(std::string channelGroupName);
     
