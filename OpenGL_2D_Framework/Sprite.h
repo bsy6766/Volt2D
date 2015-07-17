@@ -31,7 +31,7 @@ public:
     ~Sprite();
 
     //inits
-    void initSpriteWithTexture(GLenum _textureTarget = GL_TEXTURE_2D, const std::string& _fileName = "../Texture/default.png");
+    void initSpriteWithTexture(const std::string& _fileName, GLenum _textureTarget = GL_TEXTURE_2D);
     void initSpriteWithSpriteSheet(const std::string spriteFileName);
     void setType(SpriteType type);
     

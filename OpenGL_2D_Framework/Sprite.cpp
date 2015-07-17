@@ -30,7 +30,7 @@ Sprite::~Sprite(){
     std::cout << "Sprite deleted" << std::endl;
 }
 
-void Sprite::initSpriteWithTexture(GLenum _textureTarget, const std::string& _fileName){
+void Sprite::initSpriteWithTexture(const std::string& _fileName, GLenum _textureTarget){
     std::cout << "init sprite with texture with path of " << _fileName << std::endl;
     std::string textureDir = Director::getInstance().getWorkingDir() + "/../Texture/";
     texture = new Texture(_textureTarget, textureDir + _fileName);
