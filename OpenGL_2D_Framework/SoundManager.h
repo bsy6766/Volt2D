@@ -29,6 +29,9 @@
  *  \note Volume is 1.0 for all sound by default. Volume can go below 0 to invert signal or go above to amplify.
  *
  *  This class provides options to create, play, stop, pause for either BGM or SFX.
+ *  Since there is a limmited channel to the system, eventually some sounds will steal other channel
+ *  if there isn't enough. Program will spam a error msg for stolen channel but
+ *  no worries atm.
  *
  */
 

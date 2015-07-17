@@ -18,35 +18,13 @@ SoundManager::~SoundManager(){
 }
 
 bool SoundManager::FMODErrorCheck(FMOD_RESULT result){
-//    if(result == FMOD_ERR_INVALID_HANDLE){
-////        cout << "FMOD_RESULT = " << FMOD_ErrorString(result) << endl;
-//        return false;
-//    }
-//    else if (result != FMOD_OK){
-//        std::cout << "FMOD error! (" << result << ") " << FMOD_ErrorString(result) << std::endl;
-//        return false;
-//    }
-//    else{
-//        return true;
-//    }
     cout << "FMOD_RESULT = " << FMOD_ErrorString(result) << endl;
-    
     if(result == FMOD_OK){
         return true;
     }
     else{
         return false;
     }
-    
-//    if ((result != FMOD_OK) &&
-//        (result != FMOD_ERR_INVALID_HANDLE) &&
-//        (result != FMOD_ERR_CHANNEL_STOLEN))
-//    {
-//        return false;
-//    }
-//    else{
-//        return true;
-//    }
 }
 
 void SoundManager::initSoundManager(){
