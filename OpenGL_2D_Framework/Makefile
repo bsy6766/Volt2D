@@ -1,4 +1,4 @@
-CC=g++
+CC=gcc
 CFLAGS=-g -std=c++11
 LDFLAGS=-lglfw -lglew -lfmod -lfreetype
 FRAMEWORKS=-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
