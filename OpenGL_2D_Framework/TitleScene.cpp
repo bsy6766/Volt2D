@@ -27,9 +27,16 @@ void TitleScene::init(){
 //    WinSize size = Director::getInstance().getWindowSize();
 //    SoundManager::getInstance().createChannelGroup("bgmChannelGroup");
 //    SoundManager::getInstance().createNewSound("titleSceneBgm", "titleSceneBgm", "title bgm.mp3");
-    Director::getInstance().getSoundManager()->createBGM("titleSceneBgm", "title bgm.mp3");
-    Director::getInstance().getSoundManager()->createSFX("titleSceneMenuBrowse", "title_scene_menu_browse.mp3");
-    Director::getInstance().getSoundManager()->createSFX("titleSceneMenuSelect", "title_scene_menu_select.mp3");
+    SoundManager* sm = Director::getInstance().getSoundManager();
+    sm->createBGM("titleSceneBgm", "title bgm.mp3");
+    sm->createSFX("titleSceneMenuBrowse", "title_scene_menu_browse.mp3");
+    sm->createSFX("titleSceneMenuSelect", "title_scene_menu_select.mp3");
+//    sm->createSFX("titleSceneMenuSelect", "title bgm.mp3");
+//    sm->createChannelGroup("SFXGroup");
+    sm->createChannelGroup("BGMGroup");
+//    sm->bindSoundToChannelGroup("titleSceneMenuBrowse", "SFXGroup");
+//    sm->bindSoundToChannelGroup("titleSceneMenuSelect", "SFXGroup");
+    sm->bindSoundToChannelGroup("titleSceneBgm", "BGMGroup");
 //    SoundManager::getInstance().addSoundToChannelGroup("bgmChannelGroup", "titleSceneBgm");
 
     bg = new Sprite();
@@ -66,10 +73,53 @@ void TitleScene::update(){
 
 void TitleScene::keyPressed(int key, int mods){
     if(key == GLFW_KEY_0){
-        Director::getInstance().getSoundManager()->playSound("titleSceneBgm");
+        Director::getInstance().getSoundManager()->playBGM("titleSceneBgm");
     }
     else if(key == GLFW_KEY_9){
-        Director::getInstance().getSoundManager()->pauseSound("titleSceneBgm");
+        Director::getInstance().getSoundManager()->stopSound("titleSceneBgm");
+    }
+    else if(key == GLFW_KEY_8){
+        Director::getInstance().getSoundManager()->pauseBGM("titleSceneBgm");
+    }
+    else if(key == GLFW_KEY_7){
+        Director::getInstance().getSoundManager()->resumeBGM("titleSceneBgm");
+    }
+    else if(key == GLFW_KEY_6){
+        float curChGroupVol = 0;
+        if(Director::getInstance().getSoundManager()->getChannelGroupVolume("SFXGroup", curChGroupVol)){
+            cout << "cur ch group vol = " << curChGroupVol << endl;
+        }
+        curChGroupVol+=0.1f;
+        Director::getInstance().getSoundManager()->setChannelGroupVolume("SFXGroup", curChGroupVol);
+        
+        float curMenuBrowseVol = 0;
+        if(Director::getInstance().getSoundManager()->getSoundVolume("titleSceneMenuBrowse", curMenuBrowseVol)){
+            cout << "cur ch browse vol = " << curMenuBrowseVol << endl;
+        }
+        
+        float curMenuSelectVol = 0;
+        if(Director::getInstance().getSoundManager()->getSoundVolume("titleSceneMenuSelect", curMenuBrowseVol)){
+            cout << "cur ch select vol = " << curMenuSelectVol << endl;
+        }
+        
+    }
+    else if(key == GLFW_KEY_5){
+        float curChGroupVol = 0;
+        if(Director::getInstance().getSoundManager()->getChannelGroupVolume("SFXGroup", curChGroupVol)){
+            cout << "cur ch group vol = " << curChGroupVol << endl;
+        }
+        curChGroupVol-=0.1f;
+        Director::getInstance().getSoundManager()->setChannelGroupVolume("SFXGroup", curChGroupVol);
+        
+        float curMenuBrowseVol = 0;
+        if(Director::getInstance().getSoundManager()->getSoundVolume("titleSceneMenuBrowse", curMenuBrowseVol)){
+            cout << "cur ch browse vol = " << curMenuBrowseVol << endl;
+        }
+        
+        float curMenuSelectVol = 0;
+        if(Director::getInstance().getSoundManager()->getSoundVolume("titleSceneMenuSelect", curMenuBrowseVol)){
+            cout << "cur ch select vol = " << curMenuSelectVol << endl;
+        }
     }
 	Scene::keyPressed(key, mods);
 }

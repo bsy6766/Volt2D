@@ -174,11 +174,11 @@ void TitleButtonLayer::closeCredits(){
 
 void TitleButtonLayer::keyPressed(int key, int mods){
     if(key == GLFW_KEY_ENTER){
-        Director::getInstance().getSoundManager()->playSound("titleSceneMenuSelect");
         switch (selectingButtonID) {
             case NEW_GAME:
                 Director::getInstance().pushScene(new BattleScene());
                 Director::getInstance().transitionToNextScene(true);
+                Director::getInstance().getSoundManager()->playSFX("titleSceneMenuSelect", 0.1);
                 break;
             case EXIT_GAME:
 				if (!openingCredits)
@@ -188,17 +188,20 @@ void TitleButtonLayer::keyPressed(int key, int mods){
                 if (!openingCredits){
                     openCredits();
                     openingCredits = true;
+                    Director::getInstance().getSoundManager()->playSFX("titleSceneMenuSelect");
                 }
                 break;
-                
+            case OPTIONS:
+                Director::getInstance().getSoundManager()->playSFX("titleSceneMenuSelect", 0.1);
+                break;
             default:
                 break;
         }
     }
+    
 	if (!openingCredits){
         if (key == GLFW_KEY_UP){
-            Director::getInstance().getSoundManager()->playSound("titleSceneMenuBrowse");
-            Director::getInstance().getSoundManager()->test();
+            Director::getInstance().getSoundManager()->playSFX("titleSceneMenuBrowse", 1.0);
 			if (selectingButtonID > 0){
 				selectingButtonID--;
 				float y;
@@ -226,8 +229,7 @@ void TitleButtonLayer::keyPressed(int key, int mods){
 			}
 		}
         else if (key == GLFW_KEY_DOWN){
-            Director::getInstance().getSoundManager()->playSound("titleSceneMenuBrowse");
-            Director::getInstance().getSoundManager()->test();
+            Director::getInstance().getSoundManager()->playSFX("titleSceneMenuBrowse", 0.5);
 			if (selectingButtonID < EXIT_GAME){
 				selectingButtonID++;
 				float y;
@@ -262,23 +264,60 @@ void TitleButtonLayer::keyPressed(int key, int mods){
 		}
 	}
 
-	if (key == GLFW_KEY_KP_SUBTRACT){
+	if (key == GLFW_KEY_KP_SUBTRACT || key == GLFW_KEY_MINUS){
 		SoundManager* sm = Director::getInstance().getSoundManager();
-		float curVolume = sm->getVolume("titleSceneBgm");
-		cout << "cur vol = " << curVolume << endl;
-		curVolume -= 0.1f;
-		if (curVolume < 0)
-			curVolume = 0;
-		sm->setVolume("titleSceneBgm", curVolume);
+        float curBgmVol = 0;
+        if(mods == GLFW_MOD_SHIFT){
+            if(sm->getChannelGroupVolume("BGMGroup", curBgmVol)){
+                cout << "current ch group volume = " << curBgmVol << endl;
+                curBgmVol -= 0.1f;
+                if (curBgmVol < 0)
+                    curBgmVol = 0;
+                sm->setChannelGroupVolume("BGMGroup", curBgmVol);
+            }
+            else{
+                cout << "failed to get volume" << endl;
+            }
+        }
+        else{
+            if(sm->getSoundVolume("titleSceneBgm", curBgmVol)){
+                cout << "current volume = " << curBgmVol << endl;
+                curBgmVol -= 0.1f;
+                if (curBgmVol < 0)
+                    curBgmVol = 0;
+                sm->setSoundVolume("titleSceneBgm", curBgmVol);
+            }
+            else{
+                cout << "failed to get volume" << endl;
+            }
+        }
 	}
-	else if (key == GLFW_KEY_KP_ADD){
-		SoundManager* sm = Director::getInstance().getSoundManager();
-		float curVolume = sm->getVolume("titleSceneBgm");
-		cout << "cur vol = " << curVolume << endl;
-		curVolume += 0.1f;
-		if (curVolume > 1)
-			curVolume = 1;
-		sm->setVolume("titleSceneBgm", curVolume);
+	else if (key == GLFW_KEY_KP_ADD || key == GLFW_KEY_EQUAL){
+        SoundManager* sm = Director::getInstance().getSoundManager();
+        float curBgmVol = 0;
+        if(mods == GLFW_MOD_SHIFT) {
+            if(sm->getChannelGroupVolume("BGMGroup", curBgmVol)){
+                cout << "current ch group volume = " << curBgmVol << endl;
+                curBgmVol += 0.1f;
+                if (curBgmVol > 1.0f)
+                    curBgmVol = 1.0f;
+                sm->setChannelGroupVolume("BGMGroup", curBgmVol);
+            }
+            else{
+                cout << "failed to get volume" << endl;
+            }        }
+        else{
+            if(sm->getSoundVolume("titleSceneBgm", curBgmVol)){
+                cout << "current volume = " << curBgmVol << endl;
+                curBgmVol += 0.1f;
+                if (curBgmVol > 1.0f)
+                    curBgmVol = 1.0f;
+                sm->setSoundVolume("titleSceneBgm", curBgmVol);
+            }
+            else{
+                cout << "failed to get volume" << endl;
+            }
+        }
 	}
 
 	cout << "key #" << key << endl;
