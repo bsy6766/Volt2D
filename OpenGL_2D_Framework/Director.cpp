@@ -16,7 +16,8 @@ nextScene(0),
 soundManager(0),
 ps3Joysticks(),   //init all to 0,
 joystickEnabled(false),
-paused(false)
+paused(false),
+waitingForSceneTransition(false)
 {
     char cCurrentPath[FILENAME_MAX];
     
@@ -96,7 +97,7 @@ void Director::pushScene(Scene* newScene){
     if(!runningScene){
         cout << "No running scene exists. Pushing new scene to running scene" << endl;
         runningScene = newScene;
-        runningScene->boundWindow(window);
+        runningScene->bindWindow(window);
         //if no scene exist, call init right now
         runningScene->init();
     }
@@ -107,7 +108,7 @@ void Director::pushScene(Scene* newScene){
         }
         
         nextScene = newScene;
-        nextScene->boundWindow(window);
+        nextScene->bindWindow(window);
         //call init on switching
 //        nextScene->init();
     }
@@ -235,7 +236,8 @@ void Director::createWindow(const int &screenWidth, const int &screenHeight, con
     glfwSetErrorCallback(glfw_error_callback);
     
     //create window with size and title.
-    window = glfwCreateWindow(screenWidth, screenHeight, windowTitle.c_str(), NULL, NULL);
+//    const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    window = glfwCreateWindow(screenWidth, screenHeight, windowTitle.c_str(), glfwGetPrimaryMonitor(), NULL);
     
     //Need to move app window a bit to right and bottom. Windows only.
     //Mac(Xcode) opens app window on the center of the screen.
@@ -262,6 +264,7 @@ void Director::createWindow(const int &screenWidth, const int &screenHeight, con
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, mouse_move_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
+//    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
     
@@ -281,11 +284,46 @@ void Director::key_callback(GLFWwindow* window, int key, int scancode, int actio
     //}
     if(action == GLFW_PRESS){
         directorPtr->runningScene->keyPressed(key, mods);
-//        directorPtr->runningScene->Scene::keyPressed(key);
+        //        directorPtr->runningScene->Scene::keyPressed(key);
+        if(key == GLFW_KEY_S){
+            directorPtr->camera->moveBackward();
+            glm::vec3 cPos = directorPtr->camera->getPosition();
+            cout << "cpos = (" << cPos.x << ", " << cPos.y << ", " << cPos.z << ")" << endl;
+        }
+        else if(key == GLFW_KEY_W){
+            directorPtr->camera->moveFoward();
+            glm::vec3 cPos = directorPtr->camera->getPosition();
+            cout << "cpos = (" << cPos.x << ", " << cPos.y << ", " << cPos.z << ")" << endl;
+        }
+        
+        if(key == GLFW_KEY_A){
+            directorPtr->camera->moveLeft();
+            glm::vec3 cPos = directorPtr->camera->getPosition();
+            cout << "cpos = (" << cPos.x << ", " << cPos.y << ", " << cPos.z << ")" << endl;
+        }
+        else if(key == GLFW_KEY_D){
+            directorPtr->camera->moveRight();
+            glm::vec3 cPos = directorPtr->camera->getPosition();
+            cout << "cpos = (" << cPos.x << ", " << cPos.y << ", " << cPos.z << ")" << endl;
+        }
+        
+        if(key == GLFW_KEY_R){
+            directorPtr->camera->moveUp();
+            glm::vec3 cPos = directorPtr->camera->getPosition();
+            cout << "cpos = (" << cPos.x << ", " << cPos.y << ", " << cPos.z << ")" << endl;
+        }
+        else if(key == GLFW_KEY_F){
+            directorPtr->camera->moveDown();
+            glm::vec3 cPos = directorPtr->camera->getPosition();
+            cout << "cpos = (" << cPos.x << ", " << cPos.y << ", " << cPos.z << ")" << endl;
+        }
     }
-    else{
+    else if(action == GLFW_RELEASE){
         directorPtr->runningScene->keyReleased(key, mods);
 //        directorPtr->runningScene->Scene::keyReleased(key);
+    }
+    else if(action == GLFW_REPEAT){
+        
     }
 }
 
@@ -295,20 +333,20 @@ void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos)
     Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
     directorPtr->prevMousePos = glm::vec2((float)x, (float)y);
     
-    if(x <= -640){
-        x = -640;
+    if(x <= -720){
+        x = -720;
         glfwSetCursorPos(window, x, y);
     }
-    if(x >= 640){
-        x = 640;
+    if(x >= 720){
+        x = 720;
         glfwSetCursorPos(window, x, y);
     }
-    if(y <= -360){
-        y = -360;
+    if(y <= -450){
+        y = -450;
         glfwSetCursorPos(window, x, y);
     }
-    if(y >= 360){
-        y = 360;
+    if(y >= 450){
+        y = 450;
         glfwSetCursorPos(window, x, y);
     }
     
@@ -322,6 +360,7 @@ void Director::mouse_button_callback(GLFWwindow *window, int button, int action,
     double x, y;
     glfwGetCursorPos(window, &x, &y);
     directorPtr->runningScene->mouseButton(x, -y, button, action);
+    cout << "x = " << x <<", y = << " << y << endl;
     
 //    if(button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS){
 //        double curMouseX, curMouseY;
@@ -348,12 +387,19 @@ void Director::transitionToNextScene(bool wait = true){
     //if wait, then don't render and run sprites and actions till the transition is done,
     //else, run as soon as init is done
     //at the end, delete dying scene
+    
+    waitingForSceneTransition = true;
+}
+
+void Director::doSceneTransition(){
     dyingScene = runningScene;
     runningScene = nextScene;
     nextScene = 0;
     
     runningScene->init();
     delete dyingScene;
+    
+    waitingForSceneTransition = false;
 }
 
 void Director::run(){
@@ -391,12 +437,16 @@ void Director::run(){
         timeCounter += Timer::getInstance().getElapsedTime();
         if(timeCounter > 1){
             fps++;
-            cout << "fps = " << fps << endl;
+//            cout << "fps = " << fps << endl;
             fps = 0;
             timeCounter--;
         }
         else{
             fps++;
+        }
+        
+        if(waitingForSceneTransition){
+            doSceneTransition();
         }
     }
 }

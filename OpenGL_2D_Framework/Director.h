@@ -62,6 +62,9 @@ private:
     
     bool debugMovement = false;
     
+    bool waitingForSceneTransition;
+    void doSceneTransition();
+    
     bool paused;
     
     std::string workingDirectory;
