@@ -22,38 +22,30 @@ Layer::~Layer(){
 
 void Layer::init(){
     cout << "Layer init()" << endl;
-    renderableObjectManager = new RenderableObjectManager();
+//    renderableObjectManager = new RenderableObjectManager();
 }
 
 void Layer::update(){
-    renderableObjectManager->update();
+//    renderableObjectManager->update();
+    this->updateChild();
 }
 
 void Layer::render(){
-    renderableObjectManager->render();
+//    renderableObjectManager->render();
+    this->renderChild(translateMat * rotateMat * scaleMat);
 }
 
-void Layer::setZorder(float z){
-    this->z.setZ(z);
+void Layer::addChild(Object *child){
+    this->Object::addChild(child, this);
 }
 
-bool Layer::getZorder(float& z){
-    if(this->z.dirty){
-        this->z.getZ(z);
-        return true;
-    }
-    else{
-        return false;
-    }
-}
-
-void Layer::addObject(std::string objectName, RenderableObject *object){
-    renderableObjectManager->addObject(nullptr, objectName, object, false);
-}
+//void Layer::addObject(std::string objectName, RenderableObject *object){
+//    renderableObjectManager->addObject(nullptr, objectName, object, false);
+//}
 
 void Layer::exit(){
-    if(renderableObjectManager)
-        delete renderableObjectManager;
+//    if(renderableObjectManager)
+//        delete renderableObjectManager;
 }
 
 bool Layer::isLayerInputListenable(){

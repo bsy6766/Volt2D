@@ -14,15 +14,15 @@
  */
 
 //#include "SpriteManager.h"
-#include "RenderableObjectManager.h"
+//#include "RenderableObjectManager.h"
 #include "CommonInclude.h"
 #include "Z_Float.h"
+#include "Object.h"
 
-class Layer{
+class Layer : public Object{
 protected:
 private:
-    RenderableObjectManager* renderableObjectManager;
-    Z_Float z;
+//    RenderableObjectManager* renderableObjectManager;
     bool inputListenable;
 public:
     Layer();
@@ -39,10 +39,8 @@ public:
     virtual void mouseButton(double x, double y, int button, int action){};
     virtual void mouseMove(double x, double y){};
     
-    void setZorder(float z);
-    bool getZorder(float& z);
-    
-    void addObject(std::string objectName, RenderableObject* object);
+//    void addObject(std::string objectName, RenderableObject* object);
+    void addChild(Object* child);
     
     bool isLayerInputListenable();
     void setInputListenable(bool mode);
