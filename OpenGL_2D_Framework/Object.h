@@ -32,58 +32,130 @@
 
 class Object{
 protected:
-    //global z depth
+    /**
+     *  Z depth. See Z_Float class for detail.
+     */
     Z_Float z_depth;
     
-    //Position
+    /**
+     *  A vec3 position of object. Z is almost always 0.
+     */
     glm::vec3 position;
     
-    //Naming
+    /**
+     *  Object name
+     */
     std::string objectName;
     
-    //BoundingBox
+    /**
+     *  A bonding box. See BoundingBox class for detail.
+     */
     BoundingBox* boundingBox;
+    
+    /**
+     *  A update flag for bounding box. 
+     *  If true, it updates bounding box and it becomes true when ever object moves, rotates, or scales.
+     */
     bool needToUpdateBB;
     
-    //Childing
+    /**
+     *  Pointer to parent
+     */
     Object* parent;
     
-    //OpenGL Matrix
+    /**
+     *  Translation matrix
+     */
     glm::mat4 translateMat;
-    glm::mat4 rotateMat;
-    glm::mat4 scaleMat;
-    glm::mat4 modelMat;
     
-    //0 ~ 360 degree
+    /**
+     *  Rotation matrix
+     */
+    glm::mat4 rotateMat;
+    
+    /**
+     *  Scale matrix
+     */
+    glm::mat4 scaleMat;
+    
+    /**
+     *  Angle of object. 
+     *  @note max = 360, min = 0
+     */
     GLfloat angle;
-    //x,y,z. -1.0 ~ 1.0
+    
+    /**
+     *  Scale axis of object. Each attrib represent each axis
+     */
     glm::vec3 scale;
     
-    //Childing
+    /**
+     *  Add child
+     *  @param child A child object to add
+     *  @param parent A parent to bind
+     *  @param replace A replace flag. true will replace existing object.
+     */
     bool addChild(Object* child, Object* parent, bool replace = false);
-    //TODO: removeObject
+    
+    /**
+     *  Remove child from object
+     *  @param child A object to remove
+     *  @param deleteObject true if you want to delete object and release from memory. Else, false.
+     */
+    bool removechild(Object* child, bool deleteObject);
+    
+    /**
+     *  Update all children objects that object has
+     */
     void updateChild();
-    void renderChild(glm::mat4 parentModelMat);
+    
+    /**
+     *  Render all children objects that object has
+     */
+    void renderChild();
     
     /**
      *  Translate to position
-     *  @param position A position to translate object
+     *  @param position A vec3 position to translate object
      */
     void translateTo(glm::vec3 position);
     
-    /*
-     *
+    /**
+     *  Translate by distance
+     *  @param distance A vec3 distance to add on current object's position
      */
     void translateBy(glm::vec3 distance);
     
-    //To transformation
-    
+    /**
+     *  Wrap angle with boundary of 0 ~ 360 in degree.
+     *  @param (ref) angle A reference angle to wrap.
+     */
     void wrapAngle(GLfloat& angle);
+    
+    /**
+     *  Rotate to specific angle with axis
+     *  @param angle A angle in degree to set
+     *  @param axis A vec3 axis to rotate.
+     */
     void rotateTo(GLfloat angle, glm::vec3 axis);
+    
+    /**
+     *  Rotate by specific angle with axis
+     *  @param angle A angle in degree to add on current object's angle
+     *  @param axis A vec3 axis to rotate.
+     */
+    void rotateBy(GLfloat angle, glm::vec3 axis);
+    
+    /**
+     *  Scale object to specific scale
+     *  @param scale A vec3 scale to set
+     */
     void scaleTo(glm::vec3 scale);
     
-    //By transformation
-    void rotateBy(GLfloat angle, glm::vec3 axis);
+    /**
+     *  Scale object by some amount of scale
+     *  @param scale A vec3 scale to add on current object's scale
+     */
     void scaleBy(glm::vec3 scale);
     
     //Child mapping
@@ -91,21 +163,30 @@ protected:
     std::multimap<float, Object*> childObjMap;
     
 private:
+    /**
+     *  Cleans all child(children) that is added to this object
+     */
     void cleanChildList();
     
-    void setParent(Object* parent);
-    Object* getParent();
-    
-    //From RenderableObjectManager
-//    bool addObject(Scene* scenePtr, std::string objectName, RenderableObject* object, bool replace);
-//    bool removeObject(RenderableObject* object, bool deleteObject);
-//    bool removeObject(std::string objectName);
+    /**
+     *  Change z order of object. Reorder the rendering order with new z.
+     */
     void changeZ(Object* object, float z);
-    void changeZDepth(float z);
 public:
+    /**
+     *  Constructor
+     */
     Object();
+    
+    /**
+     *  Virtual destructor
+     */
     virtual ~Object();
     
+    /**
+     *  Get this object's model matrix (= T * R * S).
+     *  @return Object's model matrix
+     */
     glm::mat4 getTransformMat();
     
     /// @{
@@ -199,20 +280,52 @@ public:
     const GLfloat getScaleZ();
     /// @}
     
-    //name
+    /**
+     *  Get name of object
+     *  @return Name of object.
+     */
     std::string getName();
+    
+    /**
+     *  Set name of object. Overwrites name.
+     */
     void setName(std::string objectName);
     
-    //bounding box
+    /**
+     *  Get bounding box. 
+     *  @return (const) A BoundingBox pointer
+     */
     BoundingBox* const getBoundingBox();
     
-    //z depth
+    /**
+     *  Set the z order for object.
+     *  If z_depth was already set and added to an object, it will change to new z and reorder.
+     *  Else, it will set the new z order to object.
+     *  @param z New z order to set
+     */
     void setZDepth(float z);
+    
+    /**
+     *  Get Z order for this object.
+     *  @param (ref) A reference of z to retrieve z order
+     *  @return true if object has z. Else, false.
+     */
     bool getZDepth(float& z);
+    
+    /**
+     *  Check if z has been set for this object
+     *  @return true if object has z order. Else, false.
+     */
     bool isZValid();
     
-    //virtual. 
+    /**
+     *  Virtual function for rendering
+     */
     virtual void render() = 0;
+    
+    /**
+     *  Virtual function for updating.
+     */
     virtual void update() = 0;
 };
 

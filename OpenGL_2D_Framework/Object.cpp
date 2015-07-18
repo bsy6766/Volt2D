@@ -16,7 +16,6 @@ boundingBox(0),
 translateMat(glm::mat4()),
 rotateMat(glm::mat4()),
 scaleMat(glm::mat4()),
-modelMat(glm::mat4()),
 angle(0),
 scale(glm::vec3(1, 1, 1))
 {
@@ -64,16 +63,12 @@ void Object::translateTo(glm::vec3 position){
     glm::vec3 scaledPos = glm::vec3(position.x / 10, position.y / 10, position.z / 10);
     translateMat = glm::translate(glm::mat4(), scaledPos);
     needToUpdateBB = true;
-    
-//    updateModelMat();
 }
 
 void Object::translateBy(glm::vec3 distance){
     glm::vec3 scaledDistance = glm::vec3(distance.x / 10, distance.y / 10, distance.z / 10);
     translateMat = glm::translate(translateMat, scaledDistance);
     needToUpdateBB = true;
-    
-//    updateModelMat();
 }
 
 void Object::setAngle(GLfloat angle, glm::vec3 axis){
@@ -105,8 +100,6 @@ void Object::rotateTo(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
     rotateMat = glm::rotate(glm::mat4(), angle, axis);
     this->angle = angle;
     needToUpdateBB = true;
-    
-//    updateModelMat();
 }
 
 void Object::rotateBy(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
@@ -115,8 +108,6 @@ void Object::rotateBy(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
     wrapAngle(this->angle);
     rotateMat = glm::rotate(rotateMat, angle, axis);
     needToUpdateBB = true;
-    
-//    updateModelMat();
 }
 
 const glm::vec3 Object::getScale(){
@@ -147,16 +138,12 @@ void Object::scaleTo(glm::vec3 scale){
     this->scale = scale;
     scaleMat = glm::scale(glm::mat4(), scale);
     needToUpdateBB = true;
-    
-//    updateModelMat();
 }
 
 void Object::scaleBy(glm::vec3 scale){
     this->scale += scale;
     scaleMat = glm::scale(glm::mat4(), this->scale);
     needToUpdateBB = true;
-    
-//    updateModelMat();
 }
 
 glm::mat4 Object::getTransformMat(){
@@ -173,20 +160,12 @@ std::string Object::getName(){
 }
 
 void Object::setName(std::string objectName){
-    //TODO: reject empty string
+    assert(objectName != "");
     this->objectName = objectName;
 }
 
-void Object::setParent(Object *parent){
-    this->parent = parent;
-}
-
-Object* Object::getParent(){
-    return this->parent;
-}
-
 bool Object::addChild(Object *child, Object *parent, bool replace){
-    child->setParent(parent);
+    child->parent = parent;
     
     auto obj_it = childObjectLUT.find(child->objectName);
     
@@ -230,6 +209,31 @@ bool Object::addChild(Object *child, Object *parent, bool replace){
     return true;
 }
 
+bool Object::removechild(Object* child, bool deleteObject){
+    std::string objName = child->getName();
+    auto objNameIt = childObjectLUT.find(objName);
+    if(objNameIt == childObjectLUT.end()){
+        cout << "No ojbect with name \"" << objName << "\" found." << endl;
+        return false;
+    }
+    else{
+        cout << "Removing object named \"" << objName << "\"." << endl;
+        childObjectLUT.erase(objNameIt);
+        for(auto objMapIt = childObjMap.begin(); objMapIt != childObjMap.end(); ++objMapIt){
+            float z;
+            child->getZDepth(z);
+            
+            if(objMapIt->first == z && objMapIt->second->getName() == objName){
+                if(deleteObject)
+                    delete objMapIt->second;
+                childObjMap.erase(objMapIt);
+                break;
+            }
+        }
+        return true;
+    }
+}
+
 void Object::updateChild(){
     for (auto it = childObjMap.begin(); it != childObjMap.end();){
         //if pointer is null, delete pointer and remove from the list.
@@ -247,7 +251,7 @@ void Object::updateChild(){
     }
 }
 
-void Object::renderChild(glm::mat4 parentModelMat){
+void Object::renderChild(){
     for (auto it = childObjMap.begin(); it != childObjMap.end();){
         //if pointer is null, delete pointer and remove from the list.
         if(it->second == nullptr){
@@ -255,12 +259,10 @@ void Object::renderChild(glm::mat4 parentModelMat){
             childObjMap.erase(it);
         }
         else{
-            //update model Mat
-            modelMat = parentModelMat * glm::mat4();
             //first render itself
             (it->second)->render();
             //then render child
-//            (it->second)->renderChild(this->modelMat);
+//            (it->second)->renderChild();
             ++it;
         }
     }
@@ -274,11 +276,10 @@ void Object::renderChild(glm::mat4 parentModelMat){
         }
         else{
             //update model Mat
-            modelMat = parentModelMat * glm::mat4();
             //first render itself
 //            (it->second)->render();
             //then render child
-            (it->second)->renderChild(this->modelMat);
+            (it->second)->renderChild();
             ++it;
         }
     }
