@@ -7,6 +7,7 @@
 //
 
 #include "ProgressRadian.h"
+#include "Director.h"
 
 ProgressRadian::ProgressRadian(){
     

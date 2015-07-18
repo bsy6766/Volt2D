@@ -7,6 +7,7 @@
 //
 
 #include "ProgressBar.h"
+#include "Director.h"
 
 ProgressBar::ProgressBar(){
     cout << "Creating Progress Bar" << endl;
