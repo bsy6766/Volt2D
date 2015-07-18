@@ -22,7 +22,7 @@ exitPressed(false),
 openingCredits(false),
 hasSavedData(false)
 {
-    
+    this->init();
 }
 
 TitleButtonLayer::~TitleButtonLayer(){
@@ -30,69 +30,61 @@ TitleButtonLayer::~TitleButtonLayer(){
 }
 
 void TitleButtonLayer::init(){
-    float buttonsX = 469;
+    float buttonsX = 535;
     float buttonsYGap = 40;
-    float buttonsYStarting = -20;
+    float buttonsYStarting = -105;
     
-    continueButton = new Sprite();
-    continueButton->initSpriteWithTexture("title scene/continue_button.png");
+    continueButton = Sprite::createSprite("continueButton", "title scene/continue_button.png");
     continueButton->setZDepth(z_buttons);
     continueButton->setPosition(glm::vec3(buttonsX, buttonsYStarting, 0));
     if(!hasSavedData)
         continueButton->setOpacity(127);
-    this->addObject("continueButton", continueButton);
+    this->addChild(continueButton);
     
-    newGameButton = new Sprite();
-    newGameButton->initSpriteWithTexture("title scene/new_game_button.png");
+    newGameButton = Sprite::createSprite("newGameButton", "title scene/new_game_button.png");
     newGameButton->setZDepth(z_buttons);
     newGameButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap, 0));
-    this->addObject("newGameButton", newGameButton);
+    this->addChild(newGameButton);
     
-    optionsButton = new Sprite();
-    optionsButton->initSpriteWithTexture("title scene/options_button.png");
+    optionsButton = Sprite::createSprite("optionButton", "title scene/options_button.png");
     optionsButton->setZDepth(z_buttons);
     optionsButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 2, 0));
-    this->addObject("optionsButton", optionsButton);
+    this->addChild(optionsButton);
     
-    creditsButton = new Sprite();
-    creditsButton->initSpriteWithTexture("title scene/credits_button.png");
+    creditsButton = Sprite::createSprite("creditsButton", "title scene/credits_button.png");
     creditsButton->setZDepth(z_buttons);
     creditsButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 3, 0));
-    this->addObject("creditsButton", creditsButton);
+    this->addChild(creditsButton);
     
-    exitGameButton = new Sprite();
-    exitGameButton->initSpriteWithTexture("title scene/exit_game_button.png");
+    exitGameButton = Sprite::createSprite("exitGameButton", "title scene/exit_game_button.png");
     exitGameButton->setZDepth(z_buttons);
     exitGameButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 4, 0));
-    this->addObject("exitGameButton", exitGameButton);
+    this->addChild(exitGameButton);
     
-    mouseCursor = new Sprite();
-    mouseCursor->initSpriteWithTexture("mouse_icon.png");
+    mouseCursor = Sprite::createSprite("moundIcon", "mouse_icon.png");
     mouseCursor->setZDepth(z_mouse_cursor);
-    this->addObject("mouseCursor", mouseCursor);
+    this->addChild(mouseCursor);
     
-    selectingArrowIcon = new Sprite();
-    selectingArrowIcon->initSpriteWithTexture("title scene/selecting_arrow_icon.png");
+    selectingArrowIcon = Sprite::createSprite("selectingArrowIcon", "title scene/selecting_arrow_icon.png");
     selectingArrowIcon->setZDepth(z_selecting_icon);
     selectingArrowIcon->setPosition(glm::vec3(selectingArrowIconX, newGameButton->getPosition().y, 0));
-    this->addObject("selectingArrowIcon", selectingArrowIcon);
+    this->addChild(selectingArrowIcon);
     
-    creditScreen = new Sprite();
-    creditScreen->initSpriteWithTexture("title scene/credit_screen.png");
+    creditScreen = Sprite::createSprite("creditScreen", "title scene/credit_screen.png");
     creditScreen->setZDepth(z_credit_screen);
-    this->addObject("creditScreen", creditScreen);
+    this->addChild(creditScreen);
     creditScreen->setOpacity(0);
     creditScreen->setScale(glm::vec3(0, 0, 1));
     
-    originPoint = new Sprite();
-    originPoint->initSpriteWithTexture("test/point.png");
-    originPoint->setZDepth(998);
-    this->addObject("originPoint", originPoint);
+//    originPoint = new Sprite();
+//    originPoint->initSpriteWithTexture("test/point.png");
+//    originPoint->setZDepth(998);
+//    this->addObject("originPoint", originPoint);
     
-    endPoint = new Sprite();
-    endPoint->initSpriteWithTexture("test/point.png");
-    endPoint->setZDepth(999);
-    this->addObject("endPoint", endPoint);
+//    endPoint = new Sprite();
+//    endPoint->initSpriteWithTexture("test/point.png");
+//    endPoint->setZDepth(999);
+//    this->addObject("endPoint", endPoint);
     
 //    ActionDelay delayLoading;
 //    delayLoading.initDelay(3);

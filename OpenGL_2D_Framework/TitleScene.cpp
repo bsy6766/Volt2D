@@ -20,6 +20,7 @@ titleButtonLayer(0)
 
 TitleScene::~TitleScene(){
     cout << "~TitleScene()" << endl;
+    exit();
 }
 
 void TitleScene::init(){
@@ -39,39 +40,54 @@ void TitleScene::init(){
     sm->bindSoundToChannelGroup("titleSceneBgm", "BGMGroup");
 //    SoundManager::getInstance().addSoundToChannelGroup("bgmChannelGroup", "titleSceneBgm");
 
-    bg = new Sprite();
-    bg->initSpriteWithTexture("title scene/title_scene_bg.png");
+    bg = Sprite::createSprite("titleSceneBg", "title scene/title_scene_bg.png");
     bg->setZDepth(z_bg);
-    this->addObject("title_scene_bg", bg);
+    this->addChild(bg);
     
     
     FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
-    title = new Text();
+    title = Text::createText("titleText", "Engine Test", "UhBee Kang-Ja.ttf");
     title->setColor(glm::vec3(255, 255, 255));
     title->setTextAlign(Text::TextAlign::ALIGN_LEFT);
-    //    title->initText("Hello world!\nNew line with left align!\nOpenGL with TTF font.\n`!@#$%^&*()-+_=", "Arial.ttf");
     title->initText("Engine Test", "UhBee Kang-Ja.ttf");
     title->setZDepth(10);
-    title->setPosition(glm::vec3(0, 200, 0));
-    this->addObject("hellowWorldText", title);
+    title->setPosition(glm::vec3(0, 100, 0));
+    this->addChild(title);
     
     initLayers();
 }
 
 void TitleScene::initLayers(){
     titleButtonLayer = new TitleButtonLayer();
+    titleButtonLayer->setName("titleButtonLayer");
     titleButtonLayer->setInputListenable(true);
-    this->addLayer(titleButtonLayer);
+//    titleButtonLayer->addPosition(glm::vec3(-535, 105, 0));
+//    titleButtonLayer->setAngle(90);
+    this->addChild(titleButtonLayer);
 }
 
 void TitleScene::update(){
 //    if(Director::getInstance().getJoyStick(0)->keyPressed(CIRCLE)){
 //        cout << "circle pressed" << endl;
+    //    }
+    
+    PS3ControllerWrapper* joystick = Director::getInstance().getJoyStick(0);
+    if(joystick->getKeyStatus(CIRCLE) == GLFW_PRESS){
+        titleButtonLayer->addPosition(glm::vec3(100, 100, 0));
+    }
+//    if(joystick->getKeyStatus(CROSS) == GLFW_PRESS){
+//        continueButton->setPosition(glm::vec3(0));
+//        glm::vec3 pos = continueButton->getPosition();
+//        cout << pos.x <<" " << pos.y << " "<< pos.z << endl;
 //    }
     Scene::update();
 }
 
 void TitleScene::keyPressed(int key, int mods){
+    if(key == GLFW_KEY_P){
+        glm::vec3 bgpos = bg->getPosition();
+        cout << bgpos.x << " " << bgpos.y << " " << bgpos.z << endl;
+    }
     if(key == GLFW_KEY_0){
         Director::getInstance().getSoundManager()->playBGM("titleSceneBgm");
     }
