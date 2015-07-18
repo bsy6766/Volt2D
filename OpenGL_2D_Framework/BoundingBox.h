@@ -15,7 +15,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 class BoundingBox{
-    friend class RenderableObject;
+    friend class Object;
 private:
     glm::vec2 originalOrigin;
     glm::vec2 originalEnd;
