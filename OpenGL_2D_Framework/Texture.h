@@ -17,7 +17,7 @@
 #include <stdexcept>
 #include <glm/glm.hpp>
 #include <cstring>
-
+#include "CommonInclude.h"
 #include "stb_image.h"
 
 using namespace std;

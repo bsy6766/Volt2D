@@ -45,6 +45,7 @@ void Texture::loadImage(const string& filePath){
     //!!! now texture will be set to "missing texture" if failed to read file
     if(!file){
         //try again with default
+        cout << "Failed to load texture on path = " << filePath << endl;
         const string defaultPath = "../Texture/default.png";
         file = fopen(defaultPath.c_str(), "rb");
         
