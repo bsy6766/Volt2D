@@ -8,6 +8,7 @@
 
 #include "Sprite.h"
 #include <cmath>
+#include "Director.h"
 
 Sprite::Sprite():
 SpriteObject(),
@@ -30,13 +31,21 @@ Sprite::~Sprite(){
     std::cout << "Sprite deleted" << std::endl;
 }
 
-void Sprite::initSpriteWithTexture(const std::string& _fileName, GLenum _textureTarget){
-    std::cout << "init sprite with texture with path of " << _fileName << std::endl;
+Sprite* Sprite::createSprite(std::string objectName, const char *fileName, GLenum textureTarget){
+    std::cout << "init sprite with texture with path of " << fileName << std::endl;
+    
+    Sprite* newSprite = new Sprite();
+    newSprite->setName(objectName);
+    newSprite->initTexture(fileName, textureTarget);
+    return newSprite;
+}
+
+void Sprite::initTexture(const std::string& fileName, GLenum textureTarget){
     std::string textureDir = Director::getInstance().getWorkingDir() + "/../Texture/";
-    texture = new Texture(_textureTarget, textureDir + _fileName);
+    texture = new Texture(textureTarget, textureDir + fileName);
     texture->load();
     texture->getImageSize(w, h);
-
+    
     computeVertexData();
     loadVertexData();
     
@@ -54,7 +63,9 @@ void Sprite::render(){
 
     glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
-    matrixUniformLocation("modelMat", modelMat);
+    glm::mat4 parentMat = this->parent->getTransformMat();
+//    matrixUniformLocation("modelMat", modelMat);
+    matrixUniformLocation("modelMat", parentMat);
     matrixUniformLocation("rotateMat", rotateMat);
     matrixUniformLocation("translateMat", translateMat);
     matrixUniformLocation("scaleMat", scaleMat);

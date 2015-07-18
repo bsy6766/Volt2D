@@ -26,13 +26,15 @@ private:
     virtual void loadVertexData();
     virtual void render();
     
-public:
     Sprite();
+    
+    void initTexture(const std::string& fileName, GLenum textureTarget = GL_TEXTURE_2D);
+    void initSpriteWithSpriteSheet(const std::string spriteFileName);
+public:
+    static Sprite* createSprite(std::string objectName, const char* fileName, GLenum textureTarget = GL_TEXTURE_2D);
     ~Sprite();
 
     //inits
-    void initSpriteWithTexture(const std::string& _fileName, GLenum _textureTarget = GL_TEXTURE_2D);
-    void initSpriteWithSpriteSheet(const std::string spriteFileName);
     void setType(SpriteType type);
     
     void updateMatrix();
