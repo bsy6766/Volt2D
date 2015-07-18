@@ -9,55 +9,102 @@
 #ifndef __OpenGL_2D_Framework__Scene__
 #define __OpenGL_2D_Framework__Scene__
 
-//#define GLM_FORCE_RADIANS
-
 #include "CommonInclude.h"
 #include "Object.h"
-//#include "RenderableObjectManager.h"
 #include "Layer.h"
 
 #include <map>
 #include <glm/glm.hpp>
 
+/**
+ *  @name Scene
+ *  @brief A Scene class. Only 1 scene can be run in Director.
+ */
 
+/**
+ *  Foward declation for GLFWwindow
+ */
 struct GLFWwindow;
 
 class Scene : public Object{
 protected:
-//    RenderableObjectManager* renderableObjectManager;
+    /**
+     *  GLFW window. Used to get input.
+     */
     GLFWwindow* window;
-    glm::vec2 prevMousePos;
-    glm::vec2 curMousePos;
-private:
-    std::map<std::string, bool> inputReceived;
     
 public:
 	Scene();
-	virtual ~Scene();
-
-    bool canMoveCamera;
+    virtual ~Scene();
     
+    /**
+     *  Initialize function.
+     *  All class that inherite Scene class must declare init.
+     *  @note init() gets called when the scene get load up
+     */
     virtual void init() = 0;
+    
+    /**
+     *
+     */
     virtual void exit();
+    
+    /**
+     *
+     */
     virtual void update();
+    
+    /**
+     *
+     */
     virtual void render();
-    //these are input callback functions
-	virtual void keyPressed(int key, int mods);
-	virtual void keyReleased(int key, int mods);
+    
+    /**
+     *  Forwarding key pressed callback from Director.
+     *  If you override this, make sure to call Scene::keyPressed(int, int) to foward again to child layers.
+     */
+    virtual void keyPressed(int key, int mods);
+    
+    /**
+     *  Forwarding key released callback from Director.
+     *  If you override this, make sure to call Scene::keyReleased(int, int) to foward again to child layers.
+     */
+    virtual void keyReleased(int key, int mods);
+    
+    /**
+     *  Forwarding mouse button callback from Director.
+     *  If you override this, make sure to call Scene::mouseButton(double, double, int, int) to foward again to child layers.
+     */
     virtual void mouseButton(double x, double y, int button, int action);
+    
+    /**
+     *  Forwarding mouse move callback from Director.
+     *  If you override this, make sure to call Scene::mouseMove(double, double) to foward again to child layers.
+     */
     virtual void mouseMove(double x, double y);
-    //these are the function that are used to implement own key and mouse handler. this runs every iteration
+    
+    /**
+     *  Pure virtual of key input.
+     *  This function will be called on every iteration
+     */
     virtual void injectKey() = 0;
+    
+    /**
+     *  Pure virtual of mouse input.
+     *  This function will be called on every iteration
+     */
     virtual void injectMouseMove() = 0;
     
-//    RenderableObjectManager* getRenderableObjectManager();
-    
-    void run();
-    
+    /**
+     *  Bind current window to this scene to get key and mouse input.
+     *  Can be used for Scene::injectKey() and Scene::injectMouseMove()
+     */
     void bindWindow(GLFWwindow* window);
     
-//    void addLayer(Layer* childLayer);
-//    void addObject(std::string objectName, RenderableObject* object);
+    /**
+     *  Add child wrapper.
+     *  This calls Object::addChild(Object*, Object*, bool)
+     */
     void addChild(Object* child);
 };
 
