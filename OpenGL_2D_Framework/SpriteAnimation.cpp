@@ -8,6 +8,7 @@
 
 #include "SpriteAnimation.h"
 #include <iostream>
+#include "Director.h"
 
 SpriteAnimation::SpriteAnimation():SpriteObject(){
     this->frameInterval = 0;
