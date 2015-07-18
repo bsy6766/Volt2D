@@ -13,9 +13,7 @@
 
 #include "Object.h"
 #include "Program.h"
-#include "BoundingBox.h"
 #include "ActionSchedule.h"
-#include "Z_Float.h"
 #include "Scene.h"
 #include <vector>
 #include <gl/glew.h>
@@ -23,11 +21,7 @@
 #include <string>
 
 class RenderableObject : public Object{
-friend class RenderableObjectManager;
-protected:
-    //global z depth
-    Z_Float z_depth;
-    
+protected:    
     //scene bounded to
     Scene* scene;
     
@@ -37,26 +31,13 @@ protected:
     GLuint uvbo;	//uv vert buffer object
     GLuint ibo;		//indices buffer object
     
-    //OpenGL Matrix
-    glm::mat4 translateMat;
-    glm::mat4 rotateMat;
-    glm::mat4 scaleMat;
-    glm::mat4 modelMat;
-    
     //vertex, texture coordinate and index data
     std::vector<glm::vec3> vertexData;
     std::vector<glm::vec2> uvVertexData;
     std::vector<GLushort> indicesData;
     
-    //0 ~ 360 degree
-    GLfloat angle;
-    //x,y,z. -1.0 ~ 1.0
-    glm::vec3 scale;
     //0~255
     GLfloat opacity;
-    
-    BoundingBox* boundingBox;
-    bool needToUpdateBB;
     
     //for rendering with shader
     Program *progPtr;
@@ -71,53 +52,15 @@ protected:
     void vec3UniformLocation(std::string name, glm::vec3& vec);
     void matrixUniformLocation(std::string name, glm::mat4& matrix);
 private:
-    void changeZDepth(float z);
 
 public:
     RenderableObject();
     virtual ~RenderableObject();
     
-    virtual void setPosition(glm::vec3 position);
-    virtual void addPosition(glm::vec3 position);
-    void setX(float x);
-    void setY(float y);
-    
-    //To transformation
-    void rotateTo(GLfloat angle, glm::vec3 axis);
-    void scaleTo(glm::vec3 scale);
-    void translateTo(glm::vec3 position);
-    
-    //By transformation
-    void rotateBy(GLfloat angle, glm::vec3 axis);
-    void scaleBy(glm::vec3 scale);
-    void translateBy(glm::vec3 distance);
-    
-    //Angle getter setter
-    void setAngle(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1));
-    void addAngle(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1));
-    void wrapAngle(GLfloat& angle);
-    GLfloat getAngle();
-    
     //opacity getter setter
     void setOpacity(GLfloat opacity);
     void addOpacity(GLfloat opacity);
     GLfloat getOpacity();
-    
-    //scale getter setter
-    void setScale(glm::vec3 scale);
-    void addScale(glm::vec3 scale);
-    glm::vec3 getScale();
-    GLfloat getScaleX();
-    GLfloat getScaleY();
-    GLfloat getScaleZ();
-    
-    //bounding box
-    BoundingBox* const getBoundingBox();
-    
-    //z depth
-    void setZDepth(float z);
-    bool getZDepth(float& z);
-    bool isZValid();
     
     //scene
     void bindScene(Scene* scenePtr);
@@ -129,7 +72,6 @@ public:
     
     //clear vertex std::vectors and delete buffer.
     void deleteVertexData();
-    void initBoundingBox(int w, int h);
     
     //program
     void bindProgram(std::string programName);
@@ -140,6 +82,7 @@ public:
     // action
     void addAction(ActionObject* action);
     void addAction(ActionObject* action, int repeat);
+    
     //some child class can override for their own protection of adding actions
     virtual void addActions(std::initializer_list<ActionObject*> actions, int repeat);
     void runAction();
