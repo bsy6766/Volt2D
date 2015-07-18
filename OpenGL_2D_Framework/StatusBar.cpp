@@ -11,11 +11,10 @@
 StatusBar::StatusBar(std::string objName, glm::vec3 pos):
 pos(pos)
 {
-    frame = new Sprite();
-    frame->initSpriteWithTexture("battle scene/status_frame.png");
+    frame = Sprite::createSprite(objName + "Frame", "battle scene/status_frame.png");
     frame->setPosition(pos);
     frame->setZDepth(199);
-    Director::getInstance().getRunningScene()->addObject(objName + "Frame", frame);
+    Director::getInstance().getRunningScene()->addChild(frame);
     
 //    portrait = new Sprite();
     
@@ -28,14 +27,14 @@ pos(pos)
     hpBarPos.y += 17;
     hpBar->setPosition(hpBarPos);
     hpBar->setZDepth(200);
-    Director::getInstance().getRunningScene()->addObject(objName + "HpBar", hpBar);
+//    Director::getInstance().getRunningScene()->addObject(objName + "HpBar", hpBar);
     
     mpBar = new ProgressBar();
     mpBar->initProgressBar(GL_TEXTURE_2D, "battle scene/mp_bar.png");
     mpBar->setPercentage(100);
     mpBar->setPosition(pos);
     mpBar->setZDepth(200);
-    Director::getInstance().getRunningScene()->addObject(objName + "MpBar", mpBar);
+//    Director::getInstance().getRunningScene()->addObject(objName + "MpBar", mpBar);
     
     apBar = new ProgressBar();
     apBar->initProgressBar(GL_TEXTURE_2D, "battle scene/ap_bar.png");
@@ -44,7 +43,7 @@ pos(pos)
     apBarPos.y -= 17;
     apBar->setPosition(apBarPos);
     apBar->setZDepth(200);
-    Director::getInstance().getRunningScene()->addObject(objName + "ApBar", apBar);
+//    Director::getInstance().getRunningScene()->addObject(objName + "ApBar", apBar);
 }
 
 StatusBar::~StatusBar(){

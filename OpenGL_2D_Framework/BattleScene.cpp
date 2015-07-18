@@ -19,14 +19,13 @@ BattleScene::~BattleScene(){
 }
 
 void BattleScene::init(){
-    bg = new Sprite();
-    bg->initSpriteWithTexture("battle scene/battle_scene_bg.png");
+    bg = Sprite::createSprite("battleSceneBg", "battle scene/battle_scene_bg.png");
     bg->setPosition(glm::vec3(0, 0, 0));
-    this->addObject("battleSceneBg", bg);
+    this->addChild(bg);
     
     //create hud layer
     HUD_Layer = new BattleHUDLayer();
-    this->addLayer(HUD_Layer);
+//    this->addLayer(HUD_Layer);
 }
 
 void BattleScene::update(){
