@@ -10,14 +10,14 @@
 #include <glm/gtx/transform.hpp>
 
 Camera::Camera() :
-    position(0, 0, -77.25),
+    position(0, 0, -96.5),
     verticalAngle(0),
     horizontalAngle(0),
     fovy(50.0f),
-    aspect(1280.0f/720.0f),
+    aspect(1.6f),
     nears(0.01f),
     fars(500.0f),
-    speed(0.1f)
+    speed(0.5f)
 {
     
 }
