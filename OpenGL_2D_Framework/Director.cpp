@@ -388,7 +388,7 @@ void Director::transitionToNextScene(bool wait = true){
     //else, run as soon as init is done
     //at the end, delete dying scene
     
-    waitingForSceneTransition = true;
+    waitingForSceneTransition = wait;
 }
 
 void Director::doSceneTransition(){
