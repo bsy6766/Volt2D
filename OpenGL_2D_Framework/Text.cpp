@@ -33,6 +33,16 @@ Text::~Text(){
     translationData.clear();
 }
 
+Text* Text::createText(std::string objectName, std::string label, std::string fontName){
+    cout << "Creating new Text object" << endl;
+    
+    Text* newText = new Text();
+    newText->setName(objectName);
+    newText->initText(label, fontName);
+    
+    return newText;
+}
+
 void Text::initText(std::string label, std::string fontName = "arial.tff"){
     if(!dirty){
         dirty = true;

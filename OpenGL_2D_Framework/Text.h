@@ -37,8 +37,9 @@ private:
     //vertex trnslate matrix buffer object
     std::vector<glm::mat4> translationData;
     
-public:
     Text();
+public:
+    static Text* createText(std::string objectName, std::string label, std::string fontName);
     ~Text();
     
     void initText(std::string label, std::string fontName);
