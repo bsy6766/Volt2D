@@ -9,7 +9,6 @@
 #ifndef __OpenGL_2D_Framework__Object__
 #define __OpenGL_2D_Framework__Object__
 
-//#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <map>
@@ -18,9 +17,9 @@
 #include "Z_Float.h"
 
 /**
- *  \class Object
+ *  @name Object
  *  
- *  \brief The most basic state of class that can be exist.
+ *  @brief The most basic state of class that can be exist.
  *
  *  This class is the highest base class. 
  *  All object that exists in system will inherite this class.

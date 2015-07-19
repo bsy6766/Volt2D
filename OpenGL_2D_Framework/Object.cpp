@@ -7,6 +7,7 @@
 //
 
 #include "Object.h"
+#include "Layer.h"
 
 Object::Object():
 position(glm::vec3(0, 0, 0)),
@@ -29,6 +30,10 @@ Object::~Object(){
 
 void Object::cleanChildList(){
     for(auto it : childObjMap){
+        if(Layer* layerObj = dynamic_cast<Layer*>(it.second)){
+            //if deleting object is layer, call exit so user can release their own stuff
+            layerObj->exit();
+        }
         delete (it.second);
     }
     //LUT has same pointer with obj map.
@@ -147,7 +152,7 @@ void Object::scaleBy(glm::vec3 scale){
 }
 
 glm::mat4 Object::getTransformMat(){
-    if(parent){
+    if(this->parent != NULL){
         return this->parent->getTransformMat() * translateMat * rotateMat * scaleMat;
     }
     else{
@@ -261,8 +266,6 @@ void Object::renderChild(){
         else{
             //first render itself
             (it->second)->render();
-            //then render child
-//            (it->second)->renderChild();
             ++it;
         }
     }
@@ -275,10 +278,6 @@ void Object::renderChild(){
             childObjMap.erase(it);
         }
         else{
-            //update model Mat
-            //first render itself
-//            (it->second)->render();
-            //then render child
             (it->second)->renderChild();
             ++it;
         }
