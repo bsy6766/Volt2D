@@ -18,7 +18,6 @@ window(0)
 
 Scene::~Scene(){
     cout << "~Scene()" << endl;
-    exit();
 }
 
 void Scene::bindWindow(GLFWwindow *window){
@@ -35,9 +34,6 @@ void Scene::render(){
 
 void Scene::addChild(Object *child){
     this->Object::addChild(child, this);
-}
-
-void Scene::exit(){
 }
 
 void Scene::keyPressed(int key, int mods){

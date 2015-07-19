@@ -45,17 +45,17 @@ public:
     virtual void init() = 0;
     
     /**
-     *
+     *  Exit func. This called when Director deletes old scenes.
      */
-    virtual void exit();
+    virtual void exit() = 0;
     
     /**
-     *
+     *  Implement Object::update().
      */
     virtual void update();
     
     /**
-     *
+     *  Impelment Object::render().
      */
     virtual void render();
     
