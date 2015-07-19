@@ -13,7 +13,7 @@
 #include "ActionObject.h"
 
 /**
- *  @name ActionMoveBy
+ *  @class ActionMoveBy
  *  @brief Move target object by distance with in duration
  */
 class ActionMoveBy : public ActionObject{

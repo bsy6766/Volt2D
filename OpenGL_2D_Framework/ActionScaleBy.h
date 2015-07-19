@@ -13,7 +13,7 @@
 #include "ActionObject.h"
 
 /**
- *  @name ActionScaleBy
+ *  @class ActionScaleBy
  *  @brief Scale target by specific scale
  */
 class ActionScaleBy : public ActionObject{

@@ -12,7 +12,10 @@
 #include "ProgressObject.h"
 #include "ActionObject.h"
 
-//Similar to By action than To
+/**
+ *  @class ProgressFromTo
+ *  @brief Move progress bar
+ */
 class ProgressFromTo : public ActionObject{
 private:
     int from;

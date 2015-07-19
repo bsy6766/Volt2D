@@ -13,7 +13,7 @@
 #include "ActionObject.h"
 
 /**
- *  @name ActionFadeBy
+ *  @class ActionFadeBy
  *  @brief Fade target by specific opacity
  *  @note Max opacity: 255.0, Min opacity: 0
  */

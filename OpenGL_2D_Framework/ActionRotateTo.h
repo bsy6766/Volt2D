@@ -13,7 +13,7 @@
 #include "ActionObject.h"
 
 /**
- *  @name ActionRotateTo
+ *  @class ActionRotateTo
  *  @brief Rotate target to specific angle in degree within duration
  *  @note Angle is degree.
  */

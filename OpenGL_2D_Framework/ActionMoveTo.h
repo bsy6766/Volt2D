@@ -13,7 +13,7 @@
 #include "ActionObject.h"
 
 /**
- *  @name ActionMoveTo
+ *  @class ActionMoveTo
  *  @brief Move target object to position within duration
  */
 class ActionMoveTo :  public ActionObject{

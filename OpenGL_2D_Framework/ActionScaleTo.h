@@ -12,6 +12,10 @@
 #include "SpriteObject.h"
 #include "ActionObject.h"
 
+/**
+ *  @class ActionScaleBy
+ *  @brief Scale target by specific scale
+ */
 class ActionScaleTo : public ActionObject{
 private:
     /**

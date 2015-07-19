@@ -12,7 +12,7 @@
 #include "ActionObject.h"
 
 /**
- *  @name ActionDelay
+ *  @class ActionDelay
  *  @brief Delay action for specific duration
  */
 class ActionDelay : public ActionObject{
