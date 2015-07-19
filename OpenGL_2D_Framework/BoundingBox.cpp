@@ -8,24 +8,7 @@
 
 #include "BoundingBox.h"
 
-BoundingBox::BoundingBox():
-x(0),
-y(0),
-w(0),
-h(0),
-origin(glm::vec2()),
-end(glm::vec2()),
-originalOrigin(glm::vec2()),
-originalEnd(glm::vec2())
-{
-    
-}
-
 BoundingBox::BoundingBox(int x, int y, int w, int h):
-x(x),
-y(y),
-w(w),
-h(h),
 origin(glm::vec2(x, y)),
 end(glm::vec2(w, h)),
 originalOrigin(glm::vec2(x, y)),
@@ -78,4 +61,8 @@ void BoundingBox::updatePointWithMax(){
     
     origin = glm::vec2(minX, minY);
     end = glm::vec2(maxX, maxY);
+}
+
+bool BoundingBox::intersectsBox(BoundingBox *box){
+    return false;
 }
