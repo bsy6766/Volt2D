@@ -63,16 +63,17 @@ void Sprite::render(){
 
     glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
-    glm::mat4 parentMat = this->parent->getTransformMat();
-//    matrixUniformLocation("modelMat", modelMat);
+    
+    glm::mat4 parentMat = glm::mat4();
+    if(this->parent)
+        parentMat = this->parent->getTransformMat();
+    
     matrixUniformLocation("modelMat", parentMat);
     matrixUniformLocation("rotateMat", rotateMat);
     matrixUniformLocation("translateMat", translateMat);
     matrixUniformLocation("scaleMat", scaleMat);
     floatUniformLocation("opacity", opacity);
     boolUniformLocation("particle", false);
-    
-//    cout << "pos = (" << position.x << ", " << position.y << ", " << position.z << ")" << endl;
     
     //bind vertex array.
     glBindVertexArray(vao);
@@ -85,23 +86,6 @@ void Sprite::render(){
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
     glBindVertexArray(0);
     glUseProgram(0);
-}
-
-void Sprite::updateMatrix(){
-    glm::mat4 result = glm::mat4();
-    translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
-    rotateMat = glm::rotate(glm::mat4(), angle, glm::vec3(0, 0, 1));
-    scaleMat = glm::scale(glm::mat4(), scale);
-    modelMat = result * translateMat * rotateMat * scaleMat;
-}
-
-void Sprite::updateBillboardMatrix(GLfloat verticalAngle, GLfloat horizontalAngle){
-    glm::mat4 result = glm::mat4();
-    translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
-    rotateMat = glm::rotate(glm::mat4(), verticalAngle, glm::vec3(1, 0, 0));
-    rotateMat = glm::rotate(rotateMat, horizontalAngle, glm::vec3(0, 1, 0));
-    scaleMat = glm::scale(glm::mat4(), scale);
-    modelMat = result * translateMat * rotateMat * scaleMat;
 }
 
 void Sprite::computeVertexData(){

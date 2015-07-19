@@ -21,6 +21,12 @@
 #include <map>
 #include "Texture.h"
 
+/**
+ *  @class SpriteSheet
+ *  @breif Custom Sprite Sheet
+ *  @note Uses rapid_xml, therefore, only supports xml.
+ *  \todo Make SpriteSheet class usable and finish implementing
+ */
 class SpriteSheet{
 private:
     std::string spriteName;

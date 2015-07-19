@@ -21,6 +21,7 @@
 /**
  *  @class RenderableObject
  *  @brief A object that is renderable on screen. Contains several OpenGL varaibles.
+ *  \todo Support anchor point for all object.
  */
 class RenderableObject : public Object{
 protected:
