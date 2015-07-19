@@ -15,7 +15,6 @@ dirty(false)
     
 }
 
-
 void Z_Float::setZ(float z){
     this->z = z;
     this->dirty = true;
