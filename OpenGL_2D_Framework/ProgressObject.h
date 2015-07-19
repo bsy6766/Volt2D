@@ -20,6 +20,7 @@
 /**
  *  @class ProgressObject
  *  @brief Base class for ProgressBar and ProgressRadian
+ *  \todo Make ProgressBar and ProgressRadian reverisble
  */
 class ProgressObject : public RenderableObject{
 protected:

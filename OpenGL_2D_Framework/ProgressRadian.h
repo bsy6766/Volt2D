@@ -16,19 +16,49 @@
 #endif
 #include "ProgressObject.h"
 
+/**
+ *  @class ProgressRadian
+ *  @brief A progress radian
+ */
 class ProgressRadian: public ProgressObject{
 private:
-    
-public:
+    //private constructor
     ProgressRadian();
+    
+    /**
+     *  Initialize ProgressRadian
+     *  @param radianTextureName Texture name for progress radian
+     *  @param textureTarget GL_TEXTURE_2D
+     */
+    void initProgressRadian(const std::string radianTextureName, GLenum textureTarget = GL_TEXTURE_2D);
+public:
+    /**
+     *  Create ProgressRadian
+     *  @param objectName Name for ProgressRadian object
+     *  @param radianTextureName Texture name for progress radian
+     *  @param textureTarget GL_TEXTURE_2D
+     */
+    static ProgressRadian* createProgressRadian(std::string objectName, const char* radianTextureName, GLenum textureTarget = GL_TEXTURE_2D);
+    
+    //Destructor
     ~ProgressRadian();
     
-    void initProgressRadian(GLenum textureTarget, const std::string barTextureName);
-    //    void setProgressRate(int rate);
-    
-    //virtual
+    /**
+     *  Override's RenderableObject::computerVertexData()
+     *  Compute vertex and indices
+     */
     virtual void computeVertexData();
+    
+    /**
+     *  Override's RenderableObject::loadVertexData()
+     *  Load computed vertex.
+     */
     virtual void loadVertexData();
+    
+    /**
+     *  Overrides's RenderableObject::render();
+     *  Render object
+     */
     virtual void render();
 };
 

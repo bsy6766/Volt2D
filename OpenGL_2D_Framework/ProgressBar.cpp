@@ -9,7 +9,9 @@
 #include "ProgressBar.h"
 #include "Director.h"
 
-ProgressBar::ProgressBar(){
+ProgressBar::ProgressBar():
+ProgressObject()
+{
     cout << "Creating Progress Bar" << endl;
 }
 
@@ -19,12 +21,12 @@ ProgressBar::~ProgressBar(){
 
 ProgressBar* ProgressBar::createProgressBar(std::string objectName, const char *barTextureName, GLenum textureTarget){
     ProgressBar* newProgressBar = new ProgressBar();
-    newProgressBar->initProgressBar(textureTarget, barTextureName);
+    newProgressBar->initProgressBar(barTextureName);
     newProgressBar->setName(objectName);
     return newProgressBar;
 }
 
-void ProgressBar::initProgressBar(GLenum textureTarget, const std::string barTextureName){
+void ProgressBar::initProgressBar(const std::string barTextureName, GLenum textureTarget){
     cout << "init progress bar with texture with path of " << barTextureName << endl;
     std::string textureDir = Director::getInstance().getWorkingDir() + "/../Texture/";
     texture = new Texture(textureTarget, textureDir + barTextureName);

@@ -12,11 +12,20 @@
 #include "CommonInclude.h"
 #include "ProgressObject.h"
 
+/**
+ *  @class ProgressBar
+ *  @brief Textured progress bar
+ */
 class ProgressBar: public ProgressObject{
 private:
     //private constructor
     ProgressBar();
-    void initProgressBar(GLenum textureTarget, const std::string barTextureName);
+    
+    /**
+     *  Initialize ProgressBar
+     *  @param textureTarget GL_TEXTURE_2D
+     */
+    void initProgressBar(const std::string barTextureName, GLenum textureTarget = GL_TEXTURE_2D);
 public:
     /**
      *  Create ProgressBar
@@ -31,16 +40,19 @@ public:
     
     /**
      *  Override's RenderableObject::computerVertexData()
+     *  Compute vertex and indices
      */
     virtual void computeVertexData();
     
     /**
-     *
+     *  Override's RenderableObject::loadVertexData()
+     *  Load computed vertex.
      */
     virtual void loadVertexData();
     
     /**
-     *
+     *  Overrides's RenderableObject::render();
+     *  Render object
      */
     virtual void render();
 };

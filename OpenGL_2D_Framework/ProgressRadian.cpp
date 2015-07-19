@@ -9,7 +9,9 @@
 #include "ProgressRadian.h"
 #include "Director.h"
 
-ProgressRadian::ProgressRadian(){
+ProgressRadian::ProgressRadian():
+ProgressObject()
+{
     
 }
 
@@ -17,7 +19,13 @@ ProgressRadian::~ProgressRadian(){
     
 }
 
-void ProgressRadian::initProgressRadian(GLenum textureTarget, const std::string barTextureName){
+ProgressRadian* ProgressRadian::createProgressRadian(std::string objectName, const char *radianTextureName, GLenum textureTarget){
+    ProgressRadian* newProgressRadian = new ProgressRadian();
+    newProgressRadian->initProgressRadian(radianTextureName, textureTarget);
+    return newProgressRadian;
+}
+
+void ProgressRadian::initProgressRadian(const std::string barTextureName, GLenum textureTarget){
     texture = new Texture(textureTarget, barTextureName);
     texture->load();
     texture->getImageSize(w, h);
@@ -433,7 +441,13 @@ void ProgressRadian::render(){
     glUseProgram(progPtr->getObject());
     glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
-    matrixUniformLocation("modelMat", modelMat);
+    
+    glm::mat4 parentMat;
+    if(this->parent){
+        parentMat = this->parent->getTransformMat();
+    }
+    
+    matrixUniformLocation("modelMat", parentMat);
     matrixUniformLocation("rotateMat", rotateMat);
     matrixUniformLocation("translateMat", translateMat);
     matrixUniformLocation("scaleMat", scaleMat);
