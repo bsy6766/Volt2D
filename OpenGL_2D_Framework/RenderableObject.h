@@ -19,7 +19,7 @@
 #include <string>
 
 /**
- *  @name RenderableObject
+ *  @class RenderableObject
  *  @brief A object that is renderable on screen. Contains several OpenGL varaibles.
  */
 class RenderableObject : public Object{
