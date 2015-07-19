@@ -18,28 +18,34 @@
 #endif
 #include <string>
 
+/**
+ *  @class Sound
+ *  @brief Simple wrapper for FMOD Sound and Channel
+ */
 class Sound{
 private:
-    
     Sound();
 public:
     ~Sound(){};
     
+    /**
+     *  FMOD Sound object
+     */
     FMOD::Sound* sound;
+    
+    /**
+     *  FMOD Channel object
+     */
     FMOD::Channel* channel;
     
+    /**
+     *  Create function for sound. Constructor will be private.
+     *  @return New Sound class object
+     */
     static Sound* createSound(){
         Sound* newInstance = new Sound();
         return newInstance;
     };
-    
-//    FMOD::Sound* getSound(){
-//        return this->sound;
-//    }
-//    
-//    FMOD::Channel* getChannel(){
-//        return this->channel;
-//    }
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Sound__) */
