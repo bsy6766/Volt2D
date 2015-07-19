@@ -9,17 +9,45 @@
 #include "Camera.h"
 #include <glm/gtx/transform.hpp>
 
-Camera::Camera() :
-    position(0, 0, -96.5),
-    verticalAngle(0),
-    horizontalAngle(0),
-    fovy(50.0f),
-    aspect(1.6f),
-    nears(0.01f),
-    fars(500.0f),
-    speed(0.5f)
+Camera::Camera(float screenWidth, float screenHeight, float SCREEN_TO_WORLD_SCALE) :
+position(0, 0, 0),
+verticalAngle(0),
+horizontalAngle(0),
+fovy(90.0f),
+aspect(1.6f),
+nears(35.0f),
+fars(55.0f),
+speed(0.5f)
 {
+    /*
+        fov = 90.0f;
+        aspect = 1.6f;
+        nears = 35.0f;
+        fars = 55.0f;
+     */
     
+    //Calculate dynamically based on screen size
+    float offset = screenHeight / 2.0;
+    
+    this->position = glm::vec3(0, 0, -offset / SCREEN_TO_WORLD_SCALE);
+    this->aspect = (screenWidth / screenHeight);
+    
+    //Since this is 2D engine, we don't need to view too close and too far
+    float possibleNear = (offset - 20.0f) / SCREEN_TO_WORLD_SCALE;
+    
+    if(possibleNear < 0.01f)
+        possibleNear = 0.01f;
+    
+    this->nears = possibleNear;
+    this->fars = (offset + 20.0f) / SCREEN_TO_WORLD_SCALE;
+    
+    cout << "Creating Main Camera." << endl;
+    cout << "\tPosition = (" << this->position.x << ", " << this->position.y << ", " << this->position.z << ")" << endl;
+    cout << "\tLookAt = (0, 0, 0)" << endl;
+    cout << "\tfovy = 90.0f (Fixed)" << endl;
+    cout << "\taspect ratio = " << this->aspect << endl;
+    cout << "\tnear clip pane = " << this->nears << endl;
+    cout << "\tfar clip pane ( = " << this->fars << endl;
 }
 
 Camera::~Camera(){
