@@ -15,13 +15,14 @@ func(0)
     
 }
 
-ActionCallFunc::ActionCallFunc(const ActionCallFunc& other):ActionObject(other)
-{
-    this->func = other.func;
-}
-
 ActionCallFunc::~ActionCallFunc(){
     
+}
+
+ActionCallFunc* ActionCallFunc::createCallFunc(const std::function<void ()> func){
+    ActionCallFunc* newCallFunc = new ActionCallFunc();
+    newCallFunc->initActionCallFunc(func);
+    return newCallFunc;
 }
 
 void ActionCallFunc::initActionCallFunc(const std::function<void()> func){
@@ -42,4 +43,10 @@ void ActionCallFunc::updateAction(double &remainedTime){
 
 void ActionCallFunc::revive(){
     ActionObject::revive();
+}
+
+ActionObject* ActionCallFunc::clone(){
+    ActionCallFunc* cloneCallFunc = new ActionCallFunc();
+    cloneCallFunc->initActionCallFunc(this->func);
+    return cloneCallFunc;
 }

@@ -12,25 +12,77 @@
 #include "SpriteObject.h"
 #include "ActionObject.h"
 
+/**
+ *  @name ActionRotateBy
+ *  @brief Rotate target by specific angle in degree within duration
+ *  @note Angle is degree.
+ */
 class ActionRotateBy :  public ActionObject{
 private:
-    float startAngle;
+    /**
+     *  An angle to rotate
+     */
     float rotatingAngle;
+    
+    /**
+     *  A previous angle this object rotated
+     */
     float previousAngle;
+    
+    /**
+     *  Total rotated angle
+     */
     float movedAngle;
     
+    /**
+     *  Instant update.
+     *  This is called when duration is 0
+     */
     void instantUpdate();
+    
+    /**
+     *  Interval update.
+     *  This is called when duration is not 0
+     *  @param remainedTime A remainedTime the schedule list has.
+     */
     void intervalUpdate(double& remainedTime);
+
+    //private constructor
+    ActionRotateBy();
+    
+    /**
+     *  Initialize ActionRotateBy
+     *  @param angle An angle to rotate
+     *  @param duration An duration to rotate
+     */
+    void initRotateBy(float angle, double duration);
     
 public:
-    ActionRotateBy();
-    ActionRotateBy(const ActionRotateBy& other);
-    ~ActionRotateBy();
-    void initRotateBy(float angle, float duration);
+    /**
+     *  Create ActionRotateTo
+     *  @param duration A duration to rotate
+     *  @param angle An angle to rotate by
+     */
+    static ActionRotateBy* createRotateBy(double duration, float angle);
     
-    //virtuals
+    //Destructor
+    ~ActionRotateBy();
+    
+    /**
+     *  Update this action
+     *  @param remainedTime A remained time the ActionSchedule has.
+     */
     virtual void updateAction(double& remainedTime);
+    
+    /**
+     *  Revive the action.
+     */
     virtual void revive();
+    
+    /**
+     *  Clone the action object.
+     */
+    virtual ActionObject* clone();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionRotateBy__) */

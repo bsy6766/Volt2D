@@ -18,21 +18,18 @@ totalScalingAmount(glm::vec3())
     cout << "Creating action scale to" << endl;
 }
 
-ActionScaleTo::ActionScaleTo(const ActionScaleTo& other):ActionObject(other){
-    cout << "Copying action scale to" << endl;
-    this->destScale = other.destScale;
-    this->srcScale = other.srcScale;
-    this->totalScalingAmount = other.totalScalingAmount;
-    this->scaled = other.scaled;
-}
-
 ActionScaleTo::~ActionScaleTo(){
     cout << "Deleting action scale to" << endl;
 }
 
+ActionScaleTo* ActionScaleTo::createScaleTo(double duration, glm::vec3 scale){
+    ActionScaleTo* newScaleTo = new ActionScaleTo();
+    newScaleTo->initScaleTo(scale, duration);
+    return newScaleTo;
+}
+
 void ActionScaleTo::initScaleTo(glm::vec3 scale, double duration){
     this->duration = duration;
-//    this->actionID = ACTION_SCALE_TO;
     this->destScale = scale;
     this->scaled = glm::vec3();
 }
@@ -91,4 +88,10 @@ void ActionScaleTo::revive(){
     this->alive = false;
     this->running = false;
     ActionObject::revive();
+}
+
+ActionObject* ActionScaleTo::clone(){
+    ActionScaleTo* cloneScaleTo = new ActionScaleTo();
+    cloneScaleTo->initScaleTo(this->destScale, this->duration);
+    return cloneScaleTo;
 }

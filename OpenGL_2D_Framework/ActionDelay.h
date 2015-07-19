@@ -11,22 +11,58 @@
 
 #include "ActionObject.h"
 
+/**
+ *  @name ActionDelay
+ *  @brief Delay action for specific duration
+ */
 class ActionDelay : public ActionObject{
 private:
-    //delay has nothing...just consuming time. yolo
+    /**
+     *  Instant update. 
+     *  This is called when duration is 0
+     */
     void instantUpdate();
+    
+    /**
+     *  Interval update.
+     *  This is called when duration is not 0
+     *  @param remainedTime A remainedTime the schedule list has.
+     */
     void intervalUpdate(double& remainedTime);
     
-public:
+    //Private constructor
     ActionDelay();
-    ActionDelay(const ActionDelay& other);
+    
+    /**
+     *  Initialize delay action
+     *  @param duration Time to delay.
+     */
+    void initDelay(double duration);
+public:
+    /**
+     *  Create ActionDelay
+     *  @duration A duration to delay
+     */
+    static ActionDelay* createDelay(double duration);
+    
+    //Destructor
     ~ActionDelay();
 
-    void initDelay(double duration);
-
-    //override
+    /**
+     *  Update this action
+     *  @param remainedTime A remained time the ActionSchedule has.
+     */
     virtual void updateAction(double& remainedTime);
+    
+    /**
+     *  Revive the action.
+     */
     virtual void revive();
+    
+    /**
+     *  Clone the action object.
+     */
+    virtual ActionObject* clone();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionDelay__) */

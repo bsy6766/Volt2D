@@ -14,24 +14,79 @@
 
 class ActionScaleTo : public ActionObject{
 private:
+    /**
+     *  Final scale value to scale
+     */
     glm::vec3 destScale;
+    
+    /**
+     *  Target's scale
+     */
     glm::vec3 srcScale;
+    
+    /**
+     *  Total scaled
+     */
     glm::vec3 scaled;
+    
+    /**
+     *  Total amount of scale
+     */
     glm::vec3 totalScalingAmount;
     
+    /**
+     *  Instant update.
+     *  This is called when duration is 0
+     */
     void instantUpdate();
+    
+    /**
+     *  Interval update.
+     *  This is called when duration is not 0
+     *  @param remainedTime A remainedTime the schedule list has.
+     */
     void intervalUpdate(double& remainedTime);
-public:
+    
+    //private constructor
     ActionScaleTo();
-    ActionScaleTo(const ActionScaleTo& other);
+    
+    /**
+     *  Initialize ActionScaleTo
+     *  @param scale An amount of scale to scale
+     *  @param duration A duration to scale
+     */
+    void initScaleTo(glm::vec3 scale, double duration);
+public:
+    /**
+     *  Create ActionScaleBy
+     *  @param duration A duration to scale by
+     *  @param opacity An scale to scale by
+     */
+    static ActionScaleTo* createScaleTo(double duration, glm::vec3 scale);
+    
+    //Detructor
     ~ActionScaleTo();
     
-    void initScaleTo(glm::vec3 scale, double duration);
-    
-    //virtuals
+    /**
+     *  Start the action.
+     */
     virtual void startAction();
+    
+    /**
+     *  Update this action
+     *  @param remainedTime A remained time the ActionSchedule has.
+     */
     virtual void updateAction(double& remainedTime);
+    
+    /**
+     *  Revive the action.
+     */
     virtual void revive();
+    
+    /**
+     *  Clone the action object.
+     */
+    virtual ActionObject* clone();
     
 };
 

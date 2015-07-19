@@ -17,14 +17,14 @@ previousDistance(glm::vec3())
     cout << "creating move by action" << endl;
 }
 
-ActionMoveBy::ActionMoveBy(const ActionMoveBy& other):ActionObject(other){
-    this->distance = other.distance;
-    this->movedDistance = other.movedDistance;
-    this->previousDistance = other.previousDistance;
-}
-
 ActionMoveBy::~ActionMoveBy(){
     cout << "deleting move by action" << endl;
+}
+
+ActionMoveBy* ActionMoveBy::createMoveBy(double duration, glm::vec3 distance){
+    ActionMoveBy* newActionMoveBy = new ActionMoveBy();
+    newActionMoveBy->initMoveBy(distance, duration);
+    return newActionMoveBy;
 }
 
 void ActionMoveBy::initMoveBy(glm::vec3 distance, double duration){
@@ -83,4 +83,10 @@ void ActionMoveBy::revive(){
     this->alive = false;
     this->running = false;
     ActionObject::revive();
+}
+
+ActionObject* ActionMoveBy::clone(){
+    ActionMoveBy* cloneMoveBy = new ActionMoveBy();
+    cloneMoveBy->initMoveBy(this->distance, this->duration);
+    return cloneMoveBy;
 }

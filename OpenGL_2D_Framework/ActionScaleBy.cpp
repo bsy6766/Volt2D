@@ -17,20 +17,18 @@ scaled(0)
     cout << "Creating action scale by" << endl;
 }
 
-ActionScaleBy::ActionScaleBy(const ActionScaleBy& other):ActionObject(other){
-    cout << "Copying action scale by" << endl;
-    this->totalScalingAmount = other.totalScalingAmount;
-    this->prevScale = other.prevScale;
-    this->scaled = other.scaled;
-}
-
 ActionScaleBy::~ActionScaleBy(){
     cout << "Deleting action scale by" << endl;
 }
 
+ActionScaleBy* ActionScaleBy::createScaleBy(double duration, glm::vec3 scale){
+    ActionScaleBy* newScaleBy = new ActionScaleBy();
+    newScaleBy->initScaleBy(scale, duration);
+    return newScaleBy;
+}
+
 void ActionScaleBy::initScaleBy(glm::vec3 scale, double duration){
     this->duration = duration;
-//    this->actionID = ACTION_SCALE_BY;
     this->totalScalingAmount = scale;
     this->prevScale = glm::vec3();
     this->scaled = glm::vec3();
@@ -85,4 +83,10 @@ void ActionScaleBy::revive(){
     this->alive = false;
     this->running = false;
     ActionObject::revive();
+}
+
+ActionObject* ActionScaleBy::clone(){
+    ActionScaleBy* cloneScaleBy = new ActionScaleBy();
+    cloneScaleBy->initScaleBy(this->totalScalingAmount, this->duration);
+    return cloneScaleBy;
 }

@@ -17,18 +17,17 @@ totalAngleToRotate(0){
     cout << "Creating action RotateBy" << endl;
 }
 
-ActionRotateTo::ActionRotateTo(const ActionRotateTo& other):ActionObject(other){
-    this->startAngle = other.startAngle;
-    this->destinationAngle = other.destinationAngle;
-    this->movedAngle = other.movedAngle;
-    this->totalAngleToRotate = other.totalAngleToRotate;
-}
-
 ActionRotateTo::~ActionRotateTo(){
     cout << "Deleting action RotateBy" << endl;
 }
 
-void ActionRotateTo::initRotateTo(float angle, float duration){
+ActionRotateTo* ActionRotateTo::createRotateTo(double duration, float angle){
+    ActionRotateTo* newActionMoveTo = new ActionRotateTo();
+    newActionMoveTo->initRotateTo(angle, duration);
+    return newActionMoveTo;
+}
+
+void ActionRotateTo::initRotateTo(float angle, double duration){
     //wrap angle
     if(angle >= 360){
         while(angle >= 360){
@@ -42,7 +41,6 @@ void ActionRotateTo::initRotateTo(float angle, float duration){
     }
 
     this->duration = duration;
-//    this->actionID = ActionID::ACTION_ROTATE_TO;
     this->destinationAngle = angle * (-1);
     this->movedAngle = 0;
 }
@@ -92,10 +90,6 @@ void ActionRotateTo::intervalUpdate(double& remainedTime){
     this->target->setAngle(movedAngle);
 }
 
-//float ActionRotateTo::getMovedAngle(){
-//    return movedAngle;
-//}
-
 void ActionRotateTo::revive(){
     this->movedAngle = 0;
     //make sure you kill it
@@ -103,4 +97,10 @@ void ActionRotateTo::revive(){
     this->running = false;
     
     ActionObject::revive();
+}
+
+ActionObject* ActionRotateTo::clone(){
+    ActionRotateTo* cloneRotateTo = new ActionRotateTo();
+    cloneRotateTo->initRotateTo(this->destinationAngle, this->duration);
+    return cloneRotateTo;
 }

@@ -15,18 +15,17 @@ opacityToFade(0){
     cout << "Creating action fade" << endl;
 }
 
-ActionFadeBy::ActionFadeBy(const ActionFadeBy& other):ActionObject(other){
-    this->opacityToFade = other.opacityToFade;
-    this->fadedOpacity = other.fadedOpacity;
-    this->previousOpacity = other.previousOpacity;
-}
-
 ActionFadeBy::~ActionFadeBy(){
     cout << "Deleting action" << endl;
 }
 
+ActionFadeBy* ActionFadeBy::createFadeBy(double duration, float opacity){
+    ActionFadeBy* newFadeBy = new ActionFadeBy();
+    newFadeBy->initFadeBy(opacity, duration);
+    return newFadeBy;
+}
+
 void ActionFadeBy::initFadeBy(float opacity, double duration){
-//    this->actionID = ActionID::ACTION_FADE_BY;
     this->duration = duration;
     this->opacityToFade = opacity;
     this->fadedOpacity = 0;
@@ -78,8 +77,14 @@ void ActionFadeBy::updateAction(double& remainedTime){
 
 void ActionFadeBy::revive(){
     //revive. original and previous will be updated
-    previousOpacity = 0;
+    this->previousOpacity = 0;
     this->alive = false;
     this->running = false;
     ActionObject::revive();
+}
+
+ActionObject* ActionFadeBy::clone(){
+    ActionFadeBy* cloneFadeBy = new ActionFadeBy();
+    cloneFadeBy->initFadeBy(this->opacityToFade, this->duration);
+    return cloneFadeBy;
 }

@@ -19,19 +19,17 @@ changedPercentage(0)
     
 }
 
-ProgressFromTo::ProgressFromTo(const ProgressFromTo& other):ActionObject(other){
-    this->from = other.from;
-    this->to = other.to;
-    this->totalPercentage = other.totalPercentage;
-    this->changedPercentage = other.changedPercentage;
-    this->previousPercentage = other.previousPercentage;
-}
-
 ProgressFromTo::~ProgressFromTo(){
     
 }
 
-void ProgressFromTo::initProgressFromTo(int from, int to, float duration){
+ProgressFromTo* ProgressFromTo::createFromTo(double duration, int from, int to){
+    ProgressFromTo* newFromTo = new ProgressFromTo();
+    newFromTo->initProgressFromTo(from, to, duration);
+    return newFromTo;
+}
+
+void ProgressFromTo::initProgressFromTo(int from, int to, double duration){
     this->from = from;
     this->to = to;
     this->totalPercentage = to - from;
@@ -55,8 +53,8 @@ void ProgressFromTo::startAction(){
 }
 
 void ProgressFromTo::instantUpdate(){
-//    this->target->
     //need to cast to
+    static_cast<ProgressObject*>(this->target)->addPercentage(to);
     alive = false;
 }
 
@@ -105,4 +103,10 @@ void ProgressFromTo::revive(){
     this->alive = false;
     this->running = false;
     ActionObject::revive();
+}
+
+ActionObject* ProgressFromTo::clone(){
+    ProgressFromTo* cloneFromTo = new ProgressFromTo();
+    cloneFromTo->initProgressFromTo(this->from, this->to, this->duration);
+    return cloneFromTo;
 }

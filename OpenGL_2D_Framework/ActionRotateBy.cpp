@@ -10,27 +10,24 @@
 
 ActionRotateBy::ActionRotateBy():
 ActionObject(),
-startAngle(0),
 rotatingAngle(0),
 previousAngle(0),
 movedAngle(0){
     cout << "Creating action RotateBy" << endl;
 }
 
-ActionRotateBy::ActionRotateBy(const ActionRotateBy& other):ActionObject(other){
-    this->startAngle = other.startAngle;
-    this->rotatingAngle = other.rotatingAngle;
-    this->previousAngle = other.previousAngle;
-    this->movedAngle = other.movedAngle;
-}
-
 ActionRotateBy::~ActionRotateBy(){
     cout << "Deleting action RotateBy" << endl;
 }
 
-void ActionRotateBy::initRotateBy(float angle, float duration){
+ActionRotateBy* ActionRotateBy::createRotateBy(double duration, float angle){
+    ActionRotateBy* newActionMoveBy = new ActionRotateBy();
+    newActionMoveBy->initRotateBy(angle, duration);
+    return newActionMoveBy;
+}
+
+void ActionRotateBy::initRotateBy(float angle, double duration){
     this->duration = duration;
-//    this->actionID = ActionID::ACTION_ROTATE_BY;
     this->rotatingAngle = angle;
     this->movedAngle = 0;
     this->previousAngle = 0;
@@ -87,4 +84,10 @@ void ActionRotateBy::revive(){
     this->running = false;
     
     ActionObject::revive();
+}
+
+ActionObject* ActionRotateBy::clone(){
+    ActionRotateBy* cloneRotateBy = new ActionRotateBy();
+    cloneRotateBy->initRotateBy(this->rotatingAngle, this->duration);
+    return cloneRotateBy;
 }

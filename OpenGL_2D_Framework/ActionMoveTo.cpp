@@ -18,21 +18,19 @@ totalDistance(glm::vec3())
     cout << "creating MoveTo action" << endl;
 }
 
-ActionMoveTo::ActionMoveTo(const ActionMoveTo& other):ActionObject(other){
-    this->destination = other.destination;
-    this->originalPosition = other.originalPosition;
-    this->movedPosition = other.movedPosition;
-    this->totalDistance = other.totalDistance;
-}
-
 ActionMoveTo::~ActionMoveTo(){
     cout << "deleting MoveTo action" << endl;
+}
+
+ActionMoveTo* ActionMoveTo::createMoveTo(double duration, glm::vec3 distance){
+    ActionMoveTo* newActionMoveTo = new ActionMoveTo();
+    newActionMoveTo->initMoveTo(distance, duration);
+    return newActionMoveTo;
 }
 
 void ActionMoveTo::initMoveTo(glm::vec3 destination, double duration){
     this->duration = duration;
     this->destination = destination;
-//    this->actionID = ActionID::ACTION_MOVE_TO;
 }
 
 void ActionMoveTo::startAction(){
@@ -90,4 +88,10 @@ void ActionMoveTo::revive(){
     this->alive = false;
     this->running = false;
     ActionObject::revive();
+}
+
+ActionObject* ActionMoveTo::clone(){
+    ActionMoveTo* cloneMoveTo = new ActionMoveTo;
+    cloneMoveTo->initMoveTo(this->destination, this->duration);
+    return cloneMoveTo;
 }

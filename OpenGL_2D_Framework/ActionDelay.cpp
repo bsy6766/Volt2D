@@ -18,16 +18,17 @@ ActionDelay::~ActionDelay(){
     cout << "Deleting ACTION_DELAY" << endl;
 }
 
-ActionDelay::ActionDelay(const ActionDelay& other):ActionObject(other){
-    cout << "copying ACTION_DELAY" << endl;
-}
-
 void ActionDelay::initDelay(double duration){
     this->duration = duration;
 }
 
+ActionDelay* ActionDelay::createDelay(double duration){
+    ActionDelay* newDelayAction = new ActionDelay();
+    newDelayAction->initDelay(duration);
+    return newDelayAction;
+}
+
 void ActionDelay::instantUpdate(){
-//    totalDelayed = duration;
     alive = false;
 }
 
@@ -65,4 +66,10 @@ void ActionDelay::revive(){
     this->running = false;
     
     ActionObject::revive();
+}
+
+ActionObject* ActionDelay::clone(){
+    ActionDelay* cloneDelay = new ActionDelay();
+    cloneDelay->initDelay(this->duration);
+    return cloneDelay;
 }

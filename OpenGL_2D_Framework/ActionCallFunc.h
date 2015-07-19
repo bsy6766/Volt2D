@@ -11,22 +11,55 @@
 
 #include "ActionObject.h"
 
+/**
+ *  @class ActionCallFunc
+ *  @brief bind callback function
+ */
 class ActionCallFunc : public ActionObject{
 private:
+    /**
+     *  Function pointer.
+     */
     std::function<void()> func;
     
-public:
+    //private constructor
     ActionCallFunc();
-    ActionCallFunc(const ActionCallFunc& other);
+    
+    /**
+     *  Initialize ActionCallFunc
+     *  @param func A std::function of function
+     */
+    void initActionCallFunc(const std::function<void()> func);
+public:
+    /**
+     *  Create ActionCallFunc
+     *  @param func A std::function of function
+     */
+    static ActionCallFunc* createCallFunc(const std::function<void()> func);
+    
+    //Destructor
     ~ActionCallFunc();
     
-    //by default this func
-    void initActionCallFunc(const std::function<void()> func);
-    
-    //override
+    /**
+     *  Start the action.
+     */
     virtual void startAction();
+    
+    /**
+     *  Update this action
+     *  @param remainedTime A remained time the ActionSchedule has.
+     */
     virtual void updateAction(double& remainedTime);
+    
+    /**
+     *  Revive the action.
+     */
     virtual void revive();
+    
+    /**
+     *  Clone the action object.
+     */
+    virtual ActionObject* clone();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionCallFunc__) */

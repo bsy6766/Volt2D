@@ -12,26 +12,75 @@
 #include "SpriteObject.h"
 #include "ActionObject.h"
 
+/**
+ *  @name ActionScaleBy
+ *  @brief Scale target by specific scale
+ */
 class ActionScaleBy : public ActionObject{
 private:
+    /**
+     *  Total amount to scale by
+     */
     glm::vec3 totalScalingAmount;
+    
+    /**
+     *  Previous scale
+     */
     glm::vec3 prevScale;
+    
+    /**
+     *  total scaled scale
+     */
     glm::vec3 scaled;
     
+    /**
+     *  Instant update.
+     *  This is called when duration is 0
+     */
     void instantUpdate();
+    
+    /**
+     *  Interval update.
+     *  This is called when duration is not 0
+     *  @param remainedTime A remainedTime the schedule list has.
+     */
     void intervalUpdate(double& remainedTime);
     
-public:
+    //private constructor
     ActionScaleBy();
-    ActionScaleBy(const ActionScaleBy& other);
+    
+    /**
+     *  Initialize ActionScaleBy
+     *  @param scale An amount of scale to scale
+     *  @param duration A duration to scale
+     */
+    void initScaleBy(glm::vec3 scale, double duration);
+public:
+    /**
+     *  Create ActionScaleBy
+     *  @param duration A duration to scale by
+     *  @param opacity An scale to scale by
+     */
+    static ActionScaleBy* createScaleBy(double duration, glm::vec3 scale);
+    
+    //Destructor
     ~ActionScaleBy();
     
-    //scale 0.0 ~ 1.0
-    void initScaleBy(glm::vec3 scale, double duration);
-    
-    //virtuals
+    /**
+     *  Update this action
+     *  @param remainedTime A remained time the ActionSchedule has.
+     */
     virtual void updateAction(double& remainedTime);
+    
+    /**
+     *  Revive the action.
+     */
     virtual void revive();
+    
+    /**
+     *  Clone the action object.
+     */
+    virtual ActionObject* clone();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionScaleBy__) */
