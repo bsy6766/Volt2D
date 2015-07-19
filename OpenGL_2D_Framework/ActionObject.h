@@ -14,7 +14,7 @@
 #include <glm/glm.hpp>
 
 /**
- *  @name AcitonObject
+ *  @class AcitonObject
  *  @brief A base class of action classes.
  */
 
