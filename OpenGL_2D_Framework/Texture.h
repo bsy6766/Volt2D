@@ -20,8 +20,10 @@
 #include "CommonInclude.h"
 #include "stb_image.h"
 
-using namespace std;
-
+/**
+ *  @class Texture
+ *  @brief Load and read texture image file and store.
+ */
 class Texture{
 private:
 	//OpenGL
@@ -39,7 +41,7 @@ private:
 	*	Loads image.
 	* @param filePath a const string represents the path if file(image)
 	*/
-    void loadImage(const string& filePath);
+    void loadImage(const std::string& filePath);
 
 	/**
 	* Initialize texture.

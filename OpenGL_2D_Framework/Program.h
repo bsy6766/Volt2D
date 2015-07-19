@@ -14,21 +14,37 @@
 #include <vector>
 #include "Shader.h"
 
-using namespace std;
-
+/**
+ *  @class Program
+ *  @brief OpenGL Program. Use std::string as a name.
+ */
 class Program{
 private:
+    /**
+     *  OpenGL Program object
+     */
     GLuint programObject;
     
 public:
     Program();
     ~Program();
     
-    //init
-    void createProgram(Shader *vertexShaderPtr, Shader *fragmentShaderPtr);
+    /**
+     *  Create OpenGL Program with Shader
+     *  @param vertex
+     */
+    void createProgram(Shader *vShader, Shader *fShader);
     
-    //get
+    /**
+     *  Get program object
+     *  @return Program object
+     */
     GLuint getObject();
+    
+    /**
+     *  Get attribute location
+     *  @param attribName Name of attribute to find in shaders.
+     */
     GLint attrib(const GLchar* attribName) const;
 };
 

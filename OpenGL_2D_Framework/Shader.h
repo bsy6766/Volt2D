@@ -16,12 +16,14 @@
 #include <sstream>	//string stream
 
 /**
- * This Shader class was created during 2014 summer break.
- * It loads shader.
+ *  @class Shader
+ *  @brief Load shader and compile
  */
-
 class Shader{
 private:
+    /**
+     *  OpenGL Shader object
+     */
     GLuint shaderObject;
     
     /**
@@ -38,14 +40,12 @@ private:
      */
     std::string shaderCodeFromFile(const std::string& filePath);
     
-    
 public:
     Shader();
     ~Shader();
     
     /**
      * create the shader
-     * basically calls loadShader()...
      */
     void createShader(const std::string& filePath, GLenum shaderType);
     

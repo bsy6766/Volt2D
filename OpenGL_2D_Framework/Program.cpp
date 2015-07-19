@@ -8,22 +8,24 @@
 
 #include "Program.h"
 
-Program::Program(){
-    programObject = 0;
+Program::Program():
+programObject(0)
+{
+    
 }
 
 Program::~Program(){
     programObject = 0;
 }
 
-void Program::createProgram(Shader *vertexShaderPtr, Shader *fragmentShaderPtr){
+void Program::createProgram(Shader *vShader, Shader *fShader){
     programObject = glCreateProgram();
     
     if(programObject == 0)
         throw std::runtime_error("glCreateProgram failed");
     
-    glAttachShader(programObject, vertexShaderPtr->getObject());
-    glAttachShader(programObject, fragmentShaderPtr->getObject());
+    glAttachShader(programObject, vShader->getObject());
+    glAttachShader(programObject, fShader->getObject());
     
     glLinkProgram(programObject);
     

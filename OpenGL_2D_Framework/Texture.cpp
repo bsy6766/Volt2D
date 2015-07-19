@@ -40,18 +40,18 @@ void Texture::bind(GLenum textureUnit){
     glUniform1i(textureLocation, 0);
 }
 
-void Texture::loadImage(const string& filePath){
+void Texture::loadImage(const std::string& filePath){
     FILE *file = fopen(filePath.c_str(), "rb");
     //!!! now texture will be set to "missing texture" if failed to read file
     if(!file){
         //try again with default
         cout << "Failed to load texture on path = " << filePath << endl;
-        const string defaultPath = "../Texture/default.png";
+        const std::string defaultPath = "../Texture/default.png";
         file = fopen(defaultPath.c_str(), "rb");
         
         if(!file){
             //default is missing...what's happening?
-            throw runtime_error("Default texture image file cannot be opened");
+            throw std::runtime_error("Default texture image file cannot be opened");
         }
     }
 	/*
