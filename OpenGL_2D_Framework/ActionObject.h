@@ -118,6 +118,11 @@ public:
      *  @param target A RenderableObject pointer of target
      */
     void bindTarget(RenderableObject* target);
+    
+    /**
+     *  Clone object
+     */
+    virtual ActionObject* clone() = 0;
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ActionObject__) */
