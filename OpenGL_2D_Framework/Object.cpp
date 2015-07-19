@@ -189,8 +189,6 @@ bool Object::addChild(Object *child, Object *parent, bool replace){
         else{
         }
     }
-    //add to manager and add to LUT
-    childObjectLUT.insert(std::pair<std::string, Object*>(child->objectName, child));
     
     float objectZ;
     //get Z. If fails, set z as +1 from highest z to render to the most top of scene
@@ -207,9 +205,17 @@ bool Object::addChild(Object *child, Object *parent, bool replace){
             child->setZDepth(objectZ);
         }
     }
-//    if(scenePtr)
-//        child->bindScene(scenePtr);
+    
+    //Unlikely scene, Layer class can enter in middle of game.
+    //So make sure it call init class if it's Layer
+    if(Layer* layerObj = dynamic_cast<Layer*>(child)){
+        layerObj->init();
+    }
+    
+    //add to map
     childObjMap.insert(std::pair<float, Object*>(objectZ, child));
+    //add to LUT
+    childObjectLUT.insert(std::pair<std::string, Object*>(child->objectName, child));
     
     return true;
 }
