@@ -309,13 +309,13 @@ void Object::setZDepth(float z){
     //else, change it self.
     else{
         this->z_depth.dirty = true;
-        this->z_depth.z = z;
+        this->z_depth.setZ(z);
     }
 }
 
 bool Object::getZDepth(float& z){
     if(this->z_depth.dirty){
-        z = this->z_depth.z;
+        z = this->z_depth.getZ(z);
         return true;
     }
     else{
@@ -343,7 +343,7 @@ void Object::changeZ(Object *object, float z){
                 if(changingIt != childObjMap.end()){
                     childObjMap.erase(changingIt);
                     //can be vulnerable.
-                    object->z_depth.z = z;
+                    object->z_depth.setZ(z);
                     childObjMap.insert(std::pair<float, Object*>(z, object));
                 }
                 else{

@@ -17,7 +17,7 @@
 #include "Z_Float.h"
 
 /**
- *  @name Object
+ *  @class Object
  *  
  *  @brief The most basic state of class that can be exist.
  *
