@@ -21,11 +21,6 @@ progPtr(Director::getInstance().getProgramPtr()),   //get default program
 actionRunning(false)
 {
     cout << "RenderableObject::RenderableObject()" << endl;
-//    translateTo(position);
-//    rotateTo(angle, glm::vec3(0, 0, 1));
-//    scaleTo(scale);
-//    setOpacity(opacity);
-//    progPtr = Director::getInstance().getProgramPtr();
 }
 
 RenderableObject::~RenderableObject(){
@@ -33,7 +28,7 @@ RenderableObject::~RenderableObject(){
     cout << "Deleting Renderable Object" << endl;
     for (std::list<ActionSchedule*>::const_iterator ci = actionScheduleList.begin(); ci != actionScheduleList.end(); ++ci){
         delete (*ci);
-    }
+}
     delete boundingBox;
 }
 
@@ -84,19 +79,10 @@ void RenderableObject::addAction(ActionObject* action){
 }
 
 void RenderableObject::addAction(ActionObject *action, int repeat){
-//    cout << "Adding Action " << action->getActionID() << " to Sprite #" << spriteID << std::endl;
-    //bind owner
-//    action->bindOwnerPtr(this);
-//    ActionSchedule* singleActionSchedule = new ActionSchedule();
-//    singleActionSchedule->createSchedule(action, repeat);
-//    actionScheduleList.push_back(singleActionSchedule);
     addActions({action}, repeat);
 }
 
 void RenderableObject::addActions(std::initializer_list<ActionObject *> actions, int repeat){
-    //TODO:: point where I can block bad actions
-    //pseudocode
-    //if action is progressFromTo or progressTo, and if this is progress object, 
     for(auto it:actions){
         it->bindTarget(this);
     }
@@ -109,7 +95,7 @@ void RenderableObject::runAction(){
     actionRunning = true;
 }
 
-void RenderableObject::stopAction(){
+void RenderableObject::stopAllActions(){
     actionRunning = false;
     
     for(std::list<ActionSchedule*>::const_iterator ci = actionScheduleList.begin(); ci != actionScheduleList.end(); ++ci){
@@ -127,6 +113,11 @@ void RenderableObject::update(){
     //if there is no action, set running to false and return
     if(actionScheduleList.empty()){
         actionRunning = false;
+        return;
+    }
+    
+    //check if object can run action
+    if(!actionRunning){
         return;
     }
     
@@ -194,12 +185,4 @@ void RenderableObject::matrixUniformLocation(std::string name, glm::mat4 &matrix
     if(uniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + name);
     glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &matrix[0][0]);
-}
-
-void RenderableObject::bindScene(Scene *scenePtr){
-    this->scene = scenePtr;
-}
-
-void RenderableObject::unbindScene(){
-    this->scene = 0;
 }

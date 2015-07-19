@@ -9,8 +9,6 @@
 #ifndef __OpenGL_2D_Framework__RenderableObject__
 #define __OpenGL_2D_Framework__RenderableObject__
 
-//#define GLM_FORCE_RADIANS
-
 #include "Object.h"
 #include "Program.h"
 #include "ActionSchedule.h"
@@ -20,36 +18,94 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
 
+/**
+ *  @name RenderableObject
+ *  @brief A object that is renderable on screen. Contains several OpenGL varaibles.
+ */
 class RenderableObject : public Object{
-protected:    
-    //scene bounded to
-    Scene* scene;
+protected:
+    /**
+     *  Vertex array object
+     */
+    GLuint vao;
     
-    //vertex array and buffers
-    GLuint vao;		//vertex array object
-    GLuint vbo;		//vertex buffer object
-    GLuint uvbo;	//uv vert buffer object
-    GLuint ibo;		//indices buffer object
+    /**
+     *  Vertex buffer object
+     */
+    GLuint vbo;
     
-    //vertex, texture coordinate and index data
+    /**
+     *  UV texture vertex buffer object
+     */
+    GLuint uvbo;
+    
+    /**
+     *  Indices buffer object
+     */
+    GLuint ibo;
+    
+    /**
+     *  A std::vector that stores all vertices
+     */
     std::vector<glm::vec3> vertexData;
+    
+    /**
+     *  A std::vector that stores all uv vertices
+     */
     std::vector<glm::vec2> uvVertexData;
+    
+    /**
+     *  A std::vector that stores all indices
+     */
     std::vector<GLushort> indicesData;
     
-    //0~255
+    /**
+     *  A opacity of this object.
+     *  max = 255, min = 0
+     */
     GLfloat opacity;
     
-    //for rendering with shader
+    /**
+     *  Pointer to rendering OpenGL Progream.
+     */
     Program *progPtr;
     
-    //Action
+    /**
+     *  Flag of action running
+     */
     bool actionRunning;
+    
+    /**
+     *  List of ActionSchedule.
+     */
     std::list<ActionSchedule *> actionScheduleList;
     
-    //Rendering
+    /**
+     *  Pass float value to shader
+     *  @param name Uniform name
+     *  @param f (ref) A float value to pass to shader
+     */
     void floatUniformLocation(std::string name, float& f);
+    
+    /**
+     *  Pass bool value to shader
+     *  @param name Uniform name
+     *  @param b A bool value to pass to shader
+     */
     void boolUniformLocation(std::string name, bool b);
+    
+    /**
+     *  Pass glm::vec3 value to shader
+     *  @param name Uniform name
+     *  @param vec (ref) A glm::vec3 value to pass to shader
+     */
     void vec3UniformLocation(std::string name, glm::vec3& vec);
+    
+    /**
+     *  Pass glm::mat4 value to shader
+     *  @param name Uniform name
+     *  @param matrix A glm::mat4 value to pass to shader
+     */
     void matrixUniformLocation(std::string name, glm::mat4& matrix);
 private:
 
@@ -57,38 +113,93 @@ public:
     RenderableObject();
     virtual ~RenderableObject();
     
-    //opacity getter setter
+    /**
+     *  Set opacity ot current object
+     *  @param A opcity value to set.
+     */
     void setOpacity(GLfloat opacity);
+    
+    /**
+     *  Add opacity to current object's opacity.
+     *  Opacity can not be greater than 255 or less than 255
+     *  @param opacity A opacity value to add.
+     */
     void addOpacity(GLfloat opacity);
+    
+    /**
+     *  Get object's opacity
+     *  @return Object's opacity
+     */
     GLfloat getOpacity();
     
-    //scene
-    void bindScene(Scene* scenePtr);
-    void unbindScene();
-    
+    /**
+     *  Pure virtual. Compute vertex data
+     */
     virtual void computeVertexData() = 0;
-    virtual void loadVertexData() = 0;
-    virtual void render() = 0;
     
-    //clear vertex std::vectors and delete buffer.
+    /**
+     *  Pure virtual. Load vertex data to buffer.
+     */
+    virtual void loadVertexData() = 0;
+    
+    /**
+     *  Clear vertices and indices vectors and delete buffer objects.
+     */
     void deleteVertexData();
     
-    //program
+    /**
+     *  Bind OpenGL Program to object.
+     *  @param programName A OpenGL Program name to bind. This program will be used to render
+     */
     void bindProgram(std::string programName);
     
-    //visibility. Making this public because it harms nothing.
+    /**
+     *  Visibility.
+     */
     bool visible;
     
-    // action
+    /**
+     *  Add single action.
+     *  This will call RenderableObject::addAction(ActionObject*, int) with 0 repeat.
+     *  @param action An ActionObject to add
+     */
     void addAction(ActionObject* action);
+    
+    /**
+     *  Add single action with desired repeat.
+     *  @param action An ActionObject to add
+     *  @param repeat A number to repeat action
+     */
     void addAction(ActionObject* action, int repeat);
     
-    //some child class can override for their own protection of adding actions
+    /**
+     *  Add multiple action. 
+     *  @param actions A std::initializer_list with ActionObject*
+     *  @param repeat A number to repeat action
+     */
     virtual void addActions(std::initializer_list<ActionObject*> actions, int repeat);
+    
+    /**
+     *  Run the action
+     *  This set RenderableObject::actionRunning to true
+     */
     void runAction();
-    void stopAction();
+    
+    /**
+     *  Stop all actions that this object has and deletes
+     */
+    void stopAllActions();
+    
+    /**
+     *  Tells if object currently running action objects.
+     *  @Return A bool that represent wether this object is running action or not
+     */
     bool isActionRunning();
-    void update();
+    
+    /**
+     *  Implements Object::update()
+     */
+    virtual void update();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__RenderableObject__) */
