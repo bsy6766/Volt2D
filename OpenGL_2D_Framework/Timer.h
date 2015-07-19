@@ -12,16 +12,31 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-//Singleton Timer class
+/**
+ *  @name Timer
+ *  @brief Records time. Unit is ms.
+ *  @note Singleton (b..but..Singleton is bad!)
+ */
 class Timer{
 private:
+    /**
+     *  Current time of program
+     */
     double currentTime;
+    
+    /**
+     *  Previous time of program
+     */
     double previousTime;
     
-    //singleton instnace
+    /**
+     *  Singleton instance
+     */
     static Timer instance;
     
-    //private constructor
+    /**
+     *  Private Singleton constructor
+     */
     Timer(){
         //on creation, set previous time to -1 so we know this is a fresh instance
         previousTime = -1;
@@ -33,16 +48,28 @@ private:
     void operator=(Timer const&);
     
 public:
-    //return static timer instance
+    /**
+     *  Singleton instance getter
+     */
     static Timer& getInstance(){
         return instance;
     }
     
-    //record the time
+    /**
+     *  Record and update time
+     */
     void recordTime();
     
-    //time getter
+    /**
+     *  Get elapsed time for current iteration
+     *  @return Elapsed time in ms.
+     */
     double getElapsedTime();
+    
+    /**
+     *  Get total elapsed time since program started
+     *  @return Total elapsed time
+     */
     double getTotalElapsedTime();
 };
 

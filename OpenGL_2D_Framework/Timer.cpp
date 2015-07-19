@@ -8,7 +8,6 @@
 
 #include "Timer.h"
 
-//Timer *Timer::instance = nullptr;
 Timer Timer::instance;
 
 double Timer::getElapsedTime(){
