@@ -12,40 +12,22 @@ Layer::Layer():
 inputListenable(false)
 {
     cout << "Layer()" << endl;
-    init();
 }
 
 Layer::~Layer(){
     cout << "~Layer()" << endl;
-    exit();
-}
-
-void Layer::init(){
-    cout << "Layer init()" << endl;
-//    renderableObjectManager = new RenderableObjectManager();
 }
 
 void Layer::update(){
-//    renderableObjectManager->update();
     this->updateChild();
 }
 
 void Layer::render(){
-//    renderableObjectManager->render();
-    this->renderChild(translateMat * rotateMat * scaleMat);
+    this->renderChild();
 }
 
 void Layer::addChild(Object *child){
     this->Object::addChild(child, this);
-}
-
-//void Layer::addObject(std::string objectName, RenderableObject *object){
-//    renderableObjectManager->addObject(nullptr, objectName, object, false);
-//}
-
-void Layer::exit(){
-//    if(renderableObjectManager)
-//        delete renderableObjectManager;
 }
 
 bool Layer::isLayerInputListenable(){
