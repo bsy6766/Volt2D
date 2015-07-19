@@ -13,6 +13,7 @@
 
 /**
  *  @class Color
+ *  @brief Color class with preset colors
  *  @note Java's enum class-ish class.
  */
 class Color{
