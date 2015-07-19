@@ -114,7 +114,7 @@ public:
     }
     
     /// @{
-    /// @nameStatic constant for built-in color
+    /// @name Static constant for built-in color
     static const Color MAROON;
     static const Color DARKRED;
     static const Color BROWN;

@@ -13,7 +13,7 @@
 #include <iostream>
 
 /**
- *  @name Timer
+ *  @class Timer
  *  @brief Records time. Unit is ms.
  *  @note Singleton (b..but..Singleton is bad!)
  */

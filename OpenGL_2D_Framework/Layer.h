@@ -14,7 +14,7 @@
 #include "Object.h"
 
 /**
- *  @name Layer
+ *  @class Layer
  *  @brief A layer that can be added to scene
  *  @note Inherites object
  */

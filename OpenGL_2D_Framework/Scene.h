@@ -17,7 +17,7 @@
 #include <glm/glm.hpp>
 
 /**
- *  @name Scene
+ *  @class Scene
  *  @brief A Scene class. Only 1 scene can be run in Director.
  */
 
