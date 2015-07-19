@@ -14,17 +14,34 @@
 
 class ProgressBar: public ProgressObject{
 private:
-    
-public:
+    //private constructor
     ProgressBar();
+    void initProgressBar(GLenum textureTarget, const std::string barTextureName);
+public:
+    /**
+     *  Create ProgressBar
+     *  @param objectName An object name for ProgressBar
+     *  @param barTextureName Texture file name 
+     *  @param textureTarget GL_TEXTURE_2D
+     */
+    static ProgressBar* createProgressBar(std::string objectName, const char* barTextureName, GLenum textureTarget = GL_TEXTURE_2D);
+    
+    //Destructor
     ~ProgressBar();
     
-    void initProgressBar(GLenum textureTarget, const std::string barTextureName);
-//    void setProgressRate(int rate);
-    
-    //virtual
+    /**
+     *  Override's RenderableObject::computerVertexData()
+     */
     virtual void computeVertexData();
+    
+    /**
+     *
+     */
     virtual void loadVertexData();
+    
+    /**
+     *
+     */
     virtual void render();
 };
 

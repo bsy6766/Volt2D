@@ -17,6 +17,13 @@ ProgressBar::~ProgressBar(){
     cout << "Deleting Progress Bar" << endl;
 }
 
+ProgressBar* ProgressBar::createProgressBar(std::string objectName, const char *barTextureName, GLenum textureTarget){
+    ProgressBar* newProgressBar = new ProgressBar();
+    newProgressBar->initProgressBar(textureTarget, barTextureName);
+    newProgressBar->setName(objectName);
+    return newProgressBar;
+}
+
 void ProgressBar::initProgressBar(GLenum textureTarget, const std::string barTextureName){
     cout << "init progress bar with texture with path of " << barTextureName << endl;
     std::string textureDir = Director::getInstance().getWorkingDir() + "/../Texture/";
@@ -106,7 +113,12 @@ void ProgressBar::render(){
     glUseProgram(progPtr->getObject());
     glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
-    matrixUniformLocation("modelMat", modelMat);
+    
+    glm::mat4 parentMat;
+    if(this->parent){
+        parentMat = this->parent->getTransformMat();
+    }
+    matrixUniformLocation("modelMat", parentMat);
     matrixUniformLocation("rotateMat", rotateMat);
     matrixUniformLocation("translateMat", translateMat);
     matrixUniformLocation("scaleMat", scaleMat);
