@@ -17,26 +17,70 @@
 
 #define VOID_OFFSET(i) (GLvoid*)(i)
 
+/**
+ *  @class ProgressObject
+ *  @brief Base class for ProgressBar and ProgressRadian
+ */
 class ProgressObject : public RenderableObject{
 protected:
+    /**
+     *  Progress texture.
+     */
     Texture* texture;
     
+    /**
+     *  texture width
+     */
     int w;
+    
+    /**
+     *  texture height
+     */
     int h;
     
-    int totalPercentage;    //total percentage. defautl 100%
-    int percentageRate;     //rate of each step. default 1%
+    /**
+     *  total percentage
+     */
+    int totalPercentage;
+    
+    /**
+     *  A rate of percentage for single increment or decrement
+     */
+    int percentageRate;
+    
+    /**
+     *  Total steps ProgressObject has (totalPercentage / percentageRate)
+     */
     int totalSteps;
     
-    int currentPercentage;  //default 100%
+    /**
+     *  Current percentage of progress
+     */
+    int currentPercentage;
     
+    //protected constructor
+    ProgressObject();
 private:
 public:
-    ProgressObject();
+    //virtual destructor
     virtual ~ProgressObject();
-
+    
+    /**
+     *  Set object's percentage
+     *  @param percentage A percentage to set
+     */
     void setPercentage(int percentage);
+    
+    /**
+     *  Add percentage to object's current percentage
+     *  @param percentage A percentage to add
+     */
     void addPercentage(int percentage);
+    
+    /**
+     *  Get current percentage
+     *  @return Object's current percentage
+     */
     int getPercentage();
     
 //    virtual void addActions(std::initializer_list<ActionObject*> actions, int repeat);
