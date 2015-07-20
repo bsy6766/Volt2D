@@ -11,6 +11,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_ASSERT(x)
 
+GLuint Texture::curBoundedTexture = -1;
+
 Texture::Texture(GLenum textureTarget, const std::string& fileName):
 		textureTarget(textureTarget), 
 		fileName(fileName),
@@ -24,7 +26,7 @@ Texture::Texture(GLenum textureTarget, const std::string& fileName):
 Texture::~Texture(){
 	glDeleteTextures(1, &textureObject);
     textureObject = 0;
-//    stbi_image_free(data);
+    stbi_image_free(data);
     data = NULL;
 }
 
@@ -37,6 +39,8 @@ void Texture::load(){
 void Texture::bind(GLenum textureUnit){
     glActiveTexture(textureUnit);	//NOTE: This is kind of useless if we are only going to use GL_TEXTRE0
     glBindTexture(textureTarget, textureObject);
+    //keep track of the most lately bounded texture
+    Texture::curBoundedTexture = this->textureObject;
     glUniform1i(textureLocation, 0);
 }
 
@@ -130,4 +134,8 @@ void Texture::getImageSize(int &w, int &h){
 
 GLenum Texture::getTextureTarget(){
     return textureTarget;
+}
+
+bool Texture::isThisTextureBounded(GLuint textureObject){
+    return this->Texture::curBoundedTexture == textureObject;
 }

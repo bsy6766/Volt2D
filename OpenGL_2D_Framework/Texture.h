@@ -26,15 +26,44 @@
  */
 class Texture{
 private:
-	//OpenGL
+    /**
+     *  Placeholder to keep track the latest bounded texture object for optimization
+     */
+    static GLuint curBoundedTexture;
+    
+    /**
+     *  OpenGL texture object;
+     */
     GLuint textureObject;
+    
+    /**
+     *  Texture target. Mostly GL_TEXTURE_2D
+     */
     GLenum textureTarget;
+    
+    /**
+     *  Texture location
+     */
     GLint textureLocation;
     
-	//Basic info
+    /**
+     *  Texture image file name
+     */
     std::string fileName;
+    
+    /**
+     *  Image data loaded from stb_image.
+     */
     unsigned char* data;
+    
+    /**
+     *  Width and height of texture
+     */
     GLsizei width, height;
+    
+    /**
+     *  Image channel.
+     */
     int channel;
     
 	/**
@@ -97,6 +126,14 @@ public:
         Format_RGB = 3,					/**< three channels: red, green, blue */
         Format_RGBA = 4					/**< four channels: red, green, blue, alpha */
     };
+    
+    /**
+     *  Check if passed object matches currently bounded texture.
+     *  Since querying OpenGL's setting is expensive, we are keep tracking texture by texture's object ID.
+     *  @param textureObject A texture's object to check
+     *  @return true if this object is currently bounded. 
+     */
+    bool isThisTextureBounded(GLuint textureObject);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Texture__) */
