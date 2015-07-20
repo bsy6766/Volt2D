@@ -136,6 +136,6 @@ GLenum Texture::getTextureTarget(){
     return textureTarget;
 }
 
-bool Texture::isThisTextureBounded(GLuint textureObject){
-    return this->Texture::curBoundedTexture == textureObject;
+bool Texture::canBoundThisTexture(GLuint textureObject){
+    return this->Texture::curBoundedTexture != textureObject;
 }
