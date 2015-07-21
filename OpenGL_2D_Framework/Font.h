@@ -22,33 +22,122 @@
 #include <ftglyph.h>
 #include "Director.h"
 
+/**
+ *  @class GlyphData
+ *  @brief Contains each character's glyph metric and texture data in font.
+ *  @note This class uses FreeType library.
+ */
 class GlyphData {
 public:
+    /**
+     *  True if this character's data loaded
+     */
     bool valid;
-    char c;     // the character of this glyph
-    unsigned char *bitmap_buffer;   // texture data
+    
+    /**
+     *  Character of this data
+     */
+    char c;
+    
+    /**
+     *  Glyph metrics that contains glyph data(width, height, advance, etc).
+     */
     FT_Glyph_Metrics metrics;
-    //Texture
-    GLuint texObj;
+    
+    /**
+     *  Top left texture coordinate for this char
+     */
+    glm::vec2 uvTopLeft;
+    
+    /**
+     *  Bottom right texture coordinate for this char
+     */
+    glm::vec2 uvBotRight;
 };
 
+/**
+ *  @class Font
+ *  @brief Read TTF font file and loads data.
+ */
 class Font{
 private:
-    //Freetype.
-    static FT_Library library;  //Made static so all manager can share one library.
-    FT_GlyphSlot glyph;
+    /**
+     *  Texture object
+     */
+    GLuint textureObject;
+    
+    /**
+     *  Texture atlas
+     */
+    Texture* textureAtlas;
+    
+    /**
+     *  Freetype Library. Read library.
+     */
+    static FT_Library library;
+    
+    /**
+     *  Font size
+     */
     int size;
+    
+    /**
+     *  Line space for this font.
+     */
     int lineSpace;
-
+    
+    /**
+     *  Texture atlas width
+     */
+    float texAtlasWidth;
+    
+    /**
+     *  Texture atlas height
+     */
+    float texAtlasHeight;
+    
+    /**
+     *  Glyph storage
+     */
     std::map<char, GlyphData> glyphMap;
     
-public:
+    //Private Constructor
     Font();
-    ~Font();
-    //read font file and generate glyph map.
+    
+    /**
+     *  Initialize font.
+     *  @param fontName A font file name
+     *  @param fontSize A font size
+     *  @return true if successfully load font. Else, false.
+     */
     bool initFont(std::string fontName, int fontSize);
-    void getGlyphDataFromChar(char c, GlyphData& gData);
+public:
+    /**
+     *  Create font
+     *  @param fontName TTF font name to load
+     *  @param fontSize A font size to load. Higher number of size means higher resolution font texture.
+     *  @return New font instance if success to initialize. Else, nullptr.
+     */
+    static Font* createTTF_Font(std::string fontName, int fontSize);
+    
+    //Desturctor
+    ~Font();
+    
+    /**
+     *  Get corresponding GlyphData to character
+     *  @return GlyphData for char
+     */
+    GlyphData* getGlyphDataFromChar(char c);
+    
+    /**
+     *  Get linespace of this font
+     */
     int getLineSpace();
+    
+    /**
+     *  Bind texture atlas to OpenGL
+     */
+    void bindTextTextureAtlas();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Font__) */

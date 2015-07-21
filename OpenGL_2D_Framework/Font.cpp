@@ -21,14 +21,24 @@ Font::Font(){
 }
 
 Font::~Font(){
-    //make sure release bitmap buffer allocation
-    for (std::map<char, GlyphData>::iterator it=glyphMap.begin(); it!=glyphMap.end(); ++it){
-        glDeleteTextures(1, &(it->second).texObj);
-        delete[] it->second.bitmap_buffer;
+    //no need to release glyph storage anymore. They die together.
+    glDeleteTextures(1, &this->textureObject);
+    this->textureObject = 0;
+}
+
+Font* Font::createTTF_Font(std::string fontName, int fontSize){
+    Font* newFont = new Font();
+    if(newFont->initFont(fontName, fontSize)){
+        return newFont;
+    }
+    else{
+        delete newFont;
+        return nullptr;
     }
 }
 
 bool Font::initFont(std::string fontName, int fontSize){
+    //load the font with Freetype
     FT_Face face;
     std::string workingDir = Director::getInstance().getWorkingDir();
     std::string fontPath = workingDir + "/../Font/" + fontName;
@@ -37,19 +47,23 @@ bool Font::initFont(std::string fontName, int fontSize){
         return false;
     }
     
+    //store font size
     size = fontSize;
     if(size == 0)
         size = 1;
     
+    //Set font size. Bigger = Higher res texture
     FT_Set_Pixel_Sizes(face, 0, size);
     
+    //Store linespace.
     this->lineSpace = (face->height >> 6);
     
-    
-    if(FT_Load_Char(face, 0xBC31, FT_LOAD_RENDER)){
-        cout << "Failed to load char: " << (char)0xBC31 << endl;
-    }
-    
+    /*
+    //한글 캐릭터 체크. '백' = 0xBC31
+//    if(FT_Load_Char(face, 0xBC31, FT_LOAD_RENDER)){
+//        cout << "Failed to load char: " << (char)0xBC31 << endl;
+//    }
+//    
     
     //korean
 //    for(int i = 0xAC00; i <= 0xD7A3; i++){
@@ -64,68 +78,119 @@ bool Font::initFont(std::string fontName, int fontSize){
 //            continue;
 //        }
 //    }
-
-    //load all char for English only
+    */
+    
+    //Optimizing font texture.
+    //iterate all chars and compute max width. (You can divide to make more even sized texture, but since it won't exceed max texture lenght, it's good)
+    FT_GlyphSlot g = face->glyph;
+    int widthSum = 0;
+    int maxHeight = 0;
+    
+    //iterate over chars and compute width sum and max height
+    for(size_t i = ' '; i < '~'; i++) {
+        if(FT_Load_Char(face, i, FT_LOAD_RENDER)) {
+            fprintf(stderr, "Loading character %c failed!\n", (char)i);
+            continue;
+        }
+        
+        widthSum += g->bitmap.width;
+        if(maxHeight < g->bitmap.rows){
+            maxHeight = g->bitmap.rows;
+        }
+    }
+    
+    //find neareast power of 2 for width
+    unsigned int uiWidth = widthSum;
+    uiWidth--;
+    uiWidth |= uiWidth >> 1;
+    uiWidth |= uiWidth >> 2;
+    uiWidth |= uiWidth >> 4;
+    uiWidth |= uiWidth >> 8;
+    uiWidth |= uiWidth >> 16;
+    uiWidth++;
+    
+    //find neareast power of 2 for height
+    unsigned int uiHeight = maxHeight;
+    uiHeight--;
+    uiHeight |= uiHeight >> 1;
+    uiHeight |= uiHeight >> 2;
+    uiHeight |= uiHeight >> 4;
+    uiHeight |= uiHeight >> 8;
+    uiHeight |= uiHeight >> 16;
+    uiHeight++;
+    
+    //store texture size (power of 2)
+    this->texAtlasWidth = (float)uiWidth;
+    this->texAtlasHeight = (float)uiHeight;
+    
+    //allocate blank texture.
+    glGenTextures(1, &this->textureObject);
+    glBindTexture(GL_TEXTURE_2D, this->textureObject);
+    
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+    //Generate empty texture.
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->texAtlasWidth, this->texAtlasHeight, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
+    
+    //Create texture instance
+    this->textureAtlas = new Texture(this->textureObject, GL_TEXTURE_2D);
+    
+    //iterate over char map(space to wave dash)
+    //x offset
+    float x = 0;
     for(size_t i = ' '; i <= '~'; ++i){
         if(FT_Load_Char(face, i, FT_LOAD_RENDER)){
             cout << "Failed to load char: " << (char)i << endl;
             continue;
         }
         
-        FT_Glyph glyph;
-        if(FT_Get_Glyph(face->glyph, &glyph)){
-            cout << "Failed to get glyph" << endl;
-            continue;
-        }
+        //substitude pre allocated texture with each char's bitmap buffer.
+        glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, g->bitmap.width, g->bitmap.rows, GL_RED, GL_UNSIGNED_BYTE, g->bitmap.buffer);
         
-        FT_Glyph_To_Bitmap( &glyph, ft_render_mode_normal, 0, 1 );
-        FT_GlyphSlot slot = face->glyph;
-        FT_BitmapGlyph bitmap_glyph = (FT_BitmapGlyph)glyph;
-        //        FT_Bitmap& bitmap = slot->bitmap;
-        FT_Bitmap bitmap = bitmap_glyph->bitmap;
-        
+        //compute uv and store
         GlyphData gData;
-        //update reference
-        gData.bitmap_buffer = new unsigned char[bitmap.rows * bitmap.width * sizeof(unsigned char)];
-        memcpy(gData.bitmap_buffer, bitmap.buffer, bitmap.rows * bitmap.width * sizeof(unsigned char));
-
-        gData.c = i;
         gData.valid = true;
-        gData.metrics = slot->metrics;
+        gData.c = i;
+        gData.metrics = g->metrics;
         
-        GLuint textureObject;
-        glGenTextures(1, &textureObject);
-        glBindTexture(GL_TEXTURE_2D, textureObject);
+        //conmpute top left uv point.
+        gData.uvTopLeft = glm::vec2(x / this->texAtlasWidth, 0);
         
-        gData.texObj = textureObject;
+        //proceed
+        x += g->bitmap.width;
         
-        // set texture parameters. Linear and clamp to edge.
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
+        //compute bot right uv point
+        gData.uvBotRight = glm::vec2(x / this->texAtlasWidth, (g->bitmap.rows / this->texAtlasHeight));
         
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmap.width, bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, gData.bitmap_buffer);
-
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-        
-        glyphMap.insert(std::pair<char, GlyphData>(gData.c, gData));
-        FT_Done_Glyph(glyph);
+        //store in map
+        glyphMap[gData.c] = gData;
     }
     
+//    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    
+    //make sure release face.
     FT_Done_Face(face);
     
     return true;
 }
 
-void Font::getGlyphDataFromChar(char c, GlyphData& gData){
-    if(glyphMap.count(c)){
-        gData = glyphMap.at(c);
-    }
+GlyphData* Font::getGlyphDataFromChar(char c){
+    auto it = glyphMap.find(c);
+    if(it == glyphMap.end())
+        return nullptr;
+    else
+        return &glyphMap[c];
 }
 
 int Font::getLineSpace(){
     return lineSpace;
+}
+
+void Font::bindTextTextureAtlas(){
+    if(this->textureAtlas->canBoundThisTexture())
+        this->textureAtlas->bind(GL_TEXTURE0);
 }
