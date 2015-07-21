@@ -12,8 +12,7 @@ const std::string FontManager::defaultFontName = "arial.ttf";
 
 FontManager::FontManager(){
     //add default font size of 10
-    Font *defaultFont = new Font();
-    defaultFont->initFont(defaultFontName, 50);
+    Font *defaultFont = Font::createTTF_Font(defaultFontName, 50);
     fontMap.insert(std::pair<std::string, Font*>(defaultFontName, defaultFont));
 }
 
@@ -24,13 +23,17 @@ FontManager::~FontManager(){
 }
 
 void FontManager::addFont(std::string fontName, int fontSize){
-    Font *newFont = new Font();
     //init newFont
     if(fontSize == 0)
         fontSize = 1;
-    newFont->initFont(fontName, fontSize);
-    fontMap.insert(std::pair<std::string, Font*>(fontName, newFont));
     
+    Font *newFont = Font::createTTF_Font(fontName, fontSize);
+    if(newFont){
+        fontMap.insert(std::pair<std::string, Font*>(fontName, newFont));
+    }
+    else{
+        cout << "Failed to add \"" << fontName << "\"." << endl;
+    }
 }
 
 Font* FontManager::getFont(std::string fontName = defaultFontName){
