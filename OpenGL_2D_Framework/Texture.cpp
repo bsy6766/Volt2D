@@ -26,7 +26,7 @@ Texture::Texture(GLenum textureTarget, const std::string& fileName):
 Texture::~Texture(){
 	glDeleteTextures(1, &textureObject);
     textureObject = 0;
-    stbi_image_free(data);
+//    stbi_image_free(data);
     data = NULL;
 }
 
@@ -136,6 +136,6 @@ GLenum Texture::getTextureTarget(){
     return textureTarget;
 }
 
-bool Texture::canBoundThisTexture(GLuint textureObject){
-    return this->Texture::curBoundedTexture != textureObject;
+bool Texture::canBoundThisTexture(){
+    return this->Texture::curBoundedTexture != this->textureObject;
 }

@@ -130,10 +130,9 @@ public:
     /**
      *  Check if passed object matches currently bounded texture.
      *  Since querying OpenGL's setting is expensive, we are keep tracking texture by texture's object ID.
-     *  @param textureObject A texture's object to check
      *  @return true if this object is currently bounded.
      */
-    bool canBoundThisTexture(GLuint textureObject);
+    bool canBoundThisTexture();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Texture__) */
