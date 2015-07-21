@@ -63,6 +63,11 @@ protected:
     Object* parent;
     
     /**
+     *  Model matrix. Anchor point applies first here.
+     */
+    glm::mat4 modelMat;
+    
+    /**
      *  Translation matrix
      */
     glm::mat4 translateMat;
