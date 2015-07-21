@@ -17,6 +17,9 @@ uvbo(0),
 ibo(0),
 opacity(255),
 visible(true),
+width(0),
+height(0),
+anchorPoint(glm::vec2()),
 progPtr(Director::getInstance().getProgramPtr()),   //get default program
 actionRunning(false)
 {
@@ -185,4 +188,13 @@ void RenderableObject::matrixUniformLocation(std::string name, glm::mat4 &matrix
     if(uniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + name);
     glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &matrix[0][0]);
+}
+
+void RenderableObject::setAnchrPoint(glm::vec2 anchorPoint){
+    this->anchorPoint = anchorPoint;
+    glm::vec3 anchorDistance = glm::vec3();
+    float shiftX = -anchorPoint.x * this->width;
+    float shiftY = -anchorPoint.y * this->height;
+    anchorDistance = glm::vec3(shiftX, shiftY, 0);
+    this->modelMat = glm::translate(glm::mat4(), anchorDistance);
 }

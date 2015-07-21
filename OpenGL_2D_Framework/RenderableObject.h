@@ -61,6 +61,22 @@ protected:
     std::vector<GLushort> indicesData;
     
     /**
+     *  Object's scaled size
+     */
+    float width;
+    
+    /**
+     *  Object's scaled size
+     */
+    float height;
+    
+    /**
+     *  Anchor point.
+     *  @note Default is (0, 0). Max 0.5(top, right), Min -0.5(bot, left)
+     */
+    glm::vec2 anchorPoint;
+    
+    /**
      *  A opacity of this object.
      *  max = 255, min = 0
      */
@@ -132,6 +148,11 @@ public:
      *  @return Object's opacity
      */
     GLfloat getOpacity();
+    
+    /**
+     *  Set object's anchor point
+     */
+    void setAnchrPoint(glm::vec2 anchorPoint);
     
     /**
      *  Pure virtual. Compute vertex data
