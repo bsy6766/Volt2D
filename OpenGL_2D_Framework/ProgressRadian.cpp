@@ -447,7 +447,9 @@ void ProgressRadian::render(){
         parentMat = this->parent->getTransformMat();
     }
     
-    matrixUniformLocation("modelMat", parentMat);
+    
+    matrixUniformLocation("parentMat", parentMat);
+    matrixUniformLocation("modelMat", modelMat);
     matrixUniformLocation("rotateMat", rotateMat);
     matrixUniformLocation("translateMat", translateMat);
     matrixUniformLocation("scaleMat", scaleMat);
