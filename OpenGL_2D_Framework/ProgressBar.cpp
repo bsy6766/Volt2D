@@ -29,8 +29,7 @@ ProgressBar* ProgressBar::createProgressBar(std::string objectName, const char *
 void ProgressBar::initProgressBar(const std::string barTextureName, GLenum textureTarget){
     cout << "init progress bar with texture with path of " << barTextureName << endl;
     std::string textureDir = Director::getInstance().getWorkingDir() + "/../Texture/";
-    texture = new Texture(textureTarget, textureDir + barTextureName);
-    texture->load();
+    this->texture = Texture::createTextureWithFile(barTextureName, textureTarget);
     texture->getImageSize(w, h);
     
     computeVertexData();

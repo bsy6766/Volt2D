@@ -26,6 +26,12 @@
  */
 class Texture{
 private:
+    const static std::string wd;
+    /**
+     *  true if texture is loaded and ready to use
+     */
+    bool loaded;
+    
     /**
      *  Placeholder to keep track the latest bounded texture object for optimization
      */
@@ -51,10 +57,6 @@ private:
      */
     std::string fileName;
     
-    /**
-     *  Image data loaded from stb_image.
-     */
-    unsigned char* data;
     
     /**
      *  Width and height of texture
@@ -70,33 +72,62 @@ private:
 	*	Loads image.
 	* @param filePath a const string represents the path if file(image)
 	*/
-    void loadImage(const std::string& filePath);
+    unsigned char* loadImage(int& width, int& height, int& channel, std::string postfix);
+    
+//    void loadImages(int size);
+    void initTexture();
+    void initTextureAtlas(int size);
 
 	/**
 	* Initialize texture.
 	* Generate the texture and bind the texture object to GL_TEXTRE_2D
 	*/
-    void initTexture();
-
+    void generateTexture(int width, int height, int channel, unsigned char* data = 0);
+    GLenum getTextureType(int channel);
+    
 	/**
 	* Flip image data
 	* A data loaded by stb_image
 	*/
-    void flipImage();   //for stb_image
+    void flipImage(unsigned char* data);   //for stb_image
     
-public:
-	//don't implement. Prevent calling default constructor. Texture must be initialized, else it's useless
-    Texture();
-    
+    /**
+     *  Constructor for texture that already has texture object.
+     */
     Texture(GLuint texObj, GLenum texTarget);
-
-	/**
-	* Texture class constructor
-	* Initialize the texture object.
-	* @param textureTarget a GLenum represents type of texture
-	* @param fileName a const string represents the name of file(image)
-	*/
+    
+    /**
+     * Texture class constructor
+     * Initialize the texture object.
+     * @param textureTarget a GLenum represents type of texture
+     * @param fileName a const string represents the name of file(image)
+     */
     Texture(GLenum textureTarget, const std::string& fileName);
+    
+    int findNearestPowTwo(unsigned int num);
+public:
+    /**
+     *  Create texture with image file.
+     *  @param fileName A texture image file name(path)
+     *  @param textureTarget A OpenGL texture target. GL_TEXTURE_2D by default.
+     */
+    static Texture* createTextureWithFile(std::string fileName, GLenum textureTarget = GL_TEXTURE_2D);
+    
+    /**
+     *  Create texture with series of files.
+     *  @note All series of files must follow <file name>_<index> format.
+     *  @param fileName Image file name
+     *  @param size Number of files to load
+     *  @param textureTarget A OpenGL texture target. GL_TEXTURE_2D by default.
+     */
+    static Texture* createTextureWithFiles(std::string fileName, int size, GLenum textureTarget = GL_TEXTURE_2D);
+    
+    /**
+     *  Create texture with empty buffer with specific size
+     *  @param textureObject A OpenGL texture object. Rejects non-positive.
+     *  @param textureTarget A OpenGL texture target. GL_TEXTURE_2D by default.
+     */
+    static Texture* createWithTextureObject(GLuint textureObject, GLenum textureTarget = GL_TEXTURE_2D);
 
 	/**
 	* Texture class destructor
@@ -105,20 +136,25 @@ public:
     ~Texture();
     
 	/**
-	* Load texture.
-	* Reads the image and initialize the texture
-	*/
-    void load();
-
-	/**
 	* Bind texture.
 	*/
     void bind(GLenum textureUnit);
     
-    //getter
+    /**
+     *  Get texture image size
+     *  @param w Int for width
+     *  @param h Int for height
+     */
     void getImageSize(int &w, int &h);
+    
+    /**
+     *  @return texture target. GL_TEXTURE_2D
+     */
     GLenum getTextureTarget();
-    GLint getTextureLocation();
+    
+    /**
+     *  @return Texture object
+     */
     GLuint getObject();
     
     //Image format

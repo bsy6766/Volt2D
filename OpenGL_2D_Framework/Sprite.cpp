@@ -65,8 +65,7 @@ Sprite* Sprite::createSpriteWithFrameName(std::string objectName, std::string fr
 
 void Sprite::initTexture(const std::string& fileName, GLenum textureTarget){
     std::string textureDir = Director::getInstance().getWorkingDir() + "/../Texture/";
-    texture = new Texture(textureTarget, textureDir + fileName);
-    texture->load();
+    this->texture = Texture::createTextureWithFile(fileName, textureTarget);
     texture->getImageSize(w, h);
     
     computeVertexData();

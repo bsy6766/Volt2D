@@ -40,8 +40,9 @@ ParticleSystem* ParticleSystem::initWithParticleSize(int size){
 
 void ParticleSystem::initParticleTexture(GLenum _textureTarget, const std::string& _fileName, Program *progPtr){
     this->progPtr = progPtr;
-    texture = new Texture(_textureTarget, _fileName);
-    texture->load();
+//    texture = new Texture(_textureTarget, _fileName);
+    texture = Texture::createTextureWithFile(_fileName, _textureTarget);
+//    texture->load();
 
     int w,h;
     texture->getImageSize(w, h);

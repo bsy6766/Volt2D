@@ -26,8 +26,7 @@ ProgressRadian* ProgressRadian::createProgressRadian(std::string objectName, con
 }
 
 void ProgressRadian::initProgressRadian(const std::string barTextureName, GLenum textureTarget){
-    texture = new Texture(textureTarget, barTextureName);
-    texture->load();
+    this->texture = Texture::createTextureWithFile(barTextureName, textureTarget);
     texture->getImageSize(w, h);
     
     computeVertexData();

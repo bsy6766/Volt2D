@@ -61,8 +61,7 @@ bool SpriteSheet::initSpriteSheetWithXML(std::string texturePath, std::string xm
         cout << "width: " << this->w << endl;
         cout << "height: " << this->h << endl;
         
-        this->texture = new Texture(GL_TEXTURE_2D, wd + "/../Texture/" + textureName);
-        this->texture->load();
+        this->texture = Texture::createTextureWithFile(texturePath);
         this->texture->getImageSize(this->w, this->h);
         
         for (rapidxml::xml_node<> * sprite_node = root_node->first_node("sprite"); sprite_node; sprite_node = sprite_node->next_sibling())
