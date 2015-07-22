@@ -126,7 +126,7 @@ public:
     virtual void loadVertexData();
     
     /**
-     *  Overrides's RenderableObject::render();
+     *  Overrides's Object::render();
      *  Render object
      */
     virtual void render();
