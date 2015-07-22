@@ -7,43 +7,105 @@
 //
 
 #include "SpriteSheet.h"
+#include "Director.h"
 
 SpriteSheet::SpriteSheet(){
     
 }
 
 SpriteSheet::~SpriteSheet(){
-    
+    if (texture){
+        delete texture;
+        texture = nullptr;
+    }
 }
 
-void SpriteSheet::initSpriteSheetWithXML(std::string xmlFileName){
+void SpriteSheet::createSpriteSheet(std::string frameName, const char *textureName, const char *xmlFileName){
+    if(!Director::getInstance().hasSpriteSheetFrameName(frameName)) {
+        SpriteSheet* newSpriteSheet = new SpriteSheet();
+        if(newSpriteSheet->initSpriteSheetWithXML(textureName, xmlFileName)){
+            Director::getInstance().cacheSpriteSheet(frameName, newSpriteSheet);
+        }
+        else{
+            cout << "[System Error] Failed to initialize sprite sheet." << endl;
+        }
+    }
+}
+
+bool SpriteSheet::initSpriteSheetWithXML(std::string texturePath, std::string xmlFileName){
     rapidxml::xml_document<> doc;
     rapidxml::xml_node<> * root_node;
     // Read the xml file into a vector
-    std::ifstream theFile ("../texture/sprite sheet/" + xmlFileName);
-    std::vector<char> buffer((std::istreambuf_iterator<char>(theFile)), std::istreambuf_iterator<char>());
-    theFile.close();
-    buffer.push_back('\0');
-    // Parse the buffer using the xml file parsing library into doc
-    doc.parse<0>(&buffer[0]);
-    // Find our root node
-    root_node = doc.first_node("TextureAtlas");
-    // Iterate over the brewerys
-    spriteName = root_node->first_attribute("imagePath")->value();
-    
-    std::cout << "imagePath: " << spriteName << std::endl;
-    
-    w = atoi(root_node->first_attribute("width")->value());
-    h = atoi(root_node->first_attribute("height")->value());
-    
-    std::cout << "width: " << w << std::endl;
-    std::cout << "height: " << h << std::endl;
-    
-    for (rapidxml::xml_node<> * sprite_node = root_node->first_node("sprite"); sprite_node; sprite_node = sprite_node->next_sibling())
-    {
-        std::cout << "Sprite. name: " << sprite_node->first_attribute("n")->value()
-        << ", (x,y): (" << sprite_node->first_attribute("x")->value() << ", " << sprite_node->first_attribute("y")->value() << "), (w,h): (" << sprite_node->first_attribute("w")->value() << ", " << sprite_node->first_attribute("h")->value() << "), (pX, pY): (" << sprite_node->first_attribute("pX")->value() << ", " << sprite_node->first_attribute("pY")->value() << ")" << std::endl;
+    std::string wd = Director::getInstance().getWorkingDir();
+    std::ifstream theFile (wd + "/../Texture/" + xmlFileName);
+    if(theFile) {
+        std::vector<char> buffer((std::istreambuf_iterator<char>(theFile)), std::istreambuf_iterator<char>());
+        //close the file.
+        theFile.close();
+        buffer.push_back('\0');
+        
+        // Parse the buffer using the xml file parsing library into doc
+        doc.parse<0>(&buffer[0]);
+        
+        // Find our root node
+        root_node = doc.first_node("TextureAtlas");
+        
+        // Iterate over the brewerys
+        textureName = texturePath;
+        
+        cout << "imageName: " << textureName << endl;
+        
+        this->w = atoi(root_node->first_attribute("width")->value());
+        this->h = atoi(root_node->first_attribute("height")->value());
+        
+        cout << "width: " << this->w << endl;
+        cout << "height: " << this->h << endl;
+        
+        this->texture = new Texture(GL_TEXTURE_2D, wd + "/../Texture/" + textureName);
+        this->texture->load();
+        this->texture->getImageSize(this->w, this->h);
+        
+        for (rapidxml::xml_node<> * sprite_node = root_node->first_node("sprite"); sprite_node; sprite_node = sprite_node->next_sibling())
+        {
+            ImageEntry newEntry;
+            //vertex coordinates
+            newEntry.x = std::stof(std::string(sprite_node->first_attribute("x")->value()));
+            newEntry.y = std::stof(std::string(sprite_node->first_attribute("y")->value()));
+            newEntry.w = std::stof(std::string(sprite_node->first_attribute("w")->value()));
+            newEntry.h = std::stof(std::string(sprite_node->first_attribute("h")->value()));
+            //uv coordinates
+            newEntry.uvOriginX = newEntry.x / (float)this->w;
+            newEntry.uvOriginY = newEntry.y / (float)this->h;
+            newEntry.uvEndX = (newEntry.x + newEntry.w) / (float)this->w;
+            newEntry.uvEndY = (newEntry.y + newEntry.h) / (float)this->h;
+            
+            entryMap[std::string(sprite_node->first_attribute("n")->value())] = newEntry;
+            
+            cout
+                 << "Sprite. name: " << sprite_node->first_attribute("n")->value()
+                 << ",\t (x,y): (" << newEntry.x << ", " << newEntry.y
+                 << "),\t (w,h): (" << newEntry.w << ", " << newEntry.h
+                 << ")" <<
+            endl;
+        }
+        return true;
     }
-    
-    std::cout << "imagePath: " << root_node->first_attribute("imagePath")->value() << std::endl;
+    else{
+        cout << "[System Error] Sprite sheet XML data file \"" << xmlFileName << "\" does not exist" << endl;
+        return false;
+    }
+}
+
+const ImageEntry* SpriteSheet::getImageEntry(std::string imageName){
+    auto it = entryMap.find(imageName);
+    if(it != entryMap.end()){
+        return &it->second;
+    }
+    else{
+        return 0;
+    }
+}
+
+Texture* SpriteSheet::getTexture(){
+    return this->texture;
 }

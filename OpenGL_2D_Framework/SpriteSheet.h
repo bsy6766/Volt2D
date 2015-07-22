@@ -18,8 +18,20 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <map>
+#include <unordered_map>
+#include "CommonInclude.h"
 #include "Texture.h"
+
+struct ImageEntry{
+    float x;
+    float y;
+    float w;
+    float h;
+    float uvOriginX;
+    float uvOriginY;
+    float uvEndX;
+    float uvEndY;
+};
 
 /**
  *  @class SpriteSheet
@@ -29,15 +41,42 @@
  */
 class SpriteSheet{
 private:
-    std::string spriteName;
+    /**
+     * A std::string unique name of sprite sheet
+     */
+    std::string frameName;
+    
+    /**
+     *  Texture file name
+     */
+    std::string textureName;
+    
+    /**
+     *  Texture loaded
+     */
+    Texture* texture;
     int w;
     int h;
-//    std::map<std::string, 
-public:
-    SpriteSheet();
-    ~SpriteSheet();
     
-    void initSpriteSheetWithXML(std::string xmlFileName);
+    SpriteSheet();
+    
+    std::unordered_map<std::string, ImageEntry> entryMap;
+    
+    bool initSpriteSheetWithXML(std::string texturePath, std::string xmlFileName);
+    
+    friend class Sprite;
+    const ImageEntry* getImageEntry(std::string imageName);
+    Texture* getTexture();
+public:
+    /**
+     *  Create sprite sheet.
+     *  Requires texture image and xml data file
+     *  @param frameName Sprite sheet name
+     *  @param textureName Texture image file name
+     *  @param xmlFileName Sprite sheet xml data file.
+     */
+    static void createSpriteSheet(std::string frameName, const char* textureName, const char* xmlFileName);
+    ~SpriteSheet();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__SpriteSheet__) */
