@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:b807e557c1402858e2719b916759564e:d2c18597703219763e781eaf8e12c189:82f009e17a3e36b21a9294088910e996$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+pX => x pos of the pivot point (relative to sprite width)
+pY => y pos of the pivot point (relative to sprite height)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+-->
+<TextureAtlas imagePath="title_scene_sprite_sheet.png" width="2048" height="2048">
+    <sprite n="continue_button.png" x="2" y="2" w="180" h="30" pX="0.5" pY="0.5"/>
+    <sprite n="credit_screen.png" x="184" y="2" w="1074" h="530" pX="0.5" pY="0.5"/>
+    <sprite n="credits_button.png" x="1260" y="2" w="160" h="30" pX="0.5" pY="0.5"/>
+    <sprite n="exit_game.png" x="1422" y="2" w="202" h="30" pX="0.5" pY="0.5"/>
+    <sprite n="new_game_button.png" x="1626" y="2" w="188" h="30" pX="0.5" pY="0.5"/>
+    <sprite n="options_button.png" x="1816" y="2" w="156" h="30" pX="0.5" pY="0.5"/>
+    <sprite n="selecting_arrow_icon.png" x="1974" y="2" w="46" h="44" pX="0.5" pY="0.5"/>
+    <sprite n="title.png" x="2" y="534" w="748" h="152" pX="0.5" pY="0.5"/>
+    <sprite n="title_scene_bg.png" x="2" y="688" w="1440" h="900" pX="0.5" pY="0.5"/>
+    <sprite n="version.png" x="1444" y="688" w="120" h="16" pX="0.5" pY="0.5"/>
+</TextureAtlas>
