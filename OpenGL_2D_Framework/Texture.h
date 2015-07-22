@@ -86,7 +86,9 @@ private:
     
 public:
 	//don't implement. Prevent calling default constructor. Texture must be initialized, else it's useless
-    Texture();	
+    Texture();
+    
+    Texture(GLuint texObj, GLenum texTarget);
 
 	/**
 	* Texture class constructor

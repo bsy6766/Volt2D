@@ -23,6 +23,13 @@ Texture::Texture(GLenum textureTarget, const std::string& fileName):
 
 }
 
+Texture::Texture(GLuint texObj, GLenum texTarget):
+textureObject(texObj),
+textureTarget(texTarget)
+{
+    
+}
+
 Texture::~Texture(){
 	glDeleteTextures(1, &textureObject);
     textureObject = 0;
