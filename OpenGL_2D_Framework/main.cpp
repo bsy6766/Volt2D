@@ -21,7 +21,7 @@
 
 //#include "SpriteSheet.h"
 
-void splitFilename (string& str)
+void splitFilename (std::string& str)
 {
     size_t found;
     cout << "Splitting: " << str << endl;
