@@ -10,24 +10,25 @@
 
 ActionRotateTo::ActionRotateTo():
 ActionObject(),
+type(RotationType::RIGHT),
 startAngle(0),
 destinationAngle(0),
 movedAngle(0),
 totalAngleToRotate(0){
-    cout << "Creating action RotateBy" << endl;
+    cout << "Creating action RotateTo" << endl;
 }
 
 ActionRotateTo::~ActionRotateTo(){
-    cout << "Deleting action RotateBy" << endl;
+    cout << "Deleting action RotateTo" << endl;
 }
 
-ActionRotateTo* ActionRotateTo::createRotateTo(double duration, float angle){
+ActionRotateTo* ActionRotateTo::createRotateTo(double duration, float angle, RotationType type){
     ActionRotateTo* newActionMoveTo = new ActionRotateTo();
-    newActionMoveTo->initRotateTo(angle, duration);
+    newActionMoveTo->initRotateTo(angle, duration, type);
     return newActionMoveTo;
 }
 
-void ActionRotateTo::initRotateTo(float angle, double duration){
+void ActionRotateTo::initRotateTo(float angle, double duration, RotationType type){
     //wrap angle
     if(angle >= 360){
         while(angle >= 360){
@@ -39,16 +40,30 @@ void ActionRotateTo::initRotateTo(float angle, double duration){
             angle += 360;
         }
     }
-
+    
+    //Right by default
+    this->type = type;
+    //init variables
     this->duration = duration;
-    this->destinationAngle = angle * (-1);
+    this->destinationAngle = angle;
     this->movedAngle = 0;
 }
 
 void ActionRotateTo::startAction(){
     ActionObject::startAction();
-    startAngle = this->target->getAngle() * (-1);
-    totalAngleToRotate = destinationAngle - startAngle;
+    startAngle = this->target->getAngle();
+    if(this->type == RotationType::RIGHT){
+        if(destinationAngle < startAngle)
+            totalAngleToRotate = 360 - std::abs(destinationAngle - startAngle);
+        else
+            totalAngleToRotate = destinationAngle - startAngle;
+    }
+    else if(this->type == RotationType::LEFT){
+        if(destinationAngle < startAngle)
+            totalAngleToRotate = destinationAngle - startAngle;
+        else
+            totalAngleToRotate = 360 - std::abs(destinationAngle - startAngle);
+    }
 }
 
 void ActionRotateTo::updateAction(double& remainedTime){
@@ -65,7 +80,10 @@ void ActionRotateTo::updateAction(double& remainedTime){
 
 void ActionRotateTo::instantUpdate(){
     movedAngle = totalAngleToRotate;
-    this->target->setAngle(movedAngle);
+    if(this->type == RotationType::RIGHT)
+        this->target->setAngle(movedAngle);
+    else if(this->type == RotationType::LEFT)
+        this->target->setAngle(-movedAngle);
     alive = false;
 }
 
@@ -74,20 +92,31 @@ void ActionRotateTo::intervalUpdate(double& remainedTime){
     float currentTime = (float)(this->totalElapsedTime + remainedTime);
     
     if(currentTime >= duration){
-        movedAngle = totalAngleToRotate + startAngle;
+        if(this->type == RotationType::RIGHT)
+            movedAngle = totalAngleToRotate + startAngle;
+        else if(this->type == RotationType::LEFT)
+            movedAngle = startAngle - totalAngleToRotate;
         alive = false;
         remainedTime = currentTime - duration;
     }
     else{
         remainedTime = 0;
         if(totalAngleToRotate == 0){
+            //nothing to update
             movedAngle = totalAngleToRotate;
+            return;
         }
         else{
-            movedAngle = totalAngleToRotate * (currentTime / duration) + startAngle;
+            if(this->type == RotationType::RIGHT)
+                movedAngle = totalAngleToRotate * (currentTime / duration) + startAngle;
+            else if(this->type == RotationType::LEFT)
+                movedAngle = startAngle - totalAngleToRotate * (currentTime / duration);
         }
     }
+//    cout << "moved angle = " << movedAngle << endl;
     this->target->setAngle(movedAngle);
+//    float curAngle = this->target->getAngle();
+//    cout << "target angle = " << curAngle << endl;
 }
 
 void ActionRotateTo::revive(){
@@ -101,6 +130,6 @@ void ActionRotateTo::revive(){
 
 ActionObject* ActionRotateTo::clone(){
     ActionRotateTo* cloneRotateTo = new ActionRotateTo();
-    cloneRotateTo->initRotateTo(this->destinationAngle, this->duration);
+    cloneRotateTo->initRotateTo(this->destinationAngle, this->duration, this->type);
     return cloneRotateTo;
 }

@@ -11,11 +11,13 @@
 
 #include "SpriteObject.h"
 #include "ActionObject.h"
+#include "RotationType.h"
 
 /**
  *  @class ActionRotateTo
  *  @brief Rotate target to specific angle in degree within duration
- *  @note Angle is degree.
+ *  @note Angle is degree. RotationType is RIGHT by default.
+ *  \todo need to fix angle rotation direction
  */
 class ActionRotateTo :  public ActionObject{
 private:
@@ -46,6 +48,11 @@ private:
     void instantUpdate();
     
     /**
+     *  RotationType
+     */
+    RotationType type;
+    
+    /**
      *  Interval update.
      *  This is called when duration is not 0
      *  @param remainedTime A remainedTime the schedule list has.
@@ -60,14 +67,15 @@ private:
      *  @param angle An angle to rotate
      *  @param duration An duration to rotate
      */
-    void initRotateTo(float angle, double duration);
+    void initRotateTo(float angle, double duration, RotationType type = RotationType::RIGHT);
+    
 public:
     /**
      *  Create ActionRotateTo
      *  @param duration A duration to rotate
      *  @param angle An angle to rotate to
      */
-    static ActionRotateTo* createRotateTo(double duration, float angle);
+    static ActionRotateTo* createRotateTo(double duration, float angle, RotationType type = RotationType::RIGHT);
     
     //Destructor
     ~ActionRotateTo();
