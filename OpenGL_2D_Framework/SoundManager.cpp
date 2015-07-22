@@ -18,11 +18,11 @@ SoundManager::~SoundManager(){
 }
 
 bool SoundManager::FMODErrorCheck(FMOD_RESULT result){
-    cout << "FMOD_RESULT = " << FMOD_ErrorString(result) << endl;
     if(result == FMOD_OK){
         return true;
     }
     else{
+        cout << "FMOD_RESULT = " << FMOD_ErrorString(result) << endl;
         return false;
     }
 }
@@ -114,10 +114,7 @@ void SoundManager::stopSound(std::string soundName){
         if(FMODErrorCheck(sound->channel->isPlaying(&playing))){
             //succesfully got if channel is playing
             if(playing){
-                if(FMODErrorCheck(sound->channel->stop())){
-                    cout << "succesfully stopped channel" << endl;
-                }
-                else{
+                if(!FMODErrorCheck(sound->channel->stop())){
                     cout << "failed to stop channel" << endl;
                 }
             }
@@ -139,15 +136,12 @@ void SoundManager::playSFX(std::string sfxName, float volume){
         //check if playing
         bool playing = false;
         if(FMODErrorCheck(sound->channel->isPlaying(&playing))){
-            cout << "sfx already playing" << endl;
+//            cout << "sfx already playing" << endl;
             //then stop and play new
             if(FMODErrorCheck(sound->channel->stop())){
-                cout << "Stopping and playing new" << endl;
+//                cout << "Stopping and playing new" << endl;
                 if(FMODErrorCheck(fmodSystem->playSound(sound->sound, nullptr, false, &sound->channel))){
-                    if(FMODErrorCheck(sound->channel->setVolume(volume))){
-                        cout << "Succesfully played" << endl;
-                    }
-                    else{
+                    if(!FMODErrorCheck(sound->channel->setVolume(volume))){
                         cout << "Failed to set volume" << endl;
                     }
                 }
@@ -162,12 +156,9 @@ void SoundManager::playSFX(std::string sfxName, float volume){
         }
         else{
             //failed to get info. channel is invalid(free).
-            cout << "SFX not playing. so play!" << endl;
+//            cout << "SFX not playing. so play!" << endl;
             if(FMODErrorCheck(fmodSystem->playSound(sound->sound, nullptr, false, &sound->channel))){
-                if(FMODErrorCheck(sound->channel->setVolume(volume))){
-                    cout << "Succesfully played" << endl;
-                }
-                else{
+                if(!FMODErrorCheck(sound->channel->setVolume(volume))){
                     cout << "Failed to set volume" << endl;
                 }
             }
@@ -191,11 +182,7 @@ void SoundManager::playBGM(std::string bgmName){
                 if(FMODErrorCheck(sound->channel->getPaused(&paused))){
                     if(paused){
                         //channel is playing and paused. unpause then.
-                        if(FMODErrorCheck(sound->channel->setPaused(false))){
-                            //everything fine
-                            cout << "succesfully unpaused bgm" << endl;
-                        }
-                        else{
+                        if(!FMODErrorCheck(sound->channel->setPaused(false))){
                             cout << "bgm is playing and paused but failed to unpause" << endl;
                         }
                     }
@@ -243,10 +230,7 @@ void SoundManager::pauseBGM(std::string bgmName){
                     cout << "already paused" << endl;
                 }
                 else{
-                    if(FMODErrorCheck(sound->channel->setPaused(true))){
-                        cout << "pausing bgm" << endl;
-                    }
-                    else{
+                    if(!FMODErrorCheck(sound->channel->setPaused(true))){
                         cout << "failed to pause bgm" << endl;
                     }
                 }
@@ -274,10 +258,7 @@ void SoundManager::resumeBGM(std::string bgmName){
             bool paused = false;
             if(FMODErrorCheck(sound->channel->getPaused(&paused))){
                 if(paused){
-                    if(FMODErrorCheck(sound->channel->setPaused(false))){
-                        cout << "resuming bgm" << endl;
-                    }
-                    else{
+                    if(!FMODErrorCheck(sound->channel->setPaused(false))){
                         cout << "failed to resume bgm" << endl;
                     }
                 }
@@ -367,11 +348,13 @@ void SoundManager::release(){
                     }
                 }
             }
-            if(FMODErrorCheck((s_it->second)->sound->release())){
-                cout << "successfully released " << s_it->first << endl;
-            }
             else{
-                cout << "failed to release sound" << endl;
+                if(FMODErrorCheck((s_it->second)->sound->release())){
+                    cout << "successfully released " << s_it->first << endl;
+                }
+                else{
+                    cout << "failed to release sound" << endl;
+                }
             }
         }
         else{
