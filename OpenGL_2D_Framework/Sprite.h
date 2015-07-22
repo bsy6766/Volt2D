@@ -11,6 +11,7 @@
 
 #include "SpriteObject.h"
 #include "Texture.h"
+#include "SpriteSheet.h"
 
 /**
  *  @class Sprite
@@ -22,6 +23,8 @@ class Sprite :  public SpriteObject{
 private:
     //Temporary friend request from Director
     friend class Director;
+    
+    bool useSpriteSheet;
     
     /**
      *  A texture.
@@ -57,7 +60,11 @@ private:
     /**
      *  Initialize Sprite with Sprite Sheet
      */
-    void initSpriteWithSpriteSheet(const std::string spriteFileName);
+    void initSpriteWithSpriteSheet(const ImageEntry* ie, Texture* texture);
+    
+    void computeVertices();
+    void computeTextureCoordinates(glm::vec2 origin = glm::vec2(0, 1), glm::vec2 end = glm::vec2(1, 0));
+    void computeIndices();
 public:
     /**
      *  Create Sprite obejct
@@ -67,6 +74,7 @@ public:
      */
     static Sprite* createSprite(std::string objectName, const char* textureName, GLenum textureTarget = GL_TEXTURE_2D);
     
+    static Sprite* createSpriteWithFrameName(std::string objectName, std::string frameName, std::string imageFileName);
     //destructor
     ~Sprite();
 

@@ -1,3 +1,4 @@
+
 //
 //  Sprite.cpp
 //  OpenGL_2D_Framework
@@ -12,16 +13,14 @@
 
 Sprite::Sprite():
 SpriteObject(),
-texture(0)
+texture(0),
+useSpriteSheet(false)
 {
     
 }
 
 Sprite::~Sprite(){
-    GLuint textureObj = texture->getObject();
-    glDeleteTextures(1, &textureObj);
-
-	if (texture){
+	if (texture && !useSpriteSheet){
 		delete texture;
 		texture = nullptr;
 	}
@@ -40,6 +39,30 @@ Sprite* Sprite::createSprite(std::string objectName, const char *fileName, GLenu
     return newSprite;
 }
 
+Sprite* Sprite::createSpriteWithFrameName(std::string objectName, std::string frameName, std::string imageFileName){
+    if(Director::getInstance().hasSpriteSheetFrameName(frameName)) {
+        if(SpriteSheet* const ssPtr = Director::getInstance().getSpriteSheet(frameName)){
+            const ImageEntry* ie = ssPtr->getImageEntry(imageFileName);
+            if(ie){
+                Sprite* newSprite = new Sprite();
+                Texture* ssTex = ssPtr->getTexture();
+                newSprite->setName(objectName);
+                newSprite->initSpriteWithSpriteSheet(ie, ssTex);
+                return newSprite;
+            }
+            else{
+                return nullptr;
+            }
+        }
+        else{
+            return nullptr;
+        }
+    }
+    else{
+        return nullptr;
+    }
+}
+
 void Sprite::initTexture(const std::string& fileName, GLenum textureTarget){
     std::string textureDir = Director::getInstance().getWorkingDir() + "/../Texture/";
     texture = new Texture(textureTarget, textureDir + fileName);
@@ -52,6 +75,27 @@ void Sprite::initTexture(const std::string& fileName, GLenum textureTarget){
     this->boundingBox = new BoundingBox(-this->w/2, -this->h/2, this->w/2, this->h/2);
 }
 
+void Sprite::initSpriteWithSpriteSheet(const ImageEntry* ie, Texture* texture){
+    this->texture = texture;
+//    this->texture->getImageSize(this->w, this->h);
+    this->w = ie->w;
+    this->h = ie->h;
+    
+    this->useSpriteSheet = true;
+    
+    computeVertices();
+    computeTextureCoordinates(
+                              glm::vec2(ie->ImageEntry::uvOriginX,
+                                        ie->ImageEntry::uvOriginY),
+                              glm::vec2(ie->ImageEntry::uvEndX,
+                                        ie->ImageEntry::uvEndY)
+                              );
+    computeIndices();
+    loadVertexData();
+    
+    this->boundingBox = new BoundingBox(-this->w/2, -this->h/2, this->w/2, this->h/2);
+}
+
 void Sprite::render(){
     if(!visible) return;
     if(!texture) return;
@@ -59,7 +103,9 @@ void Sprite::render(){
     //Camera
     glUseProgram(progPtr->getObject());
     
-    texture->bind(GL_TEXTURE0);
+    if(this->texture->canBoundThisTexture()){
+        texture->bind(GL_TEXTURE0);
+    }
 
     glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
@@ -68,7 +114,8 @@ void Sprite::render(){
     if(this->parent)
         parentMat = this->parent->getTransformMat();
     
-    matrixUniformLocation("modelMat", parentMat);
+    matrixUniformLocation("parentMat", parentMat);
+    matrixUniformLocation("modelMat", modelMat);
     matrixUniformLocation("rotateMat", rotateMat);
     matrixUniformLocation("translateMat", translateMat);
     matrixUniformLocation("scaleMat", scaleMat);
@@ -89,35 +136,68 @@ void Sprite::render(){
 }
 
 void Sprite::computeVertexData(){
+    computeVertices();
+    computeTextureCoordinates();
+    computeIndices();
+}
+
+void Sprite::computeVertices(){
     float width = (float)w / SCREEN_TO_WORLD_SCALE;
     float height = (float)h / SCREEN_TO_WORLD_SCALE;
     
-	/*
-
-		Quad
-		Vertex								UV coordinate
+    this->width = width;
+    this->height = height;
+    
+    /*
+     
+     Quad
+     Vertex								UV coordinate
 					(width, height)						(1,1)
-		*------------*						*------------*
-		|		     |						|			 |
-		|			 |						|			 |
-		|	 		 |						|			 |
-		|			 |					  v	|			 |
-		*------------*						*------------*
-		(0,0)								(0,0)   u
-
-	*/
+     *------------*						*------------*
+     |		     |						|			 |
+     |			 |						|			 |
+     |	 		 |						|			 |
+     |			 |					  v	|			 |
+     *------------*						*------------*
+     (0,0)								(0,0)   u
+     
+     */
     vertexData.push_back(glm::vec3(-(width/2), -(height/2), GLOBAL_Z_VALUE));	//bot left
     vertexData.push_back(glm::vec3(-(width/2), height/2, GLOBAL_Z_VALUE));		//top left
     vertexData.push_back(glm::vec3(width/2, -(height/2), GLOBAL_Z_VALUE));		//bot right
     vertexData.push_back(glm::vec3(width/2, height/2, GLOBAL_Z_VALUE));			//top right
+}
 
-	uvVertexData.push_back(glm::vec2(0, 0));	//bot left
-	uvVertexData.push_back(glm::vec2(0, 1));	//top left
-	uvVertexData.push_back(glm::vec2(1, 0));	//bot right
-	uvVertexData.push_back(glm::vec2(1, 1));	//top right
-	
-	//NOTE: if you don't flip the texture and want to handle with UV coordinate, go on this order
-	//top left->bot left->top right->bot right
+void Sprite::computeTextureCoordinates(glm::vec2 origin, glm::vec2 end){
+    //origin is top left corner. origin
+    //left x = origin.x
+    //right x = end.x
+    //top y = origin.y
+    //bot y = end.y
+    origin.y = 1.0 - origin.y;
+    end.y = 1.0 - end.y;
+    
+    if(useSpriteSheet) {
+        uvVertexData.push_back(glm::vec2(origin.x, end.y));	//bot left
+        uvVertexData.push_back(origin);	//top left
+        uvVertexData.push_back(end);	//bot right
+        uvVertexData.push_back(glm::vec2(end.x, origin.y));	//top right
+//        uvVertexData.push_back(glm::vec2(0.0009765625, 0.4404296875));	//bot left
+//        uvVertexData.push_back(glm::vec2(0, 1));	//top left
+//        uvVertexData.push_back(glm::vec2(1, 0));	//bot right
+//        uvVertexData.push_back(glm::vec2(1, 1));	//top right
+    }
+    else{
+        uvVertexData.push_back(glm::vec2(0, 0));	//bot left
+        uvVertexData.push_back(glm::vec2(0, 1));	//top left
+        uvVertexData.push_back(glm::vec2(1, 0));	//bot right
+        uvVertexData.push_back(glm::vec2(1, 1));	//top right
+    }
+}
+
+void Sprite::computeIndices(){
+    //NOTE: if you don't flip the texture and want to handle with UV coordinate, go on this order
+    //top left->bot left->top right->bot right
     
     indicesData.push_back(0);
     indicesData.push_back(1);
