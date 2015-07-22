@@ -33,13 +33,14 @@ speed(0.5f)
     this->aspect = (screenWidth / screenHeight);
     
     //Since this is 2D engine, we don't need to view too close and too far
-    float possibleNear = (offset - 20.0f) / SCREEN_TO_WORLD_SCALE;
+    float gap = 200.0f;
+    float possibleNear = (offset - gap) / SCREEN_TO_WORLD_SCALE;
     
     if(possibleNear < 0.01f)
         possibleNear = 0.01f;
     
     this->nears = possibleNear;
-    this->fars = (offset + 20.0f) / SCREEN_TO_WORLD_SCALE;
+    this->fars = (offset + gap) / SCREEN_TO_WORLD_SCALE;
     
     cout << "Creating Main Camera." << endl;
     cout << "\tPosition = (" << this->position.x << ", " << this->position.y << ", " << this->position.z << ")" << endl;
