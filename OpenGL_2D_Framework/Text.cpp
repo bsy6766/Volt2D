@@ -10,26 +10,20 @@
 
 #define VOID_OFFSET(i) (GLvoid*)(i)
 
-Text::Text()
-//:TextObject(),
-:RenderableObject(),
-dirty(false),
-loaded(false),
+Text::Text():
+RenderableObject(),
 align(ALIGN_RIGHT),
 start(-1),
 end(-1),
 width(0),
 height(0)
-//fontColor(Color::WHITE.getColor()) //RGB
 {
     this->progPtr = Director::getInstance().getProgramPtr("Text");
-//    prog = Director::getInstance().getProgramPtr();
     Color textColor = Color::WHITE;
-    fontColor = textColor.getColor();
+    fontColor = textColor.getRGB();
 }
 
 Text::~Text(){
-        //RenderableObject deletes buffer on destructor
     translationData.clear();
 }
 
@@ -43,18 +37,15 @@ Text* Text::createText(std::string objectName, std::string label, std::string fo
     return newText;
 }
 
-void Text::initText(std::string label, std::string fontName = "arial.tff"){
-    if(!dirty){
-        dirty = true;
-        this->fontName = fontName;
-        text = label;
-        start = 0;
-        end = (int)strlen(label.c_str()) - 1;
-        computeVertexData();
-        loadVertexData();
-        
-        this->boundingBox = new BoundingBox(-width/2, -height/2, width/2, height/2);
-    }
+void Text::initText(std::string label, std::string fontName){
+    this->fontName = fontName;
+    text = label;
+    start = 0;
+    end = (int)strlen(label.c_str()) - 1;
+    computeVertexData();
+    loadVertexData();
+    
+    this->boundingBox = new BoundingBox(-width/2, -height/2, width/2, height/2);
 }
 
 std::string Text::getText(){
@@ -68,7 +59,9 @@ void Text::setText(std::string newText = ""){
     }
 }
 
-void Text::setColor(glm::vec3 textColor){
+void Text::setColor(Color color){
+    glm::vec3 textColor = color.getRGB();
+    
     if(textColor.r > 255)
         textColor.r = 255;
     
@@ -91,19 +84,18 @@ void Text::computeVertexData(){
     uvVertexData.clear();
     indicesData.clear();
     
+    //get font.
     Font* font = FontManager::getInstance().getFont(fontName);
     if(!font){
         cout << "Failed to find font." << endl;
-        loaded = false;
         return;
     }
     
-    int maxHeight = 0;
-    int totalWidth = 0;
-//    glm::vec2 origin = glm::vec2();
     std::vector<glm::vec2> originList;
+    //Sprite text with new line character.
     splitByNewLine();
-    getMaxValues(font, totalWidth, maxHeight, originList);
+    //iterate through each line and compute originList to compute vertex
+    computeOrigins(font, originList);
     
     unsigned short indicesIndex = 0;
     int index = 0;
@@ -116,32 +108,29 @@ void Text::computeVertexData(){
             //for each character
             char c = it[i];
             //get GlyphData
-            GlyphData gData;
-            //set validation to false
-            gData.valid = false;
-            font->getGlyphDataFromChar(c, gData);
+            GlyphData* gData = font->getGlyphDataFromChar(c);
+            if(gData == nullptr){
+                cout << "Failed to find GlyphData for char \"" << c << "\"." << endl;
+                continue;
+            }
             //if validation is still false, this char doesn't exist in font. Ignore it
             //TODO: let user to choose wheter to break the loop and leave as unloaded text or ignore missing chars
-            if(!gData.valid)
+            if(!gData->valid)
                 continue;
             
             //get data from glyph
-            int bearingY = (int)(gData.metrics.horiBearingY >> 6);
-            int height = (int)(gData.metrics.height >> 6);
-            int width = (int)(gData.metrics.width >> 6);
+            int bearingY = (int)(gData->metrics.horiBearingY >> 6);
+            int height = (int)(gData->metrics.height >> 6);
+            int width = (int)(gData->metrics.width >> 6);
             
-//            glm::vec2 p1 = glm::vec2(origin.x, origin.y - (height - bearingY)); //left bottom
-//            glm::vec2 p2 = glm::vec2(origin.x + width, origin.y + bearingY);
             //compute vertex quad at origin.
             glm::vec2 p1 = glm::vec2((-1) * width / 2, (-1) * (height - bearingY)); //left bottom
             glm::vec2 p2 = glm::vec2(width / 2, bearingY);
             
+            //scale down to world size
             p1 /= 10;
             p2 /= 10;
-//            cout << "char = " << c << endl;
-//            cout << "p1 = (" << p1.x << ", " << p1.y << ", 0)" << endl;
-//            cout << "p2 = (" << p2.x << ", " << p2.y << ", 0)" << endl;
-            
+
             //get point where each char has to move
             glm::vec3 fPos = glm::vec3(origin.x + width/2, origin.y, 0);
             glm::vec3 distance = (fPos - this->position);
@@ -151,22 +140,17 @@ void Text::computeVertexData(){
             //compute translate matrix to fPos from origin
             translationData.push_back(transMatToFPos);
 
-            
+            //compute vertex data
             vertexData.push_back(glm::vec3(p1.x, p1.y, 0)); //Left bottom
             vertexData.push_back(glm::vec3(p1.x, p2.y, 0)); //Left top
             vertexData.push_back(glm::vec3(p2.x, p1.y, 0)); //Right bottom
             vertexData.push_back(glm::vec3(p2.x, p2.y, 0)); //Right top
             
-//            cout << "bot left: ( " << p1.x << ", " << p1.y << ", 0)" << endl;
-//            cout << "top left: ( " << p1.x << ", " << p2.y << ", 0)" << endl;
-//            cout << "bot right: ( " << p2.x << ", " << p1.y << ", 0)" << endl;
-//            cout << "top right: ( " << p2.x << ", " << p2.y << ", 0)" << endl;
-            
-            //add uv coord. This is different from Sprite class because we didn't use stb_image to load and flip font texture.
-            uvVertexData.push_back(glm::vec2(0, 1));	//top left
-            uvVertexData.push_back(glm::vec2(0, 0));	//bot left
-            uvVertexData.push_back(glm::vec2(1, 1));	//top right
-            uvVertexData.push_back(glm::vec2(1, 0));	//bot right
+            //compute uv coordinates
+            uvVertexData.push_back(glm::vec2(gData->uvTopLeft.x, gData->uvBotRight.y));
+            uvVertexData.push_back(gData->uvTopLeft);
+            uvVertexData.push_back(gData->uvBotRight);
+            uvVertexData.push_back(glm::vec2(gData->uvBotRight.x, gData->uvTopLeft.y));
             
             //add indices based on char
             indicesData.push_back(indicesIndex * 4);
@@ -177,7 +161,7 @@ void Text::computeVertexData(){
             indicesData.push_back(indicesIndex * 4 + 3);
             
             //advance origin
-            origin.x += (gData.metrics.horiAdvance >> 6);
+            origin.x += (gData->metrics.horiAdvance >> 6);
             
             indicesIndex++;
         }
@@ -204,19 +188,9 @@ void Text::loadVertexData(){
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), &indicesData[0], GL_STATIC_DRAW);
-    
-    //generate translation buffer
-//    glGenBuffers(1, &vtbo);
-//    glBindBuffer(GL_ARRAY_BUFFER, vtbo);
-//    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * translationData.size(), &translationData[0], GL_STATIC_DRAW);
-//    glVertexAttribPointer(progPtr->attrib("charTransVert"), 2, GL_FLOAT, GL_FALSE, 0, NULL);
-//    //
-//    glBindVertexArray(0);
-    
-    loaded = true;
 }
 
-void Text::getMaxValues(Font* font, int &width, int &height, std::vector<glm::vec2>& originList){
+void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
     originList.clear();
     
     int w = 0;
@@ -239,20 +213,20 @@ void Text::getMaxValues(Font* font, int &width, int &height, std::vector<glm::ve
             const char* cStr = it.c_str();
             char c = cStr[i];
             //get GlyphData
-            GlyphData gData;
-            //set validation to false
-            gData.valid = false;
-            font->getGlyphDataFromChar(c, gData);
+            GlyphData* gData = font->getGlyphDataFromChar(c);
+            if(gData == nullptr){
+                cout << "Failed to find GlyphData for char \"" << c << "\"." << endl;
+            }
             
             //sum up all char's width
-            w += (gData.metrics.horiAdvance >> 6);
+            w += (gData->metrics.horiAdvance >> 6);
             
-            int newHeight = (int)(gData.metrics.height >> 6);
+            int newHeight = (int)(gData->metrics.height >> 6);
             //store highest height among the chars.
             if(newHeight >= h)
                 h = newHeight;
             
-            int newBearingY = (int)(gData.metrics.horiBearingY >> 6);
+            int newBearingY = (int)(gData->metrics.horiBearingY >> 6);
             //store highest bearingY among the chars.
             int botY = newHeight - newBearingY;
             if(botY > maxBotY)
@@ -316,8 +290,18 @@ bool Text::hasEmptyText(){
 
 void Text::render(){
     glUseProgram(progPtr->getObject());
+    
+    Font* font = FontManager::getInstance().getFont(fontName);
+    
+    font->bindTextTextureAtlas();
+    
     glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
+    glm::mat4 parentMat = glm::mat4();
+    if(this->parent)
+        parentMat = this->parent->getTransformMat();
+    
+    matrixUniformLocation("parentMat", parentMat);
     matrixUniformLocation("modelMat", modelMat);
     matrixUniformLocation("rotateMat", rotateMat);
     matrixUniformLocation("translateMat", translateMat);
@@ -330,7 +314,7 @@ void Text::render(){
     glEnableVertexAttribArray(progPtr->attrib("vert"));
     glEnableVertexAttribArray(progPtr->attrib("uvVert"));
     
-    glActiveTexture(GL_TEXTURE0);
+//    glActiveTexture(GL_TEXTURE0);
     
 //    //한글 확인
 //    std::wstring wStr(L"한글 출력 입니다요 walla!");
@@ -352,7 +336,6 @@ void Text::render(){
 //        }
 //    }
     
-    Font* font = FontManager::getInstance().getFont(fontName);
     unsigned int index = -1;
     int rangeCounter = -1;
     for(auto it : splittedText){
@@ -376,11 +359,6 @@ void Text::render(){
                 continue;
             }
             
-            GlyphData gData;
-            gData.valid = false;
-            font->getGlyphDataFromChar(c, gData);
-            GLuint texObj = gData.texObj;
-            glBindTexture(GL_TEXTURE_2D, texObj);
             glDrawRangeElements(
                                 GL_TRIANGLES/*Rendering mode. draw 2 triangles for 1 quad*/,
                                 //index * 0/*start*/,
@@ -401,8 +379,8 @@ void Text::render(){
 
 void Text::splitByNewLine(){
     splittedText.clear();
-    stringstream ss(text); // Turn the string into a stream.
-    string tok;
+    std::stringstream ss(text); // Turn the string into a stream.
+    std::string tok;
     
     while(getline(ss, tok, '\n')) {
         splittedText.push_back(tok);
