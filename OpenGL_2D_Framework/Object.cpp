@@ -78,12 +78,12 @@ void Object::translateBy(glm::vec3 distance){
 }
 
 void Object::setAngle(GLfloat angle, glm::vec3 axis){
-    angle *= (-1);
+//    angle *= (-1);
     rotateTo(angle, axis);
 }
 
 void Object::addAngle(GLfloat angle, glm::vec3 axis){
-    angle *= (-1);
+//    angle *= (-1);
     rotateBy(angle, axis);
 }
 
@@ -103,7 +103,7 @@ const GLfloat Object::getAngle(){
 void Object::rotateTo(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
     //rotate in 2d space by default
     wrapAngle(angle);
-    rotateMat = glm::rotate(glm::mat4(), angle, axis);
+    rotateMat = glm::rotate(glm::mat4(), -angle, axis);
     this->angle = angle;
     needToUpdateBB = true;
 }
@@ -112,7 +112,7 @@ void Object::rotateBy(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
     //rotate in 2D space by default
     this->angle += angle;
     wrapAngle(this->angle);
-    rotateMat = glm::rotate(rotateMat, angle, axis);
+    rotateMat = glm::rotate(rotateMat, -angle, axis);
     needToUpdateBB = true;
 }
 
