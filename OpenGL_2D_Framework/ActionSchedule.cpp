@@ -62,7 +62,9 @@ void ActionSchedule::createSchedule(std::initializer_list<ActionObject *>& actio
         clearList();
     
     for(auto it : actions){
-        actionList.push_back(it);
+        auto clone = it->clone();
+        clone->bindTarget(it->getTarget());
+        actionList.push_back(clone);
     }
 }
 
