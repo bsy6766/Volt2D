@@ -15,6 +15,12 @@
 #include <list>
 #include "Timer.h"
 
+/**
+ *  @class SpriteObject
+ *  @brief Base class between Sprite and Sprite animation
+ *  @note This class is getting useless. 
+ *  \todo Remove SpriteObject or find better way to find
+ */
 class SpriteObject : public RenderableObject{
 private:
 protected:
