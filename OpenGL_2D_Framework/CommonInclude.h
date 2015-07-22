@@ -11,8 +11,10 @@
 
 #include <iostream>
 #include <assert.h>
+#include <string>
 
 using std::cout;
 using std::endl;
+using std::string;
 
 #endif /* defined(__OpenGL_2D_Framework__CommonInclude__) */
