@@ -10,10 +10,8 @@
 #define __OpenGL_2D_Framework__SpriteAnimation__
 
 #include "Texture.h"
-#include <vector>
-#include <string>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "CommonInclude.h"
 #include "SpriteObject.h"
 
 #include "Timer.h"
@@ -21,7 +19,7 @@
 
 class SpriteAnimation : public SpriteObject{
 private:
-    std::vector<Texture *> textureList;
+    Texture* texture;
     
     //frame variable
     int frameListSize;
@@ -32,25 +30,37 @@ private:
     double currentTime;
     double totalElapsedTime;
     
-    //pure virtual
-    void createVertexData();
-    void loadVertexData();
-    void render();
+    /**
+     *  Override's RenderableObject::computerVertexData()
+     *  Compute vertex and indices
+     */
+    virtual void computeVertexData();
     
-    void updateMatrix();
+    /**
+     *  Override's RenderableObject::loadVertexData()
+     *  Load computed vertex.
+     */
+    virtual void loadVertexData();
+    
+    /**
+     *  Overrides's Object::render();
+     *  Render object
+     */
+    virtual void render();
+    
+    //private structor
+    SpriteAnimation();
+    
+    /**
+     *
+     */
+    void init(std::string fileName, std::string stateName, int frameSize, double interval);
     
 public:
-    SpriteAnimation();
-//    SpriteAnimation(Program *progPtr);
+    static SpriteAnimation* createSpriteAnimation(std::string objectName, std::string textureName, int frameSize, double frameInterval);
+    
+    //Destructor
     ~SpriteAnimation();
-    
-    //temporary
-    bool canJump;
-    
-    //use Timer class for elapsed time
-    void updateFrame();
-    
-    void init(std::string fileName, std::string stateName, int frameSize, double interval);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__SpriteAnimation__) */
