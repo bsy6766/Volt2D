@@ -8,11 +8,8 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
-#include <iostream>
+#include "CommonInclude.h"
 #include "ParticleSystem.h"
-
-using std::cout;
-using std::endl;
 
 ParticleSystem::ParticleSystem(int size){
     this->totalParticleCount = size;
