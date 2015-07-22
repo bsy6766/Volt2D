@@ -40,21 +40,59 @@ void TitleScene::init(){
     sm->bindSoundToChannelGroup("titleSceneBgm", "BGMGroup");
 //    SoundManager::getInstance().addSoundToChannelGroup("bgmChannelGroup", "titleSceneBgm");
 
-    bg = Sprite::createSprite("titleSceneBg", "title scene/title_scene_bg.png");
+    SpriteSheet::createSpriteSheet("titleSceneSpriteSheet", "title scene/title_scene_sprite_sheet.png", "title scene/title_scene_sprite_sheet.xml");
+    
+//    bg = Sprite::createSprite("titleSceneBg", "title scene/title_scene_bg.png");
+    bg = Sprite::createSpriteWithFrameName("titleSceneBg", "titleSceneSpriteSheet", "title_scene_bg.png");
     bg->setZDepth(z_bg);
+//    bg->setAnchrPoint(glm::vec2(0.5, 0.5));
     this->addChild(bg);
     
+//    auto delayIt = ActionDelay::createDelay(2);
+//    auto rotateIt = ActionRotateTo::createRotateTo(2, 180);
+//    auto rotateIt2 = ActionRotateTo::createRotateTo(2, 270);
+//    auto moveIt = ActionMoveTo::createMoveTo(2, glm::vec3(0, 100, 0));
+//    bg->addActions({delayIt, rotateIt, moveIt, rotateIt2}, 0);
+//    bg->runAction();
+//    delete rotateIt;
+//    delete delayIt;
+//    delete rotateIt2;
+//    delete moveIt;
     
+//    title = Sprite::createSprite("titleSceneTitle", "title scene/title.png");
+    title = Sprite::createSpriteWithFrameName("titleSceneTitle", "titleSceneSpriteSheet", "title.png");
+    title->setZDepth(z_title);
+    title->setY(170);
+//    auto delay = ActionDelay::createDelay(2);
+//    auto rotateTo = ActionRotateTo::createRotateTo(1, 80, RotationType::LEFT);
+//    auto rotateTo2 = ActionRotateTo::createRotateTo(1, 40);
+//    auto print = ActionCallFunc::createCallFunc(std::bind(&TitleScene::printAngle, this));
+//    title->addActions({delay, print, rotateTo, print, delay, rotateTo2, print, delay, rotateTo, print, delay, rotateTo2, print}, 0);
+//    title->runAction();
+//    delete rotateTo;
+    this->addChild(title);
+    
+    version = Sprite::createSprite("titleSceneTitle", "title scene/version.png");
+    version->setZDepth(z_title);
+    version->setX(-648);
+    version->setY(-432);
+    this->addChild(version);
+    
+    Text* title;
     FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
     title = Text::createText("titleText", "Engine Test", "UhBee Kang-Ja.ttf");
     title->setColor(glm::vec3(255, 255, 255));
-    title->setTextAlign(Text::TextAlign::ALIGN_LEFT);
+//    title->setTextAlign(Text::TextAlign::ALIGN_LEFT);
     title->initText("Engine Test", "UhBee Kang-Ja.ttf");
-    title->setZDepth(10);
-    title->setPosition(glm::vec3(0, 100, 0));
+    title->setZDepth(99);
+//    title->setPosition(glm::vec3(0, 100, 0));
     this->addChild(title);
     
     initLayers();
+}
+
+void TitleScene::printAngle(){
+    cout << "angle = " << title->getAngle() << endl;
 }
 
 void TitleScene::initLayers(){
@@ -72,8 +110,10 @@ void TitleScene::update(){
     //    }
     
     PS3ControllerWrapper* joystick = Director::getInstance().getJoyStick(0);
-    if(joystick->getKeyStatus(CIRCLE) == GLFW_PRESS){
-        titleButtonLayer->addPosition(glm::vec3(100, 100, 0));
+    if(joystick){
+        if(joystick->getKeyStatus(CIRCLE) == GLFW_PRESS){
+            titleButtonLayer->addPosition(glm::vec3(100, 100, 0));
+        }
     }
 //    if(joystick->getKeyStatus(CROSS) == GLFW_PRESS){
 //        continueButton->setPosition(glm::vec3(0));
@@ -149,5 +189,6 @@ void TitleScene::injectMouseMove(){
 }
 
 void TitleScene::exit(){
+    //You can delete other objects here
     cout << "TitleScene::exit" << endl;
 }

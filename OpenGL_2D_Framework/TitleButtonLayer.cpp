@@ -9,7 +9,7 @@
 #include "TitleButtonLayer.h"
 
 TitleButtonLayer::TitleButtonLayer():
-mouseCursor(0),
+//mouseCursor(0),
 newGameButton(0),
 creditsButton(0),
 optionsButton(0),
@@ -22,7 +22,7 @@ exitPressed(false),
 openingCredits(false),
 hasSavedData(false)
 {
-    this->init();
+    
 }
 
 TitleButtonLayer::~TitleButtonLayer(){
@@ -38,7 +38,7 @@ void TitleButtonLayer::init(){
     continueButton->setZDepth(z_buttons);
     continueButton->setPosition(glm::vec3(buttonsX, buttonsYStarting, 0));
     if(!hasSavedData)
-        continueButton->setOpacity(127);
+        continueButton->setOpacity(90);
     this->addChild(continueButton);
     
     newGameButton = Sprite::createSprite("newGameButton", "title scene/new_game_button.png");
@@ -61,9 +61,9 @@ void TitleButtonLayer::init(){
     exitGameButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 4, 0));
     this->addChild(exitGameButton);
     
-    mouseCursor = Sprite::createSprite("moundIcon", "mouse_icon.png");
-    mouseCursor->setZDepth(z_mouse_cursor);
-    this->addChild(mouseCursor);
+//    mouseCursor = Sprite::createSprite("moundIcon", "mouse_icon.png");
+//    mouseCursor->setZDepth(z_mouse_cursor);
+//    this->addChild(mouseCursor);
     
     selectingArrowIcon = Sprite::createSprite("selectingArrowIcon", "title scene/selecting_arrow_icon.png");
     selectingArrowIcon->setZDepth(z_selecting_icon);
@@ -140,27 +140,29 @@ void TitleButtonLayer::update(){
 
 void TitleButtonLayer::openCredits(){
     if(!openingCredits){
-        ActionFadeTo fadeIn;
-        fadeIn.initFadeTo(255, 0.2);
+        auto fadeIn = ActionFadeTo::createFadeTo(0.2, 255.0);
+        auto scaleIn = ActionScaleTo::createScaleTo(0.3, glm::vec3(1, 1, 1));
         
-        ActionScaleTo scaleIn;
-        scaleIn.initScaleTo(glm::vec3(1,1,1), 0.3);
+        creditScreen->addAction(fadeIn, 0);
+        creditScreen->addAction(scaleIn, 0);
+        creditScreen->runAction();
         
-        creditScreen->addAction(new ActionFadeTo(fadeIn), 0);
-        creditScreen->addAction(new ActionScaleTo(scaleIn), 0);
+        delete fadeIn;
+        delete scaleIn;
     }
 }
 
 void TitleButtonLayer::closeCredits(){
     if(openingCredits){
-        ActionFadeTo fadeOut;
-        fadeOut.initFadeTo(0, 0.2);
+        auto fadeOut = ActionFadeBy::createFadeBy(0.2, -255);
+        auto scaleOut = ActionScaleTo::createScaleTo(0.3, glm::vec3(0, 0, 1));
         
-        ActionScaleTo scaleOut;
-        scaleOut.initScaleTo(glm::vec3(0,0,1), 0.3);
+        creditScreen->addAction(fadeOut, 0);
+        creditScreen->addAction(scaleOut, 0);
+        creditScreen->runAction();
         
-        creditScreen->addAction(new ActionFadeTo(fadeOut), 0);
-        creditScreen->addAction(new ActionScaleTo(scaleOut), 0);
+        delete fadeOut;
+        delete scaleOut;
     }
 }
 
@@ -351,7 +353,7 @@ void TitleButtonLayer::mouseButton(double x, double y, int button, int action){
 
 void TitleButtonLayer::mouseMove(double x, double y){
 	glm::vec3 mousePoint = glm::vec3(x, y, 0);
-	mouseCursor->setPosition(mousePoint);
+//	mouseCursor->setPosition(mousePoint);
 	if (!openingCredits){
         if (continueButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
             selectingButtonID = CONTINUE;

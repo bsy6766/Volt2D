@@ -23,9 +23,19 @@ void BattleScene::init(){
     bg->setPosition(glm::vec3(0, 0, 0));
     this->addChild(bg);
     
+    playerFieldSlot = Sprite::createSprite("playerFieldSlot", "battle scene/field_slot.png");
+    playerFieldSlot->setOpacity(50);
+    playerFieldSlot->setPosition(glm::vec3(-360, 0, 0));
+    this->addChild(playerFieldSlot);
+    
+    enemyFieldSlot = Sprite::createSprite("enemyFieldSlot", "battle scene/field_slot.png");
+    enemyFieldSlot->setOpacity(50);
+    enemyFieldSlot->setPosition(glm::vec3(360, 0, 0));
+    this->addChild(enemyFieldSlot);
+    
     //create hud layer
-    HUD_Layer = new BattleHUDLayer();
-//    this->addLayer(HUD_Layer);
+    HUD_Layer = new BattleHUDLayer(); 
+    this->addChild(HUD_Layer);
 }
 
 void BattleScene::update(){

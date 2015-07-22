@@ -13,6 +13,7 @@
 #include "Layer.h"
 #include "Sprite.h"
 #include "ActionFadeTo.h"
+#include "ActionFadeBy.h"
 #include "ActionScaleTo.h"
 #include "ActionDelay.h"
 #include "ProgressBar.h"
@@ -23,7 +24,7 @@
 
 class TitleButtonLayer : public Layer{
 private:
-    Sprite* mouseCursor;
+//    Sprite* mouseCursor;
     Sprite* newGameButton;
     Sprite* creditsButton;
     Sprite* optionsButton;
@@ -31,9 +32,6 @@ private:
     Sprite* selectingArrowIcon;
     Sprite* creditScreen;
     Sprite* continueButton;
-    
-    Sprite* originPoint;
-    Sprite* endPoint;
     
     bool hasSavedData;
     

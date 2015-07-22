@@ -15,9 +15,15 @@
 #include "Scene.h"
 #include "Sprite.h"
 #include "FontManager.h"
-#include "Text.h"
 #include "BattleScene.h"
 #include "SoundManager.h"
+#include "ActionDelay.h"
+#include "SpriteSheet.h"
+#include "ActionRotateTo.h"
+#include "ActionRotateBy.h"
+#include "ActionCallFunc.h"
+#include "ActionMoveTo.h"
+#include "Text.h"
 
 #include "TitleButtonLayer.h"
 
@@ -25,18 +31,19 @@ class TitleScene : public Scene{
 protected:
 private:
     Sprite* bg;
-    Text* title;
+    Sprite* title;
+    Sprite* version;
     
     TitleButtonLayer* titleButtonLayer;
     
-    virtual void exit();
-    
     enum TitleSceneZ{
         z_bg = 0,
-        z_button_layer
+        z_button_layer,
+        z_title
     };
     
     void initLayers();
+    void printAngle();
     
 public:
     TitleScene();
@@ -44,6 +51,7 @@ public:
     
     //override pure
     virtual void init();
+    virtual void exit();
 	virtual void keyPressed(int key, int mode);
 //    virtual void keyReleased(int key, int mode);
 //    virtual void mouseButton(double x, double y, int button, int action);

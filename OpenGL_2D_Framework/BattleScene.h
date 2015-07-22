@@ -17,6 +17,8 @@
 class BattleScene : public Scene{
 private:
     Sprite* bg;
+    Sprite* playerFieldSlot;
+    Sprite* enemyFieldSlot;
     BattleHUDLayer* HUD_Layer;
     
 public:
@@ -31,6 +33,15 @@ public:
 //    virtual void mouseMove(double x, double y);
     virtual void injectKey();
     virtual void injectMouseMove();
+    
+    enum BattleState{
+        PLAYER_TURN = 0,        //Player's turn
+        ENEMY_TURN,             //Enemy's turn (AI)
+        CHARACTER_SELECTING,    //Player selecting which character to take action
+        SKILL_SELECTING,        //Player selecting which action/skill to use
+        ENEMY_TARGETING,         //Player selecting which enemy to target with selected skill
+        
+    };
     
     virtual void exit();
 };
