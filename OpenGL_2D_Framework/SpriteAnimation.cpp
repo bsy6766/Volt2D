@@ -38,8 +38,6 @@ void SpriteAnimation::init(std::string fileName, std::string stateName, int fram
     if(frameSize == 0)
         return;
     
-    modelMat = glm::mat4();
-    
     for(int i = 0; i<frameSize; i++){
         //set texture
         std::string textureFileName = fileName + "_" + std::to_string(i+1) + ".png";
@@ -146,8 +144,14 @@ void SpriteAnimation::render(){
     updateMatrix();
     
     translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
-    modelMat = glm::mat4() * translateMat;
-    glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, &modelMat[0][0]);
+    
+    glm::mat4 parentMat = glm::mat4();
+    if(this->parent)
+        parentMat = this->parent->getTransformMat();
+//    glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, &parentMat[0][0]);
+    
+    matrixUniformLocation("parentMat", parentMat);
+    matrixUniformLocation("modelMat", modelMat);
     
     GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
     if(opacityUniformLocation == -1)
@@ -168,5 +172,4 @@ void SpriteAnimation::render(){
 void SpriteAnimation::updateMatrix(){
     glm::mat4 result = glm::mat4();
     translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
-    modelMat = result * translateMat * rotateMat * scaleMat;
 }
