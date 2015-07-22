@@ -9,8 +9,6 @@
 #ifndef __OpenGL_2D_Framework__Director__
 #define __OpenGL_2D_Framework__Director__
 
-#define GLM_FORCE_RADIANS
-
 //opengl
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -27,10 +25,10 @@
 #include <unordered_map>
 #include "Timer.h"
 #include "PS3ControllerWrapper.h"
+#include "Sprite.h"
+#include "SpriteSheet.h"
 
 #define MAX_JOYSTICK 16
-
-//#include "TextManager.h"
 
 #include <stdio.h>  /* defines FILENAME_MAX */
 #ifdef _WIN32
@@ -41,13 +39,8 @@
 #define GetCurrentDir getcwd
 #endif
 
-//2D and 3D size is scaled down to 10.
-//ex) 1280 x 640 pixels texture -> 128 * 64 vertex length quad
 const int SCREEN_TO_WORLD_SCALE = 10;
 const float static GLOBAL_Z_VALUE = 0;
-
-//limit the maximum scene queue to 5. 
-const int MAX_SCENE_QUEUE_SIZE = 5;
 
 struct WinSize{
 	float w;
@@ -55,60 +48,147 @@ struct WinSize{
 };
 
 class Director{
-protected:
-    //no one derives from this class!
 private:
-    WinSize winSize;
-    
+    friend class SpriteSheet;
+    friend class Sprite;
+    SpriteSheet* const getSpriteSheet(std::string frameName);
+    void cacheSpriteSheet(std::string frameName, SpriteSheet* spriteSheet);
+    void unCacheSpriteSheet(std::string frameName);
     bool debugMovement = false;
+    
+    //mouse icon
+    Sprite* mouseCursor;
+    
+/// -------------------- OpenGL ---------------------
+/// @{
+/// @name OpenGL attributes
+
+    /**
+     *  Main camera. It's fixed at most of the time.
+     */
+    Camera* camera;
+    
+    /**
+     *  Unordered map that stores Program object with string ID
+     */
+    std::unordered_map<std::string, Program*> programs;
+    
+/// @}
+/// -------------------------------------------------
+
+/// -------------------- System ---------------------
+/// @{
+/// @name OpenGL attributes
+    
+    //wd
+    std::string workingDirectory;
+    
+    //GLFW window
+    GLFWwindow* window;
+    
+    //SoundManager
+    SoundManager* soundManager;
+    
+    //SpriteSheet
+    std::unordered_map<std::string, SpriteSheet*> spriteSheets;
+    
+    //PS3 Controller.
+    bool joystickEnabled;
+    PS3ControllerWrapper* ps3Joysticks[16];
+    
+    //Scens
+    /**
+    *   Currently running scene
+    */
+    Scene* runningScene;
+    
+    /**
+     *  Next scene waiting to get pushed
+     */
+    Scene* nextScene;
+    
+    /**
+     *  Holds previously running scene. Gets deleted.
+     */
+    Scene* dyingScene;
     
     bool waitingForSceneTransition;
     void doSceneTransition();
     
     bool paused;
     
-    std::string workingDirectory;
+    WinSize winSize;
     
-    glm::vec2 prevMousePos;
-    glm::vec2 curMousePos;
-    bool leftClicked;
+/// @}
+/// -------------------------------------------------
     
-    //GLFW window
-    GLFWwindow* window;
-//
-//    //Scene queue. FIFO. Only the first element gets updated and rendered.
-    Scene* runningScene;
-    Scene* nextScene;
-    Scene* dyingScene;
+/// -------------- Initialize Functions -------------
+/// @{
+/// @name OpenGL attributes
     
-    //shader & program
-    std::unordered_map<std::string, Program*> programs;
-
-    //camera
-    Camera* camera;
-    
-    //SoundManager
-    SoundManager* soundManager;
-    
-    //PS3 Controller.
-    bool joystickEnabled;
-    PS3ControllerWrapper* ps3Joysticks[16];
-
+    /**
+     *
+     */
     void initOpenGL();
+    
+    /**
+     *
+     */
     void initGLEW();
+    
+    /**
+     *
+     */
     void initGLFW();
+    
+    /**
+     *
+     */
     void createWindow(const int& screenWidth, const int& screenHeight, const std::string& windowTitle);
     
-    //basic functions
+    /** constructor */
     Director();
+    /** destructo */
     ~Director();
+    //Singleton. Do not implement this
     Director(Director const& other);
+    //Singleton. Do not implement this
     void operator=(Director const&);
+/// @}
+/// -------------------------------------------------
     
+/// ---------------- GLFW callback ------------------
+/// @{
+/// @name GLFW input callbuck functions
+    
+    /**
+     *  Key input callback. 
+     *  Called whenever there is a key input
+     *  @param window GLFW window that receives inputs
+     *  @param key A GLFW key value 
+     *  @param scancode
+     *  @param action State of key. GLFW_PRESS, GLFW_RELEASE, or GLFW_REPEAT
+     *  @param mods State of modifier key. (ex. Shift, alt, etc)
+     */
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    
+    /**
+     *
+     */
     static void mouse_move_callback(GLFWwindow* window, double xPos, double yPos);
+    
+    /**
+     *
+     */
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+    
+    /**
+     *
+     */
     static void glfw_error_callback(int error, const char *description);
+    
+/// @}
+/// -------------------------------------------------
     
 public:
     static Director& getInstance(){
@@ -116,13 +196,10 @@ public:
         return instance;
     }
     
-//    /**
-//     *	init the application.
-//     *	init OpenGL
-//     *	init GLEW
-//     *	init GLFW
-//     *	throw error exception if fail to initialize.
-//     */
+    /**
+     *  Initailize application.
+     *  Setups OpenGL and gui window
+     */
     void initApp(const int screenWidth, const int screenHeight, const std::string windowTitle);
 
     void terminateApp();
@@ -134,8 +211,7 @@ public:
     
     void render();
     void update();
-//    void updateMouseInput();
-//    void updateKeyInput();
+    
     std::string getWorkingDir();
     void setWorkingDir(std::string wd);
 
@@ -181,16 +257,13 @@ public:
     
     Program* getProgramPtr(std::string programName="Default");
     Camera* getCameraPtr();
-
-//    void releaseShaders();
-//    void releasePrograms();
-//    void releaseScenes();
     
     SoundManager* getSoundManager();
     
     void changeWindowSize(int w, int h);
     
     PS3ControllerWrapper* getJoyStick(int num);
+    bool hasSpriteSheetFrameName(std::string frameName);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Director__) */

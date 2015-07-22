@@ -7,7 +7,6 @@
 //
 
 #include "Director.h"
-#include "Sprite.h"
 
 Director::Director():
 winSize({ 0, 0 }),
@@ -40,6 +39,10 @@ Director::~Director(){
     for(auto it = programs.begin(); it != programs.end(); ++it )
         delete it->second;
     
+    for(auto it : spriteSheets){
+        delete it.second;
+    }
+    
     if(camera)
         delete camera;
     
@@ -56,13 +59,17 @@ Director::~Director(){
     soundManager->release();
     delete soundManager;
     //delete all remaing scenes
-    if(runningScene) delete runningScene;
+    if(runningScene)
+        delete runningScene;
     //    if(nextScene) delete nextScene;
     
     for(int i = 0; i < MAX_JOYSTICK; i++){
         if(ps3Joysticks[i])
             delete ps3Joysticks[i];
     }
+    
+    if(mouseCursor)
+        delete mouseCursor;
     
     cout << "Done." << endl;
 }
@@ -140,7 +147,7 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
     addProgramWithShader("Text",  "textVertexShader.glsl", "textFragmentShader.glsl");
     
     //create basic camera
-    camera = new Camera();
+    camera = new Camera((float)screenWidth, (float)screenHeight, SCREEN_TO_WORLD_SCALE);
     
     soundManager = SoundManager::createSoundManager();
     
@@ -163,7 +170,7 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
         }
     }
     
-    
+    mouseCursor = Sprite::createSprite("globalMouseCursor", "mouse_icon.png");
 }
 
 void Director::terminateApp(){
@@ -171,8 +178,9 @@ void Director::terminateApp(){
 }
 
 void Director::initOpenGL(){
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_ALWAYS);
+    glDisable(GL_DEPTH_TEST);
+//    glEnable(GL_DEPTH_TEST);
+//    glDepthFunc(GL_ALWAYS);
     //    glDepthFunc(GL_LESS);
     
     glEnable(GL_BLEND);
@@ -204,11 +212,6 @@ void Director::initGLEW(){
     }
 }
 
-//GLFW call back
-//void glfwErrorCallback(int error, const char *description){
-//	std::cerr << "GLFW error " << error << ": " << description << std::endl;
-//}
-
 void Director::initGLFW(){
     if (glfwInit() != GL_TRUE){
         throw std::runtime_error("DIRECTOR::Failed to init GLFW");
@@ -234,6 +237,8 @@ void Director::createWindow(const int &screenWidth, const int &screenHeight, con
     glfwWindowHint(GLFW_DECORATED, GL_FALSE);
     
     glfwSetErrorCallback(glfw_error_callback);
+    
+    glfwSwapInterval(0);
     
     //create window with size and title.
 //    const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -266,10 +271,6 @@ void Director::createWindow(const int &screenWidth, const int &screenHeight, con
     glfwSetMouseButtonCallback(window, mouse_button_callback);
 //    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    
-    
-    prevMousePos = glm::vec2(winSize.w/2, winSize.h/2);
-    curMousePos = glm::vec2(winSize.w/2, winSize.h/2);
 }
 
 void Director::glfw_error_callback(int error, const char *description){
@@ -331,7 +332,6 @@ void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos)
     double x, y;
     glfwGetCursorPos(window, &x, &y);
     Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
-    directorPtr->prevMousePos = glm::vec2((float)x, (float)y);
     
     if(x <= -720){
         x = -720;
@@ -351,6 +351,7 @@ void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos)
     }
     
     directorPtr->runningScene->mouseMove(x, -y);
+    directorPtr->mouseCursor->setPosition(glm::vec3(x, -y, 0));
 //    directorPtr->runningScene->Scene::mouseMove(x, -y);
 //    cout << "(" << x << ", " << y << ")" << endl;
 }
@@ -395,9 +396,15 @@ void Director::doSceneTransition(){
     dyingScene = runningScene;
     runningScene = nextScene;
     nextScene = 0;
+    //can show scene transition effect here
     
+    //initialize entering scene
     runningScene->init();
+    //release leaving scene
+    dyingScene->exit();
+    //then delete the object
     delete dyingScene;
+    dyingScene = 0;
     
     waitingForSceneTransition = false;
 }
@@ -430,6 +437,8 @@ void Director::run(){
         update();
         if(!paused)
             render();
+        
+        mouseCursor->render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -497,4 +506,37 @@ void Director::changeWindowSize(int w, int h){
 
 PS3ControllerWrapper* Director::getJoyStick(int num){
     return this->ps3Joysticks[num];
+}
+
+bool Director::hasSpriteSheetFrameName(std::string frameName){
+    return spriteSheets.find(frameName) != spriteSheets.end();
+}
+
+SpriteSheet* const Director::getSpriteSheet(std::string frameName){
+    auto it = spriteSheets.find(frameName);
+    if(it != spriteSheets.end())
+        return it->second;
+    else
+        return 0;
+}
+
+void Director::cacheSpriteSheet(std::string frameName, SpriteSheet *spriteSheet){
+    auto find_it = spriteSheets.find(frameName);
+    if(find_it == spriteSheets.end()){
+        cout << "[System] Caching \"" << frameName << "\" sprite sheet." << endl;
+        spriteSheets[frameName] = spriteSheet;
+    }
+    else{
+        cout << "[System Error] Same name(\"" << frameName << "\") of sprite sheet already exists." << endl;
+    }
+}
+
+void Director::unCacheSpriteSheet(std::string frameName){
+    auto find_it = spriteSheets.find(frameName);
+    if(find_it == spriteSheets.end()){
+        cout << "[System] No sprite sheet entry called \"" << frameName << "\" found." << endl;
+    }
+    else{
+        spriteSheets.erase(find_it);
+    }
 }
