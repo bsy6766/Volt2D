@@ -93,7 +93,7 @@ bool Font::initFont(std::string fontName, int fontSize){
             continue;
         }
         
-        widthSum += g->bitmap.width;
+        widthSum += g->bitmap.width + 2; //2 pixels padding
         if(maxHeight < g->bitmap.rows){
             maxHeight = g->bitmap.rows;
         }
@@ -160,7 +160,7 @@ bool Font::initFont(std::string fontName, int fontSize){
         //conmpute top left uv point.
         gData.uvTopLeft = glm::vec2(x / this->texAtlasWidth, 0);
         
-        //proceed
+        //move x by width
         x += g->bitmap.width;
         
         //compute bot right uv point
@@ -168,9 +168,11 @@ bool Font::initFont(std::string fontName, int fontSize){
         
         //store in map
         glyphMap[gData.c] = gData;
+        
+        x += 2; //add padding at the end
     }
     
-//    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
     
     //make sure release face.
     FT_Done_Face(face);
