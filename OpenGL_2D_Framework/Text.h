@@ -114,22 +114,22 @@ public:
     void setColor(Color color);
     
     /**
-     *  Override's RenderableObject::computerVertexData()
      *  Compute vertex and indices
+     *  @param width Quad width
+     *  @param height Quad height
      */
-    virtual void computeVertexData();
+    void computeVertexData();
     
     /**
-     *  Override's RenderableObject::loadVertexData()
      *  Load computed vertex.
      */
-    virtual void loadVertexData();
+    void loadVertexData();
     
     /**
      *  Overrides's Object::render();
      *  Render object
      */
-    virtual void render();
+    virtual void render() override;
     
     /**
      *  Text align type

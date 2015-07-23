@@ -120,19 +120,19 @@ void Text::computeVertexData(){
             
             //get data from glyph
             int bearingY = (int)(gData->metrics.horiBearingY >> 6);
-            int height = (int)(gData->metrics.height >> 6);
-            int width = (int)(gData->metrics.width >> 6);
+            int glyphHeight = (int)(gData->metrics.height >> 6);
+            int glyphWidth = (int)(gData->metrics.width >> 6);
             
             //compute vertex quad at origin.
-            glm::vec2 p1 = glm::vec2((-1) * width / 2, (-1) * (height - bearingY)); //left bottom
-            glm::vec2 p2 = glm::vec2(width / 2, bearingY);
+            glm::vec2 p1 = glm::vec2((-1) * glyphWidth / 2, (-1) * (glyphHeight - bearingY)); //left bottom
+            glm::vec2 p2 = glm::vec2(glyphWidth / 2, bearingY);
             
             //scale down to world size
-            p1 /= 10;
-            p2 /= 10;
+            p1 /= SCREEN_TO_WORLD_SCALE;
+            p2 /= SCREEN_TO_WORLD_SCALE;
 
             //get point where each char has to move
-            glm::vec3 fPos = glm::vec3(origin.x + width/2, origin.y, 0);
+            glm::vec3 fPos = glm::vec3(origin.x + glyphWidth/2, origin.y, 0);
             glm::vec3 distance = (fPos - this->position);
             distance.x /= 10;
             distance.y /= 10;
@@ -169,24 +169,24 @@ void Text::computeVertexData(){
 }
 
 void Text::loadVertexData(){
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    glGenVertexArrays(1, &this->bufferObject.vao);
+    glBindVertexArray(this->bufferObject.vao);
     
     //generate vertex buffer object for quad
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glGenBuffers(1, &this->bufferObject.vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, this->bufferObject.vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * vertexData.size(), &vertexData[0], GL_STATIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("vert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
     
     //generate texture uv buffer object for quad
-    glGenBuffers(1, &uvbo);
-    glBindBuffer(GL_ARRAY_BUFFER, uvbo);
+    glGenBuffers(1, &this->bufferObject.uvbo);
+    glBindBuffer(GL_ARRAY_BUFFER, this->bufferObject.uvbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * uvVertexData.size(), &uvVertexData[0], GL_STATIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("uvVert"), 2, GL_FLOAT, GL_FALSE, 0, NULL);
     
     //generate indices buffer
-    glGenBuffers(1, &ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glGenBuffers(1, &this->bufferObject.ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->bufferObject.ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), &indicesData[0], GL_STATIC_DRAW);
 }
 
@@ -282,6 +282,8 @@ void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
     
     this->width = maxWidth;
     this->height = totalHeight;
+    this->RenderableObject::width = maxWidth / SCREEN_TO_WORLD_SCALE;
+    this->RenderableObject::height = totalHeight / SCREEN_TO_WORLD_SCALE;
 }
 
 bool Text::hasEmptyText(){
@@ -309,7 +311,7 @@ void Text::render(){
     floatUniformLocation("opacity", opacity);
     vec3UniformLocation("fontColor", fontColor);
     
-    glBindVertexArray(vao);
+    glBindVertexArray(this->bufferObject.vao);
     
     glEnableVertexAttribArray(progPtr->attrib("vert"));
     glEnableVertexAttribArray(progPtr->attrib("uvVert"));
