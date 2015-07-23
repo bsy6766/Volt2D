@@ -122,7 +122,7 @@ void Sprite::render(){
     boolUniformLocation("particle", false);
     
     //bind vertex array.
-    glBindVertexArray(vao);
+    glBindVertexArray(this->bufferObject.vao);
     
     //enable attribs
     glEnableVertexAttribArray(progPtr->attrib("vert"));
@@ -144,8 +144,8 @@ void Sprite::computeVertices(){
     float width = (float)w / SCREEN_TO_WORLD_SCALE;
     float height = (float)h / SCREEN_TO_WORLD_SCALE;
     
-    this->width = width;
-    this->height = height;
+    this->RenderableObject::width = width;
+    this->RenderableObject::height = height;
     
     /*
      
@@ -208,24 +208,24 @@ void Sprite::computeIndices(){
 
 void Sprite::loadVertexData(){
     //generate vertex array object and bind it
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    glGenVertexArrays(1, &this->bufferObject.vao);
+    glBindVertexArray(this->bufferObject.vao);
     
     //generate vertex buffer object for quad
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glGenBuffers(1, &this->bufferObject.vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, this->bufferObject.vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * vertexData.size(), &vertexData[0], GL_STATIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("vert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
     
     //generate texture uv buffer object for quad
-    glGenBuffers(1, &uvbo);
-    glBindBuffer(GL_ARRAY_BUFFER, uvbo);
+    glGenBuffers(1, &this->bufferObject.uvbo);
+    glBindBuffer(GL_ARRAY_BUFFER, this->bufferObject.uvbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * uvVertexData.size(), &uvVertexData[0], GL_STATIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("uvVert"), 2, GL_FLOAT, GL_FALSE, 0, NULL);
     
     //generate indices buffer
-    glGenBuffers(1, &ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glGenBuffers(1, &this->bufferObject.ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->bufferObject.ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), &indicesData[0], GL_STATIC_DRAW);
     
     glBindVertexArray(0);
