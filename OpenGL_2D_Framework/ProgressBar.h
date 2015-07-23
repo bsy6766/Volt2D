@@ -39,22 +39,20 @@ public:
     ~ProgressBar();
     
     /**
-     *  Override's RenderableObject::computerVertexData()
      *  Compute vertex and indices
      */
-    virtual void computeVertexData();
+    void computeVertexData();
     
     /**
-     *  Override's RenderableObject::loadVertexData()
      *  Load computed vertex.
      */
-    virtual void loadVertexData();
+    void loadVertexData();
     
     /**
      *  Overrides's Object::render();
      *  Render object
      */
-    virtual void render();
+    virtual void render() override;
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ProgressBar__) */

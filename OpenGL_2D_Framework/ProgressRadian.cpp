@@ -41,8 +41,11 @@ void ProgressRadian::computeVertexData(){
     std::vector<float> heightGapList;
     std::vector<float> uvGapList;   //since u and v have same range of value(0~1), only need 1 for both width and height
     
-    float width = (float)w / SCREEN_TO_WORLD_SCALE;
-    float height = (float)h / SCREEN_TO_WORLD_SCALE;
+    width /= SCREEN_TO_WORLD_SCALE;
+    height /= SCREEN_TO_WORLD_SCALE;
+    
+    this->RenderableObject::width = w / SCREEN_TO_WORLD_SCALE;
+    this->RenderableObject::height = h / SCREEN_TO_WORLD_SCALE;
     
     float angle = 0;
     for(int i = 0; i<12; i++){
@@ -413,24 +416,24 @@ void ProgressRadian::computeVertexData(){
 
 void ProgressRadian::loadVertexData(){
     //generate vertex array object and bind it
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    glGenVertexArrays(1, &this->bufferObject.vao);
+    glBindVertexArray(this->bufferObject.vao);
     
     //generate vertex buffer object for quad
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glGenBuffers(1, &this->bufferObject.vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, this->bufferObject.vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * vertexData.size(), &vertexData[0], GL_STATIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("vert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
     
     //generate texture uv buffer object for quad
-    glGenBuffers(1, &uvbo);
-    glBindBuffer(GL_ARRAY_BUFFER, uvbo);
+    glGenBuffers(1, &this->bufferObject.uvbo);
+    glBindBuffer(GL_ARRAY_BUFFER, this->bufferObject.uvbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * uvVertexData.size(), &uvVertexData[0], GL_STATIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("uvVert"), 2, GL_FLOAT, GL_FALSE, 0, NULL);
     
     //generate indices buffer
-    glGenBuffers(1, &ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glGenBuffers(1, &this->bufferObject.ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->bufferObject.ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), &indicesData[0], GL_STATIC_DRAW);
     
     glBindVertexArray(0);
@@ -455,7 +458,7 @@ void ProgressRadian::render(){
     floatUniformLocation("opacity", opacity);
     boolUniformLocation("particle", false);
     
-    glBindVertexArray(vao);
+    glBindVertexArray(this->bufferObject.vao);
     
     glEnableVertexAttribArray(progPtr->attrib("vert"));
     glEnableVertexAttribArray(progPtr->attrib("uvVert"));
