@@ -200,9 +200,8 @@ void SpriteAnimation::render(){
         return;
     }
     
-    auto animation = ani_it->second;
     //if texture doesn't exist for this animation, don't render
-    if(!animation.textureAtlas){
+    if(!(ani_it->second).textureAtlas){
         return;
     }
     
@@ -210,21 +209,22 @@ void SpriteAnimation::render(){
     glUseProgram(progPtr->getObject());
     
     double elapsedTime = Timer::getInstance().getElapsedTime();
-    animation.intervalCounter += elapsedTime;
+    (ani_it->second).intervalCounter += elapsedTime;
     
-    if(animation.intervalCounter >= animation.interval){
-        animation.intervalCounter -= animation.interval;
-        animation.currentFrameIndex++;
-        if(animation.currentFrameIndex >= animation.size){
-            animation.currentFrameIndex = 0;
+    int currentFrameIndex = (ani_it->second).currentFrameIndex;
+    
+    if((ani_it->second).intervalCounter >= (ani_it->second).interval){
+        (ani_it->second).intervalCounter -= (ani_it->second).interval;
+        currentFrameIndex++;
+        (ani_it->second).currentFrameIndex = currentFrameIndex;
+        if((ani_it->second).currentFrameIndex >= (ani_it->second).size){
+            (ani_it->second).currentFrameIndex = 0;
         }
     }
     
-    int currentFrameIndex = animation.currentFrameIndex;
-    
     //check texture
-    if((animation).textureAtlas->canBoundThisTexture()){
-        (animation).textureAtlas->bindArray();
+    if((ani_it->second).textureAtlas->canBoundThisTexture()){
+        (ani_it->second).textureAtlas->bindArray();
     }
     
     //camera
@@ -244,7 +244,7 @@ void SpriteAnimation::render(){
     intUniformLocation("layer", currentFrameIndex);
     
     //bind vertex array.
-    glBindVertexArray(animation.bufferObject.vao);
+    glBindVertexArray((ani_it->second).bufferObject.vao);
     
     //enable attribs
     glEnableVertexAttribArray(progPtr->attrib("vert"));
