@@ -145,6 +145,7 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
     //create basic shader
     addProgramWithShader("Default", "vertexShader.glsl", "fragmentShader.glsl");
     addProgramWithShader("Text",  "textVertexShader.glsl", "textFragmentShader.glsl");
+    addProgramWithShader("SpriteAnimation", "saVertexShader.glsl", "saFragmentShader.glsl");
     
     //create basic camera
     camera = new Camera((float)screenWidth, (float)screenHeight, SCREEN_TO_WORLD_SCALE);
