@@ -24,6 +24,7 @@
 #include "ActionCallFunc.h"
 #include "ActionMoveTo.h"
 #include "Text.h"
+#include "SpriteAnimation.h"
 
 #include "TitleButtonLayer.h"
 
@@ -33,6 +34,7 @@ private:
     Sprite* bg;
     Sprite* title;
     Sprite* version;
+    SpriteAnimation* character;
     
     TitleButtonLayer* titleButtonLayer;
     

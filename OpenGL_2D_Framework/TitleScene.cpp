@@ -81,12 +81,16 @@ void TitleScene::init(){
     Text* title;
     FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
     title = Text::createText("titleText", "Engine Test", "UhBee Kang-Ja.ttf");
-    title->setColor(glm::vec3(255, 255, 255));
+    title->setColor(Color::WHITE);
 //    title->setTextAlign(Text::TextAlign::ALIGN_LEFT);
-    title->initText("Engine Test", "UhBee Kang-Ja.ttf");
+//    title->initText("Engine Test", "UhBee Kang-Ja.ttf");
     title->setZDepth(99);
 //    title->setPosition(glm::vec3(0, 100, 0));
     this->addChild(title);
+    
+    character = SpriteAnimation::createWithAnimation("character", "run", "title scene/run.png", 8, 0.1);
+    character->setZDepth(999);
+    this->addChild(character);
     
     initLayers();
 }
