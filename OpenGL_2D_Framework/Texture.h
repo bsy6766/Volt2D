@@ -9,16 +9,28 @@
 #ifndef __OpenGL_2D_Framework__Texture__
 #define __OpenGL_2D_Framework__Texture__
 
-//#define GLM_FORCE_RADIANS
-
 #include <GL/glew.h>
 #include <string>
+#include <vector>
 #include <stdio.h>
 #include <stdexcept>
-#include <glm/glm.hpp>
-#include <cstring>
+#include <map>
 #include "CommonInclude.h"
 #include "stb_image.h"
+
+class SpriteAnimation;
+
+/**
+ *  @struct Image
+ *  @brief Holds basic info for loaded images
+ */
+struct Image{
+    float width;
+    float height;
+    int channel;
+    string name;
+    float x;
+};
 
 /**
  *  @class Texture
@@ -26,7 +38,18 @@
  */
 class Texture{
 private:
-    const static std::string wd;
+    /**
+     *  Path to texture root folder
+     */
+    const static std::string textureFolderPath;
+    
+    /**
+     *  Stores Image datas.
+     *  This will only handle 1 image
+     *  \todo Force SpriteAnimation to use same size of images for each frame and remove Texture::imageDataMap. Just keep 1 for simplicity.
+     */
+    std::map<string, Image> imageDataMap;
+    
     /**
      *  true if texture is loaded and ready to use
      */
@@ -68,21 +91,49 @@ private:
      */
     int channel;
     
-	/**
-	*	Loads image.
-	* @param filePath a const string represents the path if file(image)
-	*/
+    /**
+     *  Load image.
+     *  @param width Getter
+     *  @param height Getter
+     *  @param channel Getter
+     *  @param postfix A postfix (numbering) that is used for sprite animation.
+     */
     unsigned char* loadImage(int& width, int& height, int& channel, std::string postfix);
     
-//    void loadImages(int size);
+    /**
+     *  Initialize texture. Uses GL_TEXTURE_2D.
+     */
     void initTexture();
-    void initTextureAtlas(int size);
+    
+    //unused
+//    /**
+//     *  Initialzie texture atlas
+//     *  @param size Number of texture files
+//     */
+//    void initTextureAtlas(int size);
+    
+    /**
+     *  Initialize texture array.
+     *  @param layer Size of layer for texture array.
+     */
+    void initTextureArray(int layer);
 
 	/**
 	* Initialize texture.
 	* Generate the texture and bind the texture object to GL_TEXTRE_2D
 	*/
-    void generateTexture(int width, int height, int channel, unsigned char* data = 0);
+    void generate2DTexture(int width, int height, int channel, unsigned char* data = 0);
+    
+    /**
+     *  Initailize texture array
+     * Generate the texture and bind the texture object to GL_TEXTRE_2D_ARRAY
+     */
+    void generate2DArrayTexture(int width, int height, int size, int channel, unsigned char* data = 0);
+    
+    /**
+     *  Get texture type corresponding to channel
+     *  @param channel A channel enum for texture type
+     */
     GLenum getTextureType(int channel);
     
 	/**
@@ -108,19 +159,28 @@ private:
 public:
     /**
      *  Create texture with image file.
-     *  @param fileName A texture image file name(path)
+     *  @param textureName A texture image file name(path)
      *  @param textureTarget A OpenGL texture target. GL_TEXTURE_2D by default.
      */
-    static Texture* createTextureWithFile(std::string fileName, GLenum textureTarget = GL_TEXTURE_2D);
+    static Texture* createTextureWithFile(std::string textureName, GLenum textureTarget = GL_TEXTURE_2D);
+    
+//    /**
+//     *  Create texture with series of files.
+//     *  @note All series of files must follow <file name>_<index> format.
+//     *  @param fileName Image file name
+//     *  @param size Number of files to load
+//     *  @param textureTarget A OpenGL texture target. GL_TEXTURE_2D by default.
+//     */
+//    static Texture* createTextureWithFiles(std::string fileName, int size, GLenum textureTarget = GL_TEXTURE_2D);
     
     /**
-     *  Create texture with series of files.
-     *  @note All series of files must follow <file name>_<index> format.
-     *  @param fileName Image file name
-     *  @param size Number of files to load
-     *  @param textureTarget A OpenGL texture target. GL_TEXTURE_2D by default.
+     *  Create 2d texture array with fiels
+     *  @note This uses GL_TEXTURE_2D_ARRAY
+     *  @param fileName A file name
+     *  @param size A number of texture files. Must be greater than 0
+     *  @return New Texture instance if successfully initialize.
      */
-    static Texture* createTextureWithFiles(std::string fileName, int size, GLenum textureTarget = GL_TEXTURE_2D);
+    static Texture* create2DTextureArrayWithFiles(std::string textureName, int size);
     
     /**
      *  Create texture with empty buffer with specific size
@@ -138,14 +198,26 @@ public:
 	/**
 	* Bind texture.
 	*/
-    void bind(GLenum textureUnit);
+    void bind(GLenum textureUnit, int uniform = 0);
     
     /**
-     *  Get texture image size
+     *  Bind texture array
+     */
+    void bindArray();
+    
+    /**
+     *  Get image size
      *  @param w Int for width
      *  @param h Int for height
      */
     void getImageSize(int &w, int &h);
+    
+    /**
+     *  Get texture size.
+     *  @param w Int for width
+     *  @param h Int for height
+     */
+    void getTextureSize(int &w, int &h);
     
     /**
      *  @return texture target. GL_TEXTURE_2D

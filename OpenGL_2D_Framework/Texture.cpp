@@ -13,7 +13,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_ASSERT(x)
 
-const std::string Texture::wd = Director::getInstance().getWorkingDir() + "/../Texture/";
+const std::string Texture::textureFolderPath = Director::getInstance().getWorkingDir() + "/../Texture/";
 
 GLuint Texture::curBoundedTexture = -1;
 
@@ -38,20 +38,34 @@ textureLocation(-1)
     this->textureLocation = glGetUniformLocation(Director::getInstance().getProgramPtr()->getObject(), "tex");
 }
 
-Texture* Texture::createTextureWithFile(std::string fileName, GLenum textureTarget){
-    Texture* newTexture = new Texture(textureTarget, fileName);
+Texture* Texture::createTextureWithFile(std::string textureName, GLenum textureTarget){
+    Texture* newTexture = new Texture(textureTarget, textureName);
     newTexture->initTexture();
     return newTexture;
 }
 
-Texture* Texture::createTextureWithFiles(std::string fileName, int size, GLenum textureTarget){
+//unused
+//Texture* Texture::createTextureWithFiles(std::string fileName, int size, GLenum textureTarget){
+//    if(size <= 0){
+//        cout << "You can not create texture with 0 sized images." << endl;
+//        return nullptr;
+//    }
+//    else{
+//        Texture* newTexture = new Texture(textureTarget, fileName);
+//        newTexture->initTextureAtlas(size);
+//        return newTexture;
+//    }
+//}
+
+Texture* Texture::create2DTextureArrayWithFiles(std::string textureName, int size){
     if(size <= 0){
         cout << "You can not create texture with 0 sized images." << endl;
         return nullptr;
     }
     else{
-        Texture* newTexture = new Texture(textureTarget, fileName);
-        newTexture->initTextureAtlas(size);
+        //force to use GL_TEXTURE_2D_ARRAY
+        Texture* newTexture = new Texture(GL_TEXTURE_2D_ARRAY, textureName);
+        newTexture->initTextureArray(size);
         return newTexture;
     }
 }
@@ -69,32 +83,99 @@ Texture::~Texture(){
 void Texture::initTexture(){
     unsigned char* data = loadImage(this->width, this->height, this->channel, "");
     
-    this->generateTexture(this->width, this->height, this->channel, data);
+    this->generate2DTexture(this->width, this->height, this->channel, data);
 
     if(data)
         stbi_image_free(data);
 }
 
-void Texture::initTextureAtlas(int size){
-    unsigned char** datas[size];
-    std::vector<int> widthList;
-    std::vector<int> heightList;
+/*
+//unused
+//void Texture::initTextureAtlas(int size){
+//    std::vector<unsigned char*> datas;
+//    std::vector<int> widthList;
+//    std::vector<int> heightList;
+//    
+//    float widthSum = 0;
+//    float maxHeight = 0;
+//    //all channel must match
+//    int channel = -1;
+//    
+//    //* \todo Break down texture size if it's too wide
+//    
+//    for(int i = 0; i < size; i++){
+//        int width;
+//        int height;
+//        int newChannel;
+//        unsigned char* newData = loadImage(width, height, newChannel, std::to_string(i+1));
+//        
+//        widthList.push_back(width);
+//        heightList.push_back(height);
+//        
+//        //if channel was initialized ever
+//        if(channel != -1){
+//            //check if it's same
+//            assert(channel == newChannel);
+//        }
+//        else{
+//            channel = newChannel;
+//        }
+//        
+//        widthSum += (float)width + 2; //padding = 2 pixels
+//        if(maxHeight < height)
+//            maxHeight = height;
+//        
+//        datas.push_back(newData);
+//    }
+//    
+//    this->channel = channel;
+//    
+//    //find neareast power of 2 for width
+//    
+//    this->width = this->findNearestPowTwo(widthSum);
+//    this->height = this->findNearestPowTwo(maxHeight);
+//    
+//    //generate empty texture
+//    this->generate2DTexture(this->width, this->height, this->channel);
+//    GLenum type = this->getTextureType(this->channel);
+//    
+//    assert(widthList.size() == size);
+//    assert(heightList.size() == size);
+//    assert(type >= 0);
+//    
+//    //sub tex image
+//    int x = 0;  //x offset
+//    for(int i = 0; i< size; i++){
+//        //update texture
+//        glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, widthList.at(i), heightList.at(i), type, GL_UNSIGNED_BYTE, datas.at(i));
+//        //update Image data
+//        Image& image = imageDataMap.find(this->fileName + "_" + std::to_string(i))->second;
+//        image.x = x;
+//        
+//        //move x
+//        x += (widthList[i] + 2); //including padding
+//    }
+//    
+//    for(auto it : datas){
+//        stbi_image_free(it);
+//    }
+//    
+//}
+ */
+
+void Texture::initTextureArray(int layer){
+    std::vector<unsigned char*> datas;
     
-    float widthSum = 0;
-    float maxHeight = 0;
     //all channel must match
     int channel = -1;
     
     //* \todo Break down texture size if it's too wide
-    
-    for(int i = 0; i < size; i++){
-        int width;
-        int height;
+    int width = -1;
+    int height = -1;
+    for(int i = 0; i < layer; i++){
         int newChannel;
-        unsigned char* newData = loadImage(width, height, channel, std::to_string(i));
-        
-        widthList.push_back(width);
-        heightList.push_back(height);
+        unsigned char* newData = loadImage(width, height, newChannel, std::to_string(i+1));
+        flipImage(newData);
         
         //if channel was initialized ever
         if(channel != -1){
@@ -104,39 +185,44 @@ void Texture::initTextureAtlas(int size){
         else{
             channel = newChannel;
         }
-        
-        widthSum += (float)width;
-        if(maxHeight < height)
-            maxHeight = height;
-        
-        datas[i] = &newData;
+
+        datas.push_back(newData);
     }
     
     this->channel = channel;
     
+    assert(width >= 0);
+    assert(height >= 0);
     //find neareast power of 2 for width
     
-    this->width = this->findNearestPowTwo(widthSum);
-    this->height = this->findNearestPowTwo(maxHeight);
+    this->width = this->findNearestPowTwo(width);
+    this->height = this->findNearestPowTwo(height);
     
     //generate empty texture
-    this->generateTexture(this->width, this->height, this->channel);
+    this->generate2DArrayTexture(this->width, this->height, layer, this->channel);
     GLenum type = this->getTextureType(this->channel);
-    
-    assert(widthList.size() == size);
-    assert(heightList.size() == size);
+
     assert(type >= 0);
     
-    //sub tex image
-    int x = 0;  //x offset
-    for(int i = 0; i< size; i++){
-        glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, widthList.at(i), heightList.at(i), type, GL_UNSIGNED_BYTE, datas[i]);
-        x += widthList[i];
+    for(int i = 0; i< layer; i++){
+        //update texture
+        glTexSubImage3D(this->textureTarget,    //GL_TEXTURE_2D_ARRay
+                        0,                      //level(mipmap)
+                        0, 0, i,                //x,y,z offset
+                        width,            //texture width
+                        height,           //texture height
+                        1,                      //texture depth
+                        type,                //format
+                        GL_UNSIGNED_BYTE,       //type
+                        datas.at(i)
+                        );
     }
     
-    for(int i = 0 ;i <size; i++){
-        stbi_image_free(datas[i]);
+    for(auto it : datas){
+        stbi_image_free(it);
     }
+    
+    this->textureLocation = glGetUniformLocation(Director::getInstance().getProgramPtr()->getObject(), "texArray");
 }
 
 int Texture::findNearestPowTwo(unsigned int num){
@@ -150,19 +236,37 @@ int Texture::findNearestPowTwo(unsigned int num){
     return num;
 }
 
-void Texture::bind(GLenum textureUnit){
+void Texture::bind(GLenum textureUnit, int uniform){
     glActiveTexture(textureUnit);	//NOTE: This is kind of useless if we are only going to use GL_TEXTRE0
     glBindTexture(textureTarget, textureObject);
     //keep track of the most lately bounded texture
+    Texture::curBoundedTexture = this->textureObject;
+    glUniform1i(textureLocation, uniform);
+}
+
+void Texture::bindArray(){
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(this->textureTarget, this->textureObject);
     Texture::curBoundedTexture = this->textureObject;
     glUniform1i(textureLocation, 0);
 }
 
 unsigned char* Texture::loadImage(int& width, int& height, int& channel, std::string postfix){
-    std::string filePath = wd + this->fileName;
+    string fileNameCopy = this->fileName;
+    
     if(!postfix.empty()){
-        filePath += ("_" + postfix);
+        string delimeter = ".";
+        size_t extIndex = fileNameCopy.find(delimeter);
+        
+        assert(extIndex <= fileNameCopy.size());
+        
+        string absFileName = fileNameCopy.substr(0, extIndex);
+        string fileExt = fileNameCopy.substr(extIndex);
+        fileNameCopy = absFileName;
+        fileNameCopy += ("_" + postfix + fileExt);
     }
+    std::string filePath = this->textureFolderPath + fileNameCopy;
+    
     FILE *file = fopen(filePath.c_str(), "rb");
     //!!! now texture will be set to "missing texture" if failed to read file
     if(!file){
@@ -185,6 +289,15 @@ unsigned char* Texture::loadImage(int& width, int& height, int& channel, std::st
 	*/
     unsigned char* data = stbi_load_from_file(file, &width, &height, &channel, 0);
     flipImage(data);
+    
+    Image newImageData;
+    newImageData.width = (float)width;
+    newImageData.height = (float)height;
+    newImageData.channel = channel;
+    newImageData.name = this->fileName;
+    
+    this->imageDataMap[this->fileName] = newImageData;
+    
     fclose(file);
     return data;
 }
@@ -206,7 +319,7 @@ void Texture::flipImage(unsigned char* data){
     delete rowBuffer;
 }
 
-void Texture::generateTexture(int width, int height, int channel, unsigned char* data){
+void Texture::generate2DTexture(int width, int height, int channel, unsigned char* data){
     glGenTextures(1, &textureObject);
     glBindTexture(textureTarget, textureObject);
     
@@ -240,6 +353,34 @@ void Texture::generateTexture(int width, int height, int channel, unsigned char*
     }
 }
 
+void Texture::generate2DArrayTexture(int width, int height, int layerSize, int channel, unsigned char* data){
+    glGenTextures(1, &this->textureObject);
+    glBindTexture(this->textureTarget, this->textureObject);
+    
+    glTexParameteri(this->textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(this->textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(this->textureTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(this->textureTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+    switch (channel) {
+        case Format_Grayscale:
+            glTexImage3D(this->textureTarget, 1, GL_RGBA8, width, height, layerSize, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
+            break;
+        case Format_GrayscaleAlpha:
+            glTexImage3D(this->textureTarget, 1, GL_RGBA8, width, height, layerSize, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, data);
+            break;
+        case Format_RGB:
+            //jpg
+            glTexImage3D(this->textureTarget, 1, GL_RGBA8, width, height, layerSize, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            break;
+        case Format_RGBA:
+            //Has alpha. ex)png
+//            glTexImage3D(this->textureTarget, 1, GL_RGBA8, width, height, layerSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+            glTexStorage3D(this->textureTarget, 1, GL_RGBA8, width, height, layerSize);
+            break;
+    }
+}
+
 GLenum Texture::getTextureType(int channel){
     GLenum ret = -1;
     
@@ -267,8 +408,14 @@ GLuint Texture::getObject(){
 }
 
 void Texture::getImageSize(int &w, int &h){
-    w = width;
-    h = height;
+    Image* imgPtr = &imageDataMap.begin()->second;
+    w = (int)imgPtr->width;
+    h = (int)imgPtr->height;
+}
+
+void Texture::getTextureSize(int &w, int &h){
+    w = this->width;
+    h = this->height;
 }
 
 GLenum Texture::getTextureTarget(){
