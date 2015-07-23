@@ -12,9 +12,14 @@
 #include <iostream>
 #include <assert.h>
 #include <string>
+#include <glm/glm.hpp>
 
 using std::cout;
 using std::endl;
 using std::string;
+
+using glm::vec3;
+using glm::vec2;
+using glm::mat4;
 
 #endif /* defined(__OpenGL_2D_Framework__CommonInclude__) */
