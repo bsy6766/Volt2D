@@ -19,6 +19,17 @@
 #include <string>
 
 /**
+ *  @struct BufferObject
+ *  @brief Contains vertex array object and buffer objects
+ */
+struct BufferObject{
+    GLuint vao;
+    GLuint vbo;
+    GLuint uvbo;
+    GLuint ibo;
+};
+
+/**
  *  @class RenderableObject
  *  @brief A object that is renderable on screen. Contains several OpenGL varaibles.
  *  \todo Support anchor point for all object.
@@ -26,24 +37,9 @@
 class RenderableObject : public Object{
 protected:
     /**
-     *  Vertex array object
+     *  A pack of essential OpenGL objects
      */
-    GLuint vao;
-    
-    /**
-     *  Vertex buffer object
-     */
-    GLuint vbo;
-    
-    /**
-     *  UV texture vertex buffer object
-     */
-    GLuint uvbo;
-    
-    /**
-     *  Indices buffer object
-     */
-    GLuint ibo;
+    BufferObject bufferObject;
     
     /**
      *  A std::vector that stores all vertices
@@ -97,6 +93,12 @@ protected:
      */
     std::list<ActionSchedule *> actionScheduleList;
     
+    /**
+     *  Pass int value to shader
+     *  @param name Uniform name
+     *  @param i (ref) A int value to pass to shader
+     */
+    void intUniformLocation(std::string name, int& i);
     /**
      *  Pass float value to shader
      *  @param name Uniform name
@@ -153,16 +155,6 @@ public:
      *  Set object's anchor point
      */
     void setAnchrPoint(glm::vec2 anchorPoint);
-    
-    /**
-     *  Pure virtual. Compute vertex data
-     */
-    virtual void computeVertexData() = 0;
-    
-    /**
-     *  Pure virtual. Load vertex data to buffer.
-     */
-    virtual void loadVertexData() = 0;
     
     /**
      *  Clear vertices and indices vectors and delete buffer objects.

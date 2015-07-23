@@ -11,10 +11,7 @@
 
 RenderableObject::RenderableObject():
 Object(),
-vao(0),
-vbo(0),
-uvbo(0),
-ibo(0),
+bufferObject({0, 0, 0, 0}),
 opacity(255),
 visible(true),
 width(0),
@@ -62,15 +59,15 @@ void RenderableObject::deleteVertexData(){
     uvVertexData.clear();
     indicesData.clear();
     
-    glDeleteVertexArrays(1, &vao);
-    glDeleteBuffers(1, &vbo);
-    glDeleteBuffers(1, &uvbo);
-    glDeleteBuffers(1, &ibo);
+    glDeleteVertexArrays(1, &bufferObject.vao);
+    glDeleteBuffers(1, &bufferObject.vbo);
+    glDeleteBuffers(1, &bufferObject.uvbo);
+    glDeleteBuffers(1, &bufferObject.ibo);
     
-    vao = 0;
-    vbo = 0;
-    uvbo = 0;
-    ibo = 0;
+    bufferObject.vao = 0;
+    bufferObject.vbo = 0;
+    bufferObject.uvbo = 0;
+    bufferObject.ibo = 0;
 }
 
 void RenderableObject::bindProgram(std::string programName){
@@ -157,6 +154,13 @@ void RenderableObject::update(){
             }
         }
     }
+}
+
+void RenderableObject::intUniformLocation(std::string name, int& i){
+    GLint uniformLocation = glGetUniformLocation(progPtr->getObject(), name.c_str());
+    if(uniformLocation == -1)
+        throw std::runtime_error( std::string("Program uniform not found: " ) + name);
+    glUniform1i(uniformLocation, i);
 }
 
 void RenderableObject::floatUniformLocation(std::string name, float& f){
