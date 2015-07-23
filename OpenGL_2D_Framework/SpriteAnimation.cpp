@@ -11,155 +11,275 @@
 #include "Director.h"
 
 SpriteAnimation::SpriteAnimation():
-SpriteObject()
+SpriteObject(),
+runningAnimationName("")
 {
-//    this->frameInterval = 0;
-//    this->currentTime = 0;
-//    this->currentFrameIndex = 0;
-//    this->frameListSize = 0;
-//    this->totalElapsedTime = 0;
+    this->progPtr = Director::getInstance().getProgramPtr("SpriteAnimation");
 }
 
 SpriteAnimation::~SpriteAnimation(){
+    auto it = animationMap.begin();
+    //First buffer object is released by Renderable Object
+    it++;
     
+    for(; it != animationMap.end(); it++){
+        glDeleteVertexArrays(1, &(it->second).bufferObject.vao);
+        glDeleteBuffers(1, &(it->second).bufferObject.vbo);
+        glDeleteBuffers(1, &(it->second).bufferObject.uvbo);
+        glDeleteBuffers(1, &(it->second).bufferObject.ibo);
+        
+        delete (it->second).textureAtlas;
+    }
 }
 
-SpriteAnimation* SpriteAnimation::createSpriteAnimation(std::string objectName, std::string textureName, int frameSize, double frameInterval){
+SpriteAnimation* SpriteAnimation::create(string objectName){
     SpriteAnimation* newSpriteAnimation = new SpriteAnimation();
-//
+    newSpriteAnimation->setName(objectName);
     return newSpriteAnimation;
-    return 0;
 }
 
-void SpriteAnimation::init(std::string fileName, std::string stateName, int frameSize, double interval){
-//    //file name format must be followed. Not going to check the file name format for now
-//    //if frame size is 0, return. this isn't spriate animation
-//    if(frameSize == 0)
-//        return;
-//    
-//    for(int i = 0; i<frameSize; i++){
-//        //set texture
-//        std::string textureFileName = fileName + "_" + std::to_string(i+1) + ".png";
-//        //defualt path. This is hard coded!!!!!!!!
-//        std::string path = "../Texture/animation/run/" + textureFileName;
-//        Texture *tex = new Texture(GL_TEXTURE_2D, path);
-//        tex->load();
-//        textureList.push_back(tex);
-//    }
-//    
-//    this->frameInterval = interval;
-//    this->visible = true;
-//    this->frameListSize = frameSize;
-//    
-//    //all texture must be same size
-//    textureList.at(0)->getImageSize(this->w, this->h);
-//    
-//    createVertexData();
-//    loadVertexData();
+SpriteAnimation* SpriteAnimation::createWithAnimation(string objectName,
+                                                      string animationName,
+                                                      string textureName,
+                                                      int frameSize,
+                                                      double frameInterval)
+{
+    //check frame size. reject with
+    if(frameSize <= 0){
+        cout << "[System] SpriteAnimation must have at least one frame." << endl;
+        return nullptr;
+    }
+    else{
+        SpriteAnimation* newSpriteAnimation = new SpriteAnimation();
+        if(frameInterval < 0){
+            cout << "[System] SpriteAnimation can not have frame interval less than 0. Setting to minimum value 0.01f" << endl;
+            frameInterval = 0.01f;
+        }
+        
+        if(newSpriteAnimation->initWithAnimation(animationName, textureName, frameSize, frameInterval)){
+            newSpriteAnimation->setName(objectName);
+            return newSpriteAnimation;
+        }
+        else{
+            cout << "[System] Failed to initialize SpriteAnimation \"" << objectName << "\"." << endl;
+            return nullptr;
+        }
+    }
 }
 
-void SpriteAnimation::computeVertexData(){
-//    //note: scale redefined
-//    float width = w / 10;
-//    float height = h / 10;
-//    
-////    z = GLOBAL_Z_VALUE;
-//    
-//    vertexData.push_back(glm::vec3(-(width/2), -(height/2), GLOBAL_Z_VALUE));
-//    vertexData.push_back(glm::vec3(-(width/2), height/2, GLOBAL_Z_VALUE));
-//    vertexData.push_back(glm::vec3(width/2, -(height/2), GLOBAL_Z_VALUE));
-//    vertexData.push_back(glm::vec3(width/2, height/2, GLOBAL_Z_VALUE));
-//    
-//    uvVertexData.push_back(glm::vec2(0, 0));
-//    uvVertexData.push_back(glm::vec2(0, 1));
-//    uvVertexData.push_back(glm::vec2(1, 0));
-//    uvVertexData.push_back(glm::vec2(1, 1));
-//    
-//    indicesData.push_back(0);
-//    indicesData.push_back(1);
-//    indicesData.push_back(2);
-//    indicesData.push_back(1);
-//    indicesData.push_back(2);
-//    indicesData.push_back(3);
-}
-
-void SpriteAnimation::loadVertexData(){
-    //generate vertex array object and bind it
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+bool SpriteAnimation::initWithAnimation(string name, string textureName, int size, double interval){
+    //create new animation data and initialize it.
+    Animation na;
+    na.name = name;
+    na.size = size;
+    na.currentFrameIndex = 0;
+    na.interval = interval;
+    na.bufferObject.vao = -1;
+    na.bufferObject.vbo = -1;
+    na.bufferObject.uvbo = -1;
+    na.bufferObject.ibo = -1;
+    na.textureAtlas = 0;
+    na.intervalCounter = 0;
     
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    //Create texture array.
+    Texture* animationTextureAtlas = Texture::create2DTextureArrayWithFiles(textureName, size);
+    int texW, texH;
+    animationTextureAtlas->getTextureSize(texW, texH);
+    
+    //check
+    assert(animationTextureAtlas != nullptr);
+    
+    //store texture
+    na.textureAtlas = animationTextureAtlas;
+    
+    //get ImageSize. Texture class will return the size from most first image that was loaded for this animation (== <file name>_1's size)
+    int imgW, imgH;
+    animationTextureAtlas->getImageSize(imgW, imgH);
+    //compute vertex data.
+    computeVertexData((float)texW, (float)texH, (float)imgW, (float)imgH);
+    
+    
+    loadVertexData(na);
+    
+    this->boundingBox = new BoundingBox(-na.textureWidth/2, -na.textureHeight/2, na.textureWidth/2, na.textureHeight/2);
+    
+    //save animation data
+    animationMap[name] = na;
+    
+    this->runningAnimationName = name;
+    
+    return true;
+}
+
+void SpriteAnimation::computeVertexData(float texW, float texH, float imgW, float imgH){
+    //compute vertex size that will be render in screen
+    float width = imgW / SCREEN_TO_WORLD_SCALE;
+    float height = imgH / SCREEN_TO_WORLD_SCALE;
+    
+    //store above size
+    this->RenderableObject::width = width;
+    this->RenderableObject::height = height;
+    
+    vertexData.push_back(glm::vec3(-(width/2), -(height/2), GLOBAL_Z_VALUE));
+    vertexData.push_back(glm::vec3(-(width/2), height/2, GLOBAL_Z_VALUE));
+    vertexData.push_back(glm::vec3(width/2, -(height/2), GLOBAL_Z_VALUE));
+    vertexData.push_back(glm::vec3(width/2, height/2, GLOBAL_Z_VALUE));
+    
+    uvVertexData.push_back(glm::vec2(0, (imgH / texH)));
+    uvVertexData.push_back(glm::vec2(0, 0));
+    uvVertexData.push_back(glm::vec2((imgW / texW), (imgH / texH)));
+    uvVertexData.push_back(glm::vec2((imgW / texW), 0));
+    
+    indicesData.push_back(0);
+    indicesData.push_back(1);
+    indicesData.push_back(2);
+    indicesData.push_back(1);
+    indicesData.push_back(2);
+    indicesData.push_back(3);
+}
+
+void SpriteAnimation::loadVertexData(Animation& ani){
+    //build pointer to objects
+    GLuint* vao;
+    GLuint* vbo;
+    GLuint* uvbo;
+    GLuint* ibo;
+    bool empty = animationMap.empty();
+    //if there is no animation yet, use RenderableObject's BufferObject and copy to here
+    if(empty){
+        vao = &(this->bufferObject.vao);
+        vbo = &(this->bufferObject.vbo);
+        uvbo = &(this->bufferObject.uvbo);
+        ibo = &(this->bufferObject.ibo);
+    }
+    //else,
+    else{
+        vao = &(ani.bufferObject.vao);
+        vbo = &(ani.bufferObject.vbo);
+        uvbo = &(ani.bufferObject.uvbo);
+        ibo = &(ani.bufferObject.ibo);
+    }
+    
+    //generate vertex array object and bind it
+    glGenVertexArrays(1, vao);
+    glBindVertexArray(*vao);
+    
+    glGenBuffers(1, vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, *vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * vertexData.size(), &vertexData[0], GL_STATIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("vert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
     
-    glGenBuffers(1, &uvbo);
-    glBindBuffer(GL_ARRAY_BUFFER, uvbo);
+    glGenBuffers(1, uvbo);
+    glBindBuffer(GL_ARRAY_BUFFER, *uvbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * uvVertexData.size(), &uvVertexData[0], GL_STATIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("uvVert"), 2, GL_FLOAT, GL_FALSE, 0, NULL);
     
-    glGenBuffers(1, &ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glGenBuffers(1, ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), &indicesData[0], GL_STATIC_DRAW);
+    
+    ani.bufferObject = BufferObject({*vao, *vbo, *uvbo, *ibo});
     
     glBindVertexArray(0);
 }
 
-//void SpriteAnimation::updateFrame(){
-//    double elapsedTime = Timer::getInstance().getElapsedTime();
-//    double nextTime = currentTime + elapsedTime;
-//    if(elapsedTime < 0)
-//        return;
-//    
-//    if(nextTime > frameInterval){
-//        //display next frame
-//        currentFrameIndex++;
-//
-//        if(currentFrameIndex >= frameListSize){
-//            currentFrameIndex = 0;
-//        }
-//        currentTime = nextTime;
-//        currentTime -= frameInterval;
-//    }
-//    else{
-//        currentTime = nextTime;
-//    }
-//}
-
 void SpriteAnimation::render(){
-//    textureList.at(currentFrameIndex)->bind(GL_TEXTURE0);
-//    
-//    GLint modelUniformLocation = glGetUniformLocation(progPtr->getObject(), "modelMat");
-//    if(modelUniformLocation == -1)
-//        throw std::runtime_error( std::string("Program uniform not found: " ) + "modelMat");
-//    
-////    if(actionRunning)
-////        updateFromSpriteAction();
-//    
-//    updateMatrix();
-//    
-//    translateMat = glm::translate(glm::mat4(), glm::vec3((position.x - 640) / 10, (position.y - 360) / 10, 0));
-//    
-//    glm::mat4 parentMat = glm::mat4();
-//    if(this->parent)
-//        parentMat = this->parent->getTransformMat();
-////    glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, &parentMat[0][0]);
-//    
-//    matrixUniformLocation("parentMat", parentMat);
-//    matrixUniformLocation("modelMat", modelMat);
-//    
-//    GLint opacityUniformLocation = glGetUniformLocation(progPtr->getObject(), "opacity");
-//    if(opacityUniformLocation == -1)
-//        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
-//    glUniform1fv(opacityUniformLocation, 1, &opacity);
-//    
-//    GLint particleUniformLocation = glGetUniformLocation(progPtr->getObject(), "particle");
-//    if(particleUniformLocation == -1)
-//        throw std::runtime_error( std::string("Program uniform not found: " ) + "opacity");
-//    glUniform1i(particleUniformLocation, 0);
-//    
-//    glBindVertexArray(vao);
-//    glEnableVertexAttribArray(progPtr->attrib("vert"));
-//    glEnableVertexAttribArray(progPtr->attrib("uvVert"));
-//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+    if(!visible){
+        return;
+    }
+    
+    //return if object runs no animation
+    if(runningAnimationName.empty()){
+        return;
+    }
+    
+    //find animation
+    auto ani_it = animationMap.find(runningAnimationName);
+    if(ani_it == animationMap.end()){
+        //if can't find animation, return
+        return;
+    }
+    
+    auto animation = ani_it->second;
+    //if texture doesn't exist for this animation, don't render
+    if(!animation.textureAtlas){
+        return;
+    }
+    
+    //bind program
+    glUseProgram(progPtr->getObject());
+    
+    double elapsedTime = Timer::getInstance().getElapsedTime();
+    animation.intervalCounter += elapsedTime;
+    
+    if(animation.intervalCounter >= animation.interval){
+        animation.intervalCounter -= animation.interval;
+        animation.currentFrameIndex++;
+        if(animation.currentFrameIndex >= animation.size){
+            animation.currentFrameIndex = 0;
+        }
+    }
+    
+    int currentFrameIndex = animation.currentFrameIndex;
+    
+    //check texture
+    if((animation).textureAtlas->canBoundThisTexture()){
+        (animation).textureAtlas->bindArray();
+    }
+    
+    //camera
+    glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
+    matrixUniformLocation("cameraMat", cameraMat);
+    
+    glm::mat4 parentMat = glm::mat4();
+    if(this->parent)
+        parentMat = this->parent->getTransformMat();
+    
+    matrixUniformLocation("parentMat", parentMat);
+    matrixUniformLocation("modelMat", modelMat);
+    matrixUniformLocation("rotateMat", rotateMat);
+    matrixUniformLocation("translateMat", translateMat);
+    matrixUniformLocation("scaleMat", scaleMat);
+    floatUniformLocation("opacity", opacity);
+    intUniformLocation("layer", currentFrameIndex);
+    
+    //bind vertex array.
+    glBindVertexArray(animation.bufferObject.vao);
+    
+    //enable attribs
+    glEnableVertexAttribArray(progPtr->attrib("vert"));
+    glEnableVertexAttribArray(progPtr->attrib("uvVert"));
+    
+    //draw based on indices
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+    glBindVertexArray(0);
+    glUseProgram(0);
 }
+
+void SpriteAnimation::playAnimation(string name){
+    this->stopAnimation();
+    this->runningAnimationName = name;
+}
+
+void SpriteAnimation::stopAnimation(){
+    auto animation = animationMap[this->runningAnimationName];
+    animation.currentFrameIndex = 0;
+    animation.intervalCounter = 0;
+    this->runningAnimationName.clear();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// :)
