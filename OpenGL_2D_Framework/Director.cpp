@@ -524,18 +524,18 @@ SpriteSheet* const Director::getSpriteSheet(std::string frameName){
 void Director::cacheSpriteSheet(std::string frameName, SpriteSheet *spriteSheet){
     auto find_it = spriteSheets.find(frameName);
     if(find_it == spriteSheets.end()){
-        cout << "[System] Caching \"" << frameName << "\" sprite sheet." << endl;
+        cout << "[System::INFO] Caching \"" << frameName << "\" sprite sheet." << endl;
         spriteSheets[frameName] = spriteSheet;
     }
     else{
-        cout << "[System Error] Same name(\"" << frameName << "\") of sprite sheet already exists." << endl;
+        cout << "[SYSTEM::ERROR] Same name(\"" << frameName << "\") of sprite sheet already exists." << endl;
     }
 }
 
 void Director::unCacheSpriteSheet(std::string frameName){
     auto find_it = spriteSheets.find(frameName);
     if(find_it == spriteSheets.end()){
-        cout << "[System] No sprite sheet entry called \"" << frameName << "\" found." << endl;
+        cout << "[SYSTEM::ERROR] No sprite sheet entry called \"" << frameName << "\" found." << endl;
     }
     else{
         spriteSheets.erase(find_it);

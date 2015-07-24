@@ -27,7 +27,8 @@ void SpriteSheet::createSpriteSheet(std::string frameName, const char *textureNa
             Director::getInstance().cacheSpriteSheet(frameName, newSpriteSheet);
         }
         else{
-            cout << "[System Error] Failed to initialize sprite sheet." << endl;
+            cout << "[SYSTEM::ERROR] Failed to initialize sprite sheet." << endl;
+            delete newSpriteSheet;
         }
     }
 }
@@ -90,7 +91,7 @@ bool SpriteSheet::initSpriteSheetWithXML(std::string texturePath, std::string xm
         return true;
     }
     else{
-        cout << "[System Error] Sprite sheet XML data file \"" << xmlFileName << "\" does not exist" << endl;
+        cout << "[SYSTEM::ERROR] Sprite sheet XML data file \"" << xmlFileName << "\" does not exist" << endl;
         return false;
     }
 }

@@ -46,13 +46,13 @@ SpriteAnimation* SpriteAnimation::createWithAnimation(string objectName,
 {
     //check frame size. reject with
     if(frameSize <= 0){
-        cout << "[System] SpriteAnimation must have at least one frame." << endl;
+        cout << "[SYSTEM::ERROR] SpriteAnimation must have at least one frame." << endl;
         return nullptr;
     }
     else{
         SpriteAnimation* newSpriteAnimation = new SpriteAnimation();
         if(frameInterval < 0){
-            cout << "[System] SpriteAnimation can not have frame interval less than 0. Setting to minimum value 0.01f" << endl;
+            cout << "[SYSTEM::WARNING] SpriteAnimation can not have frame interval less than 0. Setting to minimum value 0.01f" << endl;
             frameInterval = 0.01f;
         }
         
@@ -61,7 +61,7 @@ SpriteAnimation* SpriteAnimation::createWithAnimation(string objectName,
             return newSpriteAnimation;
         }
         else{
-            cout << "[System] Failed to initialize SpriteAnimation \"" << objectName << "\"." << endl;
+            cout << "[SYSTEM::ERROR] Failed to initialize SpriteAnimation \"" << objectName << "\"." << endl;
             return nullptr;
         }
     }
