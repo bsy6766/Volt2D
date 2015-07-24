@@ -10,7 +10,6 @@
 #define __OpenGL_2D_Framework__Texture__
 
 #include <GL/glew.h>
-#include <string>
 #include <vector>
 #include <stdio.h>
 #include <stdexcept>
@@ -154,8 +153,6 @@ private:
      * @param fileName a const string represents the name of file(image)
      */
     Texture(GLenum textureTarget, const std::string& fileName);
-    
-    int findNearestPowTwo(unsigned int num);
 public:
     /**
      *  Create texture with image file.

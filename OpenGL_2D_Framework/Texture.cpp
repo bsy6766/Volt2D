@@ -101,7 +101,7 @@ void Texture::initTexture(){
 //    //all channel must match
 //    int channel = -1;
 //    
-//    //* \todo Break down texture size if it's too wide
+//    // ß\todo Break down texture size if it's too wide
 //    
 //    for(int i = 0; i < size; i++){
 //        int width;
@@ -195,8 +195,8 @@ void Texture::initTextureArray(int layer){
     assert(height >= 0);
     //find neareast power of 2 for width
     
-    this->width = this->findNearestPowTwo(width);
-    this->height = this->findNearestPowTwo(height);
+    this->width = CI::findNearestPowTwo(width);
+    this->height = CI::findNearestPowTwo(height);
     
     //generate empty texture
     this->generate2DArrayTexture(this->width, this->height, layer, this->channel);
@@ -223,17 +223,6 @@ void Texture::initTextureArray(int layer){
     }
     
     this->textureLocation = glGetUniformLocation(Director::getInstance().getProgramPtr()->getObject(), "texArray");
-}
-
-int Texture::findNearestPowTwo(unsigned int num){
-    num--;
-    num |= num >> 1;
-    num |= num >> 2;
-    num |= num >> 4;
-    num |= num >> 8;
-    num |= num >> 16;
-    num++;
-    return num;
 }
 
 void Texture::bind(GLenum textureUnit, int uniform){

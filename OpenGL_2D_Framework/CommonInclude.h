@@ -16,10 +16,38 @@
 
 using std::cout;
 using std::endl;
+
 using std::string;
 
 using glm::vec3;
 using glm::vec2;
 using glm::mat4;
+
+namespace CI{
+    /**
+     * Computes random number between the range.
+     * This function handles all type of number
+     */
+    template<typename Type>
+    Type computeRandom(Type min, Type max){
+        Type randVal = (Type)rand() / RAND_MAX;
+        return min + randVal * (max - min);
+    }
+    
+    /**
+     *  Find nearest power of two from passed number.
+     */
+    int findNearestPowTwo(unsigned int num){
+        num--;
+        num |= num >> 1;
+        num |= num >> 2;
+        num |= num >> 4;
+        num |= num >> 8;
+        num |= num >> 16;
+        num++;
+        return num;
+    }
+}
+
 
 #endif /* defined(__OpenGL_2D_Framework__CommonInclude__) */
