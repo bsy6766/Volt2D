@@ -8,9 +8,6 @@
 
 #include "TitleScene.h"
 
-using std::cout;
-using std::endl;
-
 TitleScene::TitleScene():
 bg(0),
 titleButtonLayer(0)
@@ -90,6 +87,8 @@ void TitleScene::init(){
     
     character = SpriteAnimation::createWithAnimation("character", "run", "title scene/run.png", 8, 0.1);
     character->setZDepth(999);
+//    character->addActions({delay, rotateTo}, 0);
+//    character->runAction();
     this->addChild(character);
     
     initLayers();

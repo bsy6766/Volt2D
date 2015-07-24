@@ -9,9 +9,6 @@
 #ifndef __OpenGL_2D_Framework__TitleScene__
 #define __OpenGL_2D_Framework__TitleScene__
 
-#include <stdio.h>
-#include <iostream>
-
 #include "Scene.h"
 #include "Sprite.h"
 #include "FontManager.h"
