@@ -147,6 +147,7 @@ const Color Color::LIGHTGRAY = Color(211, 211, 211, 255);
 const Color Color::GAINSBORO = Color(220, 220, 220, 255);
 const Color Color::WHITESMOKE = Color(245, 245, 245, 255);
 const Color Color::WHITE = Color(255, 255, 255, 255);
+const Color Color::NONE = Color(0, 0, 0, 0);
 
 Color::Color(float r, float g, float b, float a)
 {

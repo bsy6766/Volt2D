@@ -255,6 +255,7 @@ public:
     static const Color GAINSBORO;
     static const Color WHITESMOKE;
     static const Color WHITE;
+    static const Color NONE;
     ///@}
 };
 
