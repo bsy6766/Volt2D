@@ -9,7 +9,6 @@
 #ifndef __OpenGL_2D_Framework__Scene__
 #define __OpenGL_2D_Framework__Scene__
 
-#include "CommonInclude.h"
 #include "Object.h"
 #include "Layer.h"
 

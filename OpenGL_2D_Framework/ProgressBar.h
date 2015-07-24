@@ -9,7 +9,6 @@
 #ifndef __OpenGL_2D_Framework__ProgressBar__
 #define __OpenGL_2D_Framework__ProgressBar__
 
-#include "CommonInclude.h"
 #include "ProgressObject.h"
 
 /**

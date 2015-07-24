@@ -195,8 +195,8 @@ void Texture::initTextureArray(int layer){
     assert(height >= 0);
     //find neareast power of 2 for width
     
-    this->width = CI::findNearestPowTwo(width);
-    this->height = CI::findNearestPowTwo(height);
+    this->width = Utility::findNearestPowTwo(width);
+    this->height = Utility::findNearestPowTwo(height);
     
     //generate empty texture
     this->generate2DArrayTexture(this->width, this->height, layer, this->channel);

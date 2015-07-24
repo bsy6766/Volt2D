@@ -9,7 +9,6 @@
 #ifndef __OpenGL_2D_Framework__Font__
 #define __OpenGL_2D_Framework__Font__
 
-#include "CommonInclude.h"
 #ifdef _WIN32
 #include <ft2build.h>
 #include FT_FREETYPE_H

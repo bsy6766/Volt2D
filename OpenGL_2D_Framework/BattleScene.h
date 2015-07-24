@@ -11,7 +11,6 @@
 
 #include "Scene.h"
 #include "Sprite.h"
-#include "CommonInclude.h"
 #include "BattleHUDLayer.h"
 
 class BattleScene : public Scene{

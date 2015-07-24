@@ -23,13 +23,13 @@ using glm::vec3;
 using glm::vec2;
 using glm::mat4;
 
-namespace CI{
+namespace Utility{
     /**
      * Computes random number between the range.
      * This function handles all type of number
      */
     template<typename Type>
-    Type computeRandom(Type min, Type max){
+    inline Type computeRandom(Type min, Type max){
         Type randVal = (Type)rand() / RAND_MAX;
         return min + randVal * (max - min);
     }
@@ -37,7 +37,7 @@ namespace CI{
     /**
      *  Find nearest power of two from passed number.
      */
-    int findNearestPowTwo(unsigned int num){
+    inline int findNearestPowTwo(unsigned int num){
         num--;
         num |= num >> 1;
         num |= num >> 2;

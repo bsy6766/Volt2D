@@ -12,7 +12,6 @@
 #include "Texture.h"
 #include "RenderableObject.h"
 #include "ProgressFromTo.h"
-#include "CommonInclude.h"
 #include "Timer.h"
 
 #define VOID_OFFSET(i) (GLvoid*)(i)

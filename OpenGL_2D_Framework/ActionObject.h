@@ -9,9 +9,8 @@
 #ifndef __OpenGL_2D_Framework__ActionObject__
 #define __OpenGL_2D_Framework__ActionObject__
 
-#include "CommonInclude.h"
 #include "Timer.h"
-#include <glm/glm.hpp>
+#include "CommonInclude.hpp"
 
 /**
  *  @class AcitonObject

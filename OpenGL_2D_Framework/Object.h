@@ -12,7 +12,7 @@
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <map>
-#include "CommonInclude.h"
+#include "CommonInclude.hpp"
 #include "BoundingBox.h"
 #include "Z_Float.h"
 

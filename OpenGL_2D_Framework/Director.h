@@ -14,7 +14,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Scene.h"
-#include "CommonInclude.h"
+#include "CommonInclude.hpp"
 
 #include "Shader.h"
 #include "Program.h"

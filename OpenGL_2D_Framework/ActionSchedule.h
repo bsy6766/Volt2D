@@ -9,7 +9,6 @@
 #ifndef __OpenGL_2D_Framework__ActionSchedule__
 #define __OpenGL_2D_Framework__ActionSchedule__
 
-#include "CommonInclude.h"
 #include "ActionObject.h"
 #include <list>
 

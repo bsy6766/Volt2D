@@ -10,7 +10,7 @@
 #define __OpenGL_2D_Framework__SoundManager__
 
 #include <map>
-#include "CommonInclude.h"
+#include "CommonInclude.hpp"
 #ifdef _WIN32
 #include <fmod.hpp>
 #include <fmod_errors.h>

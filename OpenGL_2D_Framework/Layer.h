@@ -9,7 +9,6 @@
 #ifndef __OpenGL_2D_Framework__Layer__
 #define __OpenGL_2D_Framework__Layer__
 
-#include "CommonInclude.h"
 #include "Z_Float.h"
 #include "Object.h"
 

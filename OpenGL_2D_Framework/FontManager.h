@@ -12,7 +12,6 @@
 #include "Font.h"
 #include <map>
 #include <string>
-#include "CommonInclude.h"
 #include "Director.h"
 
 /**

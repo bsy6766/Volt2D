@@ -10,8 +10,7 @@
 #define __OpenGL_2D_Framework__Camera__
 
 #include <GL/glew.h>
-#include <glm/glm.hpp>
-#include "CommonInclude.h"
+#include "CommonInclude.hpp"
 
 /**
  *  @class Camera
