@@ -291,6 +291,8 @@ bool Text::hasEmptyText(){
 }
 
 void Text::render(){
+    if(!visible) return;
+
     glUseProgram(progPtr->getObject());
     
     Font* font = FontManager::getInstance().getFont(fontName);
