@@ -129,7 +129,6 @@ void ProgressBar::render(){
     matrixUniformLocation("translateMat", translateMat);
     matrixUniformLocation("scaleMat", scaleMat);
     floatUniformLocation("opacity", opacity);
-    boolUniformLocation("particle", false);
     
     glBindVertexArray(this->bufferObject.vao);
     
