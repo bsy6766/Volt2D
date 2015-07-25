@@ -47,6 +47,54 @@ namespace Utility{
         num++;
         return num;
     }
+    
+    /**
+     *  Wrap angle with boundary between 0 and 360 degrees.
+     *  @param degree A float reference of angle in degree to wrap
+     */
+    inline void wrapAngle(float& degree){
+        if(degree >= 360){
+            while(degree >= 360){
+                degree -= 360.0;
+            }
+        }
+        else if(degree < 0){
+            while(degree < 0){
+                degree += 360;
+            }
+        }
+    }
+    
+    /**
+     *  Wrap color value with boundary between 0 and 255
+     *  @param value A float reference of color value to wrap
+     */
+    inline void wrapColor(float& value){
+        if(value > 255.0f){
+            while(value > 255.0f){
+                value -= 255.0f;
+            }
+        }
+        else if(value < 0){
+            while(value < 0){
+                value += 255.0f;
+            }
+        }
+    }
+    
+    /**
+     *  Print glm::vec2
+     */
+    inline void printVec2(vec2 point){
+        cout << "vec2 = (" << point.x << ", " << point.y << ")" << endl;
+    }
+    
+    /**
+     *  Print glm::vec3
+     */
+    inline void printVec2(vec3 point){
+        cout << "vec3 = (" << point.x << ", " << point.y <<  "<" << point.z << ")" << endl;
+    }
 }
 
 
