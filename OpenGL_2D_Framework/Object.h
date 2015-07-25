@@ -134,7 +134,7 @@ protected:
      *  Wrap angle with boundary of 0 ~ 360 in degree.
      *  @param (ref) angle A reference angle to wrap.
      */
-    void wrapAngle(GLfloat& angle);
+//    void wrapAngle(GLfloat& angle);
     
     /**
      *  Rotate to specific angle with axis
