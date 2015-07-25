@@ -9,7 +9,7 @@
 #ifndef __OpenGL_2D_Framework__Color__
 #define __OpenGL_2D_Framework__Color__
 
-#include <glm/glm.hpp>
+#include "CommonInclude.hpp"
 
 /**
  *  @class Color
@@ -17,12 +17,7 @@
  *  @note Java's enum class-ish class.
  */
 class Color{
-private:
-    /**
-     *  Limit color value between 0 to 255
-     */
-    void wrapColorBoundary(float& color);
-    
+private:    
     /**
      *  Red
      */
@@ -47,6 +42,12 @@ private:
     Color(float r, float g, float b, float a);
     
 public:
+    /**
+     *  Create color with specific RGBA value.
+     *  @return Color instance
+     */
+    static Color createWithRGBA(float r, float g, float b, float a);
+   
     /**
      *  Get red color value
      *  @return Red color value for this color

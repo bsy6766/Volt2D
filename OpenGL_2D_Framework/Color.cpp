@@ -157,30 +157,27 @@ Color::Color(float r, float g, float b, float a)
     setA(a);
 }
 
-void Color::wrapColorBoundary(float &color){
-    if(color > 255.0)
-        color = 255;
-    else if(color < 0)
-        color = 0;
+Color Color::createWithRGBA(float r, float g, float b, float a){
+    return Color(r,g,b,a);
 }
 
 void Color::setR(float r){
-    wrapColorBoundary(r);
+    Utility::wrapColor(r);
     this->r = r;
 }
 
 void Color::setG(float g){
-    wrapColorBoundary(g);
+    Utility::wrapColor(g);
     this->g = g;
 }
 
 void Color::setB(float b){
-    wrapColorBoundary(b);
+    Utility::wrapColor(b);
     this->b = b;
 }
 
 void Color::setA(float a){
-    wrapColorBoundary(a);
+    Utility::wrapColor(a);
     this->a = a;
 }
 
