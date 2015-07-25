@@ -19,7 +19,9 @@
 #include "Director.h"
 #include "TitleScene.h"
 
-//#include "SpriteSheet.h"
+
+//test
+#include "LuaConfig.h"
 
 void splitFilename (std::string& str)
 {
@@ -42,7 +44,7 @@ int main(int argc, const char * argv[]) {
         
 #if DEBUG
 #else
-        Director::getInstance().setWorkingDir(wd);
+//        Director::getInstance().setWorkingDir(wd);
 #endif
 
         cout << "wd = " << wd << endl;
@@ -61,17 +63,29 @@ int main(int argc, const char * argv[]) {
     std::string runningPath(cCurrentPath);
     std::cout << "The current working directory is " << runningPath << std::endl;
     
-    std::string windowTitle = "opengl 2d framework";
+
+    LuaConfig* systemConfig = LuaConfig::create("systemConfig");
+    systemConfig->loadConfig("system", runningPath + "/../config.lua");
+    int screenWidth = systemConfig->getFloat("system", "window.size.screenWidth");
+    int screenHeight = systemConfig->getFloat("system", "window.size.screenHeight");
+    std::string windowTitle = systemConfig->getString("system", "window.title");
+//    systemConfig->loadConfig("level1", runningPath + "/../config.lua");
+//    systemConfig->loadConfig("level2", runningPath + "/../config.lua");
+//    cout << "w = " << systemConfig->getFloat("system", "window.size.screenWidth") << endl;
+//    cout << "h = " << systemConfig->getFloat("system", "window.size.screenHeight") << endl;
+//    cout << "title = " << systemConfig->getString("system", "window.title") << endl;
+//    cout << "fullscreen = " << systemConfig->getBoolean("system", "window.fullsize") << endl;
+//    cout << "windowed = " << systemConfig->getBoolean("system", "window.windowed") << endl;
+//    cout << "borderless = " << systemConfig->getBoolean("system", "window.borderless") << endl;
+//    cout << "Level1 name = " << systemConfig->getString("level1", "name") << endl;
+//    cout << "level2 = " << systemConfig->getString("level2", "");
+    delete systemConfig;
     
-//    int result = chdir(runningPath.c_str());
     
-//    SpriteSheet* ss = new SpriteSheet();
-//    ss->initSpriteSheetWithXML("battle scene.xml");
-//    delete ss;
-    
-    Director::getInstance().setWindowSize(1440, 900);
+
+//    Director::getInstance().setWindowSize(1440, 900);
     try{
-        Director::getInstance().initApp(1440, 900, "JB_Engine(OpenGL4) test game build");
+        Director::getInstance().initApp(screenWidth, screenHeight, windowTitle);
         TitleScene* titleScene = new TitleScene();
         Director::getInstance().pushScene(titleScene);
         Director::getInstance().run();
