@@ -87,9 +87,13 @@ void TitleScene::init(){
     
     character = SpriteAnimation::createWithAnimation("character", "run", "title scene/run.png", 8, 0.1);
     character->setZDepth(999);
+    character->addPosition(glm::vec3(0, -100, 0));
 //    character->addActions({delay, rotateTo}, 0);
 //    character->runAction();
     this->addChild(character);
+    
+    ps = ParticleSystem::createWithLuaConfig("testParticle", "testParticle.lua");
+    this->addChild(ps);
     
     initLayers();
 }

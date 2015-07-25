@@ -22,6 +22,7 @@
 #include "ActionMoveTo.h"
 #include "Text.h"
 #include "SpriteAnimation.h"
+#include "ParticleSystem.h"
 
 #include "TitleButtonLayer.h"
 
@@ -32,6 +33,7 @@ private:
     Sprite* title;
     Sprite* version;
     SpriteAnimation* character;
+    ParticleSystem* ps;
     
     TitleButtonLayer* titleButtonLayer;
     
