@@ -119,7 +119,6 @@ void Sprite::render(){
     matrixUniformLocation("translateMat", translateMat);
     matrixUniformLocation("scaleMat", scaleMat);
     floatUniformLocation("opacity", opacity);
-    boolUniformLocation("particle", false);
     
     //bind vertex array.
     glBindVertexArray(this->bufferObject.vao);
