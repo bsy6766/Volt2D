@@ -55,9 +55,10 @@ Director::~Director(){
     }
     glfwTerminate();
     
-//    SoundManager::getInstance().terminateSoundManager();
-    soundManager->release();
-    delete soundManager;
+    if(soundManager){
+        soundManager->release();
+        delete soundManager;
+    }
     //delete all remaing scenes
     if(runningScene)
         delete runningScene;
