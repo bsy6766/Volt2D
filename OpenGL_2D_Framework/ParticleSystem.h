@@ -21,8 +21,9 @@
 #include "Color.h"
 #include "LuaConfig.h"
 
+const float POWER_SCALE = 10;
 const int MAX_PARTICLE_COUNT = 1000;
-const float GRAVITY = 9.81;
+//const float GRAVITY = 9.81;
 
 /**
  *  @class ParticleSystem
@@ -35,95 +36,242 @@ private:
     /// @{
     /// @name Particle system attributes
     
-//    int totalParticleCount;
-    int size;
-    int totalCreatedParticles;
-    int livingParticleNum;
-    int liveCount;
+    /**
+     *  Position Variance. Applies to current position of object.
+     */
+    glm::vec3 posVar;
     
-    //-1 = inifnity
+    /**
+     *  Blending option
+     *  true if blends between particles
+     *  false if render based on z depth
+     *  Default blending mode for particle system is GL_SRC_ALPHA and GL_ONE for src and dest.
+     */
+    bool blend;
+    
+    /**
+     *  Particle size. Can't be less than 0
+     */
+    int size;
+    
+    /**
+     *  Total number of particle created ever since particle system started.
+     */
+    int totalCreatedParticles;
+    
+    /**
+     *  Number of particle currently alive in particle system.
+     */
+    int livingParticleNum;
+    
+    /**
+     *  Duration of system. -1 means infinite.
+     */
     double duration;
+    
+    /**
+     *  Total elapsed time of this system. If exceeds duration, it stops creating particles unless duration is -1
+     */
     double totalElapsedTime;
     
+    /**
+     *  Stating color of each particle.
+     */
     Color startColor;
+    
+    /**
+     *  Variance for starting color
+     */
     Color startColorVar;
     
+    /**
+     *  Ending color of each particle
+     */
     Color endColor;
+    
+    /**
+     *  Variance for ending color
+     */
     Color endColorVar;
-    //applying color to each particle
+    
+    /**
+     *  true if you want to apply color values to each particle. Else, false.
+     *  Set false to display each particle's texture with out adding color on it if texture is sprite.
+     */
     bool applyColor;
-    bool applyOpacity;
     
+    /**
+     *  Base speed of each particle. Used to compute direction vector for each particle
+     */
     float speed;
+    
+    /**
+     *  Variance for speed
+     */
     float speedVar;
-
+    
+    /**
+     *  Gravity for x coordinates. Positive value applies gravity from left to right and vice versa for negative value.
+     */
     float gravityX;
-    float gravityXVar;
     
+    /**
+     *  Gravity for y coordinates. Positive value applies gravity from top to bottom and vice versa for negative value
+     */
     float gravityY;
-    float gravityYVar;
     
+    /**
+     *  Tangential acceleration. Perpendicular to particle's direction.
+     */
     float tanAccel;
+    
+    /**
+     *  Varaince for tangential acceleration.
+     */
     float tanAccelVar;
     
+    /**
+     *  Radial acceleration. Positive value pushes away from spawned position, negative calue pulls particle to spawned position.
+     */
     float radialAccel;
+    
+    /**
+     *  Variance for radial acceleration
+     */
     float radialAccelVar;
     
-    //total particle number spawn per sec
+    /**
+     *  Number of particle created per second.
+     */
     float emissionRate;
-    //default: 0 degree (point north)
+    
+    /**
+     *  Angle of direction in degree for particle's movement.
+     */
     float emitAngle;
+    
+    /**
+     *  Variance for emission angle.
+     */
     float emitAngleVar;
     
-    //size
+    /**
+     *  Starting size. 
+     *  Min = 0, Max = 255.
+     *  Each particle will be scaled based on value.
+     *  Default particles' texture are 256 pixels wide and long.
+     */
     float startSize;
+    
+    /**
+     *  Variance for starting size
+     */
     float startSizeVar;
     
+    /**
+     *  Ending size. Same as starting size.
+     */
     float endSize;
+    
+    /**
+     *  Variance for ending size.
+     */
     float endSizeVar;
     
-    //life time + rand
+    /**
+     *  Duration of each particle's life.
+     */
     double lifeTime;
+    
+    /**
+     *  Variance for life time.
+     */
     double lifeTimeVar;
     /// @}
     
     /// @{
     /// @name PartcielSystem datas
     
+    /**
+     *  Stores all particle.
+     */
     std::list<Particle*> particleList;
     
+    /**
+     *  Texture for each particle. 
+     *  Default textures available.
+     */
     Texture *texture;
-    bool usingDefaultTexture;
     
-    GLuint vpbo;    //extra buffer for instancing
+    /**
+     *  Particle's position data buffer object
+     */
+    GLuint vpbo;
+    
+    /**
+     *  Particle's color data buffer object
+     */
+    GLuint cbo;
+    
+    /**
+     *  Particle's size(scale) data buffer object
+     */
+    GLuint sbo;
     
     /// @}
 
     //Private constructor
     ParticleSystem();
     
-	//accumulative new life point.
-	//if it gets bigger than 0, add new particle and keep the fractional point.
-	//else, keep build up the point
+    /**
+     *  Life point storage on this system
+     *  Since elapsed time always varies and not meseaured is second, particle might not always spawn on each iteration.
+     *  If so, we store partial value of emission rate based on elapsed time.
+     *  If this exceeds 1, then we spawn particle based on this point value, excluding floating point.
+     */
 	float newLifePoint;
 
     /**
      * Initialize particle's texture.
-     * If this function isn't called(or if texture isn't set),
-     * then the particle system use default texture(circle).
+     * @param textureName Name for particle's texture file. Default is set to blurred circle texture.
+     *  @param target A texture target
      */
     void initCustomTexture(string textureName = "system/default_particle.png", GLenum target = GL_TEXTURE_2D);
     
+    /**
+     *  Initialize texture with default texture
+     *  Default: Blurred circle.
+     */
     void initDefaultTexture();
     
+    /**
+     *  Initialize with size only. 
+     *  Uses default texture
+     */
     void initWithSize(int size);
     
-    bool initWithLua(string xmlFileName);
+    /**
+     *  Initialize with Lua script.
+     *  @param luaFileName A file name for lua script
+     *  @note Default texture is used if texture name is empty.
+     */
+    bool initWithLua(string luaFileName);
     
+    /**
+     *  Compute particle's vertex data
+     */
     void computeVertexData();
     
+    /**
+     *  Load vertex.
+     *  Particle's position data, color data, and size data is initialized with blank buffer.
+     */
     void loadVertexData();
     
+    /**
+     *  Initialize system's variables. 
+     *  @return false if fails to initialize or condition doesn't meet.
+     */
     bool initialize();
 public:
     //Destructor
@@ -131,6 +279,8 @@ public:
     
     /**
      *  Create particle system
+     *  @param objectName Object's name
+     *  @param size Particle size for this system.
      */
     static ParticleSystem* createWithSize(string objectName, int size = 0);
     
@@ -140,27 +290,6 @@ public:
      *  @param fileName Lua script file name
      */
     static ParticleSystem* createWithLuaConfig(string objectName, string fileName);
-    
-	/**
-	* Particle system initializer
-	* @param duration the duration of the particle system
-	* @param lifeTime the base life time of single particle
-	* @param lifeTimeVar the range between maximum and minimum variance of life time
-	* @param speed the movement speed of single particle
-	* @param speedVar the range between maximum and minimum variance of speed
-	* @param emitAngle the particle's emitting direction(degree angle)
-	*/
-//	void initParticleSystem(
-//                            double duration,
-//                            double lifeTime,
-//                            double lifeTimeVar,
-//                            float speed,
-//                            float speedVar,
-//                            double emitAngle,
-//                            double emitAngleVar,
-//                            float gravityX,
-//                            float gravityY
-//                            );
     
     /**
      * Render particles. 
@@ -180,7 +309,8 @@ public:
      */
     bool isDead();
     
-    
+    /// @{
+    /// @name Setters
     void setDuration(double duration);
     void setStartColor(Color color);
     void setStartColorVar(Color color);
@@ -204,7 +334,7 @@ public:
     void setEmitAngleVar(float angle);
     void setLifeTime(float lifeTime);
     void setLifeTimeVar(float lifeTime);
-    
+    /// @}
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ParticleSystem__) */
