@@ -53,13 +53,17 @@ LuaConfig* LuaConfig::create(std::string configName){
     return newConfig;
 }
 
-void LuaConfig::loadConfig(std::string key, std::string fileName){
+bool LuaConfig::loadConfig(std::string key, std::string fileName){
     //create new lua state
     lua_State* L = luaL_newstate();
     //open lua libraries
     luaL_openlibs(L);
     //do file
-    luaL_dofile(L, fileName.c_str());
+    int error = luaL_dofile(L, fileName.c_str());
+    if(error){
+        cout << "[SYSTEM::ERROR] Failed to load \"" << fileName << "\"." << endl;
+        return false;
+    }
     //iterate through script
     lua_getglobal(L, key.c_str());
     if(lua_istable(L, 1)){
@@ -82,6 +86,7 @@ void LuaConfig::loadConfig(std::string key, std::string fileName){
         }
     }
     lua_close(L);
+    return true;
 }
 
 bool LuaConfig::readLuaTable(lua_State* L, std::string key, std::list<std::string>& keyChain){

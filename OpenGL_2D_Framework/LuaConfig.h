@@ -21,6 +21,9 @@ extern "C"{
 #include <lauxlib.h>
 }
 
+using std::cout;
+using std::endl;
+
 class DataObject{
 public:
     enum DO_TYPE{
@@ -101,7 +104,7 @@ private:
     void addNode(std::list<std::string>& keyChain, Node* newNode);
 public:
     static LuaConfig* create(std::string configName);
-    void loadConfig(std::string key, std::string fileName);
+    bool loadConfig(std::string key, std::string fileName);
     
     ~LuaConfig();
     
