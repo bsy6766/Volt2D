@@ -57,17 +57,17 @@ void TitleScene::init(){
 //    delete moveIt;
     
 //    title = Sprite::createSprite("titleSceneTitle", "title scene/title.png");
-    title = Sprite::createSpriteWithFrameName("titleSceneTitle", "titleSceneSpriteSheet", "title.png");
-    title->setZDepth(z_title);
-    title->setY(170);
-//    auto delay = ActionDelay::createDelay(2);
-//    auto rotateTo = ActionRotateTo::createRotateTo(1, 80, RotationType::LEFT);
-//    auto rotateTo2 = ActionRotateTo::createRotateTo(1, 40);
-//    auto print = ActionCallFunc::createCallFunc(std::bind(&TitleScene::printAngle, this));
-//    title->addActions({delay, print, rotateTo, print, delay, rotateTo2, print, delay, rotateTo, print, delay, rotateTo2, print}, 0);
-//    title->runAction();
-//    delete rotateTo;
-    this->addChild(title);
+//    title = Sprite::createSpriteWithFrameName("titleSceneTitle", "titleSceneSpriteSheet", "title.png");
+//    title->setZDepth(z_title);
+//    title->setY(170);
+////    auto delay = ActionDelay::createDelay(2);
+////    auto rotateTo = ActionRotateTo::createRotateTo(1, 80, RotationType::LEFT);
+////    auto rotateTo2 = ActionRotateTo::createRotateTo(1, 40);
+////    auto print = ActionCallFunc::createCallFunc(std::bind(&TitleScene::printAngle, this));
+////    title->addActions({delay, print, rotateTo, print, delay, rotateTo2, print, delay, rotateTo, print, delay, rotateTo2, print}, 0);
+////    title->runAction();
+////    delete rotateTo;
+//    this->addChild(title);
     
     version = Sprite::createSprite("titleSceneTitle", "title scene/version.png");
     version->setZDepth(z_title);
@@ -87,13 +87,23 @@ void TitleScene::init(){
     
     character = SpriteAnimation::createWithAnimation("character", "run", "title scene/run.png", 8, 0.1);
     character->setZDepth(999);
-    character->addPosition(glm::vec3(0, -100, 0));
+    character->addPosition(glm::vec3(-100, -100, 0));
 //    character->addActions({delay, rotateTo}, 0);
 //    character->runAction();
     this->addChild(character);
     
     ps = ParticleSystem::createWithLuaConfig("testParticle", "testParticle.lua");
-    this->addChild(ps);
+    ps->setPosition(vec3(-400, 0, 0));
+    
+    flame = ParticleSystem::createWithLuaConfig("flameParticle", "flame.lua");
+    flame->setPosition(vec3(-200, 0, 0));
+    
+    blueMeteor = ParticleSystem::createWithLuaConfig("blueMeteorParticle", "blueMeteor.lua");
+    blueMeteor->setPosition(vec3(0, 0, 0));
+    
+    muhanDojun = ParticleSystem::createWithLuaConfig("muhanDojunParticle", "muhanDojun.lua");
+    muhanDojun->setPosition(vec3(300, 100, 0));
+//    this->addChild(ps);
     
     initLayers();
 }
@@ -131,6 +141,20 @@ void TitleScene::update(){
 }
 
 void TitleScene::keyPressed(int key, int mods){
+    if(key == GLFW_KEY_B){
+        ps->addPosition(vec3(100, 0, 0));
+    }
+    else if(key == GLFW_KEY_V){
+        ps->addPosition(vec3(-100, 0, 0));
+    }
+    
+    if(key == GLFW_KEY_PERIOD){
+        this->addChild(ps);
+        this->addChild(flame);
+        this->addChild(blueMeteor);
+        this->addChild(muhanDojun);
+    }
+    
     if(key == GLFW_KEY_P){
         glm::vec3 bgpos = bg->getPosition();
         cout << bgpos.x << " " << bgpos.y << " " << bgpos.z << endl;
@@ -185,6 +209,20 @@ void TitleScene::keyPressed(int key, int mods){
         }
     }
 	Scene::keyPressed(key, mods);
+}
+
+//void TitleScene::mouseMove(double x, double y){
+//    ps->emitPos = glm::vec3(x, y, 0);
+//    cout << "emit pos = ";
+//    Utility::printVec2(ps->emitPos);
+//    cout << "mouse pos = ";
+//    Utility::printVec2(vec2(x, y));
+//    Scene::mouseMove(x, y);
+//}
+
+void TitleScene::mouseButton(double x, double y, int button, int action){
+//    ps->setPosition(glm::vec3(x, y, 0));
+    Scene::mouseButton(x, y, button, action);
 }
 
 void TitleScene::injectKey(){

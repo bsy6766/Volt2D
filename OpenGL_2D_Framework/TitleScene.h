@@ -34,6 +34,9 @@ private:
     Sprite* version;
     SpriteAnimation* character;
     ParticleSystem* ps;
+    ParticleSystem* flame;
+    ParticleSystem* blueMeteor;
+    ParticleSystem* muhanDojun;
     
     TitleButtonLayer* titleButtonLayer;
     
@@ -55,7 +58,7 @@ public:
     virtual void exit();
 	virtual void keyPressed(int key, int mode);
 //    virtual void keyReleased(int key, int mode);
-//    virtual void mouseButton(double x, double y, int button, int action);
+    virtual void mouseButton(double x, double y, int button, int action);
 //    virtual void mouseMove(double x, double y);
     
     virtual void injectKey();
