@@ -19,6 +19,7 @@ using std::endl;
 
 using std::string;
 
+using glm::vec4;
 using glm::vec3;
 using glm::vec2;
 using glm::mat4;
@@ -29,7 +30,7 @@ namespace Utility{
      * This function handles all type of number
      */
     template<typename Type>
-    inline Type computeRandom(Type min, Type max){
+    inline Type randRange(Type min, Type max){
         Type randVal = (Type)rand() / RAND_MAX;
         return min + randVal * (max - min);
     }
@@ -71,14 +72,16 @@ namespace Utility{
      */
     inline void wrapColor(float& value){
         if(value > 255.0f){
-            while(value > 255.0f){
-                value -= 255.0f;
-            }
+//            while(value > 255.0f){
+//                value -= 255.0f;
+//            }
+            value = 255.0f;
         }
         else if(value < 0){
-            while(value < 0){
-                value += 255.0f;
-            }
+//            while(value < 0){
+//                value += 255.0f;
+//            }
+            value = 0;
         }
     }
     
@@ -92,8 +95,15 @@ namespace Utility{
     /**
      *  Print glm::vec3
      */
-    inline void printVec2(vec3 point){
-        cout << "vec3 = (" << point.x << ", " << point.y <<  "<" << point.z << ")" << endl;
+    inline void printVec3(vec3 point){
+        cout << "vec3 = (" << point.x << ", " << point.y <<  ", " << point.z << ")" << endl;
+    }
+    
+    /**
+     *  Print glm::vec4
+     */
+    inline void printVec4(vec4 point){
+        cout << "vec3 = (" << point.r << ", " << point.g <<  ", " << point.b << ", " << point.a << ")" << endl;
     }
 }
 
