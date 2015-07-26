@@ -10,15 +10,27 @@
 #define __OpenGL_2D_Framework__Particle__
 
 #include "CommonInclude.hpp"
+#include "Color.h"
 
 class Particle{
 private:
+    /**
+     * Color
+     */
+    Color startColor;
+    Color endColor;
+    glm::vec4 colorDiff;
 public:
     //defualt
     Particle();
     
     //Destructor
     ~Particle();
+    
+    /**
+     *
+     */
+    Color getCurColor();
     
     /**
      *  Particle's life. True if dead
@@ -65,6 +77,8 @@ public:
      *  Tangential acceleration. Power applies perpenticullar to particle's direction
      */
     float tanAccel;
+    
+    void setColor(Color start, Color end);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Particle__) */
