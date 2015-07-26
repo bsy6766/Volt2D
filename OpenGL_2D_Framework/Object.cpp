@@ -19,7 +19,8 @@ translateMat(glm::mat4()),
 rotateMat(glm::mat4()),
 scaleMat(glm::mat4()),
 angle(0),
-scale(glm::vec3(1, 1, 1))
+scale(glm::vec3(1, 1, 1)),
+alive(true)
 {
     cout << "Object::Object()" << endl;
 }
@@ -180,16 +181,18 @@ bool Object::addChild(Object *child, Object *parent, bool replace){
     //LUT
     if(obj_it == childObjectLUT.end()){
         //no object exists with same name. remove
-        cout << "Adding object named \"" << child->objectName << "\" to system." << endl;
+        cout << "[SYSTEM::INFO] Adding object named \"" << child->objectName << "\" to system." << endl;
     }
     else{
         if(replace){
-            cout << "Replacing existing object named \"" << child->objectName << "\"." << endl;
+            cout << "[SYSTEM::INFO] Replacing existing object named \"" << child->objectName << "\"." << endl;
             //remove exsiting name on LUT
             childObjectLUT.erase(obj_it);
             //remove from manager
         }
         else{
+            cout << "[SYSTEM::ERROR] Object with same name already exists." << endl;
+            return false;
         }
     }
     
@@ -256,11 +259,17 @@ void Object::updateChild(){
             childObjMap.erase(it);
         }
         else{
-            //first, update it self so child can have updated parent.
-            (it->second)->update();
-            //update child's child
-            (it->second)->updateChild();
-            ++it;
+            if((it->second)->isDead()){
+                delete (it->second);
+                childObjMap.erase(it);
+            }
+            else{
+                //first, update it self so child can have updated parent.
+                (it->second)->update();
+                //update child's child
+                (it->second)->updateChild();
+                ++it;
+            }
         }
     }
 }
@@ -365,4 +374,12 @@ void Object::changeZ(Object *object, float z){
         //this object doens't have
         cout << "Z_Deprth ERROR: z_depth value not found for this object" << endl;
     }
+}
+
+bool Object::isDead(){
+    return (!this->alive);
+}
+
+void Object::release(){
+    this->alive = false;
 }

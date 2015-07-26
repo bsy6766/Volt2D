@@ -32,6 +32,12 @@
 class Object{
 protected:
     /**
+     *  ture if alive. False if dead. 
+     *  Object gets deleted on next update iteration when it's dead.
+     */
+    bool alive;
+    
+    /**
      *  Z depth. See Z_Float class for detail.
      */
     Z_Float z_depth;
@@ -331,6 +337,16 @@ public:
      *  Virtual function for updating.
      */
     virtual void update() = 0;
+    
+    /**
+     *  true if object is dead and ready to get released.
+     */
+    bool isDead();
+    
+    /**
+     *  Release this object. 
+     */
+    void release();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Object__) */
