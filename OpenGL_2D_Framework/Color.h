@@ -42,6 +42,7 @@ private:
     Color(float r, float g, float b, float a);
     
 public:
+    static Color createWithRGB(float r, float g, float b);
     /**
      *  Create color with specific RGBA value.
      *  @return Color instance
@@ -113,6 +114,30 @@ public:
      */
     bool friend operator==(const Color& lhs, const Color& rhs){
         return (lhs.r == rhs.r) && (lhs.g == rhs.g) && (lhs.b == rhs.b) && (lhs.a == rhs.a);
+    }
+    
+    Color friend operator-(const Color& lhs, const Color& rhs){
+        float r = lhs.r - rhs.r;
+        Utility::wrapColor(r);
+        float g = lhs.g - rhs.g;
+        Utility::wrapColor(g);
+        float b = lhs.b - rhs.b;
+        Utility::wrapColor(b);
+        float a = lhs.a - rhs.a;
+        Utility::wrapColor(a);
+        return Color::createWithRGBA(r, g, b, a);
+    }
+    
+    Color friend operator+(const Color& lhs, const Color& rhs){
+        float r = lhs.r + rhs.r;
+        Utility::wrapColor(r);
+        float g = lhs.g + rhs.g;
+        Utility::wrapColor(g);
+        float b = lhs.b + rhs.b;
+        Utility::wrapColor(b);
+        float a = lhs.a + rhs.a;
+        Utility::wrapColor(a);
+        return Color::createWithRGBA(r, g, b, a);
     }
     
     /// @{

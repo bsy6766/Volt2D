@@ -157,6 +157,10 @@ Color::Color(float r, float g, float b, float a)
     setA(a);
 }
 
+Color Color::createWithRGB(float r, float g, float b){
+    return Color(r,g,b,255);
+}
+
 Color Color::createWithRGBA(float r, float g, float b, float a){
     return Color(r,g,b,a);
 }
