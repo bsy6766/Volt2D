@@ -39,7 +39,7 @@
 #define GetCurrentDir getcwd
 #endif
 
-const int SCREEN_TO_WORLD_SCALE = 10;
+const float SCREEN_TO_WORLD_SCALE = 10.0f;
 const float static GLOBAL_Z_VALUE = 0;
 
 struct WinSize{

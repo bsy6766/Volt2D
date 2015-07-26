@@ -437,7 +437,7 @@ void Director::run(){
             }
         }
         
-        update();
+        this->update();
         if(!paused)
             render();
         
