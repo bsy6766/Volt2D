@@ -9,40 +9,62 @@
 #ifndef __OpenGL_2D_Framework__Particle__
 #define __OpenGL_2D_Framework__Particle__
 
-#include <glm/glm.hpp>
+#include "CommonInclude.hpp"
 
 class Particle{
 private:
 public:
     //defualt
     Particle();
-	//default with init
-	Particle(glm::vec2 posData, double lifeTime, float speed, double direction);
-	//destructor
+    
+    //Destructor
     ~Particle();
     
-	//true = dead
+    /**
+     *  Particle's life. True if dead
+     */
     bool dead;
     
-	//position
-    glm::vec2 positionData;
+    /**
+     *  Current position of particle in the world
+     */
+    glm::vec2 pos;
+    
+    /**
+     *  Position where particle spawned
+     */
+    glm::vec2 spawnedPosition;
 
-	//lifeTime = how long does it lives
+    /**
+     *  Particle's total life time (life span)
+     */
     double lifeTime;
-	//livedTime = how long did it live
+
+    /**
+     *  Total time that particle lived
+     */
 	double livedTime;
 
-	//speed of particle
+    /**
+     *  Speed of particle
+     *  @deprecated
+     */
     float speed;
 
-	//in radian. Default angle is 90 degrees(north)
-    double direction;    
+    /**
+     *  Direction vector.
+     */
+    glm::vec2 dirVec;
     
-	//initialize particle
-    void initParticle(glm::vec2 posData, double lifeTime, float speed, double direction);
-
-	//update current distance
-	void updateDistnace(float x, float y);
+    /**
+     *  Radial acceleration. Power of pulling particle back to spawn point
+     */
+    float radialAccel;
+    
+    /**
+     *  Tangential acceleration. Power applies perpenticullar to particle's direction
+     */
+    float tanAccel;
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Particle__) */
