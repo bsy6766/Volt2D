@@ -23,7 +23,14 @@
 
 const float POWER_SCALE = 10;
 const int MAX_PARTICLE_COUNT = 1000;
-//const float GRAVITY = 9.81;
+
+/**
+ *  Set to 256.
+ *  Particle size with 128.0 will be rendered as normal size.
+ *  Particle size variable can be increase up to 256 due to variance.
+ *  then it will be rendered twice big.
+ */
+const float DEFAULT_SIZE_RATE = 256.0f;
 
 /**
  *  @class ParticleSystem
@@ -156,10 +163,9 @@ private:
     float emitAngleVar;
     
     /**
-     *  Starting size. 
-     *  Min = 0, Max = 255.
+     *  Starting size.
+     *  Min = 0, Max = 128.
      *  Each particle will be scaled based on value.
-     *  Default particles' texture are 256 pixels wide and long.
      */
     float startSize;
     
@@ -177,6 +183,26 @@ private:
      *  Variance for ending size.
      */
     float endSizeVar;
+    
+    /**
+     *  Starting angle of particle.
+     */
+    float startAngle;
+    
+    /**
+     *  Varaince for starting angle
+     */
+    float startAngleVar;
+    
+    /**
+     *  Ending angle of particle
+     */
+    float endAngle;
+    
+    /**
+     *  Variance angle of particle
+     */
+    float endAngleVar;
     
     /**
      *  Duration of each particle's life.
@@ -214,15 +240,9 @@ private:
     GLuint cbo;
     
     /**
-     *  Particle's size(scale) data buffer object
+     *  Particle's size(scale) and spin(rotation) data buffer object
      */
-    GLuint sbo;
-    
-    /**
-     *  Particle's spin(rotation) data buffer object
-     */
-    GLuint rbo;
-    
+    GLuint srbo;
     /// @}
 
     //Private constructor
@@ -241,7 +261,7 @@ private:
      * @param textureName Name for particle's texture file. Default is set to blurred circle texture.
      *  @param target A texture target
      */
-    void initCustomTexture(string textureName = "system/default_particle.png", GLenum target = GL_TEXTURE_2D);
+    void initCustomTexture(string textureName = "default_particle.png", GLenum target = GL_TEXTURE_2D);
     
     /**
      *  Initialize texture with default texture
@@ -303,10 +323,11 @@ public:
     void render();
 
 	/**
-	* A particle update function.
-	* Based on elpased time, add new particles and remove dead ones
-	* It updates each particle's position data.
-	*/
+     *  A particle update function.
+     *  Based on elpased time, add new particles and remove dead ones
+     *  It updates each particle's position data.
+     *  Overrides Object::update()
+    */
     void update();
     
     /**

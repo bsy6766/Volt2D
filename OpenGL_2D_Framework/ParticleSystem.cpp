@@ -42,11 +42,16 @@ startSize(0),
 startSizeVar(0),
 endSize(0),
 endSizeVar(0),
+startAngle(0),
+startAngleVar(0),
+endAngle(0),
+endAngleVar(0),
 lifeTime(0),
 lifeTimeVar(0),
 texture(0),
 vpbo(0),
 cbo(0),
+srbo(0),
 newLifePoint(0)
 {
     //use particle system shader
@@ -61,6 +66,7 @@ ParticleSystem::~ParticleSystem(){
     
     glDeleteBuffers(1, &vpbo);
     glDeleteBuffers(1, &cbo);
+    glDeleteBuffers(1, &srbo);
 }
 
 ParticleSystem* ParticleSystem::createWithSize(string objectName, int size){
@@ -118,9 +124,11 @@ bool ParticleSystem::initWithLua(string fileName){
                                  pc->getFloat(configName, "posVar.z"));
         
         this->totalElapsedTime = 0;
+        
         this->size = (int)pc->getFloat(configName, "size");
         this->livingParticleNum = 0;
         this->totalCreatedParticles = 0;
+        
         this->startColor =
                 Color::createWithRGBA(pc->getFloat(configName, "startColor.r"),
                                       pc->getFloat(configName, "startColor.g"),
@@ -142,20 +150,32 @@ bool ParticleSystem::initWithLua(string fileName){
                                       pc->getFloat(configName, "endColorVar.b"),
                                       pc->getFloat(configName, "endColorVar.a"));
         this->applyColor = pc->getBoolean(configName, "applyColor");
+        
         this->speed = pc->getFloat(configName, "speed");
         this->speedVar = pc->getFloat(configName, "speedVar");
+        
         this->gravityX = pc->getFloat(configName, "gravityX");
         this->gravityY = pc->getFloat(configName, "gravityY");
+        
         this->tanAccel = pc->getFloat(configName, "tanAccel");
         this->tanAccelVar = pc->getFloat(configName, "tanAccelVar");
+        
         this->radialAccel = pc->getFloat(configName, "radialAccel");
         this->radialAccelVar = pc->getFloat(configName, "radialAccelVar");
+        
         this->emitAngle = pc->getFloat(configName, "emitAngle");
         this->emitAngleVar = pc->getFloat(configName, "emitAngleVar");
+        
         this->startSize = pc->getFloat(configName, "startSize");
         this->startSizeVar = pc->getFloat(configName, "startSizeVar");
         this->endSize = pc->getFloat(configName, "endSize");
         this->endSizeVar = pc->getFloat(configName, "endSizeVar");
+        
+        this->startAngle = pc->getFloat(configName, "startAngle");
+        this->startAngleVar = pc->getFloat(configName, "startAngleVar");
+        this->endAngle = pc->getFloat(configName, "endAngle");
+        this->endAngleVar = pc->getFloat(configName, "endAngleVar");
+        
         this->lifeTime = pc->getFloat(configName, "lifeTime");
         this->lifeTimeVar = pc->getFloat(configName, "lifeTimeVar");
 
@@ -237,12 +257,18 @@ void ParticleSystem::loadVertexData(){
     glBufferData(GL_ARRAY_BUFFER, this->size * sizeof(glm::vec4), NULL, GL_STREAM_DRAW);
     glVertexAttribPointer(progPtr->attrib("particleColor"), 4/*RGBA*/, GL_FLOAT, GL_FALSE, 0, NULL);
     
+    //size
+    glGenBuffers(1, &this->srbo);
+    glBindBuffer(GL_ARRAY_BUFFER, this->srbo);
+    glBufferData(GL_ARRAY_BUFFER, this->size * sizeof(glm::vec4), NULL, GL_STREAM_DRAW);
+    glVertexAttribPointer(progPtr->attrib("particleTransform"), 4, GL_FLOAT, GL_FALSE, 0, NULL);
+    
     glBindVertexArray(0);
 }
 
 void ParticleSystem::initDefaultTexture(){
     assert(!this->texture);
-    texture = Texture::createTextureWithFile("system/default_particle.png", GL_TEXTURE_2D);
+    texture = Texture::createTextureWithFile("default_particle.png", GL_TEXTURE_2D);
     assert(this->texture);
 }
 
@@ -256,6 +282,7 @@ void ParticleSystem::initCustomTexture(string textureName, GLenum target){
         //delete all buffer and generate new
         glDeleteBuffers(1, &this->vpbo);
         glDeleteBuffers(1, &this->cbo);
+        glDeleteBuffers(1, &this->srbo);
         this->deleteVertexData();
     }
     //create single texture
@@ -411,6 +438,28 @@ void ParticleSystem::update(){
                                 Utility::randRange(minEndColor.getA(), maxEndColor.getA())
                                  );
             
+            float minStartSize = this->startSize - this->startSizeVar;
+            float maxStartSize = this->startSize + this->startSizeVar;
+            float randStartSize = Utility::randRange(minStartSize, maxStartSize);
+            
+            float randEndSize = 0;
+            if(this->endSize == -1){
+                randEndSize = randStartSize;
+            }
+            else{
+                float minEndSize = this->endSize - this->endSizeVar;
+                float maxEndSize = this->endSize + this->endSizeVar;
+                randEndSize = Utility::randRange(minEndSize, maxEndSize);
+            }
+            
+            float minStartAngle = this->startAngle - this->startAngleVar;
+            float maxStartAngle = this->startAngle + this->startAngleVar;
+            float randStartAngle = Utility::randRange(minStartAngle, maxStartAngle);
+            
+            float minEndAngle = this->endAngle - this->endAngleVar;
+            float maxEndAngle = this->endAngle + this->endAngleVar;
+            float randEndAngle = Utility::randRange(minEndAngle, maxEndAngle);
+            
             Particle* p = new Particle();
             p->pos = glm::vec2(randX, randY);
             p->lifeTime = randLifeTime;
@@ -420,6 +469,8 @@ void ParticleSystem::update(){
             p->tanAccel = randTan;
             p->spawnedPosition = p->pos;
             p->setColor(randStartColor, randEndColor);
+            p->setSize(randStartSize, randEndSize);
+            p->setAngle(randStartAngle, randEndAngle);
             
             particleList.push_back(p);
         }
@@ -433,6 +484,12 @@ void ParticleSystem::update(){
     
     //color vector
     std::vector<glm::vec4> colorData;
+    
+    //size
+    std::vector<glm::vec4> scaleRotData;
+    
+    //spin
+//    std::vector<float> angleData;
 
 	//iterate through particle list
 	for (std::list<Particle*>::const_iterator ci = particleList.begin(); ci != particleList.end();) {
@@ -513,11 +570,15 @@ void ParticleSystem::update(){
                 colorData.push_back(curColor.getRGBA());
 //                Utility::printVec4(curColor.getRGBA());
                 
-                //deal size here!
+                //deal size & rotation here!
+                float newSizeScale = p->getCurSize() / DEFAULT_SIZE_RATE;
+                glm::vec3 scaleVec(newSizeScale, newSizeScale, 1.0f);
+                glm::mat4 scaleMatrix = glm::scale(glm::mat4(), scaleVec);
                 
-                //deal rotation here!
+                float newAngle = p->getCurAngle();
+                glm::mat4 scaleRotMat = glm::rotate(scaleMatrix, newAngle, Utility::Z_AXIS);
                 
-                //update quad here!
+                scaleRotData.push_back(glm::vec4(scaleRotMat[0][0], scaleRotMat[0][1], scaleRotMat[1][0], scaleRotMat[1][1]));
                 
                 //update pos vert.
                 //beware that all rendering starts from world origin (0, 0).
@@ -526,7 +587,6 @@ void ParticleSystem::update(){
                 vertexDistanceData.push_back(p->pos.y);
                 vertexDistanceData.push_back(0);
                 
-
 				//increment iterator
 				++ci;
 				//count
@@ -546,19 +606,23 @@ void ParticleSystem::update(){
 	livingParticleNum = liveCount;
 
     //update Data
-    glBindBuffer(GL_ARRAY_BUFFER, vpbo);
-	if (livingParticleNum > 0){
+    if (livingParticleNum > 0){
+        glBindBuffer(GL_ARRAY_BUFFER, vpbo);
 		glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(GLfloat) * 3, &vertexDistanceData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
-	}
-    
-    glBindBuffer(GL_ARRAY_BUFFER, cbo);
-    if (livingParticleNum > 0){
+        
+        glBindBuffer(GL_ARRAY_BUFFER, cbo);
         assert(colorData.size() == livingParticleNum);
         glBufferData(GL_ARRAY_BUFFER, livingParticleNum * sizeof(glm::vec4), NULL, GL_STREAM_DRAW);
         glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(glm::vec4), &colorData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
-    }
+        
+        glBindBuffer(GL_ARRAY_BUFFER, srbo);
+        assert(scaleRotData.size() == livingParticleNum);
+        glBufferData(GL_ARRAY_BUFFER, livingParticleNum * sizeof(glm::vec4), NULL, GL_STREAM_DRAW);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(glm::vec4), &scaleRotData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
+	}
     
+    RenderableObject::update();
 }
 
 void ParticleSystem::render(){
@@ -601,12 +665,14 @@ void ParticleSystem::render(){
     glEnableVertexAttribArray(progPtr->attrib("uvVert"));
     glEnableVertexAttribArray(progPtr->attrib("posVert"));
     glEnableVertexAttribArray(progPtr->attrib("particleColor"));
+    glEnableVertexAttribArray(progPtr->attrib("particleTransform"));
     
     //Divisor
     glVertexAttribDivisor(progPtr->attrib("vert"), 0);		//0. Always use same quad vertex
     glVertexAttribDivisor(progPtr->attrib("uvVert"), 0);	//0. Always use same indices
     glVertexAttribDivisor(progPtr->attrib("posVert"), 1);	//1, Use 1 pos(vec3) value for each quad
     glVertexAttribDivisor(progPtr->attrib("particleColor"), 1);	//1, Use 1 color(vec4) value for each quad
+    glVertexAttribDivisor(progPtr->attrib("particleTransform"), 1);	//1, Use 1 scaleXY(vec2) value for each quad
     
     //draw living particles
     glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, livingParticleNum);
