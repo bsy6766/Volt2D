@@ -15,22 +15,32 @@
 class Particle{
 private:
     /**
-     * Color
+     * Colors
      */
     Color startColor;
     Color endColor;
     glm::vec4 colorDiff;
+    
+    /**
+     *  Sizes
+     */
+    float startSize;
+    float endSize;
+    float sizeDiff;
+    
+    /**
+     *  Angles
+     */
+    float startAngle;
+    float endAngle;
+    float angleDiff;
+    
 public:
     //defualt
     Particle();
     
     //Destructor
     ~Particle();
-    
-    /**
-     *
-     */
-    Color getCurColor();
     
     /**
      *  Particle's life. True if dead
@@ -78,6 +88,22 @@ public:
      */
     float tanAccel;
     
+    /**
+     *  Size getter & setter
+     */
+    float getCurSize();
+    void setSize(float start, float end);
+    
+    /**
+     *  Angle getter & setter
+     */
+    float getCurAngle();
+    void setAngle(float start, float end);
+    
+    /**
+     *  Color getter & setter
+     */
+    Color getCurColor();
     void setColor(Color start, Color end);
 };
 

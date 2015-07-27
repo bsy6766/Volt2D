@@ -20,7 +20,13 @@ tanAccel(0),
 spawnedPosition(glm::vec2()),
 startColor(Color::WHITE),
 endColor(Color::WHITE),
-colorDiff(glm::vec4())
+colorDiff(glm::vec4()),
+startSize(128),
+endSize(128),
+sizeDiff(0),
+startAngle(0),
+endAngle(0),
+angleDiff(0)
 {
 }
 
@@ -47,4 +53,26 @@ void Particle::setColor(Color start, Color end){
     this->startColor = start;
     this->endColor = end;
     this->colorDiff = end.getRGBA() - start.getRGBA();
+}
+
+void Particle::setSize(float start, float end){
+    this->startSize = start;
+    this->endSize = end;
+    this->sizeDiff = end - start;
+}
+
+float Particle::getCurSize(){
+    double t = livedTime / lifeTime;
+    return this->sizeDiff * t + this->startSize;
+}
+
+void Particle::setAngle(float start, float end){
+    this->startAngle = start;
+    this->endAngle = end;
+    this->angleDiff = end - start;
+}
+
+float Particle::getCurAngle(){
+    double t = livedTime / lifeTime;
+    return this->angleDiff * t + this->startAngle;
 }
