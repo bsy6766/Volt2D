@@ -37,13 +37,13 @@ void TitleScene::init(){
     sm->bindSoundToChannelGroup("titleSceneBgm", "BGMGroup");
 //    SoundManager::getInstance().addSoundToChannelGroup("bgmChannelGroup", "titleSceneBgm");
 
-    SpriteSheet::createSpriteSheet("titleSceneSpriteSheet", "title scene/title_scene_sprite_sheet.png", "title scene/title_scene_sprite_sheet.xml");
-    
-//    bg = Sprite::createSprite("titleSceneBg", "title scene/title_scene_bg.png");
-    bg = Sprite::createSpriteWithFrameName("titleSceneBg", "titleSceneSpriteSheet", "title_scene_bg.png");
-    bg->setZDepth(z_bg);
-//    bg->setAnchrPoint(glm::vec2(0.5, 0.5));
-    this->addChild(bg);
+//    SpriteSheet::createSpriteSheet("titleSceneSpriteSheet", "title scene/title_scene_sprite_sheet.png", "title scene/title_scene_sprite_sheet.xml");
+//    
+////    bg = Sprite::createSprite("titleSceneBg", "title scene/title_scene_bg.png");
+//    bg = Sprite::createSpriteWithFrameName("titleSceneBg", "titleSceneSpriteSheet", "title_scene_bg.png");
+//    bg->setZDepth(z_bg);
+////    bg->setAnchrPoint(glm::vec2(0.5, 0.5));
+//    this->addChild(bg);
     
 //    auto delayIt = ActionDelay::createDelay(2);
 //    auto rotateIt = ActionRotateTo::createRotateTo(2, 180);
@@ -69,43 +69,50 @@ void TitleScene::init(){
 ////    delete rotateTo;
 //    this->addChild(title);
     
-    version = Sprite::createSprite("titleSceneTitle", "title scene/version.png");
-    version->setZDepth(z_title);
-    version->setX(-648);
-    version->setY(-432);
-    this->addChild(version);
+//    version = Sprite::createSprite("titleSceneTitle", "title scene/version.png");
+//    version->setZDepth(z_title);
+//    version->setX(-648);
+//    version->setY(-432);
+//    this->addChild(version);
+//    
+//    Text* title;
+//    FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
+//    title = Text::createText("titleText", "Engine Test", "UhBee Kang-Ja.ttf");
+//    title->setColor(Color::WHITE);
+////    title->setTextAlign(Text::TextAlign::ALIGN_LEFT);
+////    title->initText("Engine Test", "UhBee Kang-Ja.ttf");
+//    title->setZDepth(99);
+////    title->setPosition(glm::vec3(0, 100, 0));
+//    this->addChild(title);
     
-    Text* title;
-    FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
-    title = Text::createText("titleText", "Engine Test", "UhBee Kang-Ja.ttf");
-    title->setColor(Color::WHITE);
-//    title->setTextAlign(Text::TextAlign::ALIGN_LEFT);
-//    title->initText("Engine Test", "UhBee Kang-Ja.ttf");
-    title->setZDepth(99);
-//    title->setPosition(glm::vec3(0, 100, 0));
-    this->addChild(title);
+//    character = SpriteAnimation::createWithAnimation("character", "run", "title scene/run.png", 8, 0.1);
+//    character->setZDepth(999);
+//    character->addPosition(glm::vec3(-100, -100, 0));
+////    character->addActions({delay, rotateTo}, 0);
+////    character->runAction();
+//    this->addChild(character);
     
-    character = SpriteAnimation::createWithAnimation("character", "run", "title scene/run.png", 8, 0.1);
-    character->setZDepth(999);
-    character->addPosition(glm::vec3(-100, -100, 0));
-//    character->addActions({delay, rotateTo}, 0);
-//    character->runAction();
-    this->addChild(character);
+    auto delay = ActionDelay::createDelay(1);
+    auto moveTo = ActionMoveTo::createMoveTo(8, glm::vec3(600, -250, 0));
     
-    ps = ParticleSystem::createWithLuaConfig("testParticle", "testParticle.lua");
-    ps->setPosition(vec3(-400, 0, 0));
+    fireBall = ParticleSystem::createWithLuaConfig("fireBallParticle", "Particle/fireBall.lua");
+    fireBall->setPosition(glm::vec3(-600, -250, 0));
+    fireBall->addActions({delay, moveTo, delay}, 0);
     
-    flame = ParticleSystem::createWithLuaConfig("flameParticle", "flame.lua");
+    magicalOrbits = ParticleSystem::createWithLuaConfig("testParticle", "Particle/magicalOrbits.lua");
+    magicalOrbits->setPosition(vec3(-400, 0, 0));
+    
+    flame = ParticleSystem::createWithLuaConfig("flameParticle", "Particle/flame.lua");
     flame->setPosition(vec3(-200, 0, 0));
     
-    blueMeteor = ParticleSystem::createWithLuaConfig("blueMeteorParticle", "blueMeteor.lua");
-    blueMeteor->setPosition(vec3(0, 0, 0));
+    blueMeteor = ParticleSystem::createWithLuaConfig("blueMeteorParticle", "Particle/blueMeteor.lua");
+    blueMeteor->setPosition(vec3(50, 0, 0));
     
-    muhanDojun = ParticleSystem::createWithLuaConfig("muhanDojunParticle", "muhanDojun.lua");
+    muhanDojun = ParticleSystem::createWithLuaConfig("muhanDojunParticle", "Particle/muhanDojun.lua");
     muhanDojun->setPosition(vec3(300, 100, 0));
 //    this->addChild(ps);
     
-    initLayers();
+//    initLayers();
 }
 
 void TitleScene::printAngle(){
@@ -142,17 +149,19 @@ void TitleScene::update(){
 
 void TitleScene::keyPressed(int key, int mods){
     if(key == GLFW_KEY_B){
-        ps->addPosition(vec3(100, 0, 0));
+        magicalOrbits->addPosition(vec3(100, 0, 0));
     }
     else if(key == GLFW_KEY_V){
-        ps->addPosition(vec3(-100, 0, 0));
+        magicalOrbits->addPosition(vec3(-100, 0, 0));
     }
     
     if(key == GLFW_KEY_PERIOD){
-        this->addChild(ps);
+        this->addChild(magicalOrbits);
         this->addChild(flame);
         this->addChild(blueMeteor);
         this->addChild(muhanDojun);
+        fireBall->runAction();
+        this->addChild(fireBall);
     }
     
     if(key == GLFW_KEY_P){

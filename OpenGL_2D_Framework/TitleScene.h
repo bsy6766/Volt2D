@@ -20,6 +20,7 @@
 #include "ActionRotateBy.h"
 #include "ActionCallFunc.h"
 #include "ActionMoveTo.h"
+#include "ActionMoveBy.h"
 #include "Text.h"
 #include "SpriteAnimation.h"
 #include "ParticleSystem.h"
@@ -33,10 +34,11 @@ private:
     Sprite* title;
     Sprite* version;
     SpriteAnimation* character;
-    ParticleSystem* ps;
+    ParticleSystem* magicalOrbits;
     ParticleSystem* flame;
     ParticleSystem* blueMeteor;
     ParticleSystem* muhanDojun;
+    ParticleSystem* fireBall;
     
     TitleButtonLayer* titleButtonLayer;
     
