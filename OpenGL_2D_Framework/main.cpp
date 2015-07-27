@@ -65,10 +65,13 @@ int main(int argc, const char * argv[]) {
     
 
     LuaConfig* systemConfig = LuaConfig::create("systemConfig");
-    systemConfig->loadConfig("system", runningPath + "/../config.lua");
+    systemConfig->loadConfig("system", runningPath + "/../System/config.lua");
     int screenWidth = systemConfig->getFloat("system", "window.size.screenWidth");
     int screenHeight = systemConfig->getFloat("system", "window.size.screenHeight");
     std::string windowTitle = systemConfig->getString("system", "window.title");
+    glm::vec3 clearBufferColor = glm::vec3(systemConfig->getFloat("system", "clearBuffer.r"),
+                                           systemConfig->getFloat("system", "clearBuffer.g"),
+                                           systemConfig->getFloat("system", "clearBuffer.b"));
 //    systemConfig->loadConfig("level1", runningPath + "/../config.lua");
 //    systemConfig->loadConfig("level2", runningPath + "/../config.lua");
 //    cout << "w = " << systemConfig->getFloat("system", "window.size.screenWidth") << endl;
@@ -85,7 +88,7 @@ int main(int argc, const char * argv[]) {
 
 //    Director::getInstance().setWindowSize(1440, 900);
     try{
-        Director::getInstance().initApp(screenWidth, screenHeight, windowTitle);
+        Director::getInstance().initApp(screenWidth, screenHeight, windowTitle, clearBufferColor);
         TitleScene* titleScene = new TitleScene();
         Director::getInstance().pushScene(titleScene);
         Director::getInstance().run();
