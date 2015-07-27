@@ -1,7 +1,9 @@
 # OpenGL-2D-Framework
 2D graphic framework using OpenGL and C++
 
-This project was inpsired by Cocos2D and made for my college final project. 
+This project was inpsired by Cocos2D and started for my college final project at Dec. 2014.
+
+Lasted updated: July 2015.
 
 #External Libraries
 - GLFW 3.1 (Window and input handle)
@@ -10,11 +12,12 @@ This project was inpsired by Cocos2D and made for my college final project.
 - stb_image (Image loader for texture)
 - rapidxml (SpriteSheet data)
 - ftmod (Sound)
+- Freetype2 (Font loading and texture rendering)
 
 # Features and key structures
 - Director
-- Scene and Layer
-- Object Managers
+- Scenes and Layers
+- Object managing
 - Sprites
 - Sprite Animation
 - SpriteSheet
@@ -27,6 +30,3 @@ This project was inpsired by Cocos2D and made for my college final project.
 - Particle System
 - ProgressBar and ProgressRadian
 - Text Rendering
-
-Particle system time vs spawning table
-https://docs.google.com/spreadsheets/d/1QvkXtoUrjc0NAOjyzphRuBbAkJX6fuXRg0CFJ566zFI/edit?usp=sharing
