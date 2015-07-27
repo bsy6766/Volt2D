@@ -213,7 +213,7 @@ public:
     /**
      *  Implements Object::update()
      */
-    virtual void update();
+    virtual void update(double dt);
 };
 
 #endif /* defined(__OpenGL_2D_Framework__RenderableObject__) */

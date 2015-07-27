@@ -251,23 +251,31 @@ bool Object::removechild(Object* child, bool deleteObject){
     }
 }
 
-void Object::updateChild(){
+void Object::updateChild(double dt){
     for (auto it = childObjMap.begin(); it != childObjMap.end();){
         //if pointer is null, delete pointer and remove from the list.
         if(it->second == nullptr){
+            std::string objName = it->second->getName();
             delete (it->second);
-            childObjMap.erase(it);
+            it = childObjMap.erase(it);
+            auto find_lut = childObjectLUT.find(objName);
+            if(find_lut != childObjectLUT.end())
+                childObjectLUT.erase(find_lut);
         }
         else{
             if((it->second)->isDead()){
+                std::string objName = it->second->getName();
                 delete (it->second);
-                childObjMap.erase(it);
+                it = childObjMap.erase(it);
+                auto find_lut = childObjectLUT.find(objName);
+                if(find_lut != childObjectLUT.end())
+                    childObjectLUT.erase(find_lut);
             }
             else{
                 //first, update it self so child can have updated parent.
-                (it->second)->update();
+                (it->second)->update(dt);
                 //update child's child
-                (it->second)->updateChild();
+//                (it->second)->updateChild(dt);
                 ++it;
             }
         }
@@ -278,8 +286,12 @@ void Object::renderChild(){
     for (auto it = childObjMap.begin(); it != childObjMap.end();){
         //if pointer is null, delete pointer and remove from the list.
         if(it->second == nullptr){
+            std::string objName = it->second->getName();
             delete (it->second);
-            childObjMap.erase(it);
+            it = childObjMap.erase(it);
+            auto find_lut = childObjectLUT.find(objName);
+            if(find_lut != childObjectLUT.end())
+                childObjectLUT.erase(find_lut);
         }
         else{
             //first render itself
@@ -288,18 +300,22 @@ void Object::renderChild(){
         }
     }
     
-    //omg double iteration. so bad!
-    for (auto it = childObjMap.begin(); it != childObjMap.end();){
-        //if pointer is null, delete pointer and remove from the list.
-        if(it->second == nullptr){
-            delete (it->second);
-            childObjMap.erase(it);
-        }
-        else{
-            (it->second)->renderChild();
-            ++it;
-        }
-    }
+//    //omg double iteration. so bad!
+//    for (auto it = childObjMap.begin(); it != childObjMap.end();){
+//        //if pointer is null, delete pointer and remove from the list.
+//        if(it->second == nullptr){
+//            std::string objName = it->second->getName();
+//            delete (it->second);
+//            it = childObjMap.erase(it);
+//            auto find_lut = childObjectLUT.find(objName);
+//            if(find_lut != childObjectLUT.end())
+//                childObjectLUT.erase(find_lut);
+//        }
+//        else{
+//            (it->second)->renderChild();
+//            ++it;
+//        }
+//    }
 }
 
 BoundingBox* const Object::getBoundingBox(){

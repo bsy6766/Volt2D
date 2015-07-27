@@ -109,7 +109,7 @@ bool RenderableObject::isActionRunning(){
     return actionRunning;
 }
 
-void RenderableObject::update(){
+void RenderableObject::update(double dt){
     //if there is no action, set running to false and return
     if(actionScheduleList.empty()){
         actionRunning = false;

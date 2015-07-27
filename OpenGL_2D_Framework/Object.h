@@ -117,7 +117,7 @@ protected:
     /**
      *  Update all children objects that object has
      */
-    void updateChild();
+    void updateChild(double dt);
     
     /**
      *  Render all children objects that object has
@@ -336,7 +336,7 @@ public:
     /**
      *  Virtual function for updating.
      */
-    virtual void update() = 0;
+    virtual void update(double dt) = 0;
     
     /**
      *  true if object is dead and ready to get released.
