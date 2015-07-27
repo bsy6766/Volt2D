@@ -45,7 +45,11 @@ private:
     enum TitleSceneZ{
         z_bg = 0,
         z_button_layer,
-        z_title
+        z_title,
+		z_text,
+		z_animation,
+		z_particles,
+		z_fireball
     };
     
     void initLayers();

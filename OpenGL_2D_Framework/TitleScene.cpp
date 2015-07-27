@@ -56,7 +56,7 @@ void TitleScene::init(){
 //    delete rotateIt2;
 //    delete moveIt;
     
-    title = Sprite::createSprite("titleSceneTitle", "title scene/title.png");
+    //title = Sprite::createSprite("titleSceneTitle", "title scene/title.png");
     title = Sprite::createSpriteWithFrameName("titleSceneTitle", "titleSceneSpriteSheet", "title.png");
     title->setZDepth(z_title);
     title->setY(170);
@@ -81,13 +81,14 @@ void TitleScene::init(){
     title->setColor(Color::WHITE);
 //    title->setTextAlign(Text::TextAlign::ALIGN_LEFT);
 //    title->initText("Engine Test", "UhBee Kang-Ja.ttf");
-    title->setZDepth(99);
+    title->setZDepth(z_text);
 //    title->setPosition(glm::vec3(0, 100, 0));
     this->addChild(title);
     
     character = SpriteAnimation::createWithAnimation("character", "run", "title scene/run.png", 8, 0.1);
     character->setZDepth(999);
     character->addPosition(glm::vec3(-100, -100, 0));
+	character->setZDepth(z_animation);
 //    character->addActions({delay, rotateTo}, 0);
 //    character->runAction();
     this->addChild(character);
@@ -98,18 +99,23 @@ void TitleScene::init(){
     fireBall = ParticleSystem::createWithLuaConfig("fireBallParticle", "Particle/fireBall.lua");
     fireBall->setPosition(glm::vec3(-600, -250, 0));
     fireBall->addActions({delay, moveTo, delay}, 0);
+	fireBall->setZDepth(z_fireball);
     
     magicalOrbits = ParticleSystem::createWithLuaConfig("testParticle", "Particle/magicalOrbits.lua");
     magicalOrbits->setPosition(vec3(-400, 0, 0));
+	magicalOrbits->setZDepth(z_particles);
     
     flame = ParticleSystem::createWithLuaConfig("flameParticle", "Particle/flame.lua");
-    flame->setPosition(vec3(-200, 0, 0));
+	flame->setPosition(vec3(-200, 0, 0));
+	flame->setZDepth(z_particles);
     
     blueMeteor = ParticleSystem::createWithLuaConfig("blueMeteorParticle", "Particle/blueMeteor.lua");
-    blueMeteor->setPosition(vec3(50, 0, 0));
+	blueMeteor->setPosition(vec3(50, 0, 0));
+	blueMeteor->setZDepth(z_particles);
     
     muhanDojun = ParticleSystem::createWithLuaConfig("muhanDojunParticle", "Particle/muhanDojun.lua");
-    muhanDojun->setPosition(vec3(300, 100, 0));
+	muhanDojun->setPosition(vec3(300, 100, 0));
+	muhanDojun->setZDepth(z_particles);
 //    this->addChild(ps);
     
     initLayers();
