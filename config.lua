@@ -9,7 +9,11 @@ system = {
 	 	windowed = true,
 	 	borderless = true
 	},
-
+	clearBuffer = {
+		r = 0,
+		g = 0,
+		b = 0
+	},
 	versionStr = "1.0b",
 	resourcePath = {
 		-- Resource path from working directory. 
