@@ -65,7 +65,11 @@ int main(int argc, const char * argv[]) {
     
 
     LuaConfig* systemConfig = LuaConfig::create("systemConfig");
-    systemConfig->loadConfig("system", runningPath + "/../System/config.lua");
+#if _WIN32
+	systemConfig->loadConfig("system", runningPath + "/../config_win32.lua");
+#elif __APPLE__
+	systemConfig->loadConfig("system", runningPath + "/../System/config_osx.lua");
+#endif
     int screenWidth = systemConfig->getFloat("system", "window.size.screenWidth");
     int screenHeight = systemConfig->getFloat("system", "window.size.screenHeight");
     std::string windowTitle = systemConfig->getString("system", "window.title");
