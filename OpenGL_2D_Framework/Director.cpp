@@ -429,7 +429,7 @@ void Director::run(){
     
     while (!glfwWindowShouldClose(window)){
         Timer::getInstance().recordTime();
-        
+        double elapsedTime = Timer::getInstance().getElapsedTime();
         //update joystick
         if(joystickEnabled){
             for(int i = 0; i<MAX_JOYSTICK; i++){
@@ -448,7 +448,8 @@ void Director::run(){
             }
         }
         
-        this->update();
+        this->update(elapsedTime);
+        
         if(!paused)
             render();
         
@@ -457,7 +458,7 @@ void Director::run(){
         glfwSwapBuffers(window);
         glfwPollEvents();
         
-        timeCounter += Timer::getInstance().getElapsedTime();
+        timeCounter += elapsedTime;
         if(timeCounter > 1){
             fps++;
             cout << "fps = " << fps << endl;
@@ -483,12 +484,12 @@ void Director::render(){
     glUseProgram(0);
 }
 
-void Director::update(){
+void Director::update(double dt){
     if(runningScene){
         runningScene->injectKey();
         runningScene->injectMouseMove();
         if(!paused)
-            runningScene->update();
+            runningScene->update(dt);
         //at least once per frame. update it
         soundManager->updateSystem();
     }

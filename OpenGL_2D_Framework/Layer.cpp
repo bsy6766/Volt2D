@@ -18,8 +18,8 @@ Layer::~Layer(){
     cout << "~Layer()" << endl;
 }
 
-void Layer::update(){
-    this->updateChild();
+void Layer::update(double dt){
+    this->updateChild(dt);
 }
 
 void Layer::render(){

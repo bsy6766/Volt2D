@@ -43,7 +43,7 @@ public:
      *  Update Layer. 
      *  Derived class can override this function but it must to call this at some point on their own update function.
      */
-    virtual void update();
+    virtual void update(double dt);
     
     /**
      *  Render the Layer

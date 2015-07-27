@@ -213,7 +213,7 @@ public:
     void run();
     
     void render();
-    void update();
+    void update(double dt);
     
     std::string getWorkingDir();
     void setWorkingDir(std::string wd);

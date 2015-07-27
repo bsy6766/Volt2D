@@ -51,7 +51,7 @@ public:
     /**
      *  Implement Object::update().
      */
-    virtual void update();
+    virtual void update(double dt);
     
     /**
      *  Impelment Object::render().

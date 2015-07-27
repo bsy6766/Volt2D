@@ -24,8 +24,8 @@ void Scene::bindWindow(GLFWwindow *window){
     this->window = window;
 }
 
-void Scene::update(){
-    this->updateChild();
+void Scene::update(double dt){
+    this->updateChild(dt);
 }
 
 void Scene::render(){
