@@ -10,7 +10,7 @@
 
 ActionCallFunc::ActionCallFunc():
 ActionObject(),
-func(0)
+function(nullptr)
 {
     
 }
@@ -19,14 +19,14 @@ ActionCallFunc::~ActionCallFunc(){
     
 }
 
-ActionCallFunc* ActionCallFunc::createCallFunc(const std::function<void ()> func){
+ActionCallFunc* ActionCallFunc::createCallFunc(const std::function<void()>& func){
     ActionCallFunc* newCallFunc = new ActionCallFunc();
     newCallFunc->initActionCallFunc(func);
     return newCallFunc;
 }
 
-void ActionCallFunc::initActionCallFunc(const std::function<void()> func){
-    this->func = func;
+void ActionCallFunc::initActionCallFunc(const std::function<void()>& func){
+	function = func;
 }
 
 void ActionCallFunc::startAction(){
@@ -37,7 +37,7 @@ void ActionCallFunc::updateAction(double &remainedTime){
     //since this is instant, 
     remainedTime += this->totalElapsedTime;
     cout << "callfunc. this iter time = " << this->totalElapsedTime << ", adding to remained = " << remainedTime << endl;
-    (this->func)();
+	(function)();
     this->alive = false;
 }
 
@@ -47,6 +47,6 @@ void ActionCallFunc::revive(){
 
 ActionObject* ActionCallFunc::clone(){
     ActionCallFunc* cloneCallFunc = new ActionCallFunc();
-    cloneCallFunc->initActionCallFunc(this->func);
+	cloneCallFunc->initActionCallFunc(function);
     return cloneCallFunc;
 }

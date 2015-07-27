@@ -9,6 +9,9 @@
 #ifndef __OpenGL_2D_Framework__ActionCallFunc__
 #define __OpenGL_2D_Framework__ActionCallFunc__
 
+#if _WIN32
+#include <functional>
+#endif
 #include "ActionObject.h"
 
 /**
@@ -20,7 +23,7 @@ private:
     /**
      *  Function pointer.
      */
-    std::function<void()> func;
+    std::function<void()> function;
     
     //private constructor
     ActionCallFunc();
@@ -29,13 +32,13 @@ private:
      *  Initialize ActionCallFunc
      *  @param func A std::function of function
      */
-    void initActionCallFunc(const std::function<void()> func);
+    void initActionCallFunc(const std::function<void()>& func);
 public:
     /**
      *  Create ActionCallFunc
      *  @param func A std::function of function
      */
-    static ActionCallFunc* createCallFunc(const std::function<void()> func);
+    static ActionCallFunc* createCallFunc(const std::function<void()>& func);
     
     //Destructor
     ~ActionCallFunc();
