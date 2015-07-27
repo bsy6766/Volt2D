@@ -218,6 +218,11 @@ private:
      */
     GLuint sbo;
     
+    /**
+     *  Particle's spin(rotation) data buffer object
+     */
+    GLuint rbo;
+    
     /// @}
 
     //Private constructor
