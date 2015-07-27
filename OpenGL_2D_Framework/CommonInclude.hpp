@@ -26,6 +26,23 @@ using glm::mat4;
 
 namespace Utility{
     /**
+     *  Axises
+     */
+    static const glm::vec3 X_AXIS = glm::vec3(1, 0, 0);
+    static const glm::vec3 X_NAXIS = glm::vec3(-1, 0, 0);
+    static const glm::vec3 Y_AXIS = glm::vec3(0, 1, 0);
+    static const glm::vec3 Y_NAXIS = glm::vec3(0, -1, 0);
+    static const glm::vec3 Z_AXIS = glm::vec3(0, 0, 1);
+    static const glm::vec3 Z_NAXIS = glm::vec3(0, 0, -1);
+    
+    /**
+     *  Degree to radian
+     */
+    inline float degreeToRadian(float angle){
+        return (angle * M_PI) / 180.0f;
+    }
+    
+    /**
      * Computes random number between the range.
      * This function handles all type of number
      */
@@ -106,6 +123,5 @@ namespace Utility{
         cout << "vec3 = (" << point.r << ", " << point.g <<  ", " << point.b << ", " << point.a << ")" << endl;
     }
 }
-
 
 #endif /* defined(__OpenGL_2D_Framework__CommonInclude__) */
