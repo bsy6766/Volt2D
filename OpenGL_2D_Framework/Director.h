@@ -59,6 +59,9 @@ private:
     //mouse icon
     Sprite* mouseCursor;
     
+    glm::vec2 prevMousePos = glm::vec2();
+    glm::vec3 clearBufferColor;
+    
 /// -------------------- OpenGL ---------------------
 /// @{
 /// @name OpenGL attributes
@@ -200,7 +203,7 @@ public:
      *  Initailize application.
      *  Setups OpenGL and gui window
      */
-    void initApp(const int screenWidth, const int screenHeight, const std::string windowTitle);
+    void initApp(const int screenWidth, const int screenHeight, const std::string windowTitle , glm::vec3 clearBuffColor);
 
     void terminateApp();
     

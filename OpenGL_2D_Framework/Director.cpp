@@ -16,7 +16,8 @@ soundManager(0),
 ps3Joysticks(),   //init all to 0,
 joystickEnabled(false),
 paused(false),
-waitingForSceneTransition(false)
+waitingForSceneTransition(false),
+clearBufferColor(glm::vec3())
 {
     char cCurrentPath[FILENAME_MAX];
     
@@ -135,7 +136,7 @@ void Director::pushScene(Scene* newScene){
 //    }
 //}
 
-void Director::initApp(const int screenWidth = 100, const int screenHeight = 100, const std::string windowTitle = "noName"){
+void Director::initApp(const int screenWidth = 100, const int screenHeight = 100, const std::string windowTitle = "noName", glm::vec3 clearBuffColor = glm::vec3(0, 0, 0)){
     std::cout << "Director: initializing app" << std::endl;
     initGLFW();
     createWindow(screenWidth, screenHeight, windowTitle);
@@ -174,6 +175,8 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
     }
     
     mouseCursor = Sprite::createSprite("globalMouseCursor", "mouse_icon.png");
+    
+    this->clearBufferColor = clearBuffColor;
 }
 
 void Director::terminateApp(){
@@ -356,7 +359,15 @@ void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos)
     directorPtr->runningScene->mouseMove(x, -y);
     directorPtr->mouseCursor->setPosition(glm::vec3(x, -y, 0));
 //    directorPtr->runningScene->Scene::mouseMove(x, -y);
-//    cout << "(" << x << ", " << y << ")" << endl;
+    //    cout << "(" << x << ", " << y << ")" << endl;
+//    glm::vec2 newMousePos = glm::vec2((float)x, (float)y);
+//    //!!!update camera movement by mouse. Please move this function in to camera class later!!!!!
+//    glm::vec2 mouseDelta = newMousePos - directorPtr->prevMousePos;
+//
+////    cout << "mD = (" << mouseDelta.x << ", " << mouseDelta.y << ")" << endl;
+//
+//    directorPtr->camera->changeAngle(0.15f * mouseDelta.y, 0.15f * mouseDelta.x);
+//    directorPtr->prevMousePos = newMousePos;
 }
 
 void Director::mouse_button_callback(GLFWwindow *window, int button, int action, int mods){
@@ -449,7 +460,7 @@ void Director::run(){
         timeCounter += Timer::getInstance().getElapsedTime();
         if(timeCounter > 1){
             fps++;
-//            cout << "fps = " << fps << endl;
+            cout << "fps = " << fps << endl;
             fps = 0;
             timeCounter--;
         }
@@ -464,7 +475,7 @@ void Director::run(){
 }
 
 void Director::render(){
-    glClearColor(0.5, 0.5, 0.5, 1);
+    glClearColor(clearBufferColor.r, clearBufferColor.g, clearBufferColor.b, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     if(runningScene)
