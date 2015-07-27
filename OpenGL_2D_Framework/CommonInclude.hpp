@@ -9,6 +9,11 @@
 #ifndef __OpenGL_2D_Framework__CommonInclude__
 #define __OpenGL_2D_Framework__CommonInclude__
 
+#ifdef _WIN32
+#define _USE_MATH_DEFINES
+#include <math.h>
+#endif
+
 #include <iostream>
 #include <assert.h>
 #include <string>
