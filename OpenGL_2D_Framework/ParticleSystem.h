@@ -44,6 +44,11 @@ private:
     /// @name Particle system attributes
     
     /**
+     *  pause
+     */
+    bool paused;
+    
+    /**
      *  Position Variance. Applies to current position of object.
      */
     glm::vec3 posVar;
@@ -328,7 +333,7 @@ public:
      *  It updates each particle's position data.
      *  Overrides Object::update()
     */
-    void update();
+    virtual void update(double dt) override;
     
     /**
      * True = dead, false = alive
@@ -337,6 +342,7 @@ public:
     
     /// @{
     /// @name Setters
+    void setPause(bool pause);
     void setDuration(double duration);
     void setStartColor(Color color);
     void setStartColorVar(Color color);
@@ -361,6 +367,21 @@ public:
     void setLifeTime(float lifeTime);
     void setLifeTimeVar(float lifeTime);
     /// @}
+    
+    /**
+     *  Reset particle system to initial state.
+     */
+    void reset(bool pause);
+    
+    /**
+     *  Resume
+     */
+    void resume();
+    
+    /**
+     *  pause particle system.
+     */
+    void pause();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__ParticleSystem__) */

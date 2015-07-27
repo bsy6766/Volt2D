@@ -15,6 +15,7 @@
 
 ParticleSystem::ParticleSystem():
 RenderableObject(),
+paused(true),
 blend(true),
 posVar(glm::vec3()),
 size(0),
@@ -116,6 +117,7 @@ bool ParticleSystem::initWithLua(string fileName){
         }
         
         //read data.
+        this->paused = pc->getBoolean(configName, "pause");
         this->blend = pc->getBoolean(configName, "blend");
         this->duration = (double)pc->getFloat(configName, "duration");
         
@@ -295,13 +297,20 @@ void ParticleSystem::initCustomTexture(string textureName, GLenum target){
 
 bool ParticleSystem::initialize(){
     //duration must be greater than 0. Be strict on duration
-    if(this->duration <= 0){
-        cout << "[SYSTEM::ERROR] ParticleSystem's duration can not be greater than 0." << endl;
-        return false;
+    if(this->duration < -1){
+        cout << "[SYSTEM::WARNING] ParticleSystem's duration can not be less than -1. Setting to -1." << endl;
+        this->duration = -1;
+    }
+    else if(this->duration > -1 && this->duration < 0){
+        cout << "[SYSTEM::WARNING] ParticleSystem's duration can not have decimal points if less than 0. Setting to -1" << endl;
+        this->duration = -1;
+    }
+    else if(this->duration == 0){
+        cout << "[SYSTEM::WARNING] ParticleSystem will end immediately if duration is 0." << endl;
     }
     
     //comptue emmisionRate
-    this->emissionRate = (float)(((double)this->size) / this->duration);
+    this->emissionRate = (float)(((double)this->size) / this->lifeTime);
     //emit angle
     if(this->emitAngle > 360 || this->emitAngle < 0){
         //wrap it into boundary if it's too big
@@ -323,24 +332,27 @@ bool ParticleSystem::initialize(){
     return true;
 }
 
-void ParticleSystem::update(){
+void ParticleSystem::update(double dt){
+//    cout << "dt = " << dt << endl;
     //get elapsed time
-	double elapsedTime = Timer::getInstance().getElapsedTime();
+//	double elapsedTime = Timer::getInstance().getElapsedTime();
+    if(paused)
+        return;
     
     //update number for new particles.
     //do this unitl it spawns all particles
-    if(this->totalCreatedParticles < this->size){
+    if(this->totalCreatedParticles < this->size * this->duration){
         //add up elapsed time
-        this->totalElapsedTime = elapsedTime;
+        this->totalElapsedTime += dt;
         
         //init vars
         int newParticleNumber = 0;
         float curLifePoint = 0;
         
         //compute.
-        if(this->totalElapsedTime < this->duration){
+        if(this->totalElapsedTime < this->duration || this->duration == -1){
             //if time didn't exceed duration, use all elapsed time
-            curLifePoint = this->emissionRate * (float)elapsedTime;
+            curLifePoint = this->emissionRate * (float)dt;
             //ignore floating points
             newParticleNumber += floor(curLifePoint);
             //store floating points
@@ -358,17 +370,18 @@ void ParticleSystem::update(){
         else{
             //get elapsed time without exceed time. Same as above but just using valied time
             double exceededTime = this->totalElapsedTime - this->duration;
-            double valiedTime = elapsedTime - exceededTime;
+            double valiedTime = dt - exceededTime;
             curLifePoint = this->emissionRate * valiedTime;
             newParticleNumber += floor(curLifePoint);
             newLifePoint+= (curLifePoint - newParticleNumber);
         }
         
-        //sum up.
-        totalCreatedParticles += newParticleNumber;
+        //sum up only if system is not infinite
+        if(this->duration >= 0)
+            totalCreatedParticles += newParticleNumber;
         
-        //if no particle is created
-        if (totalCreatedParticles == 0)
+        //if no particle is created and not infinite.
+        if (newParticleNumber == 0)
             return;
         
         //add new particle
@@ -500,7 +513,7 @@ void ParticleSystem::update(){
 		//if particle was alive on previous iteration
 		if (livedTime < lifeTime){
 			//update and get particle's up time
-			(*ci)->livedTime += elapsedTime;
+			(*ci)->livedTime += dt;
 			//update
 			livedTime = (*ci)->livedTime;
 
@@ -553,13 +566,13 @@ void ParticleSystem::update(){
                 
                 //sum up all vectors and apply time
                 tmp = radial + tangential + gravity;
-                tmp *= elapsedTime;
+                tmp *= dt;
                 
                 //update the direction vector
                 p->dirVec = p->dirVec + tmp / POWER_SCALE;
                 
                 //move particle based on new direction vector
-                tmp = glm::vec2(p->dirVec.x * elapsedTime, p->dirVec.y * elapsedTime);
+                tmp = glm::vec2(p->dirVec.x * dt, p->dirVec.y * dt);
                 p->pos = p->pos + tmp;
                 
                 //deal color here!
@@ -604,6 +617,10 @@ void ParticleSystem::update(){
     }
 
 	livingParticleNum = liveCount;
+    
+    if(livingParticleNum == 0 && this->totalElapsedTime > this->duration){
+        this->alive = false;
+    }
 
     //update Data
     if (livingParticleNum > 0){
@@ -622,7 +639,7 @@ void ParticleSystem::update(){
         glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(glm::vec4), &scaleRotData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
 	}
     
-    RenderableObject::update();
+    RenderableObject::update(dt);
 }
 
 void ParticleSystem::render(){
@@ -692,4 +709,35 @@ bool ParticleSystem::isDead(){
         }
     }
     return false;
+}
+
+void ParticleSystem::reset(bool pause){
+    this->totalElapsedTime = 0;
+    this->totalCreatedParticles = 0;
+    this->livingParticleNum = 0;
+    this->paused = pause;
+    this->newLifePoint = 0;
+    
+    for(auto it : particleList){
+        delete it;
+    }
+    
+    glBindBuffer(GL_ARRAY_BUFFER, vpbo);
+    glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, cbo);
+    glBufferData(GL_ARRAY_BUFFER, livingParticleNum * sizeof(glm::vec4), NULL, GL_STREAM_DRAW);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, srbo);
+    glBufferData(GL_ARRAY_BUFFER, livingParticleNum * sizeof(glm::vec4), NULL, GL_STREAM_DRAW);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void ParticleSystem::resume(){
+    this->paused = false;
+}
+
+void ParticleSystem::pause(){
+    this->paused = true;
 }
