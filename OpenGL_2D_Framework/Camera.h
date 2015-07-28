@@ -12,6 +12,7 @@
 #include <GL/glew.h>
 #include "Utility.hpp"
 
+namespace Volt2D{
 /**
  *  @class Camera
  *  @brieft Camera class for OpenGL. Just simple View * Projection
@@ -20,6 +21,11 @@
  */
 class Camera{
 private:
+    /**
+     *  Private Constructor
+     */
+    Camera();
+    
     /**
      *  Position of camera
      */
@@ -64,9 +70,9 @@ private:
     
 public:
     /**
-     *  Constructor
+     *  Create camera. For now, I'm not giving any option to set.
      */
-    Camera(float screenWidth, float screenHeight, float SCREEN_TO_WORLD_SCALE);
+    static Camera* createCamera();
     
     //Destructor
     ~Camera();
@@ -171,5 +177,5 @@ public:
     void decreaseSpeed();
     /// @}
 };
-
+}   //namespace end
 #endif /* defined(__OpenGL_2D_Framework__Camera__) */

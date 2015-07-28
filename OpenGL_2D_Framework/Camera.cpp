@@ -7,9 +7,12 @@
 //
 
 #include "Camera.h"
+#include "Director.h"
 #include <glm/gtx/transform.hpp>
 
-Camera::Camera(float screenWidth, float screenHeight, float SCREEN_TO_WORLD_SCALE) :
+using namespace Volt2D;
+
+Camera::Camera() :
 position(0, 0, 0),
 verticalAngle(0),
 horizontalAngle(0),
@@ -25,6 +28,9 @@ speed(0.5f)
         nears = 35.0f;
         fars = 55.0f;
      */
+    
+    float screenWidth = Director::getInstance().getWindowSize().w;
+    float screenHeight = Director::getInstance().getWindowSize().h;
     
     //Calculate dynamically based on screen size
     float offset = screenHeight / 2.0;
@@ -49,6 +55,11 @@ speed(0.5f)
     cout << "[SYSTEM::INFO] aspect ratio = " << this->aspect << endl;
     cout << "[SYSTEM::INFO] near clip pane = " << this->nears << endl;
     cout << "[SYSTEM::INFO] far clip pane = " << this->fars << endl << endl;
+}
+
+Camera* Camera::createCamera(){
+    //nothing really to initialize here.
+    return new Camera();
 }
 
 Camera::~Camera(){
@@ -136,9 +147,6 @@ void Camera::changeAngle(double verticalValue, double horizontalValue){
         horizontalAngle += 360.0f;
     else if(horizontalAngle > 360.0f)
         horizontalAngle -= 360.0f;
-    
-//    cout << "Camera::VerticalAngle = " << verticalAngle << endl;
-//    cout << "Camera::HorizontalAngle = " << horizontalAngle << endl;
 }
 
 GLfloat Camera::getVerticalAngle() const{
