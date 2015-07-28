@@ -74,7 +74,7 @@ protected:
     GLfloat opacity;
     
     /** Pointer to rendering OpenGL Progream */
-    Program *progPtr;
+    Volt2D::Program *progPtr;
     
     /** Flag of action running */
     bool actionRunning;
