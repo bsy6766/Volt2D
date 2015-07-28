@@ -8,25 +8,23 @@
 
 #include "Program.h"
 
-Program::Program():
+using namespace Volt2D;
+
+Program::Program(Shader* vShader, Shader* fShader):
 programObject(0)
 {
-    
-}
-
-Program::~Program(){
-    programObject = 0;
-}
-
-void Program::createProgram(Shader *vShader, Shader *fShader){
+    //create opengl program and get object id
     programObject = glCreateProgram();
     
+    //throw error if failes
     if(programObject == 0)
         throw std::runtime_error("glCreateProgram failed");
     
+    //attch vshader and fshader
     glAttachShader(programObject, vShader->getObject());
     glAttachShader(programObject, fShader->getObject());
     
+    //link the program. error check at below
     glLinkProgram(programObject);
     
     //throw exception if linking failed
@@ -46,6 +44,17 @@ void Program::createProgram(Shader *vShader, Shader *fShader){
         programObject = 0;
         throw std::runtime_error(msg);
     }
+}
+
+Program::~Program(){
+    programObject = 0;
+}
+
+Program* Program::createProgram(Volt2D::Shader *vShader, Volt2D::Shader *fShader){
+    //pre check
+    assert(vShader != nullptr);
+    assert(fShader != nullptr);
+    return new Program(vShader, fShader);
 }
 
 GLuint Program::getObject(){

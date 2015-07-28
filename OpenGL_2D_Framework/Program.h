@@ -13,27 +13,34 @@
 #include <stdexcept>
 #include <vector>
 #include "Shader.h"
+#include "Utility.hpp"
 
+namespace Volt2D{
 /**
  *  @class Program
  *  @brief OpenGL Program. Use std::string as a name.
  */
 class Program{
 private:
+    //private constructor
+    Program(Shader* vShader, Shader* fShader);
+    
     /**
      *  OpenGL Program object
      */
     GLuint programObject;
     
 public:
-    Program();
+    //Destructor
     ~Program();
     
     /**
      *  Create OpenGL Program with Shader
-     *  @param vertex
+     *  @param vShader Vertex shader
+     *  @param fShader Fragment shader
+     *  @return New program object attached with shaders.
      */
-    void createProgram(Shader *vShader, Shader *fShader);
+    static Program* createProgram(Volt2D::Shader *vShader, Volt2D::Shader *fShader);
     
     /**
      *  Get program object
@@ -47,5 +54,6 @@ public:
      */
     GLint attrib(const GLchar* attribName) const;
 };
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__Program__) */
