@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdexcept>
 #include <map>
-#include "CommonInclude.hpp"
+#include "Utility.hpp"
 #include "stb_image.h"
 
 class SpriteAnimation;

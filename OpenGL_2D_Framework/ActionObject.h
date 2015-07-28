@@ -10,7 +10,7 @@
 #define __OpenGL_2D_Framework__ActionObject__
 
 #include "Timer.h"
-#include "CommonInclude.hpp"
+#include "Utility.hpp"
 
 /**
  *  @class AcitonObject

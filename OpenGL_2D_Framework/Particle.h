@@ -9,7 +9,7 @@
 #ifndef __OpenGL_2D_Framework__Particle__
 #define __OpenGL_2D_Framework__Particle__
 
-#include "CommonInclude.hpp"
+#include "Utility.hpp"
 #include "Color.h"
 
 class Particle{

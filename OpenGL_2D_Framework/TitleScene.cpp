@@ -237,15 +237,6 @@ void TitleScene::keyPressed(int key, int mods){
 	Scene::keyPressed(key, mods);
 }
 
-//void TitleScene::mouseMove(double x, double y){
-//    ps->emitPos = glm::vec3(x, y, 0);
-//    cout << "emit pos = ";
-//    Utility::printVec2(ps->emitPos);
-//    cout << "mouse pos = ";
-//    Utility::printVec2(vec2(x, y));
-//    Scene::mouseMove(x, y);
-//}
-
 void TitleScene::mouseButton(double x, double y, int button, int action){
 //    ps->setPosition(glm::vec3(x, y, 0));
     Scene::mouseButton(x, y, button, action);

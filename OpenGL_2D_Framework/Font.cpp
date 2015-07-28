@@ -100,10 +100,10 @@ bool Font::initFont(std::string fontName, int fontSize){
     }
     
     //find neareast power of 2 for width
-    unsigned int uiWidth = Utility::findNearestPowTwo(widthSum);
+    unsigned int uiWidth = Volt2D::findNearestPowTwo(widthSum);
     
     //find neareast power of 2 for height
-    unsigned int uiHeight = Utility::findNearestPowTwo(maxHeight);
+    unsigned int uiHeight = Volt2D::findNearestPowTwo(maxHeight);
     
     //store texture size (power of 2)
     this->texAtlasWidth = (float)uiWidth;

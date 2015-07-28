@@ -105,7 +105,7 @@ const GLfloat Object::getAngle(){
 void Object::rotateTo(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
     //rotate in 2d space by default
 //    wrapAngle(angle);
-    Utility::wrapAngle(angle);
+    Volt2D::wrapAngle(angle);
     rotateMat = glm::rotate(glm::mat4(), -angle, axis);
     this->angle = angle;
     needToUpdateBB = true;
@@ -115,7 +115,7 @@ void Object::rotateBy(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
     //rotate in 2D space by default
     this->angle += angle;
 //    wrapAngle(this->angle);
-    Utility::wrapAngle(this->angle);
+    Volt2D::wrapAngle(this->angle);
     rotateMat = glm::rotate(rotateMat, -angle, axis);
     needToUpdateBB = true;
 }

@@ -19,7 +19,11 @@ joystickEnabled(false),
 paused(false),
 waitingForSceneTransition(false),
 clearBufferColor(glm::vec3()),
-vsync(false)
+vsync(false),
+//By default, window will be created as fullscreen(not windowed and boderless)
+fullscreen(true),
+borderless(false),
+cursorHidden(false)
 {
     char cCurrentPath[FILENAME_MAX];
     
@@ -88,7 +92,7 @@ Director::~Director(){
 }
 
 #pragma mark Init & Release
-void Director::initApp(const int screenWidth, const int screenHeight, const std::string windowTitle, glm::vec3 clearBuffColor, bool vsync){
+void Director::initApp(const int screenWidth, const int screenHeight, const std::string windowTitle, glm::vec3 clearBuffColor, bool vsync, bool fullscreen, bool borderless, bool captureMouse, bool cursorHidden){
     //pre check
     if(screenWidth == 0){
         throw std::runtime_error("Screen width can not be 0.");
@@ -99,6 +103,10 @@ void Director::initApp(const int screenWidth, const int screenHeight, const std:
     }
     
     this->vsync = vsync;
+    this->fullscreen = fullscreen;
+    this->borderless = borderless;
+    this->captureMouse = captureMouse;
+    this->cursorHidden = cursorHidden;
     
     //window title can be empty...if you wish...
     
@@ -206,6 +214,11 @@ void Director::initGLFW(){
     }
     else{
         cout << "[SYSTEM::INFO] Succesfully initialized glfw." << endl;
+        int vMajor;
+        int vMinor;
+        int vRev;
+        glfwGetVersion(&vMajor, &vMinor, &vRev);
+        cout << "[SYSTEM::INFO] GLFW version " << vMajor << "." << vMinor << "." << vRev << endl;
     }
 }
 
@@ -223,13 +236,40 @@ void Director::createWindow(const int &screenWidth, const int &screenHeight, con
     glfwWindowHint(GLFW_BLUE_BITS, 8);
     glfwWindowHint(GLFW_ALPHA_BITS, 8);
     
-    //borderless. Lets just show border to see the window title
-    glfwWindowHint(GLFW_DECORATED, GL_FALSE);
+    //check fullscreen mode first.
+    if(fullscreen){
+        //if fullscreen is true, then windowed and borderless will be forced to false since it doesn't uses it.
+        this->borderless = false;
+        //Iconify when fullscreen loses focus.
+        glfwWindowHint(GLFW_AUTO_ICONIFY, GL_TRUE);
+        //Remove window border
+        glfwWindowHint(GLFW_DECORATED, GL_FALSE);
+        //Create window on primary window
+        window = glfwCreateWindow(screenWidth, screenHeight, windowTitle.c_str(), glfwGetPrimaryMonitor(), NULL);
+        cout << "[SYSTEM::INFO] Creating window in fullscreen mode." << endl;
+    }
+    else{
+        //if it's not full screen, then it's allways windowed.
+        //but it can be borderless windowed or bordered
+        //So, since it's windowed, let user can leave app as normal window instead of iconifying when app loses focus
+        glfwWindowHint(GLFW_AUTO_ICONIFY, GL_FALSE);
+        
+        if(borderless){
+            //borderless. Lets just show border to see the window title
+            glfwWindowHint(GLFW_DECORATED, GL_FALSE);
+
+        }
+        else{
+            //borderless. Lets just show border to see the window title
+            glfwWindowHint(GLFW_DECORATED, GL_TRUE);
+        }
+        
+        //create window with size and title.
+        window = glfwCreateWindow(screenWidth, screenHeight, windowTitle.c_str(), NULL, NULL);
+    }
     
+    //set error call back
     glfwSetErrorCallback(glfw_error_callback);
-    
-    //create window with size and title.
-    window = glfwCreateWindow(screenWidth, screenHeight, windowTitle.c_str(), glfwGetPrimaryMonitor(), NULL);
     
     //Need to move app window a bit to right and bottom. Windows only.
     //Mac(Xcode) opens app window on the center of the screen.
@@ -256,8 +296,30 @@ void Director::createWindow(const int &screenWidth, const int &screenHeight, con
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, mouse_move_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
-    //    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    
+    //capture mouse on screen
+    if(this->fullscreen){
+        //if it's full screen,
+        if(this->captureMouse){
+            //capturing mouse in fullscreen mode.
+            //cursor is hidden by default
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            this->cursorHidden = true;
+        }
+        else{
+            //not capturing mouse cursor.
+            //user can freely move mouse cursor around the window even out side of window even while fullscreen.
+            //if it's fullscreen, it will iconify window if user click other window.
+            //set option for hiding cursor
+            if(this->cursorHidden){
+                //cursor will be hidden if it's on top of the app's window. Else, it's show as normal.
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+            }
+            //else, use default
+        }
+    }
+    
+    glfwSetCursorPos(this->window, 0, 0);
 }
 
 #pragma mark Scene Management
@@ -492,6 +554,10 @@ void Director::key_callback(GLFWwindow* window, int key, int scancode, int actio
         //            glm::vec3 cPos = directorPtr->camera->getPosition();
         //            cout << "cpos = (" << cPos.x << ", " << cPos.y << ", " << cPos.z << ")" << endl;
         //        }
+        
+        if(key == GLFW_KEY_H){
+            glfwSetCursorPos(directorPtr->window, 100, 100);
+        }
     }
     else if(action == GLFW_RELEASE){
         directorPtr->runningScene->keyReleased(key, mods);
@@ -508,26 +574,27 @@ void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos)
     
     float w = directorPtr->winSize.w;
     float h = directorPtr->winSize.h;
-    
-    if(x <= -w/2.0f){
-        x = -w/2.0f;
-        glfwSetCursorPos(window, x, y);
-    }
-    if(x >= w/2.0f){
-        x = w/2.0f;
-        glfwSetCursorPos(window, x, y);
-    }
-    if(y <= -h/2.0f){
-        y = -h/2.0f;
-        glfwSetCursorPos(window, x, y);
-    }
-    if(y >= h/2.0f){
-        y = h/2.0f;
-        glfwSetCursorPos(window, x, y);
-    }
-    
-    directorPtr->runningScene->mouseMove(x, -y);
-    directorPtr->mouseCursor->setPosition(glm::vec3(x, -y, 0));
+//    
+//    if(x < 0){
+//        x = 0;
+//        glfwSetCursorPos(window, x, y);
+//    }
+//    if(x > w-1){
+//        x = w-1;
+//        glfwSetCursorPos(window, x, y);
+//    }
+//    if(y < -1){
+//        y = -1;
+//        glfwSetCursorPos(window, x, y);
+//    }
+//    if(y > h-1){
+//        y = h-1;
+//        glfwSetCursorPos(window, x, y);
+//    }
+//
+    //send raw mouse position instead of world coordinate
+    directorPtr->runningScene->mouseMove(x, y);
+    directorPtr->mouseCursor->setPosition(glm::vec3(x - (w/2.0f), (h/2.0f) - y, 0));
     
     //camera movement
     //    directorPtr->runningScene->Scene::mouseMove(x, -y);

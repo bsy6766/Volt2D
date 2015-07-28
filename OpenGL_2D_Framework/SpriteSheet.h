@@ -19,7 +19,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "CommonInclude.hpp"
+#include "Utility.hpp"
 #include "Texture.h"
 
 struct ImageEntry{

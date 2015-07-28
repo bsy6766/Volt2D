@@ -9,7 +9,7 @@
 #ifndef __OpenGL_2D_Framework__Color__
 #define __OpenGL_2D_Framework__Color__
 
-#include "CommonInclude.hpp"
+#include "Utility.hpp"
 
 /**
  *  @class Color
@@ -118,25 +118,25 @@ public:
     
     Color friend operator-(const Color& lhs, const Color& rhs){
         float r = lhs.r - rhs.r;
-        Utility::wrapColor(r);
+        Volt2D::wrapColor(r);
         float g = lhs.g - rhs.g;
-        Utility::wrapColor(g);
+        Volt2D::wrapColor(g);
         float b = lhs.b - rhs.b;
-        Utility::wrapColor(b);
+        Volt2D::wrapColor(b);
         float a = lhs.a - rhs.a;
-        Utility::wrapColor(a);
+        Volt2D::wrapColor(a);
         return Color::createWithRGBA(r, g, b, a);
     }
     
     Color friend operator+(const Color& lhs, const Color& rhs){
         float r = lhs.r + rhs.r;
-        Utility::wrapColor(r);
+        Volt2D::wrapColor(r);
         float g = lhs.g + rhs.g;
-        Utility::wrapColor(g);
+        Volt2D::wrapColor(g);
         float b = lhs.b + rhs.b;
-        Utility::wrapColor(b);
+        Volt2D::wrapColor(b);
         float a = lhs.a + rhs.a;
-        Utility::wrapColor(a);
+        Volt2D::wrapColor(a);
         return Color::createWithRGBA(r, g, b, a);
     }
     

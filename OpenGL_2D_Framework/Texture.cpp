@@ -195,8 +195,8 @@ void Texture::initTextureArray(int layer){
     assert(height >= 0);
     //find neareast power of 2 for width
     
-    this->width = Utility::findNearestPowTwo(width);
-    this->height = Utility::findNearestPowTwo(height);
+    this->width = Volt2D::findNearestPowTwo(width);
+    this->height = Volt2D::findNearestPowTwo(height);
     
     //generate empty texture
     this->generate2DArrayTexture(this->width, this->height, layer, this->channel);

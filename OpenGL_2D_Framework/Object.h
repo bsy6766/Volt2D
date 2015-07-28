@@ -11,7 +11,7 @@
 
 #include <GL/glew.h>
 #include <map>
-#include "CommonInclude.hpp"
+#include "Utility.hpp"
 #include "BoundingBox.h"
 #include "Z_Float.h"
 

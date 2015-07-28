@@ -166,22 +166,22 @@ Color Color::createWithRGBA(float r, float g, float b, float a){
 }
 
 void Color::setR(float r){
-    Utility::wrapColor(r);
+    Volt2D::wrapColor(r);
     this->r = r;
 }
 
 void Color::setG(float g){
-    Utility::wrapColor(g);
+    Volt2D::wrapColor(g);
     this->g = g;
 }
 
 void Color::setB(float b){
-    Utility::wrapColor(b);
+    Volt2D::wrapColor(b);
     this->b = b;
 }
 
 void Color::setA(float a){
-    Utility::wrapColor(a);
+    Volt2D::wrapColor(a);
     this->a = a;
 }
 
