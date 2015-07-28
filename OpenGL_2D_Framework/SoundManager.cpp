@@ -322,7 +322,7 @@ void SoundManager::bindSoundToChannelGroup(std::string soundName, std::string ch
     }
 }
 
-Sound* SoundManager::findSound(std::string soundName){
+SoundManager::Sound* SoundManager::findSound(std::string soundName){
     auto find_sound_it = soundMap.find(soundName);
     if(find_sound_it == soundMap.end()){
 //        cout << "No sound found to player" << endl;

@@ -22,41 +22,6 @@
 
 namespace Volt2D{
 /**
- *  @class Sound
- *  @brief Simple wrapper for FMOD Sound and Channel
- */
-class Sound{
-private:
-    friend class SoundManager;
-    
-    Sound(): sound(0), channel(0)
-    {
-        
-    }
-    
-    /**
-     *  FMOD Sound object
-     */
-    FMOD::Sound* sound;
-    
-    /**
-     *  FMOD Channel object
-     */
-    FMOD::Channel* channel;
-    
-public:
-    ~Sound(){};
-    
-    /**
-     *  Create function for sound. Constructor will be private.
-     *  @return New Sound class object
-     */
-    static Sound* createSound(){
-        return new Sound();
-    };
-};
-
-/**
  *  \class SoundManager
  *
  *  \brief Manages sounds (BGM, SFX).
@@ -73,6 +38,38 @@ public:
 
 class SoundManager{
 private:
+    /**
+     *  @class Sound
+     *  @brief Simple wrapper for FMOD Sound and Channel
+     */
+    class Sound{
+    public:
+        Sound(): sound(0), channel(0)
+        {
+            
+        }
+        
+        ~Sound(){};
+        
+        
+        /**
+         *  FMOD Sound object
+         */
+        FMOD::Sound* sound;
+        
+        /**
+         *  FMOD Channel object
+         */
+        FMOD::Channel* channel;
+        
+        /**
+         *  Create function for sound. Constructor will be private.
+         *  @return New Sound class object
+         */
+        static Sound* createSound(){
+            return new Sound();
+        };
+    };
     /**
      * FMOD system. Update is called on every iteration.
      */
@@ -91,12 +88,12 @@ private:
      *  @param soundName A given name (by you) for each sound object.
      *  @return A Sound class object. 0 if no sound found.
      */
-    Volt2D::Sound* findSound(std::string soundName);
+    Sound* findSound(std::string soundName);
     
     /**
      * A std::map that stores Sound object with name as an ID.
      */
-    std::map<std::string, Volt2D::Sound*> soundMap;
+    std::map<std::string, Sound*> soundMap;
     
     /**
      *  A std::map that stores channel group with name as an ID
