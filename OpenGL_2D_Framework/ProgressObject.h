@@ -23,6 +23,9 @@
  */
 class ProgressObject : public RenderableObject{
 protected:
+    //protected constructor
+    ProgressObject();
+    
     /**
      *  Progress texture.
      */
@@ -57,9 +60,6 @@ protected:
      *  Current percentage of progress
      */
     int currentPercentage;
-    
-    //protected constructor
-    ProgressObject();
 private:
 public:
     //virtual destructor

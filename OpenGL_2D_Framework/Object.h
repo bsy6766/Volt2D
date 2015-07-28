@@ -31,6 +31,11 @@
 class Object{
 protected:
     /**
+     *  Protected constructor
+     */
+    Object();
+    
+    /**
      *  ture if alive. False if dead. 
      *  Object gets deleted on next update iteration when it's dead.
      */
@@ -136,12 +141,6 @@ protected:
     void translateBy(glm::vec3 distance);
     
     /**
-     *  Wrap angle with boundary of 0 ~ 360 in degree.
-     *  @param (ref) angle A reference angle to wrap.
-     */
-//    void wrapAngle(GLfloat& angle);
-    
-    /**
      *  Rotate to specific angle with axis
      *  @param angle A angle in degree to set
      *  @param axis A vec3 axis to rotate.
@@ -171,25 +170,19 @@ protected:
     std::multimap<std::string, Object*> childObjectLUT; //look up table
     std::multimap<float, Object*> childObjMap;
     
+    
 private:
     /**
      *  Cleans all child(children) that is added to this object
      */
     void cleanChildList();
     
-    /**
-     *  Change z order of object. Reorder the rendering order with new z.
+    /** 
+     * Change z order of object. Reorder the rendering order with new z.
      */
     void changeZ(Object* object, float z);
 public:
-    /**
-     *  Constructor
-     */
-    Object();
-    
-    /**
-     *  Virtual destructor
-     */
+    /** Virtual destructor */
     virtual ~Object();
     
     /**

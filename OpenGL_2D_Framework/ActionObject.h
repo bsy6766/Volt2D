@@ -20,8 +20,17 @@
 class RenderableObject;
 
 class ActionObject{
-private:
 protected:
+    /**
+     *  protected constructor
+     */
+    ActionObject();
+    
+    /**
+     *  protected copy constructor
+     */
+    ActionObject(const ActionObject& other);
+    
     /**
      *  Action duration
      */
@@ -36,9 +45,8 @@ protected:
      *  A target to update from this action
      */
     RenderableObject* target;
+private:
 public:
-    ActionObject();
-    ActionObject(const ActionObject& other);
     virtual ~ActionObject();
     
     /**

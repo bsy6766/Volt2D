@@ -19,23 +19,28 @@
 #include <string>
 
 /**
- *  @struct BufferObject
- *  @brief Contains vertex array object and buffer objects
- */
-struct BufferObject{
-    GLuint vao;
-    GLuint vbo;
-    GLuint uvbo;
-    GLuint ibo;
-};
-
-/**
  *  @class RenderableObject
  *  @brief A object that is renderable on screen. Contains several OpenGL varaibles.
  *  \todo Support anchor point for all object.
  */
 class RenderableObject : public Object{
 protected:
+    /**
+     *  Protected constructor
+     */
+    RenderableObject();
+    
+    /**
+     *  @struct BufferObject
+     *  @brief Contains vertex array object and buffer objects
+     */
+    struct BufferObject{
+        GLuint vao;
+        GLuint vbo;
+        GLuint uvbo;
+        GLuint ibo;
+    };
+    
     /** A pack of essential OpenGL objects */
     BufferObject bufferObject;
     
@@ -114,9 +119,9 @@ protected:
      */
     void matrixUniformLocation(std::string name, glm::mat4& matrix);
 private:
-
+    //no privates
 public:
-    RenderableObject();
+    //virtual destructor
     virtual ~RenderableObject();
     
     /**
