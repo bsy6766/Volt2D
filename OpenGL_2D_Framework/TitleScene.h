@@ -69,7 +69,7 @@ public:
     
     virtual void injectKey();
     virtual void injectMouseMove();
-    virtual void update() override;
+    virtual void update(double dt) override;
     
     void updateMouseInput();
 };

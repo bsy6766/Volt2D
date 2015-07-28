@@ -38,8 +38,8 @@ void BattleScene::init(){
     this->addChild(HUD_Layer);
 }
 
-void BattleScene::update(){
-    Scene::update();
+void BattleScene::update(double dt){
+    Scene::update(dt);
 }
 
 //void BattleScene::keyPressed(int key, int mods){

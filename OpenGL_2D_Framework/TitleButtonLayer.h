@@ -14,11 +14,13 @@
 #include "Sprite.h"
 #include "ActionFadeTo.h"
 #include "ActionFadeBy.h"
+#include "ActionMoveTo.h"
 #include "ActionScaleTo.h"
 #include "ActionDelay.h"
 #include "ProgressBar.h"
 #include "ProgressFromTo.h"
 #include "ActionCallFunc.h"
+#include "ParticleSystem.h"
 #include <map>
 #include "BattleScene.h"
 
@@ -32,6 +34,12 @@ private:
     Sprite* selectingArrowIcon;
     Sprite* creditScreen;
     Sprite* continueButton;
+    
+    ParticleSystem* magicalOrbits;
+    ParticleSystem* flame;
+    ParticleSystem* blueMeteor;
+    ParticleSystem* muhanDojun;
+    ParticleSystem* fireBall;
     
     bool hasSavedData;
     
@@ -70,7 +78,7 @@ public:
     virtual void init();
     virtual void exit();
     
-    virtual void update();
+    virtual void update(double dt);
     
 	virtual void keyPressed(int key, int mods);
     virtual void mouseButton(double x, double y, int button, int aciton);

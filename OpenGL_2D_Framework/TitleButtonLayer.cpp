@@ -95,14 +95,36 @@ void TitleButtonLayer::init(){
 //    ActionCallFunc cbWithParam;
 //    cbWithParam.initActionCallFunc(std::bind(&TitleButtonLayer::testFunc2, this, 1));
 //    loadingBar->addActions({new ActionDelay(delayLoading), new ProgressFromTo(fromTo), new ActionCallFunc(callbackAction), new ActionCallFunc(cbWithParam)}, 0);
+    auto delay = ActionDelay::createDelay(1);
+    auto moveTo = ActionMoveTo::createMoveTo(8, glm::vec3(600, -250, 0));
     
+    fireBall = ParticleSystem::createWithLuaConfig("fireBallParticleLayer", "Particle/fireBall.lua");
+    fireBall->setPosition(glm::vec3(-600, -250, 0));
+    fireBall->addActions({delay, moveTo, delay}, 0);
+    fireBall->setZDepth(100);
+    
+    magicalOrbits = ParticleSystem::createWithLuaConfig("magicalOrbitsLayer", "Particle/magicalOrbits.lua");
+    magicalOrbits->setPosition(vec3(-400, 0, 0));
+    magicalOrbits->setZDepth(99);
+    
+    flame = ParticleSystem::createWithLuaConfig("flameParticleLayer", "Particle/flame.lua");
+    flame->setPosition(vec3(-200, 0, 0));
+    flame->setZDepth(99);
+    
+    blueMeteor = ParticleSystem::createWithLuaConfig("blueMeteorParticleLayer", "Particle/blueMeteor.lua");
+    blueMeteor->setPosition(vec3(50, 0, 0));
+    blueMeteor->setZDepth(99);
+    
+    muhanDojun = ParticleSystem::createWithLuaConfig("muhanDojunParticleLayer", "Particle/muhanDojun.lua");
+    muhanDojun->setPosition(vec3(300, 100, 0))  ;
+    muhanDojun->setZDepth(99);
 }
 
 void TitleButtonLayer::exit(){
     
 }
 
-void TitleButtonLayer::update(){
+void TitleButtonLayer::update(double dt){
 //    BoundingBox* bb = creditScreen->getBoundingBox();
 //    originPoint->setPosition(glm::vec3(bb->origin.x, bb->origin.y, 0));
 //    endPoint->setPosition(glm::vec3(bb->end.x, bb->end.y, 0));
@@ -135,7 +157,7 @@ void TitleButtonLayer::update(){
     
     
     //must call base class update()
-    Layer::update();
+    Layer::update(dt);
 }
 
 void TitleButtonLayer::openCredits(){
@@ -167,6 +189,15 @@ void TitleButtonLayer::closeCredits(){
 }
 
 void TitleButtonLayer::keyPressed(int key, int mods){
+    if(key == GLFW_KEY_PERIOD){
+        this->addChild(magicalOrbits);
+        this->addChild(flame);
+        this->addChild(blueMeteor);
+        this->addChild(muhanDojun);
+        fireBall->runAction();
+        this->addChild(fireBall);
+    }
+    
     if(key == GLFW_KEY_ENTER){
         switch (selectingButtonID) {
             case NEW_GAME:

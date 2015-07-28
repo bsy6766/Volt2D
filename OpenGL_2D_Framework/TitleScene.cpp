@@ -56,8 +56,8 @@ void TitleScene::init(){
 //    delete rotateIt2;
 //    delete moveIt;
     
-    //title = Sprite::createSprite("titleSceneTitle", "title scene/title.png");
-    title = Sprite::createSpriteWithFrameName("titleSceneTitle", "titleSceneSpriteSheet", "title.png");
+    title = Sprite::createSprite("titleSceneTitle", "title scene/scrolls_title.png");
+//    title = Sprite::createSpriteWithFrameName("titleSceneTitle", "titleSceneSpriteSheet", "title.png");
     title->setZDepth(z_title);
     title->setY(170);
 //    auto delay = ActionDelay::createDelay(2);
@@ -114,9 +114,8 @@ void TitleScene::init(){
 	blueMeteor->setZDepth(z_particles);
     
     muhanDojun = ParticleSystem::createWithLuaConfig("muhanDojunParticle", "Particle/muhanDojun.lua");
-	muhanDojun->setPosition(vec3(300, 100, 0));
+	muhanDojun->setPosition(vec3(300, 100, 0))  ;
 	muhanDojun->setZDepth(z_particles);
-//    this->addChild(ps);
     
     initLayers();
 }
@@ -134,7 +133,7 @@ void TitleScene::initLayers(){
     this->addChild(titleButtonLayer);
 }
 
-void TitleScene::update(){
+void TitleScene::update(double dt){
 //    if(Director::getInstance().getJoyStick(0)->keyPressed(CIRCLE)){
 //        cout << "circle pressed" << endl;
     //    }
@@ -150,24 +149,38 @@ void TitleScene::update(){
 //        glm::vec3 pos = continueButton->getPosition();
 //        cout << pos.x <<" " << pos.y << " "<< pos.z << endl;
 //    }
-    Scene::update();
+    Scene::update(dt);
 }
 
 void TitleScene::keyPressed(int key, int mods){
-    if(key == GLFW_KEY_B){
-        magicalOrbits->addPosition(vec3(100, 0, 0));
-    }
-    else if(key == GLFW_KEY_V){
-        magicalOrbits->addPosition(vec3(-100, 0, 0));
-    }
+//    if(key == GLFW_KEY_B){
+//        magicalOrbits->addPosition(vec3(100, 0, 0));
+//    }
+//    else if(key == GLFW_KEY_V){
+//        magicalOrbits->addPosition(vec3(-100, 0, 0));
+//    }
     
-    if(key == GLFW_KEY_PERIOD){
+    if(key == GLFW_KEY_M){
         this->addChild(magicalOrbits);
         this->addChild(flame);
         this->addChild(blueMeteor);
         this->addChild(muhanDojun);
         fireBall->runAction();
         this->addChild(fireBall);
+    }
+    if(key == GLFW_KEY_N){
+        magicalOrbits->resume();
+        flame->resume();
+        blueMeteor->resume();
+        muhanDojun->resume();
+        fireBall->resume();
+    }
+    if(key == GLFW_KEY_COMMA){
+        magicalOrbits->reset(true);
+        flame->reset(true);
+        blueMeteor->reset(true);
+        muhanDojun->reset(true);
+        fireBall->reset(true);
     }
     
     if(key == GLFW_KEY_P){

@@ -25,7 +25,7 @@ public:
     ~BattleScene();
     
     virtual void init();
-    virtual void update();
+    virtual void update(double dt) override;
 //	virtual void keyPressed(int key, int mods);
 //	virtual void keyReleased(int key, int mods);
 //    virtual void mouseButton(double x, double y, int button, int action);
