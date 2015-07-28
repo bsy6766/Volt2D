@@ -9,27 +9,32 @@
 #ifndef __OpenGL_2D_Framework__Director__
 #define __OpenGL_2D_Framework__Director__
 
-//opengl
+// OpenGL. Must include glew first than glfw.
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "Scene.h"
-#include "CommonInclude.hpp"
+//built in headers
+#include <string>
+#include <unordered_map>
 
+//utility
+#include "CommonInclude.hpp"
+#include "Timer.h"
+#include "PS3ControllerWrapper.h"
+
+//System
+#include "Scene.h"
+#include "SoundManager.h"
 #include "Shader.h"
 #include "Program.h"
 #include "Camera.h"
-#include "SoundManager.h"
-
-#include <string>
-#include <unordered_map>
-#include "Timer.h"
-#include "PS3ControllerWrapper.h"
 #include "Sprite.h"
 #include "SpriteSheet.h"
 
+//Max number of joystick that glfw supports
 #define MAX_JOYSTICK 16
 
+//Getting working directory.
 #include <stdio.h>  /* defines FILENAME_MAX */
 #ifdef _WIN32
 #include <direct.h>
@@ -39,28 +44,33 @@
 #define GetCurrentDir getcwd
 #endif
 
+//Default constant.
+//scaling down screen sprite image size to opengl 3d world's coordinate by 10. 100 x 100 pixels sprite will have 10 x 10 length vertex quad.
 const float SCREEN_TO_WORLD_SCALE = 10.0f;
+//Global z value. All object has 0 for z.
 const float static GLOBAL_Z_VALUE = 0;
 
+//Simple window size pack
 struct WinSize{
 	float w;
 	float h;
 };
 
+/**
+ *  @class Director
+ *  @brief Manages scene and underlying systems
+ *  @note Singleton
+ */
 class Director{
 private:
+    //Friends
     friend class SpriteSheet;
     friend class Sprite;
-    SpriteSheet* const getSpriteSheet(std::string frameName);
-    void cacheSpriteSheet(std::string frameName, SpriteSheet* spriteSheet);
-    void unCacheSpriteSheet(std::string frameName);
-    bool debugMovement = false;
     
     //mouse icon
     Sprite* mouseCursor;
     
     glm::vec2 prevMousePos = glm::vec2();
-    glm::vec3 clearBufferColor;
     
 /// -------------------- OpenGL ---------------------
 /// @{
@@ -76,6 +86,8 @@ private:
      */
     std::unordered_map<std::string, Program*> programs;
     
+    //Buffer clearing color
+    glm::vec3 clearBufferColor;
 /// @}
 /// -------------------------------------------------
 
@@ -92,36 +104,63 @@ private:
     //SoundManager
     SoundManager* soundManager;
     
+    //@deprecated
+    bool paused;
+    
+    //Window size
+    WinSize winSize;
+    
     //SpriteSheet
     std::unordered_map<std::string, SpriteSheet*> spriteSheets;
     
     //PS3 Controller.
+    //Enable flag
     bool joystickEnabled;
-    PS3ControllerWrapper* ps3Joysticks[16];
+    //Controller storage.
+    //\todo Make one for XBOX controller as well(but I don't have one...)
+    PS3ControllerWrapper* ps3Joysticks[MAX_JOYSTICK];
     
     //Scens
-    /**
-    *   Currently running scene
-    */
+    /** Currently running scene */
     Scene* runningScene;
     
-    /**
-     *  Next scene waiting to get pushed
-     */
+    /** Next scene waiting to get pushed */
     Scene* nextScene;
     
-    /**
-     *  Holds previously running scene. Gets deleted.
-     */
+    /** Holds previously running scene. Gets deleted. */
     Scene* dyingScene;
     
+    /** true if system needs to transition scene */
     bool waitingForSceneTransition;
+    
+    /** Swap scene */
     void doSceneTransition();
     
-    bool paused;
+    /**
+     *  Get chached sprite sheet by name
+     *  @param frameNAme
+     */
+    SpriteSheet* const getSpriteSheet(std::string frameName);
     
-    WinSize winSize;
+    /**
+     *  Cache sprite sheet to system
+     *  @param frameName A frame name for sprtie sheet
+     *  @param spriteSheet SpriteSheet object pointer to store.
+     */
+    void cacheSpriteSheet(std::string frameName, SpriteSheet* spriteSheet);
     
+    /**
+     *  Remove sprite sheet from the system
+     *  @param frameName
+     */
+    void unCacheSpriteSheet(std::string frameName);
+    
+    /**
+     *  Check if there is sprite sheet with frame name.
+     *  @param frameName A frame name to check
+     *  @return true if there is sprite sheet with same name. Else, false.
+     */
+    bool hasSpriteSheetFrameName(std::string frameName);
 /// @}
 /// -------------------------------------------------
     
@@ -130,22 +169,22 @@ private:
 /// @name OpenGL attributes
     
     /**
-     *
+     *  Initialize OpenGL. Depth, blending mode, etc
      */
     void initOpenGL();
     
     /**
-     *
+     *  Initialize glew
      */
     void initGLEW();
     
     /**
-     *
+     *  Initialize GLFW
      */
     void initGLFW();
     
     /**
-     *
+     *  Create GLFW window.
      */
     void createWindow(const int& screenWidth, const int& screenHeight, const std::string& windowTitle);
     
@@ -176,97 +215,99 @@ private:
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
     
     /**
-     *
+     *  Mouse move call back.
+     *  Called whenever mouse moves.
+     *  @param window GLFW window that received inputs
+     *  @param x X position of moved mouse cursor
+     *  @param y Y position of moved mouse cursor
      */
-    static void mouse_move_callback(GLFWwindow* window, double xPos, double yPos);
+    static void mouse_move_callback(GLFWwindow* window, double x, double y);
     
     /**
-     *
+     *  Mouse button click call back
+     *  Called whenever mouse is clicked.
+     *  @param window GLFW window that receives inputs
+     *  @param button A GLFW button value
+     *  @param action State of key. (left, right, middle, etc)
+     *  @param mods State of modifier key. (ex. Shift, alt, etc)
      */
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     
     /**
-     *
+     *  GLFW error call back.
+     *  Called whenever glfw throws error with code and description.
      */
     static void glfw_error_callback(int error, const char *description);
-    
 /// @}
 /// -------------------------------------------------
     
 public:
+    //Instance getter
     static Director& getInstance(){
         static Director instance;
         return instance;
     }
     
-    /**
-     *  Initailize application.
-     *  Setups OpenGL and gui window
-     */
+    /// @{
+    /// @Application related
+    // initialize application
     void initApp(const int screenWidth, const int screenHeight, const std::string windowTitle , glm::vec3 clearBuffColor);
-
+    // closw GLFW window
     void terminateApp();
-    
-    /**
-     *	Run game loop
-     */
+    // Run application
     void run();
+    /// @}
     
+    /// @{
+    /// @name Window sie
+    //get window size
+    WinSize getWindowSize();
+    //change window size
+    void changeWindowSize(int w, int h);
+    /// @}
+    
+    /// @{
+    /// @name Scene management
+    //push scene to next scene
+    void pushScene(Scene* pScene);
+    //get currently running scene
+    Scene* getRunningScene(){return this->runningScene;};
+    //transition to next scene. 
+    void transitionToNextScene(bool wait);
+    /// @}
+    
+    /// @{
+    /// @name Working directory
+    //wd getter
+    std::string getWorkingDir();
+    //wd setter
+    void setWorkingDir(std::string wd);
+    /// @}
+    
+    //render
     void render();
+    //update
     void update(double dt);
     
-    std::string getWorkingDir();
-    void setWorkingDir(std::string wd);
-
-    /**
-     *	Pause game loop
-     */
-    void pause(){this->paused = true;}
-    bool isScenePaused(){return this->paused;}
-    void resume(){this->paused = false;}
-//
-//    /**
-//     *  Stop the game loop
-//     */
-//    void stop();
-    
-    /**
-     *	Push scene to director's scene.
-     *   This will replace the current running scene if exists
-     */
-    void pushScene(Scene* pScene);
-    Scene* getRunningScene(){return this->runningScene;};
-    
-//    /**
-//     *  Terminate current running scene,
-//     */
-//    void popScene();
-//    
-    /**
-     *	Load the next scene, pop the current one and set the next scene to current scene
-     */
-    void transitionToNextScene(bool wait);
-//
-//    /**
-//     *
-//     */
-//    void transitionSceneWith(Scene* newScene);
-
+    //Add opengl program
     void addProgramWithShader(const std::string programName, const std::string vertexShaderPath, const std::string fragmentShaderPath);
-
-    
-    WinSize getWindowSize();
-    void setWindowSize(float width, float height);
-    
+    //get opengl program
     Program* getProgramPtr(std::string programName="Default");
+    
+    //get camera
     Camera* getCameraPtr();
     
+    //get sound manager
     SoundManager* getSoundManager();
     
-    void changeWindowSize(int w, int h);
-    
+    //get ps3 controller
     PS3ControllerWrapper* getJoyStick(int num);
-    bool hasSpriteSheetFrameName(std::string frameName);
+    //    void pause(){this->paused = true;}
+    //    bool isScenePaused(){return this->paused;}
+    //    void resume(){this->paused = false;}
+    //    //stop game loop
+    //    void stop();
+    //    void popScene();
 };
 
 #endif /* defined(__OpenGL_2D_Framework__Director__) */
