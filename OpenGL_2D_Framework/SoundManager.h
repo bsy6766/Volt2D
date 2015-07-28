@@ -18,7 +18,43 @@
 #include <fmod/fmod.hpp>
 #include <fmod/fmod_errors.h>
 #endif
-#include "Sound.h"
+//#include "Sound.h"
+
+namespace Volt2D{
+/**
+ *  @class Sound
+ *  @brief Simple wrapper for FMOD Sound and Channel
+ */
+class Sound{
+private:
+    friend class SoundManager;
+    
+    Sound(): sound(0), channel(0)
+    {
+        
+    }
+    
+    /**
+     *  FMOD Sound object
+     */
+    FMOD::Sound* sound;
+    
+    /**
+     *  FMOD Channel object
+     */
+    FMOD::Channel* channel;
+    
+public:
+    ~Sound(){};
+    
+    /**
+     *  Create function for sound. Constructor will be private.
+     *  @return New Sound class object
+     */
+    static Sound* createSound(){
+        return new Sound();
+    };
+};
 
 /**
  *  \class SoundManager
@@ -55,12 +91,12 @@ private:
      *  @param soundName A given name (by you) for each sound object.
      *  @return A Sound class object. 0 if no sound found.
      */
-    Sound* findSound(std::string soundName);
+    Volt2D::Sound* findSound(std::string soundName);
     
     /**
      * A std::map that stores Sound object with name as an ID.
      */
-    std::map<std::string, Sound*> soundMap;
+    std::map<std::string, Volt2D::Sound*> soundMap;
     
     /**
      *  A std::map that stores channel group with name as an ID
@@ -213,5 +249,6 @@ public:
      */
     void release();
 };
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__SoundManager__) */

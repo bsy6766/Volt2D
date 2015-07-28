@@ -9,6 +9,8 @@
 #include "SoundManager.h"
 #include "Director.h"
 
+using namespace Volt2D;
+
 SoundManager::SoundManager(){
     
 }
