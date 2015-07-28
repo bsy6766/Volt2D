@@ -12,16 +12,14 @@ TitleScene::TitleScene():
 bg(0),
 titleButtonLayer(0)
 {
-    cout << "TitleScene()" << endl;
 }
 
 TitleScene::~TitleScene(){
-    cout << "~TitleScene()" << endl;
-    exit();
+
 }
 
 void TitleScene::init(){
-    cout << "TitleScene::init()" << endl;
+//    cout << "TitleScene::init()" << endl;
 //    WinSize size = Director::getInstance().getWindowSize();
 //    SoundManager::getInstance().createChannelGroup("bgmChannelGroup");
 //    SoundManager::getInstance().createNewSound("titleSceneBgm", "titleSceneBgm", "title bgm.mp3");
@@ -263,5 +261,4 @@ void TitleScene::injectMouseMove(){
 
 void TitleScene::exit(){
     //You can delete other objects here
-    cout << "TitleScene::exit" << endl;
 }
