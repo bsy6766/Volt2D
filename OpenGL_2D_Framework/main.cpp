@@ -69,11 +69,24 @@ int main(int argc, const char * argv[]) {
                                            systemConfig->getFloat("system", "clearBuffer.g"),
                                            systemConfig->getFloat("system", "clearBuffer.b"));
     bool vsync = systemConfig->getBoolean("system", "window.vsync");
+    bool fullscreen = systemConfig->getBoolean("system", "window.fullscreen");
+    bool windowed = systemConfig->getBoolean("system", "window.borderless");
+    bool captureMouse = systemConfig->getBoolean("system", "window.captureMouse");
+    bool cursorHidden = systemConfig->getBoolean("system", "window.cursorHidden");
+    
     delete systemConfig;
     
     try{
         cout << "[main] Starting application." << endl;
-        Director::getInstance().initApp(screenWidth, screenHeight, windowTitle, clearBufferColor, vsync);
+        Director::getInstance().initApp(screenWidth,
+                                        screenHeight,
+                                        windowTitle,
+                                        clearBufferColor,
+                                        vsync,
+                                        fullscreen,
+                                        windowed,
+                                        captureMouse,
+                                        cursorHidden);
         TitleScene* titleScene = new TitleScene();
         Director::getInstance().pushScene(titleScene);
         Director::getInstance().run();
