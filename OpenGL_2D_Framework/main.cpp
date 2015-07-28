@@ -68,11 +68,12 @@ int main(int argc, const char * argv[]) {
     glm::vec3 clearBufferColor = glm::vec3(systemConfig->getFloat("system", "clearBuffer.r"),
                                            systemConfig->getFloat("system", "clearBuffer.g"),
                                            systemConfig->getFloat("system", "clearBuffer.b"));
+    bool vsync = systemConfig->getBoolean("system", "window.vsync");
     delete systemConfig;
     
     try{
         cout << "[main] Starting application." << endl;
-        Director::getInstance().initApp(screenWidth, screenHeight, windowTitle, clearBufferColor);
+        Director::getInstance().initApp(screenWidth, screenHeight, windowTitle, clearBufferColor, vsync);
         TitleScene* titleScene = new TitleScene();
         Director::getInstance().pushScene(titleScene);
         Director::getInstance().run();

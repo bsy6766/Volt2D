@@ -107,6 +107,8 @@ private:
     //@deprecated
     bool paused;
     
+    bool vsync;
+    
     //Window size
     WinSize winSize;
     
@@ -250,8 +252,16 @@ public:
     
     /// @{
     /// @Application related
-    // initialize application
-    void initApp(const int screenWidth, const int screenHeight, const std::string windowTitle , glm::vec3 clearBuffColor);
+    /**
+     *  Initialize app.
+     *  @note throws runtime error if fails to initialize.
+     *  @param screenWidth Width of window to create
+     *  @param screenHeight Height of window to create
+     *  @param windowTitle A string for window's title
+     *  @param vsync true to enable vsync. Else, false.
+     */
+    void initApp(const int screenWidth, const int screenHeight, const std::string windowTitle , glm::vec3 clearBuffColor, bool vsync);
+    
     // closw GLFW window
     void terminateApp();
     // Run application
@@ -284,9 +294,14 @@ public:
     void setWorkingDir(std::string wd);
     /// @}
     
-    //render
+    /**
+     *  Render the scene
+     */
     void render();
-    //update
+    /**
+     *  Update the scene.
+     *  @param dt Elapsed time since last iteration
+     */
     void update(double dt);
     
     //Add opengl program

@@ -18,7 +18,8 @@ ps3Joysticks(),   //init all to 0,
 joystickEnabled(false),
 paused(false),
 waitingForSceneTransition(false),
-clearBufferColor(glm::vec3())
+clearBufferColor(glm::vec3()),
+vsync(false)
 {
     char cCurrentPath[FILENAME_MAX];
     
@@ -87,7 +88,20 @@ Director::~Director(){
 }
 
 #pragma mark Init & Release
-void Director::initApp(const int screenWidth = 100, const int screenHeight = 100, const std::string windowTitle = "noName", glm::vec3 clearBuffColor = glm::vec3(0, 0, 0)){
+void Director::initApp(const int screenWidth, const int screenHeight, const std::string windowTitle, glm::vec3 clearBuffColor, bool vsync){
+    //pre check
+    if(screenWidth == 0){
+        throw std::runtime_error("Screen width can not be 0.");
+    }
+    
+    if(screenHeight == 0){
+        throw std::runtime_error("Screen height can not be 0.");
+    }
+    
+    this->vsync = vsync;
+    
+    //window title can be empty...if you wish...
+    
     cout << "[SYSTEM::INFO] Initializing application." << endl;
     cout << "[SYSTEM::INFO] Application title = " << windowTitle << endl;
     cout << "[SYSTEM::INFO] Screen width = " << screenWidth << endl;
@@ -100,18 +114,21 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
     initGLEW();
     initOpenGL();
     
-    //create basic shader
+    //create basic shader.
+    //Default shader. Used for sprite and default renderable objects
     addProgramWithShader("Default", "vertexShader.glsl", "fragmentShader.glsl");
+    //Text shader.
     addProgramWithShader("Text",  "textVertexShader.glsl", "textFragmentShader.glsl");
+    //Sprite animation shader. Uses GL_TEXTURE_2D_ARRAY
     addProgramWithShader("SpriteAnimation", "saVertexShader.glsl", "saFragmentShader.glsl");
+    //Particle system shader. Uses intancing rendering.
     addProgramWithShader("ParticleSystem", "particleVertexShader.glsl", "particleFragmentShader.glsl");
     
-    //create basic camera
+    //create basic camera. It will pos camera to exact place where it perfectly fits screen width and height
     camera = new Camera((float)screenWidth, (float)screenHeight, SCREEN_TO_WORLD_SCALE);
     
+    //create sound manager.
     soundManager = SoundManager::createSoundManager();
-    
-    //create joystick wrapper(PS3)
     
     //detect joystick. GLFW has max 16 joystick module connections
     //Assume we are only using PS3 for this moment
@@ -123,15 +140,17 @@ void Director::initApp(const int screenWidth = 100, const int screenHeight = 100
             if(ps3Joysticks[i])
                 delete ps3Joysticks[i];
             ps3Joysticks[i] = new PS3ControllerWrapper(i, buttonCount, axisCount);
-            cout << "Detected joystick on #" << i << ". Name = " << glfwGetJoystickName(i) << ". button = " << buttonCount << ", axis = " << axisCount << "." << endl;
+            cout << "[SYSTEM::INFO] Detected joystick on #" << i << ". Name = " << glfwGetJoystickName(i) << ". button = " << buttonCount << ", axis = " << axisCount << "." << endl;
             joystickEnabled = true;
             //TODO: Remove this for multiple controller
             break;
         }
     }
     
+    //Hardcoded sprite.
     mouseCursor = Sprite::createSprite("globalMouseCursor", "mouse_icon.png");
     
+    //set clear buffer color
     this->clearBufferColor = clearBuffColor;
 }
 
@@ -140,14 +159,19 @@ void Director::terminateApp(){
 }
 
 void Director::initOpenGL(){
+    //Disable depth test. Everything will be rendered on same z axis (0)
     glDisable(GL_DEPTH_TEST);
-    //    glEnable(GL_DEPTH_TEST);
-    //    glDepthFunc(GL_ALWAYS);
-    //    glDepthFunc(GL_LESS);
     
+    //Used to disable depth func to GL_ALWAYS than GL_LESS, but turns out it didn't need to.
+    //    glDepthFunc(GL_ALWAYS);
+    
+    //Default blending setting.
     glEnable(GL_BLEND);
+    //Particle system will have their own belnding option.
+    //\todo Give objects option to change blending mode.
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
+    //Default matrix mode.
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -170,6 +194,7 @@ void Director::initGLEW(){
     cout << "[SYSTEM::INFO] Vendor: " << glGetString(GL_VENDOR) << endl;
     cout << "[SYSTEM::INFO] Renderer: " << glGetString(GL_RENDERER) << endl << endl;
     
+    //@warning Hardcorded
     if (!GLEW_VERSION_4_1){
         throw std::runtime_error("OpenGL 4.1 API is not available");
     }
@@ -208,10 +233,10 @@ void Director::createWindow(const int &screenWidth, const int &screenHeight, con
     
     //Need to move app window a bit to right and bottom. Windows only.
     //Mac(Xcode) opens app window on the center of the screen.
-#ifdef _WIN32
-    //set window's position (topleft anchor point) x by 100 and y by 100
-    glfwSetWindowPos(window, 100, 100);
-#endif
+//#ifdef _WIN32
+//    //set window's position (topleft anchor point) x by 100 and y by 100
+//    glfwSetWindowPos(window, 100, 100);
+//#endif
     
     //if window wasn't created,
     if (!window){
@@ -223,7 +248,8 @@ void Director::createWindow(const int &screenWidth, const int &screenHeight, con
     glfwMakeContextCurrent(window);
     
     //disable vsync
-    glfwSwapInterval(0);
+    if(!this->vsync)
+        glfwSwapInterval(0);
     
     //register key callback func
     glfwSetWindowUserPointer(window, this);
