@@ -114,8 +114,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad87780b777d48e388a8f8ecf9a33b33f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac198b24952f06d173d4a2b18fe260cde"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layer.html#ac198b24952f06d173d4a2b18fe260cde">exit</a> ()=0</td></tr>
 <tr class="separator:ac198b24952f06d173d4a2b18fe260cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4243d1a4b059eb7433cbfe7cdfc2c191"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layer.html#a4243d1a4b059eb7433cbfe7cdfc2c191">update</a> ()</td></tr>
-<tr class="separator:a4243d1a4b059eb7433cbfe7cdfc2c191"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accdc7daa025a63eabc5bb62b6c9313c7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layer.html#accdc7daa025a63eabc5bb62b6c9313c7">update</a> (double dt)</td></tr>
+<tr class="separator:accdc7daa025a63eabc5bb62b6c9313c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fc8f7b6e8a3452706ef14e67b8d20b7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layer.html#a7fc8f7b6e8a3452706ef14e67b8d20b7">render</a> ()</td></tr>
 <tr class="separator:a7fc8f7b6e8a3452706ef14e67b8d20b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b2a3b34ac3340a1e0265f37c07fc295"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layer.html#a6b2a3b34ac3340a1e0265f37c07fc295">keyPressed</a> (int key, int mode)</td></tr>
@@ -229,8 +229,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a811bd83dc4fed9d8f3703dcd725ab79b inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a944d419481e7febead602e54e9397043 inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a944d419481e7febead602e54e9397043">removechild</a> (<a class="el" href="class_object.html">Object</a> *child, bool deleteObject)</td></tr>
 <tr class="separator:a944d419481e7febead602e54e9397043 inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada060b20e7ba2dccbc452c672757e3e9 inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#ada060b20e7ba2dccbc452c672757e3e9">updateChild</a> ()</td></tr>
-<tr class="separator:ada060b20e7ba2dccbc452c672757e3e9 inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38a93c33f9b5d5285d7b3b7cad4d149b inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a38a93c33f9b5d5285d7b3b7cad4d149b">updateChild</a> (double dt)</td></tr>
+<tr class="separator:a38a93c33f9b5d5285d7b3b7cad4d149b inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a295522598f5155e182d9b4cbf9df891f inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a295522598f5155e182d9b4cbf9df891f">renderChild</a> ()</td></tr>
 <tr class="separator:a295522598f5155e182d9b4cbf9df891f inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a249471799ecbb1276e9c9ad2efeeb53d inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a249471799ecbb1276e9c9ad2efeeb53d">translateTo</a> (glm::vec3 <a class="el" href="class_object.html#a32fab64b9880f91079613f3368865601">position</a>)</td></tr>
@@ -572,7 +572,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4243d1a4b059eb7433cbfe7cdfc2c191"></a>
+<a class="anchor" id="accdc7daa025a63eabc5bb62b6c9313c7"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -582,7 +582,8 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">void Layer::update </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -594,9 +595,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Update <a class="el" href="class_layer.html" title="A layer that can be added to scene. ">Layer</a>. Derived class can override this function but it must to call this at some point on their own update function. </p>
 
-<p>Implements <a class="el" href="class_object.html#a9c5d01b4624298d8602790d4e32f7521">Object</a>.</p>
+<p>Implements <a class="el" href="class_object.html#a415468535f187ba6d3cb82dc0a99964f">Object</a>.</p>
 
-<p>Reimplemented in <a class="el" href="class_title_button_layer.html#a3838a6dd64ac75480a8f40b49e3f1a37">TitleButtonLayer</a>.</p>
+<p>Reimplemented in <a class="el" href="class_title_button_layer.html#ab9a0fe347d5c7546ed0fa1f80479bb5c">TitleButtonLayer</a>.</p>
 
 </div>
 </div>
@@ -629,7 +630,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 26 2015 23:48:38 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 28 2015 11:14:00 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

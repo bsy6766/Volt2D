@@ -99,13 +99,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#ifndef __OpenGL_2D_Framework__MenuScene__</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#define __OpenGL_2D_Framework__MenuScene__</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* defined(__OpenGL_2D_Framework__MenuScene__) */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;Scene.h&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;Sprite.h&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;SpriteAnimation.h&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;ParticleSystem.h&quot;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;Text.h&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="class_menu_scene.html">   18</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_menu_scene.html">MenuScene</a> : <span class="keyword">public</span> <a class="code" href="class_scene.html">Scene</a>{</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="class_menu_scene.html">MenuScene</a>();</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    ~<a class="code" href="class_menu_scene.html">MenuScene</a>();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_menu_scene.html#aacc1d8a869c848f6933a6dae605dc93c">init</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_menu_scene.html#a84445a839394a90dff211f8ba5513577">exit</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* defined(__OpenGL_2D_Framework__MenuScene__) */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="class_menu_scene_html_a84445a839394a90dff211f8ba5513577"><div class="ttname"><a href="class_menu_scene.html#a84445a839394a90dff211f8ba5513577">MenuScene::exit</a></div><div class="ttdeci">void exit() override</div></div>
+<div class="ttc" id="class_menu_scene_html_aacc1d8a869c848f6933a6dae605dc93c"><div class="ttname"><a href="class_menu_scene.html#aacc1d8a869c848f6933a6dae605dc93c">MenuScene::init</a></div><div class="ttdeci">void init() override</div></div>
+<div class="ttc" id="class_scene_html"><div class="ttname"><a href="class_scene.html">Scene</a></div><div class="ttdoc">A Scene class. Only 1 scene can be run in Director. </div><div class="ttdef"><b>Definition:</b> Scene.h:28</div></div>
+<div class="ttc" id="class_menu_scene_html"><div class="ttname"><a href="class_menu_scene.html">MenuScene</a></div><div class="ttdef"><b>Definition:</b> MenuScene.h:18</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 26 2015 23:48:37 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 28 2015 11:14:00 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

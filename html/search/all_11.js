@@ -12,7 +12,7 @@ var searchData=
   ['totalelapsedtime',['totalElapsedTime',['../class_action_object.html#ab28a7e5efb17a0c2fbcfc163de9ac5e7',1,'ActionObject']]],
   ['totalpercentage',['totalPercentage',['../class_progress_object.html#ab84b1bc60f708e0896ae80c02adb06e6',1,'ProgressObject']]],
   ['totalsteps',['totalSteps',['../class_progress_object.html#a2e2b8696de9e9bbe577f8f114aaf5b1a',1,'ProgressObject']]],
-  ['transitiontonextscene',['transitionToNextScene',['../class_director.html#a79f58d0e5e39ce3b191e8b1ddd1791ed',1,'Director']]],
+  ['transition',['Transition',['../class_transition.html',1,'']]],
   ['translateby',['translateBy',['../class_object.html#a946d1514144aeb439e248cf6849796d6',1,'Object']]],
   ['translatemat',['translateMat',['../class_object.html#ad7d8a2c694ad1e518b83fde064ae6edd',1,'Object']]],
   ['translateto',['translateTo',['../class_object.html#a249471799ecbb1276e9c9ad2efeeb53d',1,'Object']]]

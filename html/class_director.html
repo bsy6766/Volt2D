@@ -92,52 +92,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Director Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Manages scene and underlying systems.  
+ <a href="class_director.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_director_8h_source.html">Director.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1b730a0bddc21783fce8bec2c831859a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_director.html#a1b730a0bddc21783fce8bec2c831859a">initApp</a> (const int screenWidth, const int screenHeight, const std::string windowTitle, glm::vec3 clearBuffColor)</td></tr>
-<tr class="separator:a1b730a0bddc21783fce8bec2c831859a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53c056df5b8e2ce68ad4c9258476d3cf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53c056df5b8e2ce68ad4c9258476d3cf"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>terminateApp</b> ()</td></tr>
-<tr class="separator:a53c056df5b8e2ce68ad4c9258476d3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae0f1f042a6757196af74f5764ee36ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_director.html#aae0f1f042a6757196af74f5764ee36ad">run</a> ()</td></tr>
-<tr class="separator:aae0f1f042a6757196af74f5764ee36ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78128ef91d0c7abd1d3e01d40b21ec6c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a78128ef91d0c7abd1d3e01d40b21ec6c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> ()</td></tr>
+<tr class="memitem:a78128ef91d0c7abd1d3e01d40b21ec6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_director.html#a78128ef91d0c7abd1d3e01d40b21ec6c">render</a> ()</td></tr>
 <tr class="separator:a78128ef91d0c7abd1d3e01d40b21ec6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a0e5f21e7b8c4551288e518dd6550f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a0e5f21e7b8c4551288e518dd6550f2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
-<tr class="separator:a7a0e5f21e7b8c4551288e518dd6550f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacd8c8a6d44c83cb74a6b3ea68a2d6d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aacd8c8a6d44c83cb74a6b3ea68a2d6d6"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getWorkingDir</b> ()</td></tr>
-<tr class="separator:aacd8c8a6d44c83cb74a6b3ea68a2d6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88d5169397b76dbeed9158ab5dc87034"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88d5169397b76dbeed9158ab5dc87034"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setWorkingDir</b> (std::string wd)</td></tr>
-<tr class="separator:a88d5169397b76dbeed9158ab5dc87034"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0e2e9b810e39c939e25ead3918faf00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_director.html#ad0e2e9b810e39c939e25ead3918faf00">pause</a> ()</td></tr>
-<tr class="separator:ad0e2e9b810e39c939e25ead3918faf00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a428bb1ffc0abbaf044df23a52e52a706"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a428bb1ffc0abbaf044df23a52e52a706"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isScenePaused</b> ()</td></tr>
-<tr class="separator:a428bb1ffc0abbaf044df23a52e52a706"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a851df0aed8d550cc85159063b0c85dac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a851df0aed8d550cc85159063b0c85dac"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>resume</b> ()</td></tr>
-<tr class="separator:a851df0aed8d550cc85159063b0c85dac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b2cd29c2d718334f84c909730f80e9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_director.html#a4b2cd29c2d718334f84c909730f80e9c">pushScene</a> (<a class="el" href="class_scene.html">Scene</a> *pScene)</td></tr>
-<tr class="separator:a4b2cd29c2d718334f84c909730f80e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a674852932c4b153b4e1ff4ee51ac07b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a674852932c4b153b4e1ff4ee51ac07b8"></a>
-<a class="el" href="class_scene.html">Scene</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getRunningScene</b> ()</td></tr>
-<tr class="separator:a674852932c4b153b4e1ff4ee51ac07b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79f58d0e5e39ce3b191e8b1ddd1791ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_director.html#a79f58d0e5e39ce3b191e8b1ddd1791ed">transitionToNextScene</a> (bool wait)</td></tr>
-<tr class="separator:a79f58d0e5e39ce3b191e8b1ddd1791ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a739ad313730cc7a098f69650d78e9042"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_director.html#a739ad313730cc7a098f69650d78e9042">update</a> (double dt)</td></tr>
+<tr class="separator:a739ad313730cc7a098f69650d78e9042"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72eda3635f1fd2d05c6dc449f2308716"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72eda3635f1fd2d05c6dc449f2308716"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addProgramWithShader</b> (const std::string programName, const std::string vertexShaderPath, const std::string fragmentShaderPath)</td></tr>
 <tr class="separator:a72eda3635f1fd2d05c6dc449f2308716"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade5daf8fd1c573e7b8257acb52434955"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade5daf8fd1c573e7b8257acb52434955"></a>
-<a class="el" href="struct_win_size.html">WinSize</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getWindowSize</b> ()</td></tr>
-<tr class="separator:ade5daf8fd1c573e7b8257acb52434955"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af10840676520d0168648ad561dadffab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af10840676520d0168648ad561dadffab"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setWindowSize</b> (float width, float height)</td></tr>
-<tr class="separator:af10840676520d0168648ad561dadffab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc6bb01beb08b3e78f1ee40fab72e834"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc6bb01beb08b3e78f1ee40fab72e834"></a>
 <a class="el" href="class_program.html">Program</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getProgramPtr</b> (std::string programName=&quot;Default&quot;)</td></tr>
 <tr class="separator:acc6bb01beb08b3e78f1ee40fab72e834"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,15 +116,42 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setWindowSize</b> (fl
 <tr class="memitem:aa6bde54eb1086ba7badcdb4268f32746"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6bde54eb1086ba7badcdb4268f32746"></a>
 <a class="el" href="class_sound_manager.html">SoundManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getSoundManager</b> ()</td></tr>
 <tr class="separator:aa6bde54eb1086ba7badcdb4268f32746"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7c4b97b9bd8f580121ec470f7e86ce7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af7c4b97b9bd8f580121ec470f7e86ce7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>changeWindowSize</b> (int w, int h)</td></tr>
-<tr class="separator:af7c4b97b9bd8f580121ec470f7e86ce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ddf6af2c02bb26fbb737096b384bc5f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ddf6af2c02bb26fbb737096b384bc5f"></a>
 <a class="el" href="class_p_s3_controller_wrapper.html">PS3ControllerWrapper</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getJoyStick</b> (int num)</td></tr>
 <tr class="separator:a2ddf6af2c02bb26fbb737096b384bc5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46970b7a861d93799bd96d4713775200"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46970b7a861d93799bd96d4713775200"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasSpriteSheetFrameName</b> (std::string frameName)</td></tr>
-<tr class="separator:a46970b7a861d93799bd96d4713775200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:ae1e825b2c2a3b17dcccf432845f036d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_director.html#ae1e825b2c2a3b17dcccf432845f036d8">initApp</a> (const int screenWidth, const int screenHeight, const std::string windowTitle, glm::vec3 clearBuffColor, bool vsync)</td></tr>
+<tr class="separator:ae1e825b2c2a3b17dcccf432845f036d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53c056df5b8e2ce68ad4c9258476d3cf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53c056df5b8e2ce68ad4c9258476d3cf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>terminateApp</b> ()</td></tr>
+<tr class="separator:a53c056df5b8e2ce68ad4c9258476d3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae0f1f042a6757196af74f5764ee36ad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae0f1f042a6757196af74f5764ee36ad"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>run</b> ()</td></tr>
+<tr class="separator:aae0f1f042a6757196af74f5764ee36ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Window sie</div></td></tr>
+<tr class="memitem:ade5daf8fd1c573e7b8257acb52434955"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade5daf8fd1c573e7b8257acb52434955"></a>
+<a class="el" href="struct_win_size.html">WinSize</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getWindowSize</b> ()</td></tr>
+<tr class="separator:ade5daf8fd1c573e7b8257acb52434955"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7c4b97b9bd8f580121ec470f7e86ce7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af7c4b97b9bd8f580121ec470f7e86ce7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>changeWindowSize</b> (int w, int h)</td></tr>
+<tr class="separator:af7c4b97b9bd8f580121ec470f7e86ce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Scene management</div></td></tr>
+<tr class="memitem:a4b2cd29c2d718334f84c909730f80e9c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b2cd29c2d718334f84c909730f80e9c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>pushScene</b> (<a class="el" href="class_scene.html">Scene</a> *pScene)</td></tr>
+<tr class="separator:a4b2cd29c2d718334f84c909730f80e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a674852932c4b153b4e1ff4ee51ac07b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a674852932c4b153b4e1ff4ee51ac07b8"></a>
+<a class="el" href="class_scene.html">Scene</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getRunningScene</b> ()</td></tr>
+<tr class="separator:a674852932c4b153b4e1ff4ee51ac07b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79f58d0e5e39ce3b191e8b1ddd1791ed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a79f58d0e5e39ce3b191e8b1ddd1791ed"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>transitionToNextScene</b> (bool wait)</td></tr>
+<tr class="separator:a79f58d0e5e39ce3b191e8b1ddd1791ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Working directory</div></td></tr>
+<tr class="memitem:aacd8c8a6d44c83cb74a6b3ea68a2d6d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aacd8c8a6d44c83cb74a6b3ea68a2d6d6"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getWorkingDir</b> ()</td></tr>
+<tr class="separator:aacd8c8a6d44c83cb74a6b3ea68a2d6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88d5169397b76dbeed9158ab5dc87034"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88d5169397b76dbeed9158ab5dc87034"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setWorkingDir</b> (std::string wd)</td></tr>
+<tr class="separator:a88d5169397b76dbeed9158ab5dc87034"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -171,7 +167,10 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SpriteSheet</b></td>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>Sprite</b></td></tr>
 <tr class="separator:a3292175d54d93d126ba2829249316344"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Manages scene and underlying systems. </p>
+<dl class="section note"><dt>Note</dt><dd>Singleton </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a30a09bd69ae7fadbd89be1bbf8111019"></a>
 <div class="memitem">
 <div class="memproto">
@@ -196,7 +195,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Sprite</b></td></tr>
  
 </div>
 </div>
-<a class="anchor" id="a1b730a0bddc21783fce8bec2c831859a"></a>
+<a class="anchor" id="ae1e825b2c2a3b17dcccf432845f036d8"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -204,25 +203,31 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Sprite</b></td></tr>
           <td class="memname">void Director::initApp </td>
           <td>(</td>
           <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>screenWidth</em> = <code>100</code>, </td>
+          <td class="paramname"><em>screenWidth</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>screenHeight</em> = <code>100</code>, </td>
+          <td class="paramname"><em>screenHeight</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string&#160;</td>
-          <td class="paramname"><em>windowTitle</em> = <code>&quot;noName&quot;</code>, </td>
+          <td class="paramname"><em>windowTitle</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">glm::vec3&#160;</td>
-          <td class="paramname"><em>clearBuffColor</em> = <code>glm::vec3(0,&#160;0,&#160;0)</code>&#160;</td>
+          <td class="paramname"><em>clearBuffColor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>vsync</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -231,81 +236,54 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Sprite</b></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Initailize application. Setups OpenGL and gui window </p>
+<p>related Initialize app. </p><dl class="section note"><dt>Note</dt><dd>throws runtime error if fails to initialize. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">screenWidth</td><td>Width of window to create </td></tr>
+    <tr><td class="paramname">screenHeight</td><td>Height of window to create </td></tr>
+    <tr><td class="paramname">windowTitle</td><td>A string for window's title </td></tr>
+    <tr><td class="paramname">vsync</td><td>true to enable vsync. Else, false. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a class="anchor" id="ad0e2e9b810e39c939e25ead3918faf00"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Director::pause </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Pause game loop </p>
-
-</div>
-</div>
-<a class="anchor" id="a4b2cd29c2d718334f84c909730f80e9c"></a>
+<a class="anchor" id="a78128ef91d0c7abd1d3e01d40b21ec6c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Director::pushScene </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_scene.html">Scene</a> *&#160;</td>
-          <td class="paramname"><em>pScene</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Stop the game loop Push scene to director's scene. This will replace the current running scene if exists </p>
-
-</div>
-</div>
-<a class="anchor" id="aae0f1f042a6757196af74f5764ee36ad"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Director::run </td>
+          <td class="memname">void Director::render </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Run game loop </p>
+<p>Render the scene </p>
 
 </div>
 </div>
-<a class="anchor" id="a79f58d0e5e39ce3b191e8b1ddd1791ed"></a>
+<a class="anchor" id="a739ad313730cc7a098f69650d78e9042"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Director::transitionToNextScene </td>
+          <td class="memname">void Director::update </td>
           <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>wait</em> = <code>true</code></td><td>)</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Terminate current running scene, Load the next scene, pop the current one and set the next scene to current scene </p>
+<p>Update the scene. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>Elapsed time since last iteration </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -316,7 +294,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Sprite</b></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 26 2015 23:48:38 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 28 2015 11:14:00 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

@@ -113,7 +113,8 @@ Inheritance diagram for Object:</div>
 <area href="class_sprite_object.html" title="Base class between Sprite and Sprite animation. " alt="SpriteObject" shape="rect" coords="372,224,486,248"/>
 <area href="class_text.html" title="Load string text and renders. " alt="Text" shape="rect" coords="372,280,486,304"/>
 <area href="class_battle_scene.html" alt="BattleScene" shape="rect" coords="620,112,734,136"/>
-<area href="class_title_scene.html" alt="TitleScene" shape="rect" coords="620,168,734,192"/>
+<area href="class_menu_scene.html" alt="MenuScene" shape="rect" coords="620,168,734,192"/>
+<area href="class_title_scene.html" alt="TitleScene" shape="rect" coords="620,224,734,248"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -139,8 +140,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a471c58274da8f40fe7977a47f5e9c3fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada5bcf2d11f6b728deaa4aecaef3023f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#ada5bcf2d11f6b728deaa4aecaef3023f">render</a> ()=0</td></tr>
 <tr class="separator:ada5bcf2d11f6b728deaa4aecaef3023f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c5d01b4624298d8602790d4e32f7521"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a9c5d01b4624298d8602790d4e32f7521">update</a> ()=0</td></tr>
-<tr class="separator:a9c5d01b4624298d8602790d4e32f7521"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a415468535f187ba6d3cb82dc0a99964f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a415468535f187ba6d3cb82dc0a99964f">update</a> (double dt)=0</td></tr>
+<tr class="separator:a415468535f187ba6d3cb82dc0a99964f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39df7680ac9e96519d3d9642ce4bd104"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a39df7680ac9e96519d3d9642ce4bd104">isDead</a> ()</td></tr>
 <tr class="separator:a39df7680ac9e96519d3d9642ce4bd104"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2e671032f6b9a12f58d411cff406928"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#ac2e671032f6b9a12f58d411cff406928">release</a> ()</td></tr>
@@ -181,8 +182,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a811bd83dc4fed9d8f3703dcd725ab79b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a944d419481e7febead602e54e9397043"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a944d419481e7febead602e54e9397043">removechild</a> (<a class="el" href="class_object.html">Object</a> *child, bool deleteObject)</td></tr>
 <tr class="separator:a944d419481e7febead602e54e9397043"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada060b20e7ba2dccbc452c672757e3e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#ada060b20e7ba2dccbc452c672757e3e9">updateChild</a> ()</td></tr>
-<tr class="separator:ada060b20e7ba2dccbc452c672757e3e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38a93c33f9b5d5285d7b3b7cad4d149b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a38a93c33f9b5d5285d7b3b7cad4d149b">updateChild</a> (double dt)</td></tr>
+<tr class="separator:a38a93c33f9b5d5285d7b3b7cad4d149b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a295522598f5155e182d9b4cbf9df891f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a295522598f5155e182d9b4cbf9df891f">renderChild</a> ()</td></tr>
 <tr class="separator:a295522598f5155e182d9b4cbf9df891f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a249471799ecbb1276e9c9ad2efeeb53d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a249471799ecbb1276e9c9ad2efeeb53d">translateTo</a> (glm::vec3 <a class="el" href="class_object.html#a32fab64b9880f91079613f3368865601">position</a>)</td></tr>
@@ -682,7 +683,7 @@ std::multimap&lt; float, <a class="el" href="class_object.html">Object</a> * &gt
 </div><div class="memdoc">
 <p>Virtual function for rendering </p>
 
-<p>Implemented in <a class="el" href="class_particle_system.html#af2ec9e0fe49695569a9524f6a2238e6f">ParticleSystem</a>, <a class="el" href="class_text.html#a10e39eb7faa11cf45dcacdeecc1f8fe2">Text</a>, <a class="el" href="class_progress_radian.html#afa55b9dad44aebd6be6625a01a5f0573">ProgressRadian</a>, <a class="el" href="class_scene.html#a4ddf2d16f371ee9533b3faf1dd5ddfb1">Scene</a>, <a class="el" href="class_progress_bar.html#a15dfd8ff15a40794f84cb09d42ebcdad">ProgressBar</a>, and <a class="el" href="class_layer.html#a7fc8f7b6e8a3452706ef14e67b8d20b7">Layer</a>.</p>
+<p>Implemented in <a class="el" href="class_particle_system.html#af2ec9e0fe49695569a9524f6a2238e6f">ParticleSystem</a>, <a class="el" href="class_text.html#a10e39eb7faa11cf45dcacdeecc1f8fe2">Text</a>, <a class="el" href="class_scene.html#a4ddf2d16f371ee9533b3faf1dd5ddfb1">Scene</a>, <a class="el" href="class_progress_radian.html#afa55b9dad44aebd6be6625a01a5f0573">ProgressRadian</a>, <a class="el" href="class_progress_bar.html#a15dfd8ff15a40794f84cb09d42ebcdad">ProgressBar</a>, and <a class="el" href="class_layer.html#a7fc8f7b6e8a3452706ef14e67b8d20b7">Layer</a>.</p>
 
 </div>
 </div>
@@ -1074,7 +1075,7 @@ std::multimap&lt; float, <a class="el" href="class_object.html">Object</a> * &gt
 
 </div>
 </div>
-<a class="anchor" id="a9c5d01b4624298d8602790d4e32f7521"></a>
+<a class="anchor" id="a415468535f187ba6d3cb82dc0a99964f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1084,7 +1085,8 @@ std::multimap&lt; float, <a class="el" href="class_object.html">Object</a> * &gt
         <tr>
           <td class="memname">virtual void Object::update </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1096,11 +1098,11 @@ std::multimap&lt; float, <a class="el" href="class_object.html">Object</a> * &gt
 </div><div class="memdoc">
 <p>Virtual function for updating. </p>
 
-<p>Implemented in <a class="el" href="class_particle_system.html#a40e5ab5f279f0a0ec6b7b2812543d899">ParticleSystem</a>, <a class="el" href="class_renderable_object.html#aa3ccd27c4d038e2f656c59d908b041f4">RenderableObject</a>, <a class="el" href="class_title_button_layer.html#a3838a6dd64ac75480a8f40b49e3f1a37">TitleButtonLayer</a>, <a class="el" href="class_title_scene.html#a87578dad361bfa77d20b353d646cf69e">TitleScene</a>, <a class="el" href="class_scene.html#aa24c7e636c10e4e42650c1374b90bb80">Scene</a>, <a class="el" href="class_layer.html#a4243d1a4b059eb7433cbfe7cdfc2c191">Layer</a>, and <a class="el" href="class_battle_scene.html#aededd480e7d7e8343fd9e1a4b2bb69b5">BattleScene</a>.</p>
+<p>Implemented in <a class="el" href="class_particle_system.html#a4f95471d8c64a7195d560f2c0c1faf63">ParticleSystem</a>, <a class="el" href="class_renderable_object.html#a67f1682962945daeafab43e35623d0d2">RenderableObject</a>, <a class="el" href="class_title_button_layer.html#ab9a0fe347d5c7546ed0fa1f80479bb5c">TitleButtonLayer</a>, <a class="el" href="class_title_scene.html#ab3d54b7a5f69fbaaf5ea7ab2ca77c374">TitleScene</a>, <a class="el" href="class_scene.html#a80697aba01ce62cd8cfbf953e1f5a26c">Scene</a>, <a class="el" href="class_layer.html#accdc7daa025a63eabc5bb62b6c9313c7">Layer</a>, and <a class="el" href="class_battle_scene.html#afa48d1e2a9734999433004b1432080fb">BattleScene</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ada060b20e7ba2dccbc452c672757e3e9"></a>
+<a class="anchor" id="a38a93c33f9b5d5285d7b3b7cad4d149b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1110,7 +1112,8 @@ std::multimap&lt; float, <a class="el" href="class_object.html">Object</a> * &gt
         <tr>
           <td class="memname">void Object::updateChild </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1405,7 +1408,7 @@ std::multimap&lt; float, <a class="el" href="class_object.html">Object</a> * &gt
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 26 2015 23:48:38 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 28 2015 11:14:00 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

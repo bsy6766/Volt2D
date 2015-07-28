@@ -119,7 +119,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_scene.html#a7eb01eaa28fca5c14e22fbc1a03a12de">exit</a>() = 0;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_scene.html#aa24c7e636c10e4e42650c1374b90bb80">update</a>();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_scene.html#a80697aba01ce62cd8cfbf953e1f5a26c">update</a>(<span class="keywordtype">double</span> dt);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_scene.html#a4ddf2d16f371ee9533b3faf1dd5ddfb1">render</a>();</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    </div>
@@ -142,6 +142,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* defined(__OpenGL_2D_Framework__Scene__) */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="class_scene_html_af60c64ff7f1b9c8f3d74145aa243faeb"><div class="ttname"><a href="class_scene.html#af60c64ff7f1b9c8f3d74145aa243faeb">Scene::bindWindow</a></div><div class="ttdeci">void bindWindow(GLFWwindow *window)</div><div class="ttdef"><b>Definition:</b> Scene.cpp:23</div></div>
+<div class="ttc" id="class_scene_html_a80697aba01ce62cd8cfbf953e1f5a26c"><div class="ttname"><a href="class_scene.html#a80697aba01ce62cd8cfbf953e1f5a26c">Scene::update</a></div><div class="ttdeci">virtual void update(double dt)</div><div class="ttdef"><b>Definition:</b> Scene.cpp:27</div></div>
 <div class="ttc" id="class_scene_html_afba884d1eff5b0c114bf592eae84af05"><div class="ttname"><a href="class_scene.html#afba884d1eff5b0c114bf592eae84af05">Scene::keyReleased</a></div><div class="ttdeci">virtual void keyReleased(int key, int mods)</div><div class="ttdef"><b>Definition:</b> Scene.cpp:57</div></div>
 <div class="ttc" id="class_scene_html_a0759abd9c2b729f2384eb2013da2f686"><div class="ttname"><a href="class_scene.html#a0759abd9c2b729f2384eb2013da2f686">Scene::addChild</a></div><div class="ttdeci">void addChild(Object *child)</div><div class="ttdef"><b>Definition:</b> Scene.cpp:35</div></div>
 <div class="ttc" id="class_scene_html_a1ef6185db3355465d60180e6d3f30057"><div class="ttname"><a href="class_scene.html#a1ef6185db3355465d60180e6d3f30057">Scene::keyPressed</a></div><div class="ttdeci">virtual void keyPressed(int key, int mods)</div><div class="ttdef"><b>Definition:</b> Scene.cpp:39</div></div>
@@ -153,13 +154,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="class_scene_html_ac46ab4f16aa39bc17b3d20826a29a285"><div class="ttname"><a href="class_scene.html#ac46ab4f16aa39bc17b3d20826a29a285">Scene::mouseMove</a></div><div class="ttdeci">virtual void mouseMove(double x, double y)</div><div class="ttdef"><b>Definition:</b> Scene.cpp:93</div></div>
 <div class="ttc" id="class_scene_html_ab0154452b9874f617b7929e1e1bf12fd"><div class="ttname"><a href="class_scene.html#ab0154452b9874f617b7929e1e1bf12fd">Scene::mouseButton</a></div><div class="ttdeci">virtual void mouseButton(double x, double y, int button, int action)</div><div class="ttdef"><b>Definition:</b> Scene.cpp:75</div></div>
 <div class="ttc" id="class_scene_html_a6bb03b307b8f0879736274ffad3fd218"><div class="ttname"><a href="class_scene.html#a6bb03b307b8f0879736274ffad3fd218">Scene::injectKey</a></div><div class="ttdeci">virtual void injectKey()=0</div></div>
-<div class="ttc" id="class_scene_html_aa24c7e636c10e4e42650c1374b90bb80"><div class="ttname"><a href="class_scene.html#aa24c7e636c10e4e42650c1374b90bb80">Scene::update</a></div><div class="ttdeci">virtual void update()</div><div class="ttdef"><b>Definition:</b> Scene.cpp:27</div></div>
-<div class="ttc" id="class_object_html"><div class="ttname"><a href="class_object.html">Object</a></div><div class="ttdoc">The most basic state of class that can be exist. </div><div class="ttdef"><b>Definition:</b> Object.h:32</div></div>
+<div class="ttc" id="class_object_html"><div class="ttname"><a href="class_object.html">Object</a></div><div class="ttdoc">The most basic state of class that can be exist. </div><div class="ttdef"><b>Definition:</b> Object.h:31</div></div>
 <div class="ttc" id="class_scene_html_a4ddf2d16f371ee9533b3faf1dd5ddfb1"><div class="ttname"><a href="class_scene.html#a4ddf2d16f371ee9533b3faf1dd5ddfb1">Scene::render</a></div><div class="ttdeci">virtual void render()</div><div class="ttdef"><b>Definition:</b> Scene.cpp:31</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 26 2015 23:48:37 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 28 2015 11:14:00 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

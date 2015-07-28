@@ -4,7 +4,7 @@ var searchData=
   ['parentobject',['ParentObject',['../class_parent_object.html',1,'']]],
   ['particle',['Particle',['../class_particle.html',1,'']]],
   ['particlesystem',['ParticleSystem',['../class_particle_system.html',1,'']]],
-  ['pause',['pause',['../class_director.html#ad0e2e9b810e39c939e25ead3918faf00',1,'Director']]],
+  ['pause',['pause',['../class_particle_system.html#a12323985fc36a67a7b2338a0e2d98014',1,'ParticleSystem']]],
   ['pausebgm',['pauseBGM',['../class_sound_manager.html#ab4afe16f916fbbaba78756b6351da627',1,'SoundManager']]],
   ['percentagerate',['percentageRate',['../class_progress_object.html#af320085060160d7566b37b26b976482c',1,'ProgressObject']]],
   ['playanimation',['playAnimation',['../class_sprite_animation.html#a5dc5bcd5ec9f3e9e4aa08bf45080f0da',1,'SpriteAnimation']]],
@@ -18,6 +18,5 @@ var searchData=
   ['progressfromto',['ProgressFromTo',['../class_progress_from_to.html',1,'']]],
   ['progressobject',['ProgressObject',['../class_progress_object.html',1,'']]],
   ['progressradian',['ProgressRadian',['../class_progress_radian.html',1,'']]],
-  ['ps3controllerwrapper',['PS3ControllerWrapper',['../class_p_s3_controller_wrapper.html',1,'PS3ControllerWrapper'],['../class_p_s3_controller_wrapper.html#a131827261237b8ae9451b6eaa76af26a',1,'PS3ControllerWrapper::PS3ControllerWrapper()']]],
-  ['pushscene',['pushScene',['../class_director.html#a4b2cd29c2d718334f84c909730f80e9c',1,'Director']]]
+  ['ps3controllerwrapper',['PS3ControllerWrapper',['../class_p_s3_controller_wrapper.html',1,'PS3ControllerWrapper'],['../class_p_s3_controller_wrapper.html#a131827261237b8ae9451b6eaa76af26a',1,'PS3ControllerWrapper::PS3ControllerWrapper()']]]
 ];

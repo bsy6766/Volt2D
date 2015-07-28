@@ -115,8 +115,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a68579171fc8ac76e6441b4873a99e07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4b91cdef6aff6c6d17e57b14af4df94"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_title_scene.html#ac4b91cdef6aff6c6d17e57b14af4df94">injectMouseMove</a> ()</td></tr>
 <tr class="separator:ac4b91cdef6aff6c6d17e57b14af4df94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87578dad361bfa77d20b353d646cf69e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_title_scene.html#a87578dad361bfa77d20b353d646cf69e">update</a> () override</td></tr>
-<tr class="separator:a87578dad361bfa77d20b353d646cf69e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3d54b7a5f69fbaaf5ea7ab2ca77c374"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_title_scene.html#ab3d54b7a5f69fbaaf5ea7ab2ca77c374">update</a> (double dt) override</td></tr>
+<tr class="separator:ab3d54b7a5f69fbaaf5ea7ab2ca77c374"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f5a45abdd94b3e5c13c07c4ac62aa9c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0f5a45abdd94b3e5c13c07c4ac62aa9c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>updateMouseInput</b> ()</td></tr>
 <tr class="separator:a0f5a45abdd94b3e5c13c07c4ac62aa9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,8 +190,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a811bd83dc4fed9d8f3703dcd725ab79b inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a944d419481e7febead602e54e9397043 inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a944d419481e7febead602e54e9397043">removechild</a> (<a class="el" href="class_object.html">Object</a> *child, bool deleteObject)</td></tr>
 <tr class="separator:a944d419481e7febead602e54e9397043 inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada060b20e7ba2dccbc452c672757e3e9 inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#ada060b20e7ba2dccbc452c672757e3e9">updateChild</a> ()</td></tr>
-<tr class="separator:ada060b20e7ba2dccbc452c672757e3e9 inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38a93c33f9b5d5285d7b3b7cad4d149b inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a38a93c33f9b5d5285d7b3b7cad4d149b">updateChild</a> (double dt)</td></tr>
+<tr class="separator:a38a93c33f9b5d5285d7b3b7cad4d149b inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a295522598f5155e182d9b4cbf9df891f inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a295522598f5155e182d9b4cbf9df891f">renderChild</a> ()</td></tr>
 <tr class="separator:a295522598f5155e182d9b4cbf9df891f inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a249471799ecbb1276e9c9ad2efeeb53d inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a249471799ecbb1276e9c9ad2efeeb53d">translateTo</a> (glm::vec3 <a class="el" href="class_object.html#a32fab64b9880f91079613f3368865601">position</a>)</td></tr>
@@ -264,7 +264,7 @@ std::multimap&lt; float, <a class="el" href="class_object.html">Object</a> * &gt
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Exit func. This called when <a class="el" href="class_director.html">Director</a> deletes old scenes. </p>
+<p>Exit func. This called when <a class="el" href="class_director.html" title="Manages scene and underlying systems. ">Director</a> deletes old scenes. </p>
 
 <p>Implements <a class="el" href="class_scene.html#a7eb01eaa28fca5c14e22fbc1a03a12de">Scene</a>.</p>
 
@@ -379,7 +379,7 @@ std::multimap&lt; float, <a class="el" href="class_object.html">Object</a> * &gt
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Forwarding key pressed callback from <a class="el" href="class_director.html">Director</a>. If you override this, make sure to call <a class="el" href="class_scene.html#a1ef6185db3355465d60180e6d3f30057">Scene::keyPressed(int, int)</a> to foward again to child layers. </p>
+<p>Forwarding key pressed callback from <a class="el" href="class_director.html" title="Manages scene and underlying systems. ">Director</a>. If you override this, make sure to call <a class="el" href="class_scene.html#a1ef6185db3355465d60180e6d3f30057">Scene::keyPressed(int, int)</a> to foward again to child layers. </p>
 
 <p>Reimplemented from <a class="el" href="class_scene.html#a1ef6185db3355465d60180e6d3f30057">Scene</a>.</p>
 
@@ -428,13 +428,13 @@ std::multimap&lt; float, <a class="el" href="class_object.html">Object</a> * &gt
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Forwarding mouse button callback from <a class="el" href="class_director.html">Director</a>. If you override this, make sure to call <a class="el" href="class_scene.html#ab0154452b9874f617b7929e1e1bf12fd">Scene::mouseButton(double, double, int, int)</a> to foward again to child layers. </p>
+<p>Forwarding mouse button callback from <a class="el" href="class_director.html" title="Manages scene and underlying systems. ">Director</a>. If you override this, make sure to call <a class="el" href="class_scene.html#ab0154452b9874f617b7929e1e1bf12fd">Scene::mouseButton(double, double, int, int)</a> to foward again to child layers. </p>
 
 <p>Reimplemented from <a class="el" href="class_scene.html#ab0154452b9874f617b7929e1e1bf12fd">Scene</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a87578dad361bfa77d20b353d646cf69e"></a>
+<a class="anchor" id="ab3d54b7a5f69fbaaf5ea7ab2ca77c374"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -444,7 +444,8 @@ std::multimap&lt; float, <a class="el" href="class_object.html">Object</a> * &gt
         <tr>
           <td class="memname">void TitleScene::update </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -454,9 +455,9 @@ std::multimap&lt; float, <a class="el" href="class_object.html">Object</a> * &gt
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Implement <a class="el" href="class_object.html#a9c5d01b4624298d8602790d4e32f7521">Object::update()</a>. </p>
+<p>Implement <a class="el" href="class_object.html#a415468535f187ba6d3cb82dc0a99964f">Object::update()</a>. </p>
 
-<p>Reimplemented from <a class="el" href="class_scene.html#aa24c7e636c10e4e42650c1374b90bb80">Scene</a>.</p>
+<p>Reimplemented from <a class="el" href="class_scene.html#a80697aba01ce62cd8cfbf953e1f5a26c">Scene</a>.</p>
 
 </div>
 </div>
@@ -467,7 +468,7 @@ std::multimap&lt; float, <a class="el" href="class_object.html">Object</a> * &gt
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 26 2015 23:48:38 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 28 2015 11:14:01 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

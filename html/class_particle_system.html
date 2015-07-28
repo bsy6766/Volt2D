@@ -111,11 +111,20 @@ Inheritance diagram for ParticleSystem:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:af2ec9e0fe49695569a9524f6a2238e6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_particle_system.html#af2ec9e0fe49695569a9524f6a2238e6f">render</a> ()</td></tr>
 <tr class="separator:af2ec9e0fe49695569a9524f6a2238e6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40e5ab5f279f0a0ec6b7b2812543d899"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_particle_system.html#a40e5ab5f279f0a0ec6b7b2812543d899">update</a> ()</td></tr>
-<tr class="separator:a40e5ab5f279f0a0ec6b7b2812543d899"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f95471d8c64a7195d560f2c0c1faf63"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_particle_system.html#a4f95471d8c64a7195d560f2c0c1faf63">update</a> (double dt) override</td></tr>
+<tr class="separator:a4f95471d8c64a7195d560f2c0c1faf63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acce9cb6f13016de9a3adbc7829ed02cf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_particle_system.html#acce9cb6f13016de9a3adbc7829ed02cf">isDead</a> ()</td></tr>
 <tr class="separator:acce9cb6f13016de9a3adbc7829ed02cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82b37980684083b8e07b29270e9bd9c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_particle_system.html#a82b37980684083b8e07b29270e9bd9c3">reset</a> (bool <a class="el" href="class_particle_system.html#a12323985fc36a67a7b2338a0e2d98014">pause</a>)</td></tr>
+<tr class="separator:a82b37980684083b8e07b29270e9bd9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3d3de6ca44c1e4cf77980c4a1683c3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_particle_system.html#aa3d3de6ca44c1e4cf77980c4a1683c3d">resume</a> ()</td></tr>
+<tr class="separator:aa3d3de6ca44c1e4cf77980c4a1683c3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12323985fc36a67a7b2338a0e2d98014"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_particle_system.html#a12323985fc36a67a7b2338a0e2d98014">pause</a> ()</td></tr>
+<tr class="separator:a12323985fc36a67a7b2338a0e2d98014"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Setters</div></td></tr>
+<tr class="memitem:ab2cc488eb8d35bd637840aaea74a79a6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2cc488eb8d35bd637840aaea74a79a6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setPause</b> (bool <a class="el" href="class_particle_system.html#a12323985fc36a67a7b2338a0e2d98014">pause</a>)</td></tr>
+<tr class="separator:ab2cc488eb8d35bd637840aaea74a79a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61c7088cd395a412825391c7d5173ba2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a61c7088cd395a412825391c7d5173ba2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setDuration</b> (double duration)</td></tr>
 <tr class="separator:a61c7088cd395a412825391c7d5173ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -290,8 +299,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a811bd83dc4fed9d8f3703dcd725ab79b inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a944d419481e7febead602e54e9397043 inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a944d419481e7febead602e54e9397043">removechild</a> (<a class="el" href="class_object.html">Object</a> *child, bool deleteObject)</td></tr>
 <tr class="separator:a944d419481e7febead602e54e9397043 inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada060b20e7ba2dccbc452c672757e3e9 inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#ada060b20e7ba2dccbc452c672757e3e9">updateChild</a> ()</td></tr>
-<tr class="separator:ada060b20e7ba2dccbc452c672757e3e9 inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38a93c33f9b5d5285d7b3b7cad4d149b inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a38a93c33f9b5d5285d7b3b7cad4d149b">updateChild</a> (double dt)</td></tr>
+<tr class="separator:a38a93c33f9b5d5285d7b3b7cad4d149b inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a295522598f5155e182d9b4cbf9df891f inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a295522598f5155e182d9b4cbf9df891f">renderChild</a> ()</td></tr>
 <tr class="separator:a295522598f5155e182d9b4cbf9df891f inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a249471799ecbb1276e9c9ad2efeeb53d inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a249471799ecbb1276e9c9ad2efeeb53d">translateTo</a> (glm::vec3 <a class="el" href="class_object.html#a32fab64b9880f91079613f3368865601">position</a>)</td></tr>
@@ -327,6 +336,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:aecdc3446cf9725f49ed1136acc991b9b inherit pro_attribs_class_renderable_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d4252cb31296aaaf437d7e98bd96e61 inherit pro_attribs_class_renderable_object"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_renderable_object.html#a4d4252cb31296aaaf437d7e98bd96e61">actionRunning</a></td></tr>
 <tr class="separator:a4d4252cb31296aaaf437d7e98bd96e61 inherit pro_attribs_class_renderable_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9bbf672cefcdd7c31bd06445cf50ce0 inherit pro_attribs_class_renderable_object"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_renderable_object.html#ad9bbf672cefcdd7c31bd06445cf50ce0">useSpriteSheet</a></td></tr>
+<tr class="separator:ad9bbf672cefcdd7c31bd06445cf50ce0 inherit pro_attribs_class_renderable_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a155eaecb7969f840a997e5e194aa36 inherit pro_attribs_class_renderable_object"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="class_action_schedule.html">ActionSchedule</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_renderable_object.html#a5a155eaecb7969f840a997e5e194aa36">actionScheduleList</a></td></tr>
 <tr class="separator:a5a155eaecb7969f840a997e5e194aa36 inherit pro_attribs_class_renderable_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_object"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_object')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_object.html">Object</a></td></tr>
@@ -467,6 +478,22 @@ Each particle doesn't have their own transform </dd></dl>
 
 </div>
 </div>
+<a class="anchor" id="a12323985fc36a67a7b2338a0e2d98014"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ParticleSystem::pause </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>pause particle system. </p>
+
+</div>
+</div>
 <a class="anchor" id="af2ec9e0fe49695569a9524f6a2238e6f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -493,7 +520,40 @@ Each particle doesn't have their own transform </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a40e5ab5f279f0a0ec6b7b2812543d899"></a>
+<a class="anchor" id="a82b37980684083b8e07b29270e9bd9c3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ParticleSystem::reset </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>pause</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reset particle system to initial state. </p>
+
+</div>
+</div>
+<a class="anchor" id="aa3d3de6ca44c1e4cf77980c4a1683c3d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ParticleSystem::resume </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Resume </p>
+
+</div>
+</div>
+<a class="anchor" id="a4f95471d8c64a7195d560f2c0c1faf63"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -503,19 +563,20 @@ Each particle doesn't have their own transform </dd></dl>
         <tr>
           <td class="memname">void ParticleSystem::update </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>A particle update function. Based on elpased time, add new particles and remove dead ones It updates each particle's position data. Overrides <a class="el" href="class_object.html#a9c5d01b4624298d8602790d4e32f7521">Object::update()</a> </p>
+<p>A particle update function. Based on elpased time, add new particles and remove dead ones It updates each particle's position data. Overrides <a class="el" href="class_object.html#a415468535f187ba6d3cb82dc0a99964f">Object::update()</a> </p>
 
-<p>Reimplemented from <a class="el" href="class_renderable_object.html#aa3ccd27c4d038e2f656c59d908b041f4">RenderableObject</a>.</p>
+<p>Reimplemented from <a class="el" href="class_renderable_object.html#a67f1682962945daeafab43e35623d0d2">RenderableObject</a>.</p>
 
 </div>
 </div>
@@ -526,7 +587,7 @@ Each particle doesn't have their own transform </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 26 2015 23:48:38 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 28 2015 11:14:00 for JB Engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
