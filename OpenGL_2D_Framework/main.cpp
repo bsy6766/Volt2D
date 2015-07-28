@@ -26,29 +26,22 @@
 void splitFilename (std::string& str)
 {
     size_t found;
-    cout << "Splitting: " << str << endl;
+//    cout << "Splitting: " << str << endl;
     found=str.find_last_of("/\\");
-    cout << " folder: " << str.substr(0,found) << endl;
-    cout << " file: " << str.substr(found+1) << endl;
+//    cout << " folder: " << str.substr(0,found) << endl;
+//    cout << " file: " << str.substr(found+1) << endl;
     str = str.substr(0, found);
 }
 
 int main(int argc, const char * argv[]) {
-    
-    cout << "argc = " << argc << endl;
-    cout << "argv[0] = " << argv[0] << endl;
-    
+    //For compiling with terminal.
+#if RELEASE
     if(argc > 0){
         std::string wd(argv[0]);
         splitFilename(wd);
-        
-#if DEBUG
-#else
-//        Director::getInstance().setWorkingDir(wd);
-#endif
-
-        cout << "wd = " << wd << endl;
+        Director::getInstance().setWorkingDir(wd);
     }
+#endif
     
     char cCurrentPath[FILENAME_MAX];
     
@@ -59,9 +52,8 @@ int main(int argc, const char * argv[]) {
     
     cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
     
-    //    printf ("The current working directory is %s\n", cCurrentPath);
     std::string runningPath(cCurrentPath);
-    std::cout << "The current working directory is " << runningPath << std::endl;
+    std::cout << "[main] Working directory = " << runningPath << std::endl;
     
 
     LuaConfig* systemConfig = LuaConfig::create("systemConfig");
@@ -76,31 +68,19 @@ int main(int argc, const char * argv[]) {
     glm::vec3 clearBufferColor = glm::vec3(systemConfig->getFloat("system", "clearBuffer.r"),
                                            systemConfig->getFloat("system", "clearBuffer.g"),
                                            systemConfig->getFloat("system", "clearBuffer.b"));
-//    systemConfig->loadConfig("level1", runningPath + "/../config.lua");
-//    systemConfig->loadConfig("level2", runningPath + "/../config.lua");
-//    cout << "w = " << systemConfig->getFloat("system", "window.size.screenWidth") << endl;
-//    cout << "h = " << systemConfig->getFloat("system", "window.size.screenHeight") << endl;
-//    cout << "title = " << systemConfig->getString("system", "window.title") << endl;
-//    cout << "fullscreen = " << systemConfig->getBoolean("system", "window.fullsize") << endl;
-//    cout << "windowed = " << systemConfig->getBoolean("system", "window.windowed") << endl;
-//    cout << "borderless = " << systemConfig->getBoolean("system", "window.borderless") << endl;
-//    cout << "Level1 name = " << systemConfig->getString("level1", "name") << endl;
-//    cout << "level2 = " << systemConfig->getString("level2", "");
     delete systemConfig;
     
-    
-
-//    Director::getInstance().setWindowSize(1440, 900);
     try{
+        cout << "[main] Starting application." << endl;
         Director::getInstance().initApp(screenWidth, screenHeight, windowTitle, clearBufferColor);
         TitleScene* titleScene = new TitleScene();
         Director::getInstance().pushScene(titleScene);
         Director::getInstance().run();
-
     }
     catch(std::exception &e){
         std::cout << e.what() << std::endl;
     }
     
+    cout << "[main] Application terminated." << endl;
     return 0;
 }
