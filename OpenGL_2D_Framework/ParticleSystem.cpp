@@ -500,9 +500,6 @@ void ParticleSystem::update(double dt){
     
     //size
     std::vector<glm::vec4> scaleRotData;
-    
-    //spin
-//    std::vector<float> angleData;
 
 	//iterate through particle list
 	for (std::list<Particle*>::const_iterator ci = particleList.begin(); ci != particleList.end();) {
@@ -721,6 +718,7 @@ void ParticleSystem::reset(bool pause){
     for(auto it : particleList){
         delete it;
     }
+    particleList.clear();
     
     glBindBuffer(GL_ARRAY_BUFFER, vpbo);
     glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
