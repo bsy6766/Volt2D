@@ -314,13 +314,13 @@ bool ParticleSystem::initialize(){
     //emit angle
     if(this->emitAngle > 360 || this->emitAngle < 0){
         //wrap it into boundary if it's too big
-        Utility::wrapAngle(this->emitAngle);
+        Volt2D::wrapAngle(this->emitAngle);
         cout << "[SYSTEM::WARNING] ParticleSystem's emission angle must be in range of 0 to 360 degrees." << endl;
     }
     //limit emit
     if(this->emitAngleVar > 360 || this->emitAngleVar < 0){
         //wrap it into boundary if it's too big
-        Utility::wrapAngle(this->emitAngleVar);
+        Volt2D::wrapAngle(this->emitAngleVar);
         cout << "[SYSTEM::WARNING] ParticleSystem's emission angle variation must be in range of 0 to 360 degrees." << endl;
     }
     
@@ -387,47 +387,31 @@ void ParticleSystem::update(double dt){
         //add new particle
         for (int i = 0; i<newParticleNumber; ++i){
             //generate random values
-            //lifeTime
-            float minLifeTime = this->lifeTime - this->lifeTimeVar;
-            if(minLifeTime < 0)
-                minLifeTime = 0;
-            float maxLifeTime = this->lifeTime + this->lifeTimeVar;
-            float randLifeTime = Utility::randRange(minLifeTime, maxLifeTime);
+            float randLifeTime = this->lifeTime + (this->lifeTimeVar * Volt2D::randf());
+            
+            if(randLifeTime < 0)
+                randLifeTime = 0;
             
             //speed
-            float minSpeed = this->speed - this->speedVar;
-            float maxSpeed = this->speed + this->speedVar;
-            float randSpeed = Utility::randRange(minSpeed, maxSpeed);
+            float randSpeed = this->speed + (this->speedVar * Volt2D::randf());
             
             //emitAngle
-            float minEmitAngle = this->emitAngle - this->emitAngleVar;
-            float maxEmitAngle = this->emitAngle + this->emitAngleVar;
-            float randEmitAngle = Utility::randRange(minEmitAngle, maxEmitAngle);
+            float randEmitAngle = this->emitAngle + (this->emitAngleVar * Volt2D::randf());
             
             //create, init, add
-            float maxX = this->position.x + this->posVar.x;
-            float minX = this->position.x - this->posVar.x;
-            float maxY = this->position.y + this->posVar.y;
-            float minY = this->position.y + this->posVar.y;
-            float randX = Utility::randRange(minX, maxX);
-            float randY = Utility::randRange(minY, maxY);
-            randX /= SCREEN_TO_WORLD_SCALE;
-            randY /= SCREEN_TO_WORLD_SCALE;
+            float randX = (this->position.x + (this->posVar.x * Volt2D::randf())) / SCREEN_TO_WORLD_SCALE;
+            float randY = (this->position.y + (this->posVar.y * Volt2D::randf())) / SCREEN_TO_WORLD_SCALE;
             
             //radial
-            float minRadial = this->radialAccel - this->radialAccelVar;
-            float maxRadial = this->radialAccel + this->radialAccelVar;
-            float randRadial = Utility::randRange(minRadial, maxRadial);
+            float randRadial = this->radialAccel + (this->radialAccelVar * Volt2D::randf());
             
             //tan
-            float minTan = this->tanAccel - this->tanAccelVar;
-            float maxTan = this->tanAccel + this->tanAccelVar;
-            float randTan = Utility::randRange(minTan, maxTan);
+            float randTan = this->tanAccel + (this->tanAccelVar * Volt2D::randf());
             
             glm::vec2 dirVec
                     = glm::vec2(
-                                cosf(randEmitAngle * M_PI / 180.0f),
-                                sinf(randEmitAngle * M_PI / 180.0f)
+                                cosf(Volt2D::degreeToRadian(randEmitAngle)),
+                                sinf(Volt2D::degreeToRadian(randEmitAngle))
                                 ) * randSpeed / SCREEN_TO_WORLD_SCALE /*works as power scale*/;
             
             //color
@@ -435,43 +419,35 @@ void ParticleSystem::update(double dt){
             Color maxStartColor = startColor + startColorVar;
             Color randStartColor =
                         Color::createWithRGBA(
-                                Utility::randRange(minStartColor.getR(), maxStartColor.getR()),
-                                Utility::randRange(minStartColor.getG(), maxStartColor.getG()),
-                                Utility::randRange(minStartColor.getB(), maxStartColor.getB()),
-                                Utility::randRange(minStartColor.getA(), maxStartColor.getA())
+                                Volt2D::randRange(minStartColor.getR(), maxStartColor.getR()),
+                                Volt2D::randRange(minStartColor.getG(), maxStartColor.getG()),
+                                Volt2D::randRange(minStartColor.getB(), maxStartColor.getB()),
+                                Volt2D::randRange(minStartColor.getA(), maxStartColor.getA())
                                              );
             
             Color minEndColor = endColor - endColorVar;
             Color maxEndColor = endColor + endColorVar;
             Color randEndColor =
                         Color::createWithRGBA(
-                                Utility::randRange(minEndColor.getR(), maxEndColor.getR()),
-                                Utility::randRange(minEndColor.getG(), maxEndColor.getG()),
-                                Utility::randRange(minEndColor.getB(), maxEndColor.getB()),
-                                Utility::randRange(minEndColor.getA(), maxEndColor.getA())
+                                Volt2D::randRange(minEndColor.getR(), maxEndColor.getR()),
+                                Volt2D::randRange(minEndColor.getG(), maxEndColor.getG()),
+                                Volt2D::randRange(minEndColor.getB(), maxEndColor.getB()),
+                                Volt2D::randRange(minEndColor.getA(), maxEndColor.getA())
                                  );
             
-            float minStartSize = this->startSize - this->startSizeVar;
-            float maxStartSize = this->startSize + this->startSizeVar;
-            float randStartSize = Utility::randRange(minStartSize, maxStartSize);
+            float randStartSize = this->startSize + (this->startSizeVar * Volt2D::randf());
             
             float randEndSize = 0;
             if(this->endSize == -1){
                 randEndSize = randStartSize;
             }
             else{
-                float minEndSize = this->endSize - this->endSizeVar;
-                float maxEndSize = this->endSize + this->endSizeVar;
-                randEndSize = Utility::randRange(minEndSize, maxEndSize);
+                randEndSize = this->endSize + (this->endSize * Volt2D::randf());
             }
             
-            float minStartAngle = this->startAngle - this->startAngleVar;
-            float maxStartAngle = this->startAngle + this->startAngleVar;
-            float randStartAngle = Utility::randRange(minStartAngle, maxStartAngle);
-            
-            float minEndAngle = this->endAngle - this->endAngleVar;
-            float maxEndAngle = this->endAngle + this->endAngleVar;
-            float randEndAngle = Utility::randRange(minEndAngle, maxEndAngle);
+            float randStartAngle = this->startAngle + (this->startAngleVar * Volt2D::randf());
+
+            float randEndAngle = this->endAngle + (this->endAngleVar * Volt2D::randf());
             
             Particle* p = new Particle();
             p->pos = glm::vec2(randX, randY);
@@ -578,7 +554,6 @@ void ParticleSystem::update(double dt){
                     curColor = p->getCurColor();
                 }
                 colorData.push_back(curColor.getRGBA());
-//                Utility::printVec4(curColor.getRGBA());
                 
                 //deal size & rotation here!
                 float newSizeScale = p->getCurSize() / DEFAULT_SIZE_RATE;
@@ -586,7 +561,7 @@ void ParticleSystem::update(double dt){
                 glm::mat4 scaleMatrix = glm::scale(glm::mat4(), scaleVec);
                 
                 float newAngle = p->getCurAngle();
-                glm::mat4 scaleRotMat = glm::rotate(scaleMatrix, newAngle, Utility::Z_AXIS);
+                glm::mat4 scaleRotMat = glm::rotate(scaleMatrix, newAngle, Volt2D::Z_AXIS);
                 
                 scaleRotData.push_back(glm::vec4(scaleRotMat[0][0], scaleRotMat[0][1], scaleRotMat[1][0], scaleRotMat[1][1]));
                 
