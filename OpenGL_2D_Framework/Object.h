@@ -9,7 +9,6 @@
 #ifndef __OpenGL_2D_Framework__Object__
 #define __OpenGL_2D_Framework__Object__
 
-#include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <map>
 #include "CommonInclude.hpp"

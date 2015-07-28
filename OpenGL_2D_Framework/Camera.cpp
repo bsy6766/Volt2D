@@ -42,13 +42,13 @@ speed(0.5f)
     this->nears = possibleNear;
     this->fars = (offset + gap) / SCREEN_TO_WORLD_SCALE;
     
-    cout << "Creating Main Camera." << endl;
-    cout << "\tPosition = (" << this->position.x << ", " << this->position.y << ", " << this->position.z << ")" << endl;
-    cout << "\tLookAt = (0, 0, 0)" << endl;
-    cout << "\tfovy = 90.0f (Fixed)" << endl;
-    cout << "\taspect ratio = " << this->aspect << endl;
-    cout << "\tnear clip pane = " << this->nears << endl;
-    cout << "\tfar clip pane ( = " << this->fars << endl;
+    cout << "[SYSTEM::INFO] Creating Main Camera." << endl;
+    cout << "[SYSTEM::INFO] Position = (" << this->position.x << ", " << this->position.y << ", " << this->position.z << ")" << endl;
+    cout << "[SYSTEM::INFO] LookAt = (0, 0, 0)" << endl;
+    cout << "[SYSTEM::INFO] fovy = 90.0f (Fixed)" << endl;
+    cout << "[SYSTEM::INFO] aspect ratio = " << this->aspect << endl;
+    cout << "[SYSTEM::INFO] near clip pane = " << this->nears << endl;
+    cout << "[SYSTEM::INFO] far clip pane = " << this->fars << endl << endl;
 }
 
 Camera::~Camera(){

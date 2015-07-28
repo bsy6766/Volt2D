@@ -24,8 +24,6 @@ private:
     //Temporary friend request from Director
     friend class Director;
     
-    bool useSpriteSheet;
-    
     /**
      *  A texture.
      */

@@ -14,12 +14,13 @@ type(RotationType::RIGHT),
 startAngle(0),
 destinationAngle(0),
 movedAngle(0),
-totalAngleToRotate(0){
-    cout << "Creating action RotateTo" << endl;
+totalAngleToRotate(0)
+{
+//    cout << "[SYSTEM::INFO] Creating ActionRotateTo" << endl;
 }
 
 ActionRotateTo::~ActionRotateTo(){
-    cout << "Deleting action RotateTo" << endl;
+//    cout << "[SYSTEM::INFO] Releasing ActionRotateTo" << endl;
 }
 
 ActionRotateTo* ActionRotateTo::createRotateTo(double duration, float angle, RotationType type){

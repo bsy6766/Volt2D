@@ -8,30 +8,30 @@
 //
 
 #include "Sprite.h"
-#include <cmath>
 #include "Director.h"
 
 Sprite::Sprite():
 SpriteObject(),
-texture(0),
-useSpriteSheet(false)
+texture(0)
 {
     
 }
 
 Sprite::~Sprite(){
+    cout << "[SYSTEM::RELEASE] Deleting Sprite object" << endl;
 	if (texture && !useSpriteSheet){
 		delete texture;
 		texture = nullptr;
 	}
+    else{
+        texture = 0;
+    }
     
     actionRunning = false;
-    
-    std::cout << "Sprite deleted" << std::endl;
 }
 
 Sprite* Sprite::createSprite(std::string objectName, const char *fileName, GLenum textureTarget){
-    std::cout << "init sprite with texture with path of " << fileName << std::endl;
+    std::cout << "[SYSTEM::INFO] Initializing sprite with texture. \"" << fileName << "\"" << endl;
     
     Sprite* newSprite = new Sprite();
     newSprite->setName(objectName);

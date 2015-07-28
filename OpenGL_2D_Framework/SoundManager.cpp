@@ -22,7 +22,7 @@ bool SoundManager::FMODErrorCheck(FMOD_RESULT result){
         return true;
     }
     else{
-        cout << "FMOD_RESULT = " << FMOD_ErrorString(result) << endl;
+        cout << "[SYSTEM::ERROR] FMOD_RESULT = " << FMOD_ErrorString(result) << endl;
         return false;
     }
 }
@@ -39,7 +39,7 @@ void SoundManager::initSoundManager(){
     
     if (version < FMOD_VERSION)
     {
-        std::cout << "Error! You are using an old version of FMOD " << version << ". This program requires " << FMOD_VERSION << std::endl;
+        std::cout << "[SYSTEM::ERROR] You are using an old version of FMOD " << version << ". This program requires " << FMOD_VERSION << std::endl;
         exit(-1);
     }
     
@@ -87,22 +87,22 @@ void SoundManager::createSound(std::string soundName, FMOD_MODE modes, const cha
                         soundMap.insert(std::pair<std::string, Sound*>(soundName, newSound));
                     }
                     else{
-                        cout << "Failed to set volume on creation" << endl;
+                        cout << "[SYSTEM::ERROR] Failed to set volume on creation" << endl;
                     }
                 }
                 else{
-                    cout << "failed to play and pause bgm on creation" << endl;
+                    cout << "[SYSTEM::ERROR] Failed to play and pause bgm on creation" << endl;
                 }
             }
             else{
                 //sfx
                 //store sound on map
-                cout << "Creating sfx " << endl;
+//                cout << "Creating sfx " << endl;
                 soundMap.insert(std::pair<std::string, Sound*>(soundName, newSound));
             }
         }
         else{
-            cout << "Failed to create sound" << endl;
+            cout << "[SYSTEM::ERROR] Failed to create sound" << endl;
         }
     }
 }
@@ -115,16 +115,16 @@ void SoundManager::stopSound(std::string soundName){
             //succesfully got if channel is playing
             if(playing){
                 if(!FMODErrorCheck(sound->channel->stop())){
-                    cout << "failed to stop channel" << endl;
+                    cout << "[SYSTEM::ERROR] Failed to stop \"" << soundName << "\"'s channel." << endl;
                 }
             }
             else{
-                cout << "sound not playing. wtf?" << endl;
+                cout << "[SYSTEM::ERROR] \"" << soundName << "\" is not playing." << endl;
             }
         }
         else{
             //channel isn't valid = no sound playing in this channel.
-            cout << "channel invalid. nothing to stop" << endl;
+            cout << "[SYSTEM::ERROR] channel invalid." << endl;
         }
     }
 }
@@ -323,7 +323,7 @@ void SoundManager::bindSoundToChannelGroup(std::string soundName, std::string ch
 Sound* SoundManager::findSound(std::string soundName){
     auto find_sound_it = soundMap.find(soundName);
     if(find_sound_it == soundMap.end()){
-        cout << "No sound found to player" << endl;
+//        cout << "No sound found to player" << endl;
         return 0;
     }
     else{
@@ -341,28 +341,28 @@ void SoundManager::release(){
             if(playing){
                 if(FMODErrorCheck((s_it->second)->channel->stop())){
                     if(FMODErrorCheck((s_it->second)->sound->release())){
-                        cout << "successfully released " << s_it->first << endl;
+//                        cout << "[SYSTEM::INFO] Successfully released " << s_it->first << endl;
                     }
                     else{
-                        cout << "failed to release sound" << endl;
+                        cout << "[SYSTEM::ERROR] Failed to release sound" << endl;
                     }
                 }
             }
             else{
                 if(FMODErrorCheck((s_it->second)->sound->release())){
-                    cout << "successfully released " << s_it->first << endl;
+//                    cout << "[SYSTEM::INFO] Successfully released " << s_it->first << endl;
                 }
                 else{
-                    cout << "failed to release sound" << endl;
+                    cout << "[SYSTEM::ERROR] Failed to release sound" << endl;
                 }
             }
         }
         else{
             if(FMODErrorCheck((s_it->second)->sound->release())){
-                cout << "successfully released " << s_it->first << endl;
+//                cout << "[SYSTEM::INFO] Successfully released " << s_it->first << endl;
             }
             else{
-                cout << "failed to release sound" << endl;
+                cout << "[SYSTEM::ERROR] Failed to release sound" << endl;
             }
         }
         delete (s_it->second);
@@ -378,7 +378,10 @@ void SoundManager::release(){
     updateSystem();
     //release system
     if(FMODErrorCheck(fmodSystem->release())){
-        cout << "Successfully released fmod system" << endl;
+//        cout << "[SYSTEM::INFO] Successfully released fmod system" << endl;
+    }
+    else{
+        cout << "[SYSTEM::ERROR] Failed to release fmod system" << endl;
     }
 }
 

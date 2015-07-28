@@ -15,7 +15,7 @@ isProtected(false),
 totalElapsedTime(0),
 duration(0)
 {
-    std::cout << "ActionObject()" << std::endl;
+//    std::cout << "[SYSTEM::INFO] Creating ActionObject" << std::endl;
 }
 
 ActionObject::ActionObject(const ActionObject& other){
@@ -28,7 +28,7 @@ ActionObject::ActionObject(const ActionObject& other){
 }
 
 ActionObject::~ActionObject(){
-    std::cout << "~ActionObject()" << std::endl;
+//    std::cout << "[SYSTEM::INFO] Releasing ActionObject" << std::endl;
 }
 
 double ActionObject::getDuration(){

@@ -18,15 +18,17 @@ texture(0),
 w(-1),
 h(-1)
 {
-    cout << "Creating ProgressObject" << endl;
-
+//    cout << "[SYSTEM::INFO] Creating ProgressObject" << endl;
 }
 
 ProgressObject::~ProgressObject(){
-    cout << "Deleting ProgressObject" << endl;
-    if (texture){
+//    cout << "[SYSTEM::INFO] Deleting ProgressObject" << endl;
+    if (texture && !useSpriteSheet){
         delete texture;
         texture = nullptr;
+    }
+    else{
+        texture = 0;
     }
 }
 

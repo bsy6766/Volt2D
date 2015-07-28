@@ -17,7 +17,7 @@ FontManager::FontManager(){
 }
 
 FontManager::~FontManager(){
-    cout << "~FontManager()" << endl;
+//    cout << "[SYSTEM::INFO] Releasing FontManager()" << endl;
     for (std::map<std::string, Font*>::iterator it=fontMap.begin(); it!=fontMap.end(); ++it)
         delete it->second;
 }

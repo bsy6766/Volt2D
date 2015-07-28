@@ -18,14 +18,15 @@ width(0),
 height(0),
 anchorPoint(glm::vec2()),
 progPtr(Director::getInstance().getProgramPtr()),   //get default program
-actionRunning(false)
+actionRunning(false),
+useSpriteSheet(false)
 {
-    cout << "RenderableObject::RenderableObject()" << endl;
+//    cout << "[SYSTEM::INFO] Creating RednerableObject" << endl;
 }
 
 RenderableObject::~RenderableObject(){
     deleteVertexData();
-    cout << "Deleting Renderable Object" << endl;
+//    cout << "[SYSTEM::INFO] Releasing RenderableObject" << endl;
     for (std::list<ActionSchedule*>::const_iterator ci = actionScheduleList.begin(); ci != actionScheduleList.end(); ++ci){
         delete (*ci);
 }

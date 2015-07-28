@@ -134,8 +134,8 @@ void Text::computeVertexData(){
             //get point where each char has to move
             glm::vec3 fPos = glm::vec3(origin.x + glyphWidth/2, origin.y, 0);
             glm::vec3 distance = (fPos - this->position);
-            distance.x /= 10;
-            distance.y /= 10;
+            distance.x /= SCREEN_TO_WORLD_SCALE;
+            distance.y /= SCREEN_TO_WORLD_SCALE;
             glm::mat4 transMatToFPos = glm::translate(glm::mat4(), distance);
             //compute translate matrix to fPos from origin
             translationData.push_back(transMatToFPos);

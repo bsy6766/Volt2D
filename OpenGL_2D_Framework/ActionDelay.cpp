@@ -11,11 +11,11 @@
 ActionDelay::ActionDelay():
 ActionObject()
 {
-    cout << "Creating ACTION_DELAY" << endl;
+//    cout << "[SYSTEM::INFO] Creating ActionDelay" << endl;
 }
 
 ActionDelay::~ActionDelay(){
-    cout << "Deleting ACTION_DELAY" << endl;
+//    cout << "[SYSTEM::INFO] Releasing ActionDelay" << endl;
 }
 
 void ActionDelay::initDelay(double duration){

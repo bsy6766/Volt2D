@@ -8,21 +8,16 @@
 
 #include "ActionFadeTo.h"
 
-#include <iostream>
-
-using std::cout;
-using std::endl;
-
 ActionFadeTo::ActionFadeTo():
 ActionObject(),
 totalOpacityToFade(0),
 fadedOpacity(0),
 finalOpacity(0){
-    cout << "Creating action fade" << endl;
+//    cout << "[SYSTEM::INFO] Creating ActionFadeTo" << endl;
 }
 
 ActionFadeTo::~ActionFadeTo(){
-    cout << "Deleting action" << endl;
+//    cout << "[SYSTEM::INFO] Releasing ActionFadeTo" << endl;
 }
 
 ActionFadeTo* ActionFadeTo::createFadeTo(double duration, float opacity){

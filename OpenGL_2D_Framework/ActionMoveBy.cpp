@@ -14,11 +14,11 @@ distance(glm::vec3()),
 movedDistance(glm::vec3()),
 previousDistance(glm::vec3())
 {
-    cout << "creating move by action" << endl;
+//    cout << "[SYSTEM::INFO] Creating ActionMoveBy" << endl;
 }
 
 ActionMoveBy::~ActionMoveBy(){
-    cout << "deleting move by action" << endl;
+//    cout << "[SYSTEM::INFO] Releasing ActionMoveBy" << endl;
 }
 
 ActionMoveBy* ActionMoveBy::createMoveBy(double duration, glm::vec3 distance){

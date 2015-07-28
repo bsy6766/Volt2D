@@ -14,11 +14,11 @@ totalScalingAmount(0),
 prevScale(0),
 scaled(0)
 {
-    cout << "Creating action scale by" << endl;
+//    cout << "[SYSTEM::INFO] Creating ActionScaleBy" << endl;
 }
 
 ActionScaleBy::~ActionScaleBy(){
-    cout << "Deleting action scale by" << endl;
+//    cout << "[SYSTEM::INFO] Creating ActionScaleBy" << endl;
 }
 
 ActionScaleBy* ActionScaleBy::createScaleBy(double duration, glm::vec3 scale){

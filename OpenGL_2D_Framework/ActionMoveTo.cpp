@@ -15,11 +15,11 @@ originalPosition(glm::vec3()),
 destination(glm::vec3()),
 totalDistance(glm::vec3())
 {
-    cout << "creating MoveTo action" << endl;
+//    cout << "[SYSTEM::INFO] Creating ActionMoveTo" << endl;
 }
 
 ActionMoveTo::~ActionMoveTo(){
-    cout << "deleting MoveTo action" << endl;
+//    cout << "[SYSTEM::INFO] Releasing ActionMoveBy" << endl;
 }
 
 ActionMoveTo* ActionMoveTo::createMoveTo(double duration, glm::vec3 distance){

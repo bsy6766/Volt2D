@@ -11,11 +11,11 @@
 Layer::Layer():
 inputListenable(false)
 {
-    cout << "Layer()" << endl;
+//    cout << "[SYSTEM::INFO] Creating Layer" << endl;
 }
 
 Layer::~Layer(){
-    cout << "~Layer()" << endl;
+//    cout << "[SYSTEM::INFO] Releasing Layer" << endl;
 }
 
 void Layer::update(double dt){

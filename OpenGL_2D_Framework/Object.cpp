@@ -8,6 +8,7 @@
 
 #include "Object.h"
 #include "Layer.h"
+#include "Director.h"
 
 Object::Object():
 position(glm::vec3(0, 0, 0)),
@@ -22,11 +23,11 @@ angle(0),
 scale(glm::vec3(1, 1, 1)),
 alive(true)
 {
-    cout << "Object::Object()" << endl;
+//    cout << "[SYSTEM::INFO] Creating Object" << endl;
 }
 
 Object::~Object(){
-    cout << "Object::~Object()" << endl;
+//    cout << "[SYSTEM::INFO] Releasing Object" << endl;
     cleanChildList();
 }
 
@@ -67,13 +68,13 @@ const glm::vec3 Object::getPosition(){
 
 
 void Object::translateTo(glm::vec3 position){
-    glm::vec3 scaledPos = glm::vec3(position.x / 10, position.y / 10, position.z / 10);
+    glm::vec3 scaledPos = glm::vec3(position.x / SCREEN_TO_WORLD_SCALE, position.y / SCREEN_TO_WORLD_SCALE, position.z / SCREEN_TO_WORLD_SCALE);
     translateMat = glm::translate(glm::mat4(), scaledPos);
     needToUpdateBB = true;
 }
 
 void Object::translateBy(glm::vec3 distance){
-    glm::vec3 scaledDistance = glm::vec3(distance.x / 10, distance.y / 10, distance.z / 10);
+    glm::vec3 scaledDistance = glm::vec3(distance.x / SCREEN_TO_WORLD_SCALE, distance.y / SCREEN_TO_WORLD_SCALE, distance.z / SCREEN_TO_WORLD_SCALE);
     translateMat = glm::translate(translateMat, scaledDistance);
     needToUpdateBB = true;
 }

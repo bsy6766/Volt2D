@@ -36,19 +36,13 @@ struct BufferObject{
  */
 class RenderableObject : public Object{
 protected:
-    /**
-     *  A pack of essential OpenGL objects
-     */
+    /** A pack of essential OpenGL objects */
     BufferObject bufferObject;
     
-    /**
-     *  A std::vector that stores all vertices
-     */
+    /** A std::vector that stores all vertices */
     std::vector<glm::vec3> vertexData;
     
-    /**
-     *  A std::vector that stores all uv vertices
-     */
+    /** A std::vector that stores all uv vertices */
     std::vector<glm::vec2> uvVertexData;
     
     /**
@@ -56,14 +50,10 @@ protected:
      */
     std::vector<GLushort> indicesData;
     
-    /**
-     *  Object's scaled size
-     */
+    /** Object's scaled size */
     float width;
     
-    /**
-     *  Object's scaled size
-     */
+    /** Object's scaled size */
     float height;
     
     /**
@@ -78,19 +68,16 @@ protected:
      */
     GLfloat opacity;
     
-    /**
-     *  Pointer to rendering OpenGL Progream.
-     */
+    /** Pointer to rendering OpenGL Progream */
     Program *progPtr;
     
-    /**
-     *  Flag of action running
-     */
+    /** Flag of action running */
     bool actionRunning;
     
-    /**
-     *  List of ActionSchedule.
-     */
+    /** true if using sprite sheet */
+    bool useSpriteSheet;
+    
+    /** List of ActionSchedule */
     std::list<ActionSchedule *> actionScheduleList;
     
     /**

@@ -14,10 +14,9 @@ w(0),
 h(0),
 type(NORMAL_TYPE)
 {
-    cout << "SpriteObject::SpriteObject()" << endl;
+//    cout << "[SYSTEM::INFO] Creating SpriteObject" << endl;
 }
 
 SpriteObject::~SpriteObject(){
-	cout << "SpriteObject::Deleting...";
-	cout << "Done." << endl;
+//    cout << "[SYSTEM::INFO] Deleting SpriteObject" << endl;
 }

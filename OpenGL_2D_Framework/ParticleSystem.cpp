@@ -428,7 +428,7 @@ void ParticleSystem::update(double dt){
                     = glm::vec2(
                                 cosf(randEmitAngle * M_PI / 180.0f),
                                 sinf(randEmitAngle * M_PI / 180.0f)
-                                ) * randSpeed / POWER_SCALE;
+                                ) * randSpeed / SCREEN_TO_WORLD_SCALE /*works as power scale*/;
             
             //color
             Color minStartColor = startColor - startColorVar;

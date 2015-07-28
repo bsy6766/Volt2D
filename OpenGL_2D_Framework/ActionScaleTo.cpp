@@ -15,11 +15,11 @@ srcScale(glm::vec3()),
 scaled(glm::vec3()),
 totalScalingAmount(glm::vec3())
 {
-    cout << "Creating action scale to" << endl;
+//    cout << "[SYSTEM::INFO] Creating ActionScaleTo" << endl;
 }
 
 ActionScaleTo::~ActionScaleTo(){
-    cout << "Deleting action scale to" << endl;
+//    cout << "[SYSTEM::INFO] Releasing ActionScaleTo" << endl;
 }
 
 ActionScaleTo* ActionScaleTo::createScaleTo(double duration, glm::vec3 scale){

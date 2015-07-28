@@ -163,11 +163,12 @@ void Director::initGLEW(){
         throw std::runtime_error("glew init failed");
     }
     
+    cout << "[SYSTEM::INFO] OpenGL and system informations." <<endl;
     // print out some info about the graphics drivers
-    cout << "OpenGL version: " << glGetString(GL_VERSION) << endl;
-    cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
-    cout << "Vendor: " << glGetString(GL_VENDOR) << endl;
-    cout << "Renderer: " << glGetString(GL_RENDERER) << endl;
+    cout << "[SYSTEM::INFO] OpenGL version: " << glGetString(GL_VERSION) << endl;
+    cout << "[SYSTEM::INFO] GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
+    cout << "[SYSTEM::INFO] Vendor: " << glGetString(GL_VENDOR) << endl;
+    cout << "[SYSTEM::INFO] Renderer: " << glGetString(GL_RENDERER) << endl << endl;
     
     if (!GLEW_VERSION_4_1){
         throw std::runtime_error("OpenGL 4.1 API is not available");

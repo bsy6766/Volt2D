@@ -12,11 +12,11 @@ ActionFadeBy::ActionFadeBy():
 ActionObject(),
 fadedOpacity(0),
 opacityToFade(0){
-    cout << "Creating action fade" << endl;
+//    cout << "[SYSTEM::INFO] Creating ActionFadeBy" << endl;
 }
 
 ActionFadeBy::~ActionFadeBy(){
-    cout << "Deleting action" << endl;
+//    cout << "[SYSTEM::INFO] Releasing ActionFadeBy" << endl;
 }
 
 ActionFadeBy* ActionFadeBy::createFadeBy(double duration, float opacity){

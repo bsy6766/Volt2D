@@ -13,11 +13,11 @@ Scene::Scene():
 Object(),
 window(0)
 {
-    cout << "Scene()" << endl;
+//    cout << "[SYSTEM::INFO] Creating Scene" << endl;
 }
 
 Scene::~Scene(){
-    cout << "~Scene()" << endl;
+//    cout << "[SYSTEM::INFO] Releasing Scene" << endl;
 }
 
 void Scene::bindWindow(GLFWwindow *window){

@@ -12,12 +12,13 @@ ActionRotateBy::ActionRotateBy():
 ActionObject(),
 rotatingAngle(0),
 previousAngle(0),
-movedAngle(0){
-    cout << "Creating action RotateBy" << endl;
+movedAngle(0)
+{
+//    cout << "[SYSTEM::INFO] Creating ActionRotateBy" << endl;
 }
 
 ActionRotateBy::~ActionRotateBy(){
-    cout << "Deleting action RotateBy" << endl;
+//    cout << "[SYSTEM::INFO] Releasing ActionRotateBy" << endl;
 }
 
 ActionRotateBy* ActionRotateBy::createRotateBy(double duration, float angle){

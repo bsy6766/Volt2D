@@ -50,6 +50,8 @@ struct Animation{
  *  Number starts from 1. 
  *  i.e.) If you create an animation called "run", the frame texture files' name must be
  *  run_1, run_2, run_3, and so on.
+ *
+ *  \todo Make it compatible with sprite sheet.
  */
 class SpriteAnimation : public SpriteObject{
 private:
