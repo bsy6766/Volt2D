@@ -2,6 +2,8 @@
 particleSystem = {
 	-- Name of object (optional)
 	name = "testParticle",
+	-- True to pause particle system on creation. False to run right away.
+	pause = true,
 	-- blending. True to blend each particles betwen. False to render base on depth
 	blend = true,
 	-- Size of particles 

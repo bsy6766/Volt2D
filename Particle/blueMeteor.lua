@@ -1,8 +1,9 @@
 particleSystem = {
 	name = "blueMeteor",
+	pause = true,
 	blend = true,
-	size = 500,
-	duration = 10,
+	size = 150,
+	duration = 5,
 
 	posVar = {
 		x = 0,
@@ -65,8 +66,8 @@ particleSystem = {
 	endAngle = 0,
 	endAngleVar = 0,
 
-	lifeTime = 1.5,
-	lifeTimeVar = 0.5,
+	lifeTime = 2,
+	lifeTimeVar = 1,
 	-- textureName = "default_particle.png"
 	textureName = "default_star_particle.png"
 }

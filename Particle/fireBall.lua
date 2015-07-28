@@ -1,7 +1,8 @@
 particleSystem = {
 	name = "fireBall",
+	pause = false,
 	blend = true,
-	size = 500,
+	size = 350,
 	duration = 10,
 
 	posVar = {
@@ -65,7 +66,7 @@ particleSystem = {
 	endAngle = 0,
 	endAngleVar = 0,
 
-	lifeTime = 1.5,
+	lifeTime = 1,
 	lifeTimeVar = 0.5,
 	-- textureName = "default_particle.png"
 	textureName = "default_blur_circle_particle.png"

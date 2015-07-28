@@ -1,8 +1,9 @@
 particleSystem = {
 	name = "magicalOrbits",
+	pause = true,
 	blend = true,
-	size = 500,
-	duration = 10,
+	size = 250,
+	duration = 5,
 	posVar = {
 		x = 0,
 		y = 0,

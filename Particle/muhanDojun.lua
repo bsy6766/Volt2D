@@ -1,5 +1,6 @@
 particleSystem = {
 	name = "muhanDojun",
+	pause = true,
 	blend = false,
 	size = 100,
 	duration = 5,

@@ -1,8 +1,9 @@
 particleSystem = {
 	name = "flame",
+	pause = true,
 	blend = true,
-	size = 500,
-	duration = 10,
+	size = 250,
+	duration = 5,
 	posVar = {
 		x = 40,
 		y = 20,
@@ -51,7 +52,7 @@ particleSystem = {
 	startAngleVar = 0,
 	endAngle = 0,
 	endAngleVar = 0,
-	lifeTime = 4,
+	lifeTime = 3,
 	lifeTimeVar = 1,
 	textureName = "default_blur_circle_particle.png"
 }
