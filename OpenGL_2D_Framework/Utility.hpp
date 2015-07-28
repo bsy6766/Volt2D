@@ -1,13 +1,13 @@
 //
-//  CommonInclude.h
+//  Utility.h
 //  OpenGL_2D_Framework
 //
 //  Created by Seung Youp Baek on 2/3/15.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__CommonInclude__
-#define __OpenGL_2D_Framework__CommonInclude__
+#ifndef __OpenGL_2D_Framework__Utility__
+#define __OpenGL_2D_Framework__Utility__
 
 #ifdef _WIN32
 #define _USE_MATH_DEFINES
@@ -29,7 +29,7 @@ using glm::vec3;
 using glm::vec2;
 using glm::mat4;
 
-namespace Utility{
+namespace Volt2D{
     /**
      *  Axises
      */
@@ -41,10 +41,17 @@ namespace Utility{
     static const glm::vec3 Z_NAXIS = glm::vec3(0, 0, -1);
     
     /**
+     *  Radian to degree
+     */
+    inline float radianToDegree(float radian){
+        return (radian * 180.0f) / M_PI;
+    }
+    
+    /**
      *  Degree to radian
      */
-    inline float degreeToRadian(float angle){
-        return (angle * M_PI) / 180.0f;
+    inline float degreeToRadian(float degree){
+        return (degree * M_PI) / 180.0f;
     }
     
     /**
@@ -53,8 +60,15 @@ namespace Utility{
      */
     template<typename Type>
     inline Type randRange(Type min, Type max){
-        Type randVal = (Type)rand() / RAND_MAX;
+        Type randVal = (Type)rand() / (Type)RAND_MAX;
         return min + randVal * (max - min);
+    }
+    
+    /**
+     *  Random float betwen -1.0 and 1.0f
+     */
+    inline float randf(){
+        return  ((std::rand() / (float)RAND_MAX) * 2) - 1;
     }
     
     /**
@@ -94,15 +108,9 @@ namespace Utility{
      */
     inline void wrapColor(float& value){
         if(value > 255.0f){
-//            while(value > 255.0f){
-//                value -= 255.0f;
-//            }
             value = 255.0f;
         }
         else if(value < 0){
-//            while(value < 0){
-//                value += 255.0f;
-//            }
             value = 0;
         }
     }
@@ -110,23 +118,37 @@ namespace Utility{
     /**
      *  Print glm::vec2
      */
-    inline void printVec2(vec2 point){
-        cout << "vec2 = (" << point.x << ", " << point.y << ")" << endl;
+    inline void printVec2(vec2 point, std::string prefix = ""){
+        if(!prefix.empty())
+            prefix += " ";
+        cout << prefix << "vec2 = (" << point.x << ", " << point.y << ")" << endl;
     }
     
     /**
      *  Print glm::vec3
      */
-    inline void printVec3(vec3 point){
-        cout << "vec3 = (" << point.x << ", " << point.y <<  ", " << point.z << ")" << endl;
+    inline void printVec3(vec3 point, std::string prefix = ""){
+        if(!prefix.empty())
+            prefix += " ";
+        cout << prefix << "vec3 = (" << point.x << ", " << point.y <<  ", " << point.z << ")" << endl;
     }
     
     /**
      *  Print glm::vec4
      */
-    inline void printVec4(vec4 point){
-        cout << "vec3 = (" << point.r << ", " << point.g <<  ", " << point.b << ", " << point.a << ")" << endl;
+    inline void printVec4(vec4 point, std::string prefix = ""){
+        if(!prefix.empty())
+            prefix += " ";
+        cout << prefix << "vec4 = (" << point.r << ", " << point.g <<  ", " << point.b << ", " << point.a << ")" << endl;
+    }
+    
+    /**
+     *  X coordinate to world coordinate
+     */
+    inline double screenToWorldCoordinateX(double screenX){
+        
+        return -1.0;
     }
 }
 
-#endif /* defined(__OpenGL_2D_Framework__CommonInclude__) */
+#endif /* defined(__OpenGL_2D_Framework__Utility__) */
