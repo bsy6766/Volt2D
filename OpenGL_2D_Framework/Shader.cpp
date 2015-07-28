@@ -8,6 +8,8 @@
 
 #include "Shader.h"
 
+using namespace Volt2D;
+
 Shader::Shader(){
     shaderObject = 0;
 }
@@ -16,11 +18,15 @@ Shader::~Shader(){
     shaderObject = 0;
 }
 
-void Shader::createShader(const std::string& filePath, GLenum shaderType){
-    loadShader(shaderCodeFromFile(filePath), shaderType);
+Shader* Shader::createShader(const std::string filePath, GLenum shaderType){
+    Shader* newShader = new Shader();
+    newShader->loadShader(filePath, shaderType);
+    return newShader;
 }
 
-void Shader::loadShader(const std::string& sourceCode, GLenum shaderType){
+void Shader::loadShader(const std::string filePath, GLenum shaderType){
+    std::string sourceCode = shaderCodeFromFile(filePath);
+    
     shaderObject = glCreateShader(shaderType);
     
     if(shaderObject == 0){
@@ -51,7 +57,7 @@ void Shader::loadShader(const std::string& sourceCode, GLenum shaderType){
     }
 }
 
-std::string Shader::shaderCodeFromFile(const std::string& filePath){
+std::string Shader::shaderCodeFromFile(const std::string filePath){
     std::ifstream fs;
     fs.open(filePath.c_str(), std::ios::in | std::ios::binary);
     

@@ -15,12 +15,18 @@
 #include <fstream>	//file
 #include <sstream>	//string stream
 
+namespace Volt2D{
 /**
  *  @class Shader
  *  @brief Load shader and compile
  */
 class Shader{
 private:
+    /**
+     *  private constructor
+     */
+    Shader();
+    
     /**
      *  OpenGL Shader object
      */
@@ -32,27 +38,27 @@ private:
      * leaves error log if fails to compile shader
      * todo: change to exception.
      */
-    void loadShader(const std::string& sourceCode, GLenum shaderType);
+    void loadShader(const std::string filePath, GLenum shaderType);
     
     /**
      * load shader code and return as string
      * get the file path
      */
-    std::string shaderCodeFromFile(const std::string& filePath);
+    std::string shaderCodeFromFile(const std::string filePath);
     
 public:
-    Shader();
     ~Shader();
     
     /**
      * create the shader
      */
-    void createShader(const std::string& filePath, GLenum shaderType);
+    static Shader* createShader(const std::string filePath, GLenum shaderType);
     
     /**
      * shader object getter
      */
     GLuint getObject();
 };
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__Shader__) */
