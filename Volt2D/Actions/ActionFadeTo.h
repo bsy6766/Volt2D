@@ -1,13 +1,13 @@
 //
 //  ActionFadeTo.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 12/7/14.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__ActionFadeTo__
-#define __OpenGL_2D_Framework__ActionFadeTo__
+#ifndef __Volt2D__ActionFadeTo__
+#define __Volt2D__ActionFadeTo__
 
 #include "ActionObject.h"
 #include "Sprite.h"
@@ -97,4 +97,4 @@ public:
 };
 }
 
-#endif /* defined(__OpenGL_2D_Framework__ActionFadeTo__) */
+#endif /* defined(__Volt2D__ActionFadeTo__) */

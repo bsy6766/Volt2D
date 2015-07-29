@@ -1,13 +1,13 @@
 //
 //  ProgressObject.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 1/21/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__ProgressObject__
-#define __OpenGL_2D_Framework__ProgressObject__
+#ifndef __Volt2D__ProgressObject__
+#define __Volt2D__ProgressObject__
 
 #include "Texture.h"
 #include "RenderableObject.h"
@@ -87,4 +87,4 @@ public:
 };
 }   //namespace end
 
-#endif /* defined(__OpenGL_2D_Framework__ProgressObject__) */
+#endif /* defined(__Volt2D__ProgressObject__) */

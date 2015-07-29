@@ -1,13 +1,13 @@
 //
 //  BattleHUDLayer.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 7/14/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__BattleHUDLayer__
-#define __OpenGL_2D_Framework__BattleHUDLayer__
+#ifndef __Volt2D__BattleHUDLayer__
+#define __Volt2D__BattleHUDLayer__
 
 #include "Sprite.h"
 #include "Layer.h"
@@ -26,4 +26,4 @@ public:
     virtual void exit();
 };
 
-#endif /* defined(__OpenGL_2D_Framework__BattleHUDLayer__) */
+#endif /* defined(__Volt2D__BattleHUDLayer__) */

@@ -1,13 +1,13 @@
 //
 //  ActionObject.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 5/14/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__ActionObject__
-#define __OpenGL_2D_Framework__ActionObject__
+#ifndef __Volt2D__ActionObject__
+#define __Volt2D__ActionObject__
 
 #include "Utility.hpp"
 
@@ -132,4 +132,4 @@ public:
 };
 }   //namespace end
 
-#endif /* defined(__OpenGL_2D_Framework__ActionObject__) */
+#endif /* defined(__Volt2D__ActionObject__) */

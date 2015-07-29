@@ -1,13 +1,13 @@
 //
 //  Actions.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 7/28/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef OpenGL_2D_Framework_Actions_h
-#define OpenGL_2D_Framework_Actions_h
+#ifndef Volt2D_Actions_h
+#define Volt2D_Actions_h
 
 #include "ActionCallFunc.h"
 #include "ActionDelay.h"

@@ -1,22 +1,22 @@
 //
 //  Font.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 5/7/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__Font__
-#define __OpenGL_2D_Framework__Font__
+#ifndef __Volt2D__Font__
+#define __Volt2D__Font__
 
 #ifdef _WIN32
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <freetype.h>
 #elif __APPLE__
-#include <freetype2/ft2build.h>
+#include <freetype/ft2build.h>
 #include FT_FREETYPE_H
-#include <freetype2/freetype.h>
+#include <freetype/freetype.h>
 #endif
 #include <ftglyph.h>
 #include "Director.h"
@@ -139,4 +139,4 @@ public:
     void bindTextTextureAtlas();
 };
 
-#endif /* defined(__OpenGL_2D_Framework__Font__) */
+#endif /* defined(__Volt2D__Font__) */

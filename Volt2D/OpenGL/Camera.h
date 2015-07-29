@@ -1,13 +1,13 @@
 //
 //  Camera.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 11/10/14.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__Camera__
-#define __OpenGL_2D_Framework__Camera__
+#ifndef __Volt2D__Camera__
+#define __Volt2D__Camera__
 
 #include <GL/glew.h>
 #include "Utility.hpp"
@@ -178,4 +178,4 @@ public:
     /// @}
 };
 }   //namespace end
-#endif /* defined(__OpenGL_2D_Framework__Camera__) */
+#endif /* defined(__Volt2D__Camera__) */

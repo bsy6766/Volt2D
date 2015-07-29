@@ -1,13 +1,13 @@
 //
 //  ActionCallFunc.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 7/14/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__ActionCallFunc__
-#define __OpenGL_2D_Framework__ActionCallFunc__
+#ifndef __Volt2D__ActionCallFunc__
+#define __Volt2D__ActionCallFunc__
 
 #if _WIN32
 #include <functional>
@@ -67,4 +67,4 @@ public:
 };
 }
 
-#endif /* defined(__OpenGL_2D_Framework__ActionCallFunc__) */
+#endif /* defined(__Volt2D__ActionCallFunc__) */

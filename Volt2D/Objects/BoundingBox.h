@@ -1,13 +1,13 @@
 //
 //  BoundingBox.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 4/20/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__BoundingBox__
-#define __OpenGL_2D_Framework__BoundingBox__
+#ifndef __Volt2D__BoundingBox__
+#define __Volt2D__BoundingBox__
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -71,4 +71,4 @@ public:
 };
 }   //namespace end
 
-#endif /* defined(__OpenGL_2D_Framework__BoundingBox__) */
+#endif /* defined(__Volt2D__BoundingBox__) */

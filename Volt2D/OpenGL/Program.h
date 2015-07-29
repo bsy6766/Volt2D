@@ -1,13 +1,13 @@
 //
 //  Program.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 11/8/14.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__Program__
-#define __OpenGL_2D_Framework__Program__
+#ifndef __Volt2D__Program__
+#define __Volt2D__Program__
 
 #include <GL/glew.h>
 #include <stdexcept>
@@ -56,4 +56,4 @@ public:
 };
 }   //namespace end
 
-#endif /* defined(__OpenGL_2D_Framework__Program__) */
+#endif /* defined(__Volt2D__Program__) */

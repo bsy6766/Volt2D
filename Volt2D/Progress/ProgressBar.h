@@ -1,13 +1,13 @@
 //
 //  ProgressBar.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 1/23/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__ProgressBar__
-#define __OpenGL_2D_Framework__ProgressBar__
+#ifndef __Volt2D__ProgressBar__
+#define __Volt2D__ProgressBar__
 
 #include "ProgressObject.h"
 
@@ -54,4 +54,4 @@ public:
     virtual void render() override;
 };
 
-#endif /* defined(__OpenGL_2D_Framework__ProgressBar__) */
+#endif /* defined(__Volt2D__ProgressBar__) */

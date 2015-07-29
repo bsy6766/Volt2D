@@ -1,13 +1,13 @@
 //
 //  ParticleSystem.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 11/25/14.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__ParticleSystem__
-#define __OpenGL_2D_Framework__ParticleSystem__
+#ifndef __Volt2D__ParticleSystem__
+#define __Volt2D__ParticleSystem__
 
 #include "Particle.h"
 #include "RenderableObject.h"
@@ -386,4 +386,4 @@ public:
 };
 }
 
-#endif /* defined(__OpenGL_2D_Framework__ParticleSystem__) */
+#endif /* defined(__Volt2D__ParticleSystem__) */

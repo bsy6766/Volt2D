@@ -1,13 +1,13 @@
 //
 //  ProgressRadian.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 1/26/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__ProgressRadian__
-#define __OpenGL_2D_Framework__ProgressRadian__
+#ifndef __Volt2D__ProgressRadian__
+#define __Volt2D__ProgressRadian__
 
 #include "ProgressObject.h"
 
@@ -55,4 +55,4 @@ public:
     virtual void render() override;
 };
 
-#endif /* defined(__OpenGL_2D_Framework__ProgressRadian__) */
+#endif /* defined(__Volt2D__ProgressRadian__) */

@@ -1,13 +1,13 @@
 //
 //  Text.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 5/7/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__Text__
-#define __OpenGL_2D_Framework__Text__
+#ifndef __Volt2D__Text__
+#define __Volt2D__Text__
 
 #include "FontManager.h"
 #include "RenderableObject.h"
@@ -154,4 +154,4 @@ public:
 };
 }
 
-#endif /* defined(__OpenGL_2D_Framework__Text__) */
+#endif /* defined(__Volt2D__Text__) */

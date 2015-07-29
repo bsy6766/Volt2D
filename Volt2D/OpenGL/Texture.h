@@ -1,13 +1,13 @@
 //
 //  Texture.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 11/4/14.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__Texture__
-#define __OpenGL_2D_Framework__Texture__
+#ifndef __Volt2D__Texture__
+#define __Volt2D__Texture__
 
 #include <GL/glew.h>
 #include <vector>
@@ -249,4 +249,4 @@ public:
 };
 }   //namespace end
 
-#endif /* defined(__OpenGL_2D_Framework__Texture__) */
+#endif /* defined(__Volt2D__Texture__) */

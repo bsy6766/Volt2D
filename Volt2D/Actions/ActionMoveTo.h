@@ -1,13 +1,13 @@
 //
 //  ActionMoveTo.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 12/5/14.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__ActionMoveTo__
-#define __OpenGL_2D_Framework__ActionMoveTo__
+#ifndef __Volt2D__ActionMoveTo__
+#define __Volt2D__ActionMoveTo__
 
 #include "Sprite.h"
 #include "ActionObject.h"
@@ -96,4 +96,4 @@ public:
 };
 }
     
-#endif /* defined(__OpenGL_2D_Framework__ActionMoveTo__) */
+#endif /* defined(__Volt2D__ActionMoveTo__) */

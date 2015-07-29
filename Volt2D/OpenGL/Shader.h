@@ -1,13 +1,13 @@
 //
 //  Shader.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 11/4/14.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__Shader__
-#define __OpenGL_2D_Framework__Shader__
+#ifndef __Volt2D__Shader__
+#define __Volt2D__Shader__
 
 #include <GL/glew.h>
 #include <stdexcept>
@@ -61,4 +61,4 @@ public:
 };
 }   //namespace end
 
-#endif /* defined(__OpenGL_2D_Framework__Shader__) */
+#endif /* defined(__Volt2D__Shader__) */

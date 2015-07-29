@@ -1,13 +1,13 @@
 //
 //  RenderableObject.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 5/13/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__RenderableObject__
-#define __OpenGL_2D_Framework__RenderableObject__
+#ifndef __Volt2D__RenderableObject__
+#define __Volt2D__RenderableObject__
 
 #include "Object.h"
 #include "Program.h"
@@ -210,4 +210,4 @@ public:
 };
 }   //namespace end
 
-#endif /* defined(__OpenGL_2D_Framework__RenderableObject__) */
+#endif /* defined(__Volt2D__RenderableObject__) */

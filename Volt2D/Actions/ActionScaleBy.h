@@ -1,13 +1,13 @@
 //
 //  ActionScaleBy.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 4/19/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__ActionScaleBy__
-#define __OpenGL_2D_Framework__ActionScaleBy__
+#ifndef __Volt2D__ActionScaleBy__
+#define __Volt2D__ActionScaleBy__
 
 #include "Sprite.h"
 #include "ActionObject.h"
@@ -85,4 +85,4 @@ public:
 };
 }
 
-#endif /* defined(__OpenGL_2D_Framework__ActionScaleBy__) */
+#endif /* defined(__Volt2D__ActionScaleBy__) */

@@ -1,6 +1,6 @@
 //
 //  Program.cpp
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 11/8/14.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.

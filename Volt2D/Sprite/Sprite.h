@@ -1,13 +1,13 @@
 //
 //  Sprite.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 11/7/14.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__Sprite__
-#define __OpenGL_2D_Framework__Sprite__
+#ifndef __Volt2D__Sprite__
+#define __Volt2D__Sprite__
 
 #include "RenderableObject.h"
 #include "Texture.h"
@@ -102,4 +102,4 @@ public:
 };
 }   //namespace end
 
-#endif /* defined(__OpenGL_2D_Framework__Sprite__) */
+#endif /* defined(__Volt2D__Sprite__) */

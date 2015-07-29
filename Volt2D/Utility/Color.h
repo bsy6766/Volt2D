@@ -1,13 +1,13 @@
 //
 //  Color.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 7/14/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__Color__
-#define __OpenGL_2D_Framework__Color__
+#ifndef __Volt2D__Color__
+#define __Volt2D__Color__
 
 #include "Utility.hpp"
 
@@ -287,4 +287,4 @@ public:
 };
 }
 
-#endif /* defined(__OpenGL_2D_Framework__Color__) */
+#endif /* defined(__Volt2D__Color__) */

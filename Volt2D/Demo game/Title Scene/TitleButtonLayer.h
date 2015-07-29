@@ -1,25 +1,17 @@
 //
 //  TitleButtonLayer.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 7/10/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__TitleButtonLayer__
-#define __OpenGL_2D_Framework__TitleButtonLayer__
+#ifndef __Volt2D__TitleButtonLayer__
+#define __Volt2D__TitleButtonLayer__
 
 #include "Director.h"
 #include "Layer.h"
 #include "Sprite.h"
-//#include "ActionFadeTo.h"
-//#include "ActionFadeBy.h"
-//#include "ActionMoveTo.h"
-//#include "ActionScaleTo.h"
-//#include "ActionDelay.h"
-//#include "ProgressBar.h"
-//#include "ProgressFromTo.h"
-//#include "ActionCallFunc.h"
 #include "ParticleSystem.h"
 #include <map>
 #include "BattleScene.h"
@@ -85,4 +77,4 @@ public:
     virtual void mouseMove(double x, double y);
 };
 
-#endif /* defined(__OpenGL_2D_Framework__TitleButtonLayer__) */
+#endif /* defined(__Volt2D__TitleButtonLayer__) */

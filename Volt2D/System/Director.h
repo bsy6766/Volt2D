@@ -1,13 +1,13 @@
 //
 //  Director.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 2/3/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__Director__
-#define __OpenGL_2D_Framework__Director__
+#ifndef __Volt2D__Director__
+#define __Volt2D__Director__
 
 // OpenGL. Must include glew first than glfw.
 #include <GL/glew.h>
@@ -332,4 +332,4 @@ public:
 };
 }
 
-#endif /* defined(__OpenGL_2D_Framework__Director__) */
+#endif /* defined(__Volt2D__Director__) */

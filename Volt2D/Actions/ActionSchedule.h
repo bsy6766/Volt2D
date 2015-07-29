@@ -1,13 +1,13 @@
 //
 //  ActionSchedule.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 5/17/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__ActionSchedule__
-#define __OpenGL_2D_Framework__ActionSchedule__
+#ifndef __Volt2D__ActionSchedule__
+#define __Volt2D__ActionSchedule__
 
 #include "ActionObject.h"
 #include <list>
@@ -48,4 +48,4 @@ public:
 };
 }
 
-#endif /* defined(__OpenGL_2D_Framework__ActionSchedule__) */
+#endif /* defined(__Volt2D__ActionSchedule__) */

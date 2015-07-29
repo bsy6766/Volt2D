@@ -1,13 +1,13 @@
 //
 //  Utility.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 2/3/15.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__Utility__
-#define __OpenGL_2D_Framework__Utility__
+#ifndef __Volt2D__Utility__
+#define __Volt2D__Utility__
 
 #ifdef _WIN32
 #define _USE_MATH_DEFINES
@@ -151,4 +151,4 @@ namespace Volt2D{
     }
 }
 
-#endif /* defined(__OpenGL_2D_Framework__Utility__) */
+#endif /* defined(__Volt2D__Utility__) */

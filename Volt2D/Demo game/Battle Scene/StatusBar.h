@@ -1,13 +1,13 @@
 //
 //  StatusBar.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 7/14/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__StatusBar__
-#define __OpenGL_2D_Framework__StatusBar__
+#ifndef __Volt2D__StatusBar__
+#define __Volt2D__StatusBar__
 
 #include "ProgressBar.h"
 #include "Sprite.h"
@@ -34,4 +34,4 @@ public:
     void updateApBar(int ap);
 };
 
-#endif /* defined(__OpenGL_2D_Framework__StatusBar__) */
+#endif /* defined(__Volt2D__StatusBar__) */

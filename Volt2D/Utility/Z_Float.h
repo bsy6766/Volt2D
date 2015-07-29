@@ -1,13 +1,13 @@
 //
 //  Z_Float.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 7/9/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__Z_Float__
-#define __OpenGL_2D_Framework__Z_Float__
+#ifndef __Volt2D__Z_Float__
+#define __Volt2D__Z_Float__
 
 namespace Volt2D{
 /**
@@ -48,4 +48,4 @@ public:
 };
 }   //namespace end
 
-#endif /* defined(__OpenGL_2D_Framework__Z_Float__) */
+#endif /* defined(__Volt2D__Z_Float__) */

@@ -1,13 +1,13 @@
 //
 //  ActionDelay.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 12/7/14.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__ActionDelay__
-#define __OpenGL_2D_Framework__ActionDelay__
+#ifndef __Volt2D__ActionDelay__
+#define __Volt2D__ActionDelay__
 
 #include "ActionObject.h"
 
@@ -67,4 +67,4 @@ public:
 };
 }
 
-#endif /* defined(__OpenGL_2D_Framework__ActionDelay__) */
+#endif /* defined(__Volt2D__ActionDelay__) */

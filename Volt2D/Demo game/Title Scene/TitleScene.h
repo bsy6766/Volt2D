@@ -1,13 +1,13 @@
 //
 //  TitleScene.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 4/15/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__TitleScene__
-#define __OpenGL_2D_Framework__TitleScene__
+#ifndef __Volt2D__TitleScene__
+#define __Volt2D__TitleScene__
 
 #include "Scene.h"
 #include "Sprite.h"
@@ -70,4 +70,4 @@ public:
     void updateMouseInput();
 };
 
-#endif /* defined(__OpenGL_2D_Framework__TitleScene__) */
+#endif /* defined(__Volt2D__TitleScene__) */

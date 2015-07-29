@@ -1,13 +1,13 @@
 //
 //  SpriteSheet.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 4/20/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__SpriteSheet__
-#define __OpenGL_2D_Framework__SpriteSheet__
+#ifndef __Volt2D__SpriteSheet__
+#define __Volt2D__SpriteSheet__
 
 #ifdef _WIN32
 #include <rapidxml.hpp>
@@ -81,4 +81,4 @@ public:
 };
 }
 
-#endif /* defined(__OpenGL_2D_Framework__SpriteSheet__) */
+#endif /* defined(__Volt2D__SpriteSheet__) */

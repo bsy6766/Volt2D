@@ -1,13 +1,13 @@
 //
 //  ActionRotateBy.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 12/8/14.
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__ActionRotateBy__
-#define __OpenGL_2D_Framework__ActionRotateBy__
+#ifndef __Volt2D__ActionRotateBy__
+#define __Volt2D__ActionRotateBy__
 
 #include "Sprite.h"
 #include "ActionObject.h"
@@ -87,4 +87,4 @@ public:
 };
 }
 
-#endif /* defined(__OpenGL_2D_Framework__ActionRotateBy__) */
+#endif /* defined(__Volt2D__ActionRotateBy__) */

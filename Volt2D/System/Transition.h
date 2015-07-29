@@ -1,13 +1,13 @@
 //
 //  Transition.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 7/27/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__Transition__
-#define __OpenGL_2D_Framework__Transition__
+#ifndef __Volt2D__Transition__
+#define __Volt2D__Transition__
 
 class Transition{
 protected:
@@ -18,4 +18,4 @@ public:
     virtual ~Transition();
 };
 
-#endif /* defined(__OpenGL_2D_Framework__Transition__) */
+#endif /* defined(__Volt2D__Transition__) */

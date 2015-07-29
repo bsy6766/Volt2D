@@ -1,13 +1,13 @@
 //
 //  MenuScene.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 7/25/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__MenuScene__
-#define __OpenGL_2D_Framework__MenuScene__
+#ifndef __Volt2D__MenuScene__
+#define __Volt2D__MenuScene__
 
 #include "Scene.h"
 #include "Sprite.h"
@@ -27,4 +27,4 @@ public:
     void exit() override;
 };
 
-#endif /* defined(__OpenGL_2D_Framework__MenuScene__) */
+#endif /* defined(__Volt2D__MenuScene__) */

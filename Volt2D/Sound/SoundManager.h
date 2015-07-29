@@ -1,13 +1,13 @@
 //
 //  SoundManager.h
-//  OpenGL_2D_Framework
+//  Volt2D
 //
 //  Created by Seung Youp Baek on 7/11/15.
 //  Copyright (c) 2015 Seung Youp Baek. All rights reserved.
 //
 
-#ifndef __OpenGL_2D_Framework__SoundManager__
-#define __OpenGL_2D_Framework__SoundManager__
+#ifndef __Volt2D__SoundManager__
+#define __Volt2D__SoundManager__
 
 #include <map>
 #include "Utility.hpp"
@@ -247,4 +247,4 @@ public:
 };
 }   //namespace end
 
-#endif /* defined(__OpenGL_2D_Framework__SoundManager__) */
+#endif /* defined(__Volt2D__SoundManager__) */
