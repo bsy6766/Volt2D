@@ -1,4 +1,4 @@
-# OpenGL-2D-Framework
+# Volt2D
 2D graphic framework using OpenGL and C++
 
 This project was inpsired by Cocos2D and started for my college final project at Dec. 2014.
