@@ -59,6 +59,11 @@ private:
     void initTexture(const std::string& fileName, GLenum textureTarget = GL_TEXTURE_2D);
     
     /**
+     *
+     */
+    void setTexture(Texture* texture);
+    
+    /**
      *  Initialize Sprite with Sprite Sheet
      */
     void initSpriteWithSpriteSheet(const ImageEntry* ie, Texture* texture);
@@ -91,6 +96,11 @@ public:
      */
     static Sprite* createSpriteWithFrameName(std::string objectName, std::string frameName, std::string imageFileName);
     
+    /**
+     *
+     */
+    static Sprite* createWith2DTexture(std::string objectName, Texture* texture);
+    
     //destructor
     ~Sprite();
     
@@ -99,6 +109,8 @@ public:
      *  Render object
      */
     virtual void render() override;
+    
+    void addChild(Object* child);
 };
 }   //namespace end
 

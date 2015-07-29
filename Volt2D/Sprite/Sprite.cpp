@@ -67,6 +67,13 @@ Sprite* Sprite::createSpriteWithFrameName(std::string objectName, std::string fr
     }
 }
 
+Sprite* Sprite::createWith2DTexture(std::string objectName, Volt2D::Texture *texture){
+    Sprite* newSprite = new Sprite();
+    newSprite->setName(objectName);
+    newSprite->setTexture(texture);
+    return newSprite;
+}
+
 void Sprite::initTexture(const std::string& fileName, GLenum textureTarget){
     std::string textureDir = Volt2D::Director::getInstance().getWorkingDir() + "/../Texture/";
     this->texture = Texture::createTextureWithFile(fileName, textureTarget);
@@ -80,6 +87,19 @@ void Sprite::initTexture(const std::string& fileName, GLenum textureTarget){
                                         -(float)this->textureHeight/2.0f,
                                         (float)this->textureWidth/2.0f,
                                         (float)this->textureHeight/2.0f);
+}
+
+void Sprite::setTexture(Volt2D::Texture *texture){
+    this->texture = texture;
+    this->texture->getTextureSize(this->textureWidth, this->textureHeight);
+    
+    computeVertexData();
+    loadVertexData();
+    
+    this->boundingBox = new Volt2D::BoundingBox(-(float)this->textureWidth/2.0f,
+                                                -(float)this->textureHeight/2.0f,
+                                                (float)this->textureWidth/2.0f,
+                                                (float)this->textureHeight/2.0f);
 }
 
 void Sprite::initSpriteWithSpriteSheet(const ImageEntry* ie, Texture* texture){
@@ -235,4 +255,9 @@ void Sprite::loadVertexData(){
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), &indicesData[0], GL_STATIC_DRAW);
     
     glBindVertexArray(0);
+}
+
+void Sprite::addChild(Object* child){
+    //\todo reject scene and layer.
+    this->Object::addChild(child, this, false);
 }
