@@ -71,6 +71,21 @@ Texture* Texture::create2DTextureArrayWithFiles(std::string textureName, int siz
     }
 }
 
+Texture* Texture::createCustom2DTexture(unsigned int width, unsigned int height, unsigned char *data, int channel){
+    if(!Volt2D::isPowerOfTwo(width)){
+        width = Volt2D::findNearestPowTwo(width);
+    }
+    
+    if(!Volt2D::isPowerOfTwo(height)){
+        height = Volt2D::findNearestPowTwo(height);
+    }
+    
+    Texture* newCustomTexture = new Texture(GL_TEXTURE_2D, std::string());
+    newCustomTexture->generate2DTexture(width, height, channel, data);
+    
+    return newCustomTexture;
+}
+
 Texture* Texture::createWithTextureObject(GLuint textureObject, GLenum textureTarget){
     Texture* newTexture = new Texture(textureObject, textureTarget);
     return newTexture;

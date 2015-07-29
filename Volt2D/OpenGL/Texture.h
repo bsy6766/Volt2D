@@ -186,6 +186,15 @@ public:
     static Texture* create2DTextureArrayWithFiles(std::string textureName, int size);
     
     /**
+     *  Create custom texture.
+     *  @param width Width of desired texture. Must be power of 2 or it's forced to nearest next power of 2.
+     *  @parma height Height of desired texture. Must be power of 2 or it's forced to nearest next power of 2.
+     *  @param data A texture data.
+     *  @param channel A texture channel(gray, jpg, png, etc type)
+     */
+    static Texture* createCustom2DTexture(unsigned int width, unsigned int height, unsigned char* data, int channel);
+    
+    /**
      *  Create texture with empty buffer with specific size
      *  @param textureObject A OpenGL texture object. Rejects non-positive.
      *  @param textureTarget A OpenGL texture target. GL_TEXTURE_2D by default.
