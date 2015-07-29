@@ -201,7 +201,7 @@ void RenderableObject::setAnchrPoint(glm::vec2 anchorPoint){
     this->anchorPoint = anchorPoint;
     glm::vec3 anchorDistance = glm::vec3();
     float shiftX = -anchorPoint.x * this->width;
-    float shiftY = -anchorPoint.y * this->height;
+    float shiftY = anchorPoint.y * this->height;
     anchorDistance = glm::vec3(shiftX, shiftY, 0);
     this->modelMat = glm::translate(glm::mat4(), anchorDistance);
 }
