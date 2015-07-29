@@ -7,11 +7,46 @@
 //
 
 #include "Transition.h"
+#include "Director.h"
 
-Transition::Transition(){
+using namespace Volt2D;
+
+//----------------------------------------
+#pragma mark Transition
+//----------------------------------------
+Transition::Transition():
+duration(0),
+currentScene(Director::getInstance().getRunningScene()),
+nextScene(0)
+{
     
 }
 
 Transition::~Transition(){
     
+}
+
+void Transition::setNextScene(Volt2D::Scene *nextScene){
+    this->nextScene = nextScene;
+}
+
+//----------------------------------------
+#pragma mark TransitionFade
+//----------------------------------------
+
+TransitionFade::TransitionFade(Color color):
+Transition(),
+color(color)
+{
+//    cout << "[SYSTEM::INFO] Creating TransitionFade" << endl;
+}
+
+TransitionFade::~TransitionFade(){
+    
+}
+
+TransitionFade* TransitionFade::createWithColor(Volt2D::Color color, Scene* scene){
+    TransitionFade* newTransition = new TransitionFade(color);
+    newTransition->setNextScene(scene);
+    return newTransition;
 }
