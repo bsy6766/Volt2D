@@ -86,6 +86,14 @@ namespace Volt2D{
     }
     
     /**
+     *  Check if number is power of two.
+     *  @param num Number to check if it's power of two. Must be greater than 1.
+     */
+    inline bool isPowerOfTwo(unsigned int num){
+        return !(num == 0) && !(num & (num - 1));
+    }
+    
+    /**
      *  Wrap angle with boundary between 0 and 360 degrees.
      *  @param degree A float reference of angle in degree to wrap
      */
@@ -140,6 +148,19 @@ namespace Volt2D{
         if(!prefix.empty())
             prefix += " ";
         cout << prefix << "vec4 = (" << point.r << ", " << point.g <<  ", " << point.b << ", " << point.a << ")" << endl;
+    }
+    
+    /**
+     *  Print glm::mat4
+     */
+    inline void printMat4(mat4 matrix, std::string prefix = ""){
+        if(!prefix.empty())
+            prefix += " ";
+        cout << prefix << "mat4 = " << endl;
+        cout << "[ " << matrix[0][0] << ", " << matrix[1][0] << ", " << matrix[2][0] << ", " << matrix[3][0] << " ]" << endl;
+        cout << "[ " << matrix[0][1] << ", " << matrix[1][1] << ", " << matrix[2][1] << ", " << matrix[3][1] << " ]" << endl;
+        cout << "[ " << matrix[0][2] << ", " << matrix[1][2] << ", " << matrix[2][2] << ", " << matrix[3][2] << " ]" << endl;
+        cout << "[ " << matrix[0][3] << ", " << matrix[1][3] << ", " << matrix[2][3] << ", " << matrix[3][3] << " ]" << endl;
     }
     
     /**
