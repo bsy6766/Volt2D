@@ -43,6 +43,11 @@ protected:
     bool alive;
     
     /**
+     *  true if object auto relase at destruction.
+     */
+    bool autoRelease;
+    
+    /**
      *  Z depth. See Z_Float class for detail.
      */
     Volt2D::Z_Float z_depth;

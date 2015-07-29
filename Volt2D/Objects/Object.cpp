@@ -276,9 +276,13 @@ void Object::updateChild(double dt){
             }
             else{
                 //first, update it self so child can have updated parent.
-                (it->second)->update(dt);
                 //update child's child
-//                (it->second)->updateChild(dt);
+                std::string objName = it->second->getName();
+//                cout << "updating = " << objName << endl;
+                if(!dynamic_cast<Layer*>(it->second)){
+                    (it->second)->update(dt);
+                }
+                (it->second)->updateChild(dt);
                 ++it;
             }
         }
@@ -298,7 +302,16 @@ void Object::renderChild(){
         }
         else{
             //first render itself
-            (it->second)->render();
+            std::string objName = it->second->getName();
+            cout << "rendering = " << objName << endl;
+            //render renderable object.
+            //but layer it self is not a redernable even if it inherites.
+            //Layer is just place holder.
+            //so render it self when only it's not Layer
+            if(!dynamic_cast<Layer*>(it->second)){
+                (it->second)->render();
+            }
+            (it->second)->renderChild();
             ++it;
         }
     }
