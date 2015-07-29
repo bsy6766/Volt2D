@@ -63,7 +63,7 @@ void ActionRotateTo::startAction(){
     }
     else if(this->type == RotationType::LEFT){
         if(destinationAngle < startAngle)
-            totalAngleToRotate = destinationAngle - startAngle;
+            totalAngleToRotate = std::abs(destinationAngle - startAngle);
         else
             totalAngleToRotate = 360 - std::abs(destinationAngle - startAngle);
     }
