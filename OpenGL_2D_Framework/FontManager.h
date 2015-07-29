@@ -14,6 +14,7 @@
 #include <string>
 #include "Director.h"
 
+namespace Volt2D{
 /**
  *  @class FontManager
  *  @brief Manages font in system
@@ -62,5 +63,6 @@ public:
      */
     Font* getFont(std::string fontName);
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__FontManager__) */

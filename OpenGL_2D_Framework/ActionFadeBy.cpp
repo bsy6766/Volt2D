@@ -8,6 +8,8 @@
 
 #include "ActionFadeBy.h"
 
+using namespace Volt2D;
+
 ActionFadeBy::ActionFadeBy():
 ActionObject(),
 fadedOpacity(0),

@@ -10,30 +10,11 @@
 #define __OpenGL_2D_Framework__SpriteAnimation__
 
 #include "Texture.h"
-#include "SpriteObject.h"
-#include "Timer.h"
+#include "RenderableObject.h"
 
 #include <map>
 
-/**
- *  @class Animation
- *  @brief Has basic animation data.
- */
-struct Animation{
-    double interval;
-    int size;
-    string name;
-    Texture* textureAtlas;
-    /**
-     *  First animation ever uses
-     */
-    BufferObject bufferObject;
-    int currentFrameIndex;
-    float textureWidth;
-    float textureHeight;
-    double intervalCounter;
-};
-
+namespace Volt2D{
 /**
  *  @class SpriteAnimation
  *  @breif A class that is similar to Sprite but can have animations.
@@ -53,8 +34,27 @@ struct Animation{
  *
  *  \todo Make it compatible with sprite sheet.
  */
-class SpriteAnimation : public SpriteObject{
+class SpriteAnimation : public Volt2D::RenderableObject{
 private:
+    /**
+     *  @struct Animation
+     *  @brief Has basic animation data.
+     */
+    struct Animation{
+        double interval;
+        int size;
+        string name;
+        Texture* textureAtlas;
+        /**
+         *  First animation ever uses
+         */
+        RenderableObject::BufferObject bufferObject;
+        int currentFrameIndex;
+        float textureWidth;
+        float textureHeight;
+        double intervalCounter;
+    };
+    
     /**
      *  Animation storage. Store Animation objects by string name as an ID
      */
@@ -132,5 +132,6 @@ public:
      */
     void stopAnimation();
 };
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__SpriteAnimation__) */

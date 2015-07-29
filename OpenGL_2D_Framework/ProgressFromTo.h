@@ -12,6 +12,7 @@
 #include "ProgressObject.h"
 #include "ActionObject.h"
 
+namespace Volt2D{
 /**
  *  @class ProgressFromTo
  *  @brief Move progress bar
@@ -79,5 +80,6 @@ public:
      */
     virtual ActionObject* clone();
 };
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__ProgressFromTo__) */

@@ -9,6 +9,8 @@
 #include "RenderableObject.h"
 #include "Director.h"
 
+using namespace Volt2D;
+
 RenderableObject::RenderableObject():
 Object(),
 bufferObject({0, 0, 0, 0}),
@@ -17,7 +19,7 @@ visible(true),
 width(0),
 height(0),
 anchorPoint(glm::vec2()),
-progPtr(Director::getInstance().getProgramPtr()),   //get default program
+progPtr(Volt2D::Director::getInstance().getProgramPtr()),   //get default program
 actionRunning(false),
 useSpriteSheet(false)
 {
@@ -72,7 +74,7 @@ void RenderableObject::deleteVertexData(){
 }
 
 void RenderableObject::bindProgram(std::string programName){
-    progPtr = Director::getInstance().getProgramPtr(programName);
+    progPtr = Volt2D::Director::getInstance().getProgramPtr(programName);
 }
 
 void RenderableObject::addAction(ActionObject* action){

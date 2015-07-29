@@ -9,6 +9,8 @@
 #include "SpriteSheet.h"
 #include "Director.h"
 
+using namespace Volt2D;
+
 SpriteSheet::SpriteSheet(){
     
 }
@@ -21,10 +23,10 @@ SpriteSheet::~SpriteSheet(){
 }
 
 void SpriteSheet::createSpriteSheet(std::string frameName, const char *textureName, const char *xmlFileName){
-    if(!Director::getInstance().hasSpriteSheetFrameName(frameName)) {
+    if(!Volt2D::Director::getInstance().hasSpriteSheetFrameName(frameName)) {
         SpriteSheet* newSpriteSheet = new SpriteSheet();
         if(newSpriteSheet->initSpriteSheetWithXML(textureName, xmlFileName)){
-            Director::getInstance().cacheSpriteSheet(frameName, newSpriteSheet);
+            Volt2D::Director::getInstance().cacheSpriteSheet(frameName, newSpriteSheet);
         }
         else{
             cout << "[SYSTEM::ERROR] Failed to initialize sprite sheet." << endl;
@@ -37,7 +39,7 @@ bool SpriteSheet::initSpriteSheetWithXML(std::string texturePath, std::string xm
     rapidxml::xml_document<> doc;
     rapidxml::xml_node<> * root_node;
     // Read the xml file into a vector
-    std::string wd = Director::getInstance().getWorkingDir();
+    std::string wd = Volt2D::Director::getInstance().getWorkingDir();
     std::ifstream theFile (wd + "/../Texture/" + xmlFileName);
     if(theFile) {
         std::vector<char> buffer((std::istreambuf_iterator<char>(theFile)), std::istreambuf_iterator<char>());

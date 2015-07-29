@@ -8,6 +8,8 @@
 
 #include "Layer.h"
 
+using namespace Volt2D;
+
 Layer::Layer():
 inputListenable(false)
 {

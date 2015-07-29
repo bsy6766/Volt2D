@@ -68,7 +68,7 @@ private:
     /**
      *  Texture atlas
      */
-    Texture* textureAtlas;
+    Volt2D::Texture* textureAtlas;
     
     /**
      *  Freetype Library. Read library.

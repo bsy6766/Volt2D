@@ -10,9 +10,13 @@
 #include "Sprite.h"
 #include "Director.h"
 
+using namespace Volt2D;
+
 Sprite::Sprite():
-SpriteObject(),
-texture(0)
+RenderableObject(),
+texture(0),
+textureWidth(0),
+textureHeight(0)
 {
     
 }
@@ -40,8 +44,8 @@ Sprite* Sprite::createSprite(std::string objectName, const char *fileName, GLenu
 }
 
 Sprite* Sprite::createSpriteWithFrameName(std::string objectName, std::string frameName, std::string imageFileName){
-    if(Director::getInstance().hasSpriteSheetFrameName(frameName)) {
-        if(SpriteSheet* const ssPtr = Director::getInstance().getSpriteSheet(frameName)){
+    if(Volt2D::Director::getInstance().hasSpriteSheetFrameName(frameName)) {
+        if(SpriteSheet* const ssPtr = Volt2D::Director::getInstance().getSpriteSheet(frameName)){
             const ImageEntry* ie = ssPtr->getImageEntry(imageFileName);
             if(ie){
                 Sprite* newSprite = new Sprite();
@@ -64,21 +68,25 @@ Sprite* Sprite::createSpriteWithFrameName(std::string objectName, std::string fr
 }
 
 void Sprite::initTexture(const std::string& fileName, GLenum textureTarget){
-    std::string textureDir = Director::getInstance().getWorkingDir() + "/../Texture/";
+    std::string textureDir = Volt2D::Director::getInstance().getWorkingDir() + "/../Texture/";
     this->texture = Texture::createTextureWithFile(fileName, textureTarget);
-    texture->getImageSize(w, h);
+//    texture->getImageSize(w, h);
+    this->texture->getTextureSize(this->textureWidth, this->textureHeight);
     
     computeVertexData();
     loadVertexData();
     
-    this->boundingBox = new BoundingBox(-this->w/2, -this->h/2, this->w/2, this->h/2);
+    this->boundingBox = new Volt2D::BoundingBox(-(float)this->textureWidth/2.0f,
+                                        -(float)this->textureHeight/2.0f,
+                                        (float)this->textureWidth/2.0f,
+                                        (float)this->textureHeight/2.0f);
 }
 
 void Sprite::initSpriteWithSpriteSheet(const ImageEntry* ie, Texture* texture){
     this->texture = texture;
 //    this->texture->getImageSize(this->w, this->h);
-    this->w = ie->w;
-    this->h = ie->h;
+    this->textureWidth = ie->w;
+    this->textureHeight = ie->h;
     
     this->useSpriteSheet = true;
     
@@ -92,7 +100,10 @@ void Sprite::initSpriteWithSpriteSheet(const ImageEntry* ie, Texture* texture){
     computeIndices();
     loadVertexData();
     
-    this->boundingBox = new BoundingBox(-this->w/2, -this->h/2, this->w/2, this->h/2);
+    this->boundingBox = new Volt2D::BoundingBox(-(float)this->textureWidth/2.0f,
+                                        -(float)this->textureHeight/2.0f,
+                                        (float)this->textureWidth/2.0f,
+                                        (float)this->textureHeight/2.0f);
 }
 
 void Sprite::render(){
@@ -106,7 +117,7 @@ void Sprite::render(){
         texture->bind(GL_TEXTURE0);
     }
 
-    glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
+    glm::mat4 cameraMat = Volt2D::Director::getInstance().getCameraPtr()->getMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
     
     glm::mat4 parentMat = glm::mat4();
@@ -140,8 +151,8 @@ void Sprite::computeVertexData(){
 }
 
 void Sprite::computeVertices(){
-    float width = (float)w / SCREEN_TO_WORLD_SCALE;
-    float height = (float)h / SCREEN_TO_WORLD_SCALE;
+    float width = (float)this->textureWidth / Volt2D::SCREEN_TO_WORLD_SCALE;
+    float height = (float)this->textureHeight / Volt2D::SCREEN_TO_WORLD_SCALE;
     
     this->RenderableObject::width = width;
     this->RenderableObject::height = height;
@@ -160,10 +171,10 @@ void Sprite::computeVertices(){
      (0,0)								(0,0)   u
      
      */
-    vertexData.push_back(glm::vec3(-(width/2), -(height/2), GLOBAL_Z_VALUE));	//bot left
-    vertexData.push_back(glm::vec3(-(width/2), height/2, GLOBAL_Z_VALUE));		//top left
-    vertexData.push_back(glm::vec3(width/2, -(height/2), GLOBAL_Z_VALUE));		//bot right
-    vertexData.push_back(glm::vec3(width/2, height/2, GLOBAL_Z_VALUE));			//top right
+    vertexData.push_back(glm::vec3(-(width/2), -(height/2), Volt2D::GLOBAL_Z_VALUE));	//bot left
+    vertexData.push_back(glm::vec3(-(width/2), height/2, Volt2D::GLOBAL_Z_VALUE));		//top left
+    vertexData.push_back(glm::vec3(width/2, -(height/2), Volt2D::GLOBAL_Z_VALUE));		//bot right
+    vertexData.push_back(glm::vec3(width/2, height/2, Volt2D::GLOBAL_Z_VALUE));			//top right
 }
 
 void Sprite::computeTextureCoordinates(glm::vec2 origin, glm::vec2 end){
@@ -180,10 +191,6 @@ void Sprite::computeTextureCoordinates(glm::vec2 origin, glm::vec2 end){
         uvVertexData.push_back(origin);	//top left
         uvVertexData.push_back(end);	//bot right
         uvVertexData.push_back(glm::vec2(end.x, origin.y));	//top right
-//        uvVertexData.push_back(glm::vec2(0.0009765625, 0.4404296875));	//bot left
-//        uvVertexData.push_back(glm::vec2(0, 1));	//top left
-//        uvVertexData.push_back(glm::vec2(1, 0));	//bot right
-//        uvVertexData.push_back(glm::vec2(1, 1));	//top right
     }
     else{
         uvVertexData.push_back(glm::vec2(0, 0));	//bot left
@@ -228,8 +235,4 @@ void Sprite::loadVertexData(){
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), &indicesData[0], GL_STATIC_DRAW);
     
     glBindVertexArray(0);
-}
-
-void Sprite::setType(SpriteType type = NORMAL_TYPE){
-    this->type = type;
 }

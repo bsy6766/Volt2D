@@ -7,9 +7,10 @@
 //
 
 #include "Director.h"
+#include "Timer.h"
 
 #pragma mark Constructor & Destructor
-Director::Director():
+Volt2D::Director::Director():
 winSize({ 0, 0 }),
 runningScene(0),
 nextScene(0),
@@ -38,7 +39,7 @@ cursorHidden(false)
     std::cout << "[SYSTEM::INFO] Working directory = " << workingDirectory << std::endl;
 }
 
-Director::~Director(){
+Volt2D::Director::~Director(){
     cout << "[SYSTEM::RELEASE] Deleting Director" << endl;
     
     cout << "[SYSTEM::RELEASE] Deleting OpenGL program and attached shaders" << endl;
@@ -92,7 +93,7 @@ Director::~Director(){
 }
 
 #pragma mark Init & Release
-void Director::initApp(const int screenWidth, const int screenHeight, const std::string windowTitle, glm::vec3 clearBuffColor, bool vsync, bool fullscreen, bool borderless, bool captureMouse, bool cursorHidden){
+void Volt2D::Director::initApp(const int screenWidth, const int screenHeight, const std::string windowTitle, glm::vec3 clearBuffColor, bool vsync, bool fullscreen, bool borderless, bool captureMouse, bool cursorHidden){
     //pre check
     if(screenWidth == 0){
         throw std::runtime_error("Screen width can not be 0.");
@@ -133,10 +134,10 @@ void Director::initApp(const int screenWidth, const int screenHeight, const std:
     addProgramWithShader("ParticleSystem", "particleVertexShader.glsl", "particleFragmentShader.glsl");
     
     //create basic camera. It will pos camera to exact place where it perfectly fits screen width and height
-    camera = new Camera((float)screenWidth, (float)screenHeight, SCREEN_TO_WORLD_SCALE);
+    camera = Volt2D::Camera::createCamera();
     
     //create sound manager.
-    soundManager = SoundManager::createSoundManager();
+    soundManager = Volt2D::SoundManager::createSoundManager();
     
     //detect joystick. GLFW has max 16 joystick module connections
     //Assume we are only using PS3 for this moment
@@ -147,7 +148,7 @@ void Director::initApp(const int screenWidth, const int screenHeight, const std:
             glfwGetJoystickAxes(i, &axisCount);
             if(ps3Joysticks[i])
                 delete ps3Joysticks[i];
-            ps3Joysticks[i] = new PS3ControllerWrapper(i, buttonCount, axisCount);
+            ps3Joysticks[i] = new Volt2D::PS3ControllerWrapper(i, buttonCount, axisCount);
             cout << "[SYSTEM::INFO] Detected joystick on #" << i << ". Name = " << glfwGetJoystickName(i) << ". button = " << buttonCount << ", axis = " << axisCount << "." << endl;
             joystickEnabled = true;
             //TODO: Remove this for multiple controller
@@ -156,17 +157,17 @@ void Director::initApp(const int screenWidth, const int screenHeight, const std:
     }
     
     //Hardcoded sprite.
-    mouseCursor = Sprite::createSprite("globalMouseCursor", "mouse_icon.png");
+    mouseCursor = Volt2D::Sprite::createSprite("globalMouseCursor", "mouse_icon.png");
     
     //set clear buffer color
     this->clearBufferColor = clearBuffColor;
 }
 
-void Director::terminateApp(){
+void Volt2D::Director::terminateApp(){
     glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
-void Director::initOpenGL(){
+void Volt2D::Director::initOpenGL(){
     //Disable depth test. Everything will be rendered on same z axis (0)
     glDisable(GL_DEPTH_TEST);
     
@@ -184,7 +185,7 @@ void Director::initOpenGL(){
     glLoadIdentity();
 }
 
-void Director::initGLEW(){
+void Volt2D::Director::initGLEW(){
     //init glew, return if fails. NOTE: this must be called after window is created since it requires opengl info(?)
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
@@ -208,7 +209,7 @@ void Director::initGLEW(){
     }
 }
 
-void Director::initGLFW(){
+void Volt2D::Director::initGLFW(){
     if (glfwInit() != GL_TRUE){
         throw std::runtime_error("Failed to initialize GLFW");
     }
@@ -222,7 +223,7 @@ void Director::initGLFW(){
     }
 }
 
-void Director::createWindow(const int &screenWidth, const int &screenHeight, const std::string &windowTitle){
+void Volt2D::Director::createWindow(const int &screenWidth, const int &screenHeight, const std::string &windowTitle){
     //set to OpenGL 4.1
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -245,7 +246,7 @@ void Director::createWindow(const int &screenWidth, const int &screenHeight, con
         //Remove window border
         glfwWindowHint(GLFW_DECORATED, GL_FALSE);
         //Create window on primary window
-        window = glfwCreateWindow(screenWidth, screenHeight, windowTitle.c_str(), glfwGetPrimaryMonitor(), NULL);
+        this->window = glfwCreateWindow(screenWidth, screenHeight, windowTitle.c_str(), glfwGetPrimaryMonitor(), NULL);
         cout << "[SYSTEM::INFO] Creating window in fullscreen mode." << endl;
     }
     else{
@@ -323,11 +324,11 @@ void Director::createWindow(const int &screenWidth, const int &screenHeight, con
 }
 
 #pragma mark Scene Management
-void Director::pushScene(Scene* newScene){
+void Volt2D::Director::pushScene(Volt2D::Scene* newScene){
     if(!runningScene){
         cout << "No running scene exists. Pushing new scene to running scene" << endl;
         runningScene = newScene;
-        runningScene->bindWindow(window);
+//        runningScene->bindWindow(window);
         //if no scene exist, call init right now
         runningScene->init();
     }
@@ -338,26 +339,26 @@ void Director::pushScene(Scene* newScene){
         }
         
         nextScene = newScene;
-        nextScene->bindWindow(window);
+//        nextScene->bindWindow(window);
         //call init on switching
         //        nextScene->init();
     }
 }
 
-//void Director::popScene(){
+//void Volt2D::Director::popScene(){
 //    if(runningScene){
-//        cout << "Director::popScene() popping current running scene" << endl;
+//        cout << "Volt2D::Director::popScene() popping current running scene" << endl;
 //        delete runningScene;
 //    }
 //
 //    if(nextScene){
-//        cout << "Director::popScene() next scene exists." << endl;
+//        cout << "Volt2D::Director::popScene() next scene exists." << endl;
 //        runningScene = nextScene;
 //        nextScene = 0;
 //    }
 //}
 
-void Director::transitionToNextScene(bool wait = true){
+void Volt2D::Director::transitionToNextScene(bool wait = true){
     //check if there is running scene and next scene
     //first, init next scene and prepare all the materials for that scene
     //if there's any issue, remove the scene and cancel this event
@@ -369,7 +370,7 @@ void Director::transitionToNextScene(bool wait = true){
     waitingForSceneTransition = wait;
 }
 
-void Director::doSceneTransition(){
+void Volt2D::Director::doSceneTransition(){
     dyingScene = runningScene;
     runningScene = nextScene;
     nextScene = 0;
@@ -387,27 +388,26 @@ void Director::doSceneTransition(){
 }
 
 #pragma mark System
-void Director::addProgramWithShader(const std::string programName, const std::string vertexShaderPath, const std::string fragmentShaderPath){
+void Volt2D::Director::addProgramWithShader(const std::string programName, const std::string vertexShaderPath, const std::string fragmentShaderPath){
     std::string shaderPath = workingDirectory + "/../Shader/";
-    Program* newProgram = new Program();
     
-    Shader* vertexShader = new Shader();
-    vertexShader->createShader(shaderPath + vertexShaderPath, GL_VERTEX_SHADER);
+    Volt2D::Shader* vertexShader = Volt2D::Shader::
+    createShader(shaderPath + vertexShaderPath, GL_VERTEX_SHADER);
     
-    Shader* fragmentShader = new Shader();
-    fragmentShader->createShader(shaderPath + fragmentShaderPath, GL_FRAGMENT_SHADER);
+    Volt2D::Shader* fragmentShader = Volt2D::Shader::createShader(shaderPath + fragmentShaderPath, GL_FRAGMENT_SHADER);
     
-    newProgram->createProgram(vertexShader, fragmentShader);
+    Volt2D::Program* newProgram = Volt2D::Program::createProgram(vertexShader, fragmentShader);
+    
     programs[programName] = newProgram;
 }
 
-void Director::run(){
+void Volt2D::Director::run(){
     int fps = 0;
     double timeCounter=  0;
     
     while (!glfwWindowShouldClose(window)){
-        Timer::getInstance().recordTime();
-        double elapsedTime = Timer::getInstance().getElapsedTime();
+        Volt2D::Timer::getInstance().recordTime();
+        double elapsedTime = Volt2D::Timer::getInstance().getElapsedTime();
         //update joystick
         if(joystickEnabled){
             for(int i = 0; i<MAX_JOYSTICK; i++){
@@ -453,7 +453,7 @@ void Director::run(){
     }
 }
 
-void Director::render(){
+void Volt2D::Director::render(){
     glClearColor(clearBufferColor.r, clearBufferColor.g, clearBufferColor.b, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -462,7 +462,7 @@ void Director::render(){
     glUseProgram(0);
 }
 
-void Director::update(double dt){
+void Volt2D::Director::update(double dt){
     if(runningScene){
         runningScene->injectKey();
         runningScene->injectMouseMove();
@@ -474,47 +474,47 @@ void Director::update(double dt){
 }
 
 #pragma mark Getters & Setters
-WinSize Director::getWindowSize(){
+Volt2D::WinSize Volt2D::Director::getWindowSize(){
     return winSize;
 }
 
-std::string Director::getWorkingDir(){
+std::string Volt2D::Director::getWorkingDir(){
     return workingDirectory;
 }
 
-Program* Director::getProgramPtr(std::string programName){
+Volt2D::Program* Volt2D::Director::getProgramPtr(std::string programName){
     if(programs.find(programName) != programs.end())
         return programs.at(programName);
     else
         return 0;
 }
 
-Camera* Director::getCameraPtr(){
+Volt2D::Camera* Volt2D::Director::getCameraPtr(){
     return camera;
 }
 
-void Director::setWorkingDir(std::string wd){
+void Volt2D::Director::setWorkingDir(std::string wd){
     workingDirectory = wd;
 }
 
-SoundManager* Director::getSoundManager(){
+Volt2D::SoundManager* Volt2D::Director::getSoundManager(){
     return this->soundManager;
 }
 
-void Director::changeWindowSize(int w, int h){
+void Volt2D::Director::changeWindowSize(int w, int h){
     glfwSetWindowSize(window, w, h);
 }
 
-PS3ControllerWrapper* Director::getJoyStick(int num){
+Volt2D::PS3ControllerWrapper* Volt2D::Director::getJoyStick(int num){
     return this->ps3Joysticks[num];
 }
 
 #pragma mark GLFW callbacks
-void Director::glfw_error_callback(int error, const char *description){
+void Volt2D::Director::glfw_error_callback(int error, const char *description){
     std::cerr << "GLFW error " << error << ": " << description << std::endl;
 }
 
-void Director::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
+void Volt2D::Director::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
     Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
     //ESC key won't termiate app unless it's on main screen
     //if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
@@ -567,7 +567,7 @@ void Director::key_callback(GLFWwindow* window, int key, int scancode, int actio
     }
 }
 
-void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos){
+void Volt2D::Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos){
     double x, y;
     glfwGetCursorPos(window, &x, &y);
     Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
@@ -609,7 +609,7 @@ void Director::mouse_move_callback(GLFWwindow *window, double xPos, double yPos)
     //    directorPtr->prevMousePos = newMousePos;
 }
 
-void Director::mouse_button_callback(GLFWwindow *window, int button, int action, int mods){
+void Volt2D::Director::mouse_button_callback(GLFWwindow *window, int button, int action, int mods){
     Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
     double x, y;
     glfwGetCursorPos(window, &x, &y);
@@ -618,11 +618,11 @@ void Director::mouse_button_callback(GLFWwindow *window, int button, int action,
 }
 
 #pragma mark SpriteSheet caching
-bool Director::hasSpriteSheetFrameName(std::string frameName){
+bool Volt2D::Director::hasSpriteSheetFrameName(std::string frameName){
     return spriteSheets.find(frameName) != spriteSheets.end();
 }
 
-SpriteSheet* const Director::getSpriteSheet(std::string frameName){
+Volt2D::SpriteSheet* const Volt2D::Director::getSpriteSheet(std::string frameName){
     auto it = spriteSheets.find(frameName);
     if(it != spriteSheets.end())
         return it->second;
@@ -630,7 +630,7 @@ SpriteSheet* const Director::getSpriteSheet(std::string frameName){
         return 0;
 }
 
-void Director::cacheSpriteSheet(std::string frameName, SpriteSheet *spriteSheet){
+void Volt2D::Director::cacheSpriteSheet(std::string frameName, Volt2D::SpriteSheet *spriteSheet){
     auto find_it = spriteSheets.find(frameName);
     if(find_it == spriteSheets.end()){
         cout << "[System::INFO] Caching \"" << frameName << "\" sprite sheet." << endl;
@@ -641,7 +641,7 @@ void Director::cacheSpriteSheet(std::string frameName, SpriteSheet *spriteSheet)
     }
 }
 
-void Director::unCacheSpriteSheet(std::string frameName){
+void Volt2D::Director::unCacheSpriteSheet(std::string frameName){
     auto find_it = spriteSheets.find(frameName);
     if(find_it == spriteSheets.end()){
         cout << "[SYSTEM::ERROR] No sprite sheet entry called \"" << frameName << "\" found." << endl;

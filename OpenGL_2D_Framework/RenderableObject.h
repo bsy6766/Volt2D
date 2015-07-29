@@ -18,12 +18,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
 
+namespace Volt2D{
 /**
  *  @class RenderableObject
  *  @brief A object that is renderable on screen. Contains several OpenGL varaibles.
  *  \todo Support anchor point for all object.
  */
-class RenderableObject : public Object{
+class RenderableObject : public Volt2D::Object{
 protected:
     /**
      *  Protected constructor
@@ -207,5 +208,6 @@ public:
      */
     virtual void update(double dt);
 };
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__RenderableObject__) */

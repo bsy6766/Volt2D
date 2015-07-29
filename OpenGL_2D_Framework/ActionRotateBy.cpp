@@ -8,6 +8,8 @@
 
 #include "ActionRotateBy.h"
 
+using namespace Volt2D;
+
 ActionRotateBy::ActionRotateBy():
 ActionObject(),
 rotatingAngle(0),

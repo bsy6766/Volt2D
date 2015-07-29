@@ -8,6 +8,8 @@
 
 #include "ActionCallFunc.h"
 
+using namespace Volt2D;
+
 ActionCallFunc::ActionCallFunc():
 ActionObject(),
 function(nullptr)

@@ -19,7 +19,6 @@
 
 //utility
 #include "Utility.hpp"
-#include "Timer.h"
 #include "PS3ControllerWrapper.h"
 
 //System
@@ -44,9 +43,10 @@
 #define GetCurrentDir getcwd
 #endif
 
+namespace Volt2D{
 //Default constant.
 //scaling down screen sprite image size to opengl 3d world's coordinate by 10. 100 x 100 pixels sprite will have 10 x 10 length vertex quad.
-const float SCREEN_TO_WORLD_SCALE = 10.0f;
+const float static SCREEN_TO_WORLD_SCALE = 10.0f;
 //Global z value. All object has 0 for z.
 const float static GLOBAL_Z_VALUE = 0;
 
@@ -55,7 +55,6 @@ struct WinSize{
 	float w;
 	float h;
 };
-
 /**
  *  @class Director
  *  @brief Manages scene and underlying systems
@@ -64,11 +63,11 @@ struct WinSize{
 class Director{
 private:
     //Friends
-    friend class SpriteSheet;
-    friend class Sprite;
+    friend class Volt2D::SpriteSheet;
+    friend class Volt2D::Sprite;
     
     //mouse icon
-    Sprite* mouseCursor;
+    Volt2D::Sprite* mouseCursor;
     
     glm::vec2 prevMousePos = glm::vec2();
     
@@ -79,12 +78,12 @@ private:
     /**
      *  Main camera. It's fixed at most of the time.
      */
-    Camera* camera;
+    Volt2D::Camera* camera;
     
     /**
      *  Unordered map that stores Program object with string ID
      */
-    std::unordered_map<std::string, Program*> programs;
+    std::unordered_map<std::string, Volt2D::Program*> programs;
     
     //Buffer clearing color
     glm::vec3 clearBufferColor;
@@ -102,7 +101,7 @@ private:
     GLFWwindow* window;
     
     //SoundManager
-    SoundManager* soundManager;
+    Volt2D::SoundManager* soundManager;
     
     //@deprecated
     bool paused;
@@ -117,24 +116,24 @@ private:
     WinSize winSize;
     
     //SpriteSheet
-    std::unordered_map<std::string, SpriteSheet*> spriteSheets;
+    std::unordered_map<std::string, Volt2D::SpriteSheet*> spriteSheets;
     
     //PS3 Controller.
     //Enable flag
     bool joystickEnabled;
     //Controller storage.
     //\todo Make one for XBOX controller as well(but I don't have one...)
-    PS3ControllerWrapper* ps3Joysticks[MAX_JOYSTICK];
+    Volt2D::PS3ControllerWrapper* ps3Joysticks[MAX_JOYSTICK];
     
     //Scens
     /** Currently running scene */
-    Scene* runningScene;
+    Volt2D::Scene* runningScene;
     
     /** Next scene waiting to get pushed */
-    Scene* nextScene;
+    Volt2D::Scene* nextScene;
     
     /** Holds previously running scene. Gets deleted. */
-    Scene* dyingScene;
+    Volt2D::Scene* dyingScene;
     
     /** true if system needs to transition scene */
     bool waitingForSceneTransition;
@@ -146,14 +145,14 @@ private:
      *  Get chached sprite sheet by name
      *  @param frameNAme
      */
-    SpriteSheet* const getSpriteSheet(std::string frameName);
+    Volt2D::SpriteSheet* const getSpriteSheet(std::string frameName);
     
     /**
      *  Cache sprite sheet to system
      *  @param frameName A frame name for sprtie sheet
      *  @param spriteSheet SpriteSheet object pointer to store.
      */
-    void cacheSpriteSheet(std::string frameName, SpriteSheet* spriteSheet);
+    void cacheSpriteSheet(std::string frameName, Volt2D::SpriteSheet* spriteSheet);
     
     /**
      *  Remove sprite sheet from the system
@@ -286,9 +285,9 @@ public:
     /// @{
     /// @name Scene management
     //push scene to next scene
-    void pushScene(Scene* pScene);
+    void pushScene(Volt2D::Scene* pScene);
     //get currently running scene
-    Scene* getRunningScene(){return this->runningScene;};
+    Volt2D::Scene* getRunningScene(){return this->runningScene;};
     //transition to next scene. 
     void transitionToNextScene(bool wait);
     /// @}
@@ -314,16 +313,16 @@ public:
     //Add opengl program
     void addProgramWithShader(const std::string programName, const std::string vertexShaderPath, const std::string fragmentShaderPath);
     //get opengl program
-    Program* getProgramPtr(std::string programName="Default");
+    Volt2D::Program* getProgramPtr(std::string programName="Default");
     
     //get camera
-    Camera* getCameraPtr();
+    Volt2D::Camera* getCameraPtr();
     
     //get sound manager
-    SoundManager* getSoundManager();
+    Volt2D::SoundManager* getSoundManager();
     
     //get ps3 controller
-    PS3ControllerWrapper* getJoyStick(int num);
+    Volt2D::PS3ControllerWrapper* getJoyStick(int num);
     //    void pause(){this->paused = true;}
     //    bool isScenePaused(){return this->paused;}
     //    void resume(){this->paused = false;}
@@ -331,5 +330,6 @@ public:
     //    void stop();
     //    void popScene();
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__Director__) */

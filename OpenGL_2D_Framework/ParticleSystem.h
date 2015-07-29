@@ -16,10 +16,11 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "Timer.h"
 #include "Texture.h"
 #include "Color.h"
 #include "LuaConfig.h"
+
+namespace Volt2D{
 
 const float POWER_SCALE = 10;
 const int MAX_PARTICLE_COUNT = 1000;
@@ -383,5 +384,6 @@ public:
      */
     void pause();
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__ParticleSystem__) */

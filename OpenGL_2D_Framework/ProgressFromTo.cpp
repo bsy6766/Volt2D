@@ -8,6 +8,8 @@
 
 #include "ProgressFromTo.h"
 
+using namespace Volt2D;
+
 ProgressFromTo::ProgressFromTo():
 ActionObject(),
 from(0),

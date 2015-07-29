@@ -7,14 +7,16 @@
 //
 
 #include "SpriteAnimation.h"
-#include <iostream>
 #include "Director.h"
+#include "Timer.h"
+
+using namespace Volt2D;
 
 SpriteAnimation::SpriteAnimation():
-SpriteObject(),
+RenderableObject(),
 runningAnimationName("")
 {
-    this->progPtr = Director::getInstance().getProgramPtr("SpriteAnimation");
+    this->progPtr = Volt2D::Director::getInstance().getProgramPtr("SpriteAnimation");
 }
 
 SpriteAnimation::~SpriteAnimation(){
@@ -101,7 +103,7 @@ bool SpriteAnimation::initWithAnimation(string name, string textureName, int siz
     
     loadVertexData(na);
     
-    this->boundingBox = new BoundingBox(-na.textureWidth/2, -na.textureHeight/2, na.textureWidth/2, na.textureHeight/2);
+    this->boundingBox = new Volt2D::BoundingBox(-na.textureWidth/2, -na.textureHeight/2, na.textureWidth/2, na.textureHeight/2);
     
     //save animation data
     animationMap[name] = na;
@@ -113,17 +115,17 @@ bool SpriteAnimation::initWithAnimation(string name, string textureName, int siz
 
 void SpriteAnimation::computeVertexData(float texW, float texH, float imgW, float imgH){
     //compute vertex size that will be render in screen
-    float width = imgW / SCREEN_TO_WORLD_SCALE;
-    float height = imgH / SCREEN_TO_WORLD_SCALE;
+    float width = imgW / Volt2D::SCREEN_TO_WORLD_SCALE;
+    float height = imgH / Volt2D::SCREEN_TO_WORLD_SCALE;
     
     //store above size
     this->RenderableObject::width = width;
     this->RenderableObject::height = height;
     
-    vertexData.push_back(glm::vec3(-(width/2), -(height/2), GLOBAL_Z_VALUE));
-    vertexData.push_back(glm::vec3(-(width/2), height/2, GLOBAL_Z_VALUE));
-    vertexData.push_back(glm::vec3(width/2, -(height/2), GLOBAL_Z_VALUE));
-    vertexData.push_back(glm::vec3(width/2, height/2, GLOBAL_Z_VALUE));
+    vertexData.push_back(glm::vec3(-(width/2), -(height/2), Volt2D::GLOBAL_Z_VALUE));
+    vertexData.push_back(glm::vec3(-(width/2), height/2, Volt2D::GLOBAL_Z_VALUE));
+    vertexData.push_back(glm::vec3(width/2, -(height/2), Volt2D::GLOBAL_Z_VALUE));
+    vertexData.push_back(glm::vec3(width/2, height/2, Volt2D::GLOBAL_Z_VALUE));
     
     uvVertexData.push_back(glm::vec2(0, (imgH / texH)));
     uvVertexData.push_back(glm::vec2(0, 0));
@@ -208,7 +210,7 @@ void SpriteAnimation::render(){
     //bind program
     glUseProgram(progPtr->getObject());
     
-    double elapsedTime = Timer::getInstance().getElapsedTime();
+    double elapsedTime = Volt2D::Timer::getInstance().getElapsedTime();
     (ani_it->second).intervalCounter += elapsedTime;
     
     int currentFrameIndex = (ani_it->second).currentFrameIndex;
@@ -228,7 +230,7 @@ void SpriteAnimation::render(){
     }
     
     //camera
-    glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
+    glm::mat4 cameraMat = Volt2D::Director::getInstance().getCameraPtr()->getMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
     
     glm::mat4 parentMat = glm::mat4();

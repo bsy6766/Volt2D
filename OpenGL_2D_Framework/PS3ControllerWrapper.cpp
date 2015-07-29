@@ -8,6 +8,8 @@
 
 #include "PS3ControllerWrapper.h"
 
+using namespace Volt2D;
+
 PS3ControllerWrapper::PS3ControllerWrapper(int num, int buttonCount, int axisCount):
 joystickInputNum(num),
 buttonCount(buttonCount),

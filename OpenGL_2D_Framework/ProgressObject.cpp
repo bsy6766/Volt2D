@@ -7,6 +7,9 @@
 //
 
 #include "ProgressObject.h"
+#include "Timer.h"
+
+using namespace Volt2D;
 
 ProgressObject::ProgressObject():
 RenderableObject(),

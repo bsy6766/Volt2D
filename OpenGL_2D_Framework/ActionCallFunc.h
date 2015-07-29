@@ -14,6 +14,7 @@
 #endif
 #include "ActionObject.h"
 
+namespace Volt2D{
 /**
  *  @class ActionCallFunc
  *  @brief bind callback function
@@ -64,5 +65,6 @@ public:
      */
     virtual ActionObject* clone();
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__ActionCallFunc__) */

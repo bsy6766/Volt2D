@@ -22,6 +22,7 @@
 #include "Utility.hpp"
 #include "Texture.h"
 
+namespace Volt2D{
 struct ImageEntry{
     float x;
     float y;
@@ -54,7 +55,7 @@ private:
     /**
      *  Texture loaded
      */
-    Texture* texture;
+    Volt2D::Texture* texture;
     int w;
     int h;
     
@@ -66,7 +67,7 @@ private:
     
     friend class Sprite;
     const ImageEntry* getImageEntry(std::string imageName);
-    Texture* getTexture();
+    Volt2D::Texture* getTexture();
 public:
     /**
      *  Create sprite sheet.
@@ -78,5 +79,6 @@ public:
     static void createSpriteSheet(std::string frameName, const char* textureName, const char* xmlFileName);
     ~SpriteSheet();
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__SpriteSheet__) */

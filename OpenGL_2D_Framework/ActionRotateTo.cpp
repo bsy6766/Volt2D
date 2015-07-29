@@ -8,6 +8,8 @@
 
 #include "ActionRotateTo.h"
 
+using namespace Volt2D;
+
 ActionRotateTo::ActionRotateTo():
 ActionObject(),
 type(RotationType::RIGHT),

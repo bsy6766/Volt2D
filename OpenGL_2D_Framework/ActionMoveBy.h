@@ -9,14 +9,15 @@
 #ifndef __OpenGL_2D_Framework__ActionMoveBy__
 #define __OpenGL_2D_Framework__ActionMoveBy__
 
-#include "SpriteObject.h"
 #include "ActionObject.h"
+#include "Sprite.h"
 
+namespace Volt2D{
 /**
  *  @class ActionMoveBy
  *  @brief Move target object by distance with in duration
  */
-class ActionMoveBy : public ActionObject{
+class ActionMoveBy : public Volt2D::ActionObject{
 private:
     /**
      *  A distance to move
@@ -82,5 +83,6 @@ public:
      */
     virtual ActionObject* clone();
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__ActionMoveBy__) */

@@ -14,7 +14,7 @@
 #include "StatusBar.h"
 #include <vector>
 
-class BattleHUDLayer : public Layer{
+class BattleHUDLayer : public Volt2D::Layer{
 private:
     std::vector<StatusBar*> statusBars;
     

@@ -12,13 +12,14 @@
 #include "Z_Float.h"
 #include "Object.h"
 
+namespace Volt2D{
 /**
  *  @class Layer
  *  @brief A layer that can be added to scene
  *  @note Inherites object
  */
 
-class Layer : public Object{
+class Layer : public Volt2D::Object{
 protected:
     /**
      *  true if this layer can listen inputs (key and mouse)
@@ -99,5 +100,6 @@ public:
      */
     void setInputListenable(bool mode);
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__Layer__) */

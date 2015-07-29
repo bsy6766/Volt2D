@@ -26,13 +26,13 @@ ProgressRadian* ProgressRadian::createProgressRadian(std::string objectName, con
 }
 
 void ProgressRadian::initProgressRadian(const std::string barTextureName, GLenum textureTarget){
-    this->texture = Texture::createTextureWithFile(barTextureName, textureTarget);
+    this->texture = Volt2D::Texture::createTextureWithFile(barTextureName, textureTarget);
     texture->getImageSize(w, h);
     
     computeVertexData();
     loadVertexData();
     
-    this->boundingBox = new BoundingBox(-this->w/2, -this->h/2, this->w/2, this->h/2);
+    this->boundingBox = new Volt2D::BoundingBox(-this->w/2, -this->h/2, this->w/2, this->h/2);
 }
 
 void ProgressRadian::computeVertexData(){
@@ -41,11 +41,11 @@ void ProgressRadian::computeVertexData(){
     std::vector<float> heightGapList;
     std::vector<float> uvGapList;   //since u and v have same range of value(0~1), only need 1 for both width and height
     
-    width /= SCREEN_TO_WORLD_SCALE;
-    height /= SCREEN_TO_WORLD_SCALE;
+    width /= Volt2D::SCREEN_TO_WORLD_SCALE;
+    height /= Volt2D::SCREEN_TO_WORLD_SCALE;
     
-    this->RenderableObject::width = w / SCREEN_TO_WORLD_SCALE;
-    this->RenderableObject::height = h / SCREEN_TO_WORLD_SCALE;
+    this->RenderableObject::width = w / Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->RenderableObject::height = h / Volt2D::SCREEN_TO_WORLD_SCALE;
     
     float angle = 0;
     for(int i = 0; i<12; i++){
@@ -441,7 +441,7 @@ void ProgressRadian::loadVertexData(){
 
 void ProgressRadian::render(){
     glUseProgram(progPtr->getObject());
-    glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
+    glm::mat4 cameraMat = Volt2D::Director::getInstance().getCameraPtr()->getMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
     
     glm::mat4 parentMat;

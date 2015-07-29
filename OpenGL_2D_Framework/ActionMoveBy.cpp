@@ -8,6 +8,8 @@
 
 #include "ActionMoveBy.h"
 
+using namespace Volt2D;
+
 ActionMoveBy::ActionMoveBy():
 ActionObject(),
 distance(glm::vec3()),

@@ -11,6 +11,7 @@
 
 #include "ActionObject.h"
 
+namespace Volt2D{
 /**
  *  @class ActionDelay
  *  @brief Delay action for specific duration
@@ -64,5 +65,6 @@ public:
      */
     virtual ActionObject* clone();
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__ActionDelay__) */

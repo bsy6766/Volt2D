@@ -8,6 +8,8 @@
 
 #include "ActionMoveTo.h"
 
+using namespace Volt2D;
+
 ActionMoveTo::ActionMoveTo():
 ActionObject(),
 movedPosition(glm::vec3()),

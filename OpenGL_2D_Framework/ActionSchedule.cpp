@@ -7,6 +7,9 @@
 //
 
 #include "ActionSchedule.h"
+#include "Timer.h"
+
+using namespace Volt2D;
 
 ActionSchedule::ActionSchedule():
 repeat(0),
@@ -22,7 +25,7 @@ ActionSchedule::~ActionSchedule(){
     cout << "Deleting action schedule" << endl;
 }
 
-void ActionSchedule::createSchedule(ActionObject *action, int repeat){
+void ActionSchedule::createSchedule(Volt2D::ActionObject *action, int repeat){
     if(repeat == 0)
         instantSchedule = true;
     else
@@ -36,7 +39,7 @@ void ActionSchedule::createSchedule(ActionObject *action, int repeat){
 //    createSchedule(&action, 1, repeat);
 }
 
-void ActionSchedule::createSchedule(ActionObject **actions, int size, int repeat){
+void ActionSchedule::createSchedule(Volt2D::ActionObject **actions, int size, int repeat){
     if(repeat == 0)
         instantSchedule = true;
     else
@@ -51,7 +54,7 @@ void ActionSchedule::createSchedule(ActionObject **actions, int size, int repeat
     }
 }
 
-void ActionSchedule::createSchedule(std::initializer_list<ActionObject *>& actions, int repeat){
+void ActionSchedule::createSchedule(std::initializer_list<Volt2D::ActionObject *>& actions, int repeat){
     if(repeat == 0)
         instantSchedule = true;
     else
@@ -93,7 +96,7 @@ void ActionSchedule::updateSchedule(){
             continue;
         }
         
-        double elapsedTime = Timer::getInstance().getElapsedTime();
+        double elapsedTime = Volt2D::Timer::getInstance().getElapsedTime();
         double t = (*action_it)->setCurrentTime(elapsedTime);
         if(t != 0 && this->remainedTime == 0){
 //            cout << "t = " << t << endl;
@@ -155,6 +158,6 @@ bool ActionSchedule::needRepeat(){
     return repeat != repeatCounter;
 }
 
-std::list<ActionObject*>& ActionSchedule::getList(){
+std::list<Volt2D::ActionObject*>& ActionSchedule::getList(){
     return actionList;
 }

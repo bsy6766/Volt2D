@@ -8,6 +8,8 @@
 
 #include "TitleScene.h"
 
+using namespace Volt2D;
+
 TitleScene::TitleScene():
 bg(0),
 titleButtonLayer(0)
@@ -20,10 +22,10 @@ TitleScene::~TitleScene(){
 
 void TitleScene::init(){
 //    cout << "TitleScene::init()" << endl;
-//    WinSize size = Director::getInstance().getWindowSize();
+//    WinSize size = Volt2D::Director::getInstance().getWindowSize();
 //    SoundManager::getInstance().createChannelGroup("bgmChannelGroup");
 //    SoundManager::getInstance().createNewSound("titleSceneBgm", "titleSceneBgm", "title bgm.mp3");
-    SoundManager* sm = Director::getInstance().getSoundManager();
+    Volt2D::SoundManager* sm = Volt2D::Director::getInstance().getSoundManager();
     sm->createBGM("titleSceneBgm", "title bgm.mp3");
     sm->createSFX("titleSceneMenuBrowse", "title_scene_menu_browse.mp3");
     sm->createSFX("titleSceneMenuSelect", "title_scene_menu_select.mp3");
@@ -132,11 +134,11 @@ void TitleScene::initLayers(){
 }
 
 void TitleScene::update(double dt){
-//    if(Director::getInstance().getJoyStick(0)->keyPressed(CIRCLE)){
+//    if(Volt2D::Director::getInstance().getJoyStick(0)->keyPressed(CIRCLE)){
 //        cout << "circle pressed" << endl;
     //    }
     
-    PS3ControllerWrapper* joystick = Director::getInstance().getJoyStick(0);
+    PS3ControllerWrapper* joystick = Volt2D::Director::getInstance().getJoyStick(0);
     if(joystick){
         if(joystick->getKeyStatus(CIRCLE) == GLFW_PRESS){
             titleButtonLayer->addPosition(glm::vec3(100, 100, 0));
@@ -186,51 +188,51 @@ void TitleScene::keyPressed(int key, int mods){
         cout << bgpos.x << " " << bgpos.y << " " << bgpos.z << endl;
     }
     if(key == GLFW_KEY_0){
-        Director::getInstance().getSoundManager()->playBGM("titleSceneBgm");
+        Volt2D::Director::getInstance().getSoundManager()->playBGM("titleSceneBgm");
     }
     else if(key == GLFW_KEY_9){
-        Director::getInstance().getSoundManager()->stopSound("titleSceneBgm");
+        Volt2D::Director::getInstance().getSoundManager()->stopSound("titleSceneBgm");
     }
     else if(key == GLFW_KEY_8){
-        Director::getInstance().getSoundManager()->pauseBGM("titleSceneBgm");
+        Volt2D::Director::getInstance().getSoundManager()->pauseBGM("titleSceneBgm");
     }
     else if(key == GLFW_KEY_7){
-        Director::getInstance().getSoundManager()->resumeBGM("titleSceneBgm");
+        Volt2D::Director::getInstance().getSoundManager()->resumeBGM("titleSceneBgm");
     }
     else if(key == GLFW_KEY_6){
         float curChGroupVol = 0;
-        if(Director::getInstance().getSoundManager()->getChannelGroupVolume("SFXGroup", curChGroupVol)){
+        if(Volt2D::Director::getInstance().getSoundManager()->getChannelGroupVolume("SFXGroup", curChGroupVol)){
             cout << "cur ch group vol = " << curChGroupVol << endl;
         }
         curChGroupVol+=0.1f;
-        Director::getInstance().getSoundManager()->setChannelGroupVolume("SFXGroup", curChGroupVol);
+        Volt2D::Director::getInstance().getSoundManager()->setChannelGroupVolume("SFXGroup", curChGroupVol);
         
         float curMenuBrowseVol = 0;
-        if(Director::getInstance().getSoundManager()->getSoundVolume("titleSceneMenuBrowse", curMenuBrowseVol)){
+        if(Volt2D::Director::getInstance().getSoundManager()->getSoundVolume("titleSceneMenuBrowse", curMenuBrowseVol)){
             cout << "cur ch browse vol = " << curMenuBrowseVol << endl;
         }
         
         float curMenuSelectVol = 0;
-        if(Director::getInstance().getSoundManager()->getSoundVolume("titleSceneMenuSelect", curMenuBrowseVol)){
+        if(Volt2D::Director::getInstance().getSoundManager()->getSoundVolume("titleSceneMenuSelect", curMenuBrowseVol)){
             cout << "cur ch select vol = " << curMenuSelectVol << endl;
         }
         
     }
     else if(key == GLFW_KEY_5){
         float curChGroupVol = 0;
-        if(Director::getInstance().getSoundManager()->getChannelGroupVolume("SFXGroup", curChGroupVol)){
+        if(Volt2D::Director::getInstance().getSoundManager()->getChannelGroupVolume("SFXGroup", curChGroupVol)){
             cout << "cur ch group vol = " << curChGroupVol << endl;
         }
         curChGroupVol-=0.1f;
-        Director::getInstance().getSoundManager()->setChannelGroupVolume("SFXGroup", curChGroupVol);
+        Volt2D::Director::getInstance().getSoundManager()->setChannelGroupVolume("SFXGroup", curChGroupVol);
         
         float curMenuBrowseVol = 0;
-        if(Director::getInstance().getSoundManager()->getSoundVolume("titleSceneMenuBrowse", curMenuBrowseVol)){
+        if(Volt2D::Director::getInstance().getSoundManager()->getSoundVolume("titleSceneMenuBrowse", curMenuBrowseVol)){
             cout << "cur ch browse vol = " << curMenuBrowseVol << endl;
         }
         
         float curMenuSelectVol = 0;
-        if(Director::getInstance().getSoundManager()->getSoundVolume("titleSceneMenuSelect", curMenuBrowseVol)){
+        if(Volt2D::Director::getInstance().getSoundManager()->getSoundVolume("titleSceneMenuSelect", curMenuBrowseVol)){
             cout << "cur ch select vol = " << curMenuSelectVol << endl;
         }
     }

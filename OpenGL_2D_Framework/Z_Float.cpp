@@ -8,6 +8,8 @@
 
 #include "Z_Float.h"
 
+using namespace Volt2D;
+
 Z_Float::Z_Float():
 z(0),
 dirty(false)

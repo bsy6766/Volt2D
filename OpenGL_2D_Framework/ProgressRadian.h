@@ -15,7 +15,7 @@
  *  @class ProgressRadian
  *  @brief A progress radian
  */
-class ProgressRadian: public ProgressObject{
+class ProgressRadian: public Volt2D::ProgressObject{
 private:
     //private constructor
     ProgressRadian();

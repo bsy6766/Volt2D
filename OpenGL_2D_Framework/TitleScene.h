@@ -14,31 +14,27 @@
 #include "FontManager.h"
 #include "BattleScene.h"
 #include "SoundManager.h"
-#include "ActionDelay.h"
 #include "SpriteSheet.h"
-#include "ActionRotateTo.h"
-#include "ActionRotateBy.h"
-#include "ActionCallFunc.h"
-#include "ActionMoveTo.h"
-#include "ActionMoveBy.h"
 #include "Text.h"
 #include "SpriteAnimation.h"
 #include "ParticleSystem.h"
 
+#include "Actions.h"
+
 #include "TitleButtonLayer.h"
 
-class TitleScene : public Scene{
+class TitleScene : public Volt2D::Scene{
 protected:
 private:
-    Sprite* bg;
-    Sprite* title;
-    Sprite* version;
-    SpriteAnimation* character;
-    ParticleSystem* magicalOrbits;
-    ParticleSystem* flame;
-    ParticleSystem* blueMeteor;
-    ParticleSystem* muhanDojun;
-    ParticleSystem* fireBall;
+    Volt2D::Sprite* bg;
+    Volt2D::Sprite* title;
+    Volt2D::Sprite* version;
+    Volt2D::SpriteAnimation* character;
+    Volt2D::ParticleSystem* magicalOrbits;
+    Volt2D::ParticleSystem* flame;
+    Volt2D::ParticleSystem* blueMeteor;
+    Volt2D::ParticleSystem* muhanDojun;
+    Volt2D::ParticleSystem* fireBall;
     
     TitleButtonLayer* titleButtonLayer;
     

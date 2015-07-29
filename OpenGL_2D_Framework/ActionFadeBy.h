@@ -9,15 +9,16 @@
 #ifndef __OpenGL_2D_Framework__ActionFadeBy__
 #define __OpenGL_2D_Framework__ActionFadeBy__
 
-#include "SpriteObject.h"
 #include "ActionObject.h"
+#include "Sprite.h"
 
+namespace Volt2D{
 /**
  *  @class ActionFadeBy
  *  @brief Fade target by specific opacity
  *  @note Max opacity: 255.0, Min opacity: 0
  */
-class ActionFadeBy : public ActionObject{
+class ActionFadeBy : public Volt2D::ActionObject{
 private:
     /**
      *  Total opacity to fade by
@@ -84,5 +85,6 @@ public:
      */
     virtual ActionObject* clone();
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__ActionFadeBy__) */

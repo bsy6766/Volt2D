@@ -8,6 +8,8 @@
 
 #include "BattleScene.h"
 
+using namespace Volt2D;
+
 BattleScene::BattleScene():
 bg(0)
 {

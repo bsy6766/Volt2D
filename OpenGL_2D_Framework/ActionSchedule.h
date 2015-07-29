@@ -12,8 +12,12 @@
 #include "ActionObject.h"
 #include <list>
 
-//class SpriteObject;
-
+namespace Volt2D{
+/**
+ *  @class ActionSchedule
+ *  @brief pack of ActionObject(s).
+ *  \todo Comment and document this class
+ */
 class ActionSchedule{
 protected:
 private:    
@@ -24,25 +28,24 @@ private:
     
     double remainedTime;
     
-//    glm::vec3 temp = glm::vec3();
-    
-    std::list<ActionObject*> actionList;
+    std::list<Volt2D::ActionObject*> actionList;
     void clearList();    
     
 public:
     ActionSchedule();
     ~ActionSchedule();
-    void createSchedule(ActionObject* action, int repeat);
-    void createSchedule(ActionObject** actions, int size, int repeat);
-    void createSchedule(std::initializer_list<ActionObject*>& actions, int repeat);
+    void createSchedule(Volt2D::ActionObject* action, int repeat);
+    void createSchedule(Volt2D::ActionObject** actions, int size, int repeat);
+    void createSchedule(std::initializer_list<Volt2D::ActionObject*>& actions, int repeat);
     void terminateAllAction();
     void updateSchedule();
     bool isEmpty();
     bool isFinished();
     bool needRepeat();
     void reviveSchedule();
-    std::list<ActionObject*>& getList();
+    std::list<Volt2D::ActionObject*>& getList();
     bool isInstant();
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__ActionSchedule__) */

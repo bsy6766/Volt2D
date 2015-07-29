@@ -29,24 +29,24 @@ speed(0.5f)
         fars = 55.0f;
      */
     
-    float screenWidth = Director::getInstance().getWindowSize().w;
-    float screenHeight = Director::getInstance().getWindowSize().h;
+    float screenWidth = Volt2D::Director::getInstance().getWindowSize().w;
+    float screenHeight = Volt2D::Director::getInstance().getWindowSize().h;
     
     //Calculate dynamically based on screen size
     float offset = screenHeight / 2.0;
     
-    this->position = glm::vec3(0, 0, -offset / SCREEN_TO_WORLD_SCALE);
+    this->position = glm::vec3(0, 0, -offset / Volt2D::SCREEN_TO_WORLD_SCALE);
     this->aspect = (screenWidth / screenHeight);
     
     //Since this is 2D engine, we don't need to view too close and too far
     float gap = 200.0f;
-    float possibleNear = (offset - gap) / SCREEN_TO_WORLD_SCALE;
+    float possibleNear = (offset - gap) / Volt2D::SCREEN_TO_WORLD_SCALE;
     
     if(possibleNear < 0.01f)
         possibleNear = 0.01f;
     
     this->nears = possibleNear;
-    this->fars = (offset + gap) / SCREEN_TO_WORLD_SCALE;
+    this->fars = (offset + gap) / Volt2D::SCREEN_TO_WORLD_SCALE;
     
     cout << "[SYSTEM::INFO] Creating Main Camera." << endl;
     cout << "[SYSTEM::INFO] Position = (" << this->position.x << ", " << this->position.y << ", " << this->position.z << ")" << endl;

@@ -13,24 +13,14 @@
 #include "Layer.h"
 
 #include <map>
-#include <glm/glm.hpp>
 
+namespace Volt2D{
 /**
  *  @class Scene
  *  @brief A Scene class. Only 1 scene can be run in Director.
  */
-
-/**
- *  Foward declation for GLFWwindow
- */
-struct GLFWwindow;
-
-class Scene : public Object{
+class Scene : public Volt2D::Object{
 protected:
-    /**
-     *  GLFW window. Used to get input.
-     */
-    GLFWwindow* window;
     
 public:
 	Scene();
@@ -98,13 +88,14 @@ public:
      *  Bind current window to this scene to get key and mouse input.
      *  Can be used for Scene::injectKey() and Scene::injectMouseMove()
      */
-    void bindWindow(GLFWwindow* window);
+//    void bindWindow(GLFWwindow* window);
     
     /**
      *  Add child wrapper.
      *  This calls Object::addChild(Object*, Object*, bool)
      */
-    void addChild(Object* child);
+    void addChild(Volt2D::Object* child);
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__Scene__) */

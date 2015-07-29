@@ -8,6 +8,8 @@
 
 #include "TitleButtonLayer.h"
 
+using namespace Volt2D;
+
 TitleButtonLayer::TitleButtonLayer():
 //mouseCursor(0),
 newGameButton(0),
@@ -95,12 +97,12 @@ void TitleButtonLayer::init(){
 //    ActionCallFunc cbWithParam;
 //    cbWithParam.initActionCallFunc(std::bind(&TitleButtonLayer::testFunc2, this, 1));
 //    loadingBar->addActions({new ActionDelay(delayLoading), new ProgressFromTo(fromTo), new ActionCallFunc(callbackAction), new ActionCallFunc(cbWithParam)}, 0);
-    auto delay = ActionDelay::createDelay(1);
-    auto moveTo = ActionMoveTo::createMoveTo(8, glm::vec3(600, -250, 0));
+//    auto delay = ActionDelay::createDelay(1);
+//    auto moveTo = ActionMoveTo::createMoveTo(8, glm::vec3(600, -250, 0));
     
     fireBall = ParticleSystem::createWithLuaConfig("fireBallParticleLayer", "Particle/fireBall.lua");
     fireBall->setPosition(glm::vec3(-600, -250, 0));
-    fireBall->addActions({delay, moveTo, delay}, 0);
+//    fireBall->addActions({delay, moveTo, delay}, 0);
     fireBall->setZDepth(100);
     
     magicalOrbits = ParticleSystem::createWithLuaConfig("magicalOrbitsLayer", "Particle/magicalOrbits.lua");
@@ -129,7 +131,7 @@ void TitleButtonLayer::update(double dt){
 //    originPoint->setPosition(glm::vec3(bb->origin.x, bb->origin.y, 0));
 //    endPoint->setPosition(glm::vec3(bb->end.x, bb->end.y, 0));
     
-    PS3ControllerWrapper* joystick = Director::getInstance().getJoyStick(0);
+    PS3ControllerWrapper* joystick = Volt2D::Director::getInstance().getJoyStick(0);
     if(joystick) {
         if(!joystickMap[DPAD_DOWN] && joystick->getKeyStatus(DPAD_DOWN) == GLFW_PRESS){
             joystickMap[DPAD_DOWN] = true;
@@ -162,29 +164,29 @@ void TitleButtonLayer::update(double dt){
 
 void TitleButtonLayer::openCredits(){
     if(!openingCredits){
-        auto fadeIn = ActionFadeTo::createFadeTo(0.2, 255.0);
-        auto scaleIn = ActionScaleTo::createScaleTo(0.3, glm::vec3(1, 1, 1));
-        
-        creditScreen->addAction(fadeIn, 0);
-        creditScreen->addAction(scaleIn, 0);
-        creditScreen->runAction();
-        
-        delete fadeIn;
-        delete scaleIn;
+//        auto fadeIn = ActionFadeTo::createFadeTo(0.2, 255.0);
+//        auto scaleIn = ActionScaleTo::createScaleTo(0.3, glm::vec3(1, 1, 1));
+//        
+//        creditScreen->addAction(fadeIn, 0);
+//        creditScreen->addAction(scaleIn, 0);
+//        creditScreen->runAction();
+//        
+//        delete fadeIn;
+//        delete scaleIn;
     }
 }
 
 void TitleButtonLayer::closeCredits(){
     if(openingCredits){
-        auto fadeOut = ActionFadeBy::createFadeBy(0.2, -255);
-        auto scaleOut = ActionScaleTo::createScaleTo(0.3, glm::vec3(0, 0, 1));
-        
-        creditScreen->addAction(fadeOut, 0);
-        creditScreen->addAction(scaleOut, 0);
-        creditScreen->runAction();
-        
-        delete fadeOut;
-        delete scaleOut;
+//        auto fadeOut = ActionFadeBy::createFadeBy(0.2, -255);
+//        auto scaleOut = ActionScaleTo::createScaleTo(0.3, glm::vec3(0, 0, 1));
+//        
+//        creditScreen->addAction(fadeOut, 0);
+//        creditScreen->addAction(scaleOut, 0);
+//        creditScreen->runAction();
+//        
+//        delete fadeOut;
+//        delete scaleOut;
     }
 }
 
@@ -201,23 +203,23 @@ void TitleButtonLayer::keyPressed(int key, int mods){
     if(key == GLFW_KEY_ENTER){
         switch (selectingButtonID) {
             case NEW_GAME:
-                Director::getInstance().pushScene(new BattleScene());
-                Director::getInstance().transitionToNextScene(true);
-                Director::getInstance().getSoundManager()->playSFX("titleSceneMenuSelect", 0.1);
+                Volt2D::Director::getInstance().pushScene(new BattleScene());
+                Volt2D::Director::getInstance().transitionToNextScene(true);
+                Volt2D::Director::getInstance().getSoundManager()->playSFX("titleSceneMenuSelect", 0.1);
                 break;
             case EXIT_GAME:
 				if (!openingCredits)
-					Director::getInstance().terminateApp();
+					Volt2D::Director::getInstance().terminateApp();
                 break;
             case CREDITS:
                 if (!openingCredits){
                     openCredits();
                     openingCredits = true;
-                    Director::getInstance().getSoundManager()->playSFX("titleSceneMenuSelect");
+                    Volt2D::Director::getInstance().getSoundManager()->playSFX("titleSceneMenuSelect");
                 }
                 break;
             case OPTIONS:
-                Director::getInstance().getSoundManager()->playSFX("titleSceneMenuSelect", 0.1);
+                Volt2D::Director::getInstance().getSoundManager()->playSFX("titleSceneMenuSelect", 0.1);
                 break;
             default:
                 break;
@@ -226,7 +228,7 @@ void TitleButtonLayer::keyPressed(int key, int mods){
     
 	if (!openingCredits){
         if (key == GLFW_KEY_UP){
-            Director::getInstance().getSoundManager()->playSFX("titleSceneMenuBrowse", 1.0);
+            Volt2D::Director::getInstance().getSoundManager()->playSFX("titleSceneMenuBrowse", 1.0);
 			if (selectingButtonID > 0){
 				selectingButtonID--;
 				float y;
@@ -254,7 +256,7 @@ void TitleButtonLayer::keyPressed(int key, int mods){
 			}
 		}
         else if (key == GLFW_KEY_DOWN){
-            Director::getInstance().getSoundManager()->playSFX("titleSceneMenuBrowse", 0.5);
+            Volt2D::Director::getInstance().getSoundManager()->playSFX("titleSceneMenuBrowse", 0.5);
 			if (selectingButtonID < EXIT_GAME){
 				selectingButtonID++;
 				float y;
@@ -290,7 +292,7 @@ void TitleButtonLayer::keyPressed(int key, int mods){
 	}
 
 	if (key == GLFW_KEY_KP_SUBTRACT || key == GLFW_KEY_MINUS){
-		SoundManager* sm = Director::getInstance().getSoundManager();
+		Volt2D::SoundManager* sm = Volt2D::Director::getInstance().getSoundManager();
         float curBgmVol = 0;
         if(mods == GLFW_MOD_SHIFT){
             if(sm->getChannelGroupVolume("BGMGroup", curBgmVol)){
@@ -318,7 +320,7 @@ void TitleButtonLayer::keyPressed(int key, int mods){
         }
 	}
 	else if (key == GLFW_KEY_KP_ADD || key == GLFW_KEY_EQUAL){
-        SoundManager* sm = Director::getInstance().getSoundManager();
+        Volt2D::SoundManager* sm = Volt2D::Director::getInstance().getSoundManager();
         float curBgmVol = 0;
         if(mods == GLFW_MOD_SHIFT) {
             if(sm->getChannelGroupVolume("BGMGroup", curBgmVol)){
@@ -370,7 +372,7 @@ void TitleButtonLayer::mouseButton(double x, double y, int button, int action){
         else if(action == GLFW_RELEASE){
             if(exitGameButton->getBoundingBox()->containsPoint(glm::vec2(x, y))){
                 if(exitPressed)
-                    Director::getInstance().terminateApp();
+                    Volt2D::Director::getInstance().terminateApp();
             }
             else{
                 exitPressed = false;
@@ -417,5 +419,5 @@ void TitleButtonLayer::testFunc(){
 void TitleButtonLayer::testFunc2(int num){
     cout << "test2 " << num << endl;
 //    loadingBar->setPercentage(25);
-//    Director::getInstance().changeWindowSize(640, 360);
+//    Volt2D::Director::getInstance().changeWindowSize(640, 360);
 }

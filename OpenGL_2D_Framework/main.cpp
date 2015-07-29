@@ -39,7 +39,7 @@ int main(int argc, const char * argv[]) {
     if(argc > 0){
         std::string wd(argv[0]);
         splitFilename(wd);
-        Director::getInstance().setWorkingDir(wd);
+        Volt2D::Director::getInstance().setWorkingDir(wd);
     }
 #endif
     
@@ -56,7 +56,7 @@ int main(int argc, const char * argv[]) {
     std::cout << "[main] Working directory = " << runningPath << std::endl;
     
 
-    LuaConfig* systemConfig = LuaConfig::create("systemConfig");
+    Volt2D::LuaConfig* systemConfig = Volt2D::LuaConfig::create("systemConfig");
 #if _WIN32
 	systemConfig->loadConfig("system", runningPath + "/../config_win32.lua");
 #elif __APPLE__
@@ -78,7 +78,7 @@ int main(int argc, const char * argv[]) {
     
     try{
         cout << "[main] Starting application." << endl;
-        Director::getInstance().initApp(screenWidth,
+        Volt2D::Director::getInstance().initApp(screenWidth,
                                         screenHeight,
                                         windowTitle,
                                         clearBufferColor,
@@ -88,8 +88,8 @@ int main(int argc, const char * argv[]) {
                                         captureMouse,
                                         cursorHidden);
         TitleScene* titleScene = new TitleScene();
-        Director::getInstance().pushScene(titleScene);
-        Director::getInstance().run();
+        Volt2D::Director::getInstance().pushScene(titleScene);
+        Volt2D::Director::getInstance().run();
     }
     catch(std::exception &e){
         std::cout << e.what() << std::endl;

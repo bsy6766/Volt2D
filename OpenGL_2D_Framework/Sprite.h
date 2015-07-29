@@ -9,17 +9,18 @@
 #ifndef __OpenGL_2D_Framework__Sprite__
 #define __OpenGL_2D_Framework__Sprite__
 
-#include "SpriteObject.h"
+#include "RenderableObject.h"
 #include "Texture.h"
 #include "SpriteSheet.h"
 
+namespace Volt2D{
 /**
  *  @class Sprite
  *  @brief Simple sprite object loaded with single texture
  *  @note 4 Vertices, 4 UV vertices, 6 indices
  *  \todo Give Sprite class option to search SpriteSheet on creation
  */
-class Sprite :  public SpriteObject{
+class Sprite : public Volt2D::RenderableObject{
 private:
     //Temporary friend request from Director
     friend class Director;
@@ -30,6 +31,16 @@ private:
     Texture *texture;
     
     /**
+     *  texture width
+     */
+    int textureWidth;
+    
+    /**
+     * texture height
+     */
+    int textureHeight;
+    
+    /**
      *  Compute vertex and indices
      */
     void computeVertexData();
@@ -38,12 +49,6 @@ private:
      *  Load computed vertex.
      */
     void loadVertexData();
-    
-    /**
-     *  Overrides's Object::render();
-     *  Render object
-     */
-    virtual void render() override;
     
     //Private constructor
     Sprite();
@@ -58,8 +63,19 @@ private:
      */
     void initSpriteWithSpriteSheet(const ImageEntry* ie, Texture* texture);
     
+    /**
+     *  Compute vertices
+     */
     void computeVertices();
+    
+    /**
+     *  Compute uv
+     */
     void computeTextureCoordinates(glm::vec2 origin = glm::vec2(0, 1), glm::vec2 end = glm::vec2(1, 0));
+    
+    /**
+     *  compute indices
+     */
     void computeIndices();
 public:
     /**
@@ -70,14 +86,20 @@ public:
      */
     static Sprite* createSprite(std::string objectName, const char* textureName, GLenum textureTarget = GL_TEXTURE_2D);
     
+    /**
+     *  Create sprite object with sprite sheet
+     */
     static Sprite* createSpriteWithFrameName(std::string objectName, std::string frameName, std::string imageFileName);
+    
     //destructor
     ~Sprite();
-
+    
     /**
-     *  Set rendering type
+     *  Overrides's Object::render();
+     *  Render object
      */
-    void setType(SpriteType type);
+    virtual void render() override;
 };
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__Sprite__) */

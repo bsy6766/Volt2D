@@ -9,16 +9,15 @@
 #ifndef __OpenGL_2D_Framework__ActionObject__
 #define __OpenGL_2D_Framework__ActionObject__
 
-#include "Timer.h"
 #include "Utility.hpp"
 
+namespace Volt2D{
+class RenderableObject;
+    
 /**
  *  @class AcitonObject
  *  @brief A base class of action classes.
  */
-
-class RenderableObject;
-
 class ActionObject{
 protected:
     /**
@@ -131,5 +130,6 @@ public:
      */
     virtual ActionObject* clone() = 0;
 };
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__ActionObject__) */

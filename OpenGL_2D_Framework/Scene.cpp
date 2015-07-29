@@ -7,21 +7,17 @@
 //
 
 #include "Scene.h"
-#include <GLFW/glfw3.h>
+
+using namespace Volt2D;
 
 Scene::Scene():
-Object(),
-window(0)
+Object()
 {
 //    cout << "[SYSTEM::INFO] Creating Scene" << endl;
 }
 
 Scene::~Scene(){
 //    cout << "[SYSTEM::INFO] Releasing Scene" << endl;
-}
-
-void Scene::bindWindow(GLFWwindow *window){
-    this->window = window;
 }
 
 void Scene::update(double dt){

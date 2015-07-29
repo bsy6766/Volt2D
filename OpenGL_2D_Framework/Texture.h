@@ -17,6 +17,7 @@
 #include "Utility.hpp"
 #include "stb_image.h"
 
+namespace Volt2D{
 class SpriteAnimation;
 
 /**
@@ -37,6 +38,11 @@ struct Image{
  */
 class Texture{
 private:
+    /**
+     *  Can't create empty raw texture object
+     */
+    Texture() = delete;
+    
     /**
      *  Path to texture root folder
      */
@@ -241,5 +247,6 @@ public:
      */
     bool canBoundThisTexture();
 };
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__Texture__) */

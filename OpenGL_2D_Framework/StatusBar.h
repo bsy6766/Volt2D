@@ -20,8 +20,8 @@ private:
     ProgressBar* mpBar; //mana point
     ProgressBar* apBar; //action point
     
-    Sprite* frame;
-    Sprite* portrait;
+    Volt2D::Sprite* frame;
+    Volt2D::Sprite* portrait;
     
     glm::vec3 pos;
     

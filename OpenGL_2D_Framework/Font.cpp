@@ -40,7 +40,7 @@ Font* Font::createTTF_Font(std::string fontName, int fontSize){
 bool Font::initFont(std::string fontName, int fontSize){
     //load the font with Freetype
     FT_Face face;
-    std::string workingDir = Director::getInstance().getWorkingDir();
+    std::string workingDir = Volt2D::Director::getInstance().getWorkingDir();
     std::string fontPath = workingDir + "/../Font/" + fontName;
     if(FT_New_Face(library, fontPath.c_str(), 0, &face)){
         cout << "Font::initFont Failed to load face. " << endl;
@@ -123,7 +123,7 @@ bool Font::initFont(std::string fontName, int fontSize){
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->texAtlasWidth, this->texAtlasHeight, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
     
     //Create texture instance
-    this->textureAtlas = Texture::createWithTextureObject(this->textureObject, GL_TEXTURE_2D);
+    this->textureAtlas = Volt2D::Texture::createWithTextureObject(this->textureObject, GL_TEXTURE_2D);
     
     //iterate over char map(space to wave dash)
     //x offset

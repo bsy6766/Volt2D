@@ -28,22 +28,22 @@ ProgressBar* ProgressBar::createProgressBar(std::string objectName, const char *
 
 void ProgressBar::initProgressBar(const std::string barTextureName, GLenum textureTarget){
     cout << "init progress bar with texture with path of " << barTextureName << endl;
-    std::string textureDir = Director::getInstance().getWorkingDir() + "/../Texture/";
-    this->texture = Texture::createTextureWithFile(barTextureName, textureTarget);
+    std::string textureDir = Volt2D::Director::getInstance().getWorkingDir() + "/../Texture/";
+    this->texture = Volt2D::Texture::createTextureWithFile(barTextureName, textureTarget);
     texture->getImageSize(w, h);
     
     computeVertexData();
     loadVertexData();
     
-    this->boundingBox = new BoundingBox(-this->w/2, -this->h/2, this->w/2, this->h/2);
+    this->boundingBox = new Volt2D::BoundingBox(-this->w/2, -this->h/2, this->w/2, this->h/2);
 }
 
 void ProgressBar::computeVertexData(){
-    width /= SCREEN_TO_WORLD_SCALE;
-    height /= SCREEN_TO_WORLD_SCALE;
+    width /= Volt2D::SCREEN_TO_WORLD_SCALE;
+    height /= Volt2D::SCREEN_TO_WORLD_SCALE;
     
-    this->RenderableObject::width = w / SCREEN_TO_WORLD_SCALE;
-    this->RenderableObject::height = h / SCREEN_TO_WORLD_SCALE;
+    this->RenderableObject::width = w / Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->RenderableObject::height = h / Volt2D::SCREEN_TO_WORLD_SCALE;
     
     /*
      
@@ -67,10 +67,10 @@ void ProgressBar::computeVertexData(){
     float textureStepWidth = 1.0f / totalQuadNum;
     
     for(int i = 0; i<totalQuadNum; i++){
-        vertexData.push_back(glm::vec3(startingWidth + (i * stepWidth), -(height/2), GLOBAL_Z_VALUE));	//bot left
-        vertexData.push_back(glm::vec3(startingWidth + (i * stepWidth), height/2, GLOBAL_Z_VALUE));		//top left
-        vertexData.push_back(glm::vec3(startingWidth + ((i+1) * stepWidth), -(height/2), GLOBAL_Z_VALUE));		//bot right
-        vertexData.push_back(glm::vec3(startingWidth + ((i+1) * stepWidth), height/2, GLOBAL_Z_VALUE));			//top right
+        vertexData.push_back(glm::vec3(startingWidth + (i * stepWidth), -(height/2), Volt2D::GLOBAL_Z_VALUE));	//bot left
+        vertexData.push_back(glm::vec3(startingWidth + (i * stepWidth), height/2, Volt2D::GLOBAL_Z_VALUE));		//top left
+        vertexData.push_back(glm::vec3(startingWidth + ((i+1) * stepWidth), -(height/2), Volt2D::GLOBAL_Z_VALUE));		//bot right
+        vertexData.push_back(glm::vec3(startingWidth + ((i+1) * stepWidth), height/2, Volt2D::GLOBAL_Z_VALUE));			//top right
         
         //texture
         uvVertexData.push_back(glm::vec2(i * textureStepWidth, 0));	//bot left
@@ -115,7 +115,7 @@ void ProgressBar::loadVertexData(){
 
 void ProgressBar::render(){    
     glUseProgram(progPtr->getObject());
-    glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
+    glm::mat4 cameraMat = Volt2D::Director::getInstance().getCameraPtr()->getMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
     
     glm::mat4 parentMat;

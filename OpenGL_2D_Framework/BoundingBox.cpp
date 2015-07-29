@@ -8,6 +8,8 @@
 
 #include "BoundingBox.h"
 
+using namespace Volt2D;
+
 BoundingBox::BoundingBox(int x, int y, int w, int h):
 origin(glm::vec2(x, y)),
 end(glm::vec2(w, h)),

@@ -15,6 +15,7 @@
 #include "BoundingBox.h"
 #include "Z_Float.h"
 
+namespace Volt2D{
 /**
  *  @class Object
  *  
@@ -44,7 +45,7 @@ protected:
     /**
      *  Z depth. See Z_Float class for detail.
      */
-    Z_Float z_depth;
+    Volt2D::Z_Float z_depth;
     
     /**
      *  A vec3 position of object. Z is almost always 0.
@@ -59,7 +60,7 @@ protected:
     /**
      *  A bonding box. See BoundingBox class for detail.
      */
-    BoundingBox* boundingBox;
+    Volt2D::BoundingBox* boundingBox;
     
     /**
      *  A update flag for bounding box. 
@@ -297,7 +298,7 @@ public:
      *  Get bounding box. 
      *  @return (const) A BoundingBox pointer
      */
-    BoundingBox* const getBoundingBox();
+    Volt2D::BoundingBox* const getBoundingBox();
     
     /**
      *  Set the z order for object.
@@ -340,5 +341,6 @@ public:
      */
     void release();
 };
-
+}   //namespace end
+    
 #endif /* defined(__OpenGL_2D_Framework__Object__) */

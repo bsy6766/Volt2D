@@ -9,6 +9,7 @@
 #ifndef __OpenGL_2D_Framework__Z_Float__
 #define __OpenGL_2D_Framework__Z_Float__
 
+namespace Volt2D{
 /**
  *  C++ float wrapper like Java's Float
  */
@@ -45,5 +46,6 @@ public:
      */
     bool isValid();
 };
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__Z_Float__) */

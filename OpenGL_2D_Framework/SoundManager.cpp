@@ -73,7 +73,7 @@ void SoundManager::createSound(std::string soundName, FMOD_MODE modes, const cha
         Sound* newSound = Sound::createSound(); //new Sound
         
         //full file path
-        std::string filePath = Director::getInstance().getWorkingDir() + "/../Sound/" + std::string(soundFileName);
+        std::string filePath = Volt2D::Director::getInstance().getWorkingDir() + "/../Sound/" + std::string(soundFileName);
         
         //create new fmod sound
         FMOD_RESULT result = fmodSystem->createSound(filePath.c_str(), modes, 0, &newSound->sound);

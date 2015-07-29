@@ -8,6 +8,8 @@
 
 #include "ActionDelay.h"
 
+using namespace Volt2D;
+
 ActionDelay::ActionDelay():
 ActionObject()
 {

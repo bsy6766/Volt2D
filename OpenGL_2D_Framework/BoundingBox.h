@@ -12,12 +12,12 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+namespace Volt2D{
 /**
  *  @class BoundingBox
  *  @brief A Bounding box for an Object
  */
 class BoundingBox{
-    //Friend with Object
     friend class Object;
 private:
     /**
@@ -69,5 +69,6 @@ public:
      */
     bool intersectsBox(BoundingBox *box);
 };
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__BoundingBox__) */

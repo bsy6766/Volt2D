@@ -9,6 +9,7 @@
 #ifndef __OpenGL_2D_Framework__PS3ControllerWrapper__
 #define __OpenGL_2D_Framework__PS3ControllerWrapper__
 
+namespace Volt2D{
 /// @{
 /// @name Button constants
 const unsigned int SELECT = 0;
@@ -105,5 +106,6 @@ public:
      */
     float getAxisValue(unsigned int axis);
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__PS3ControllerWrapper__) */

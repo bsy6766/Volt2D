@@ -11,6 +11,7 @@
 
 #include "Utility.hpp"
 
+namespace Volt2D{
 /**
  *  @class Color
  *  @brief Color class with preset colors
@@ -284,5 +285,6 @@ public:
     static const Color NONE;
     ///@}
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__Color__) */

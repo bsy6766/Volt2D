@@ -10,7 +10,8 @@
 #define __OpenGL_2D_Framework__Timer__
 
 #include <GLFW/glfw3.h>
-#include <iostream>
+
+namespace Volt2D{
 
 /**
  *  @class Timer
@@ -72,6 +73,6 @@ public:
      */
     double getTotalElapsedTime();
 };
-
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__Timer__) */

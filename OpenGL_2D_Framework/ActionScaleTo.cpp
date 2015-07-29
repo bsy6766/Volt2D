@@ -8,6 +8,8 @@
 
 #include "ActionScaleTo.h"
 
+using namespace Volt2D;
+
 ActionScaleTo::ActionScaleTo():
 ActionObject(),
 destScale(glm::vec3()),

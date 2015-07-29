@@ -8,6 +8,8 @@
 
 #include "Timer.h"
 
+using namespace Volt2D;
+
 Timer Timer::instance;
 
 double Timer::getElapsedTime(){

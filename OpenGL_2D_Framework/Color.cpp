@@ -8,6 +8,8 @@
 
 #include "Color.h"
 
+using namespace Volt2D;
+
 const Color Color::MAROON = Color(128, 0, 0, 255);
 const Color Color::DARKRED = Color(139, 0, 0, 255);
 const Color Color::BROWN = Color(165, 42, 42, 255);

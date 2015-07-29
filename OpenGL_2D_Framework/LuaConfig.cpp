@@ -8,6 +8,8 @@
 
 #include "LuaConfig.h"
 
+using namespace Volt2D;
+
 void stackDump (lua_State *L) {
     int i;
     int top = lua_gettop(L);

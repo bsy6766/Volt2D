@@ -8,6 +8,8 @@
 
 #include "FontManager.h"
 
+using namespace Volt2D;
+
 const std::string FontManager::defaultFontName = "arial.ttf";
 
 FontManager::FontManager(){

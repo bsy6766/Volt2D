@@ -8,6 +8,8 @@
 
 #include "ActionObject.h"
 
+using namespace Volt2D;
+
 ActionObject::ActionObject():
 running(false),
 alive(true),

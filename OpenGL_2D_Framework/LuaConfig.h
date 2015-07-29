@@ -24,6 +24,8 @@ extern "C"{
 using std::cout;
 using std::endl;
 
+namespace Volt2D{
+
 class DataObject{
 public:
     enum DO_TYPE{
@@ -114,5 +116,6 @@ public:
     float getFloat(std::string configName, std::string path);
     std::string getString(std::string configName, std::string path);
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__LuaConfig__) */

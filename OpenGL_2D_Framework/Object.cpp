@@ -10,6 +10,8 @@
 #include "Layer.h"
 #include "Director.h"
 
+using namespace Volt2D;
+
 Object::Object():
 position(glm::vec3(0, 0, 0)),
 parent(0),
@@ -68,13 +70,13 @@ const glm::vec3 Object::getPosition(){
 
 
 void Object::translateTo(glm::vec3 position){
-    glm::vec3 scaledPos = glm::vec3(position.x / SCREEN_TO_WORLD_SCALE, position.y / SCREEN_TO_WORLD_SCALE, position.z / SCREEN_TO_WORLD_SCALE);
+    glm::vec3 scaledPos = glm::vec3(position.x / Volt2D::SCREEN_TO_WORLD_SCALE, position.y / Volt2D::SCREEN_TO_WORLD_SCALE, position.z / Volt2D::SCREEN_TO_WORLD_SCALE);
     translateMat = glm::translate(glm::mat4(), scaledPos);
     needToUpdateBB = true;
 }
 
 void Object::translateBy(glm::vec3 distance){
-    glm::vec3 scaledDistance = glm::vec3(distance.x / SCREEN_TO_WORLD_SCALE, distance.y / SCREEN_TO_WORLD_SCALE, distance.z / SCREEN_TO_WORLD_SCALE);
+    glm::vec3 scaledDistance = glm::vec3(distance.x / Volt2D::SCREEN_TO_WORLD_SCALE, distance.y / Volt2D::SCREEN_TO_WORLD_SCALE, distance.z / Volt2D::SCREEN_TO_WORLD_SCALE);
     translateMat = glm::translate(translateMat, scaledDistance);
     needToUpdateBB = true;
 }
@@ -319,7 +321,7 @@ void Object::renderChild(){
 //    }
 }
 
-BoundingBox* const Object::getBoundingBox(){
+Volt2D::BoundingBox* const Object::getBoundingBox(){
     if(this->boundingBox && needToUpdateBB)
         this->boundingBox->updateBoundingBox(
                                              glm::translate(glm::mat4(), this->position),

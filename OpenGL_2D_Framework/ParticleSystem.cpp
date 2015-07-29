@@ -12,6 +12,9 @@
 
 #include "ParticleSystem.h"
 #include "Director.h"
+#include "Timer.h"
+
+using namespace Volt2D;
 
 ParticleSystem::ParticleSystem():
 RenderableObject(),
@@ -56,7 +59,7 @@ srbo(0),
 newLifePoint(0)
 {
     //use particle system shader
-    this->progPtr = Director::getInstance().getProgramPtr("ParticleSystem");
+    this->progPtr = Volt2D::Director::getInstance().getProgramPtr("ParticleSystem");
 }
 
 ParticleSystem::~ParticleSystem(){
@@ -108,7 +111,7 @@ bool ParticleSystem::initWithLua(string fileName){
     if(pc){
         //load config. setting name must be "particleSystem"
         std::string configName = "particleSystem";
-        bool result = pc->loadConfig(configName, Director::getInstance().getWorkingDir() + "/../" + fileName);
+        bool result = pc->loadConfig(configName, Volt2D::Director::getInstance().getWorkingDir() + "/../" + fileName);
         
         //LuaConfig fail check. return false if failed.
         if(result == false){
@@ -205,13 +208,13 @@ void ParticleSystem::computeVertexData(){
     int w, h;
     this->texture->getTextureSize(w, h);
     
-    float width = (float)w / SCREEN_TO_WORLD_SCALE;
-    float height = (float)h / SCREEN_TO_WORLD_SCALE;
+    float width = (float)w / Volt2D::SCREEN_TO_WORLD_SCALE;
+    float height = (float)h / Volt2D::SCREEN_TO_WORLD_SCALE;
     
-    this->vertexData.push_back(vec3(-width/2, -height/2, GLOBAL_Z_VALUE));
-    this->vertexData.push_back(vec3(-width/2, height/2, GLOBAL_Z_VALUE));
-    this->vertexData.push_back(vec3(width/2, -height/2, GLOBAL_Z_VALUE));
-    this->vertexData.push_back(vec3(width/2, height/2, GLOBAL_Z_VALUE));
+    this->vertexData.push_back(vec3(-width/2, -height/2, Volt2D::GLOBAL_Z_VALUE));
+    this->vertexData.push_back(vec3(-width/2, height/2, Volt2D::GLOBAL_Z_VALUE));
+    this->vertexData.push_back(vec3(width/2, -height/2, Volt2D::GLOBAL_Z_VALUE));
+    this->vertexData.push_back(vec3(width/2, height/2, Volt2D::GLOBAL_Z_VALUE));
     
     //quad texture UV
     uvVertexData.push_back(glm::vec2(0, 0));
@@ -335,7 +338,7 @@ bool ParticleSystem::initialize(){
 void ParticleSystem::update(double dt){
 //    cout << "dt = " << dt << endl;
     //get elapsed time
-//	double elapsedTime = Timer::getInstance().getElapsedTime();
+//	double elapsedTime = Volt2D::Timer::getInstance().getElapsedTime();
     if(paused)
         return;
     
@@ -399,8 +402,8 @@ void ParticleSystem::update(double dt){
             float randEmitAngle = this->emitAngle + (this->emitAngleVar * Volt2D::randf());
             
             //create, init, add
-            float randX = (this->position.x + (this->posVar.x * Volt2D::randf())) / SCREEN_TO_WORLD_SCALE;
-            float randY = (this->position.y + (this->posVar.y * Volt2D::randf())) / SCREEN_TO_WORLD_SCALE;
+            float randX = (this->position.x + (this->posVar.x * Volt2D::randf())) / Volt2D::SCREEN_TO_WORLD_SCALE;
+            float randY = (this->position.y + (this->posVar.y * Volt2D::randf())) / Volt2D::SCREEN_TO_WORLD_SCALE;
             
             //radial
             float randRadial = this->radialAccel + (this->radialAccelVar * Volt2D::randf());
@@ -412,7 +415,7 @@ void ParticleSystem::update(double dt){
                     = glm::vec2(
                                 cosf(Volt2D::degreeToRadian(randEmitAngle)),
                                 sinf(Volt2D::degreeToRadian(randEmitAngle))
-                                ) * randSpeed / SCREEN_TO_WORLD_SCALE /*works as power scale*/;
+                                ) * randSpeed / Volt2D::SCREEN_TO_WORLD_SCALE /*works as power scale*/;
             
             //color
             Color minStartColor = startColor - startColorVar;
@@ -629,7 +632,7 @@ void ParticleSystem::render(){
     }
     
     //get main camera
-    glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
+    glm::mat4 cameraMat = Volt2D::Director::getInstance().getCameraPtr()->getMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
     
     //get parent matrix

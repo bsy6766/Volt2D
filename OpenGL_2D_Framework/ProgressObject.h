@@ -12,10 +12,10 @@
 #include "Texture.h"
 #include "RenderableObject.h"
 #include "ProgressFromTo.h"
-#include "Timer.h"
 
 #define VOID_OFFSET(i) (GLvoid*)(i)
 
+namespace Volt2D{
 /**
  *  @class ProgressObject
  *  @brief Base class for ProgressBar and ProgressRadian
@@ -85,5 +85,6 @@ public:
     
 //    virtual void addActions(std::initializer_list<ActionObject*> actions, int repeat);
 };
+}   //namespace end
 
 #endif /* defined(__OpenGL_2D_Framework__ProgressObject__) */

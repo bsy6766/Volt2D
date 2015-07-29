@@ -15,7 +15,7 @@
  *  @class ProgressBar
  *  @brief Textured progress bar
  */
-class ProgressBar: public ProgressObject{
+class ProgressBar: public Volt2D::ProgressObject{
 private:
     //private constructor
     ProgressBar();

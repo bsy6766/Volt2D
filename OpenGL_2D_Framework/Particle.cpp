@@ -8,6 +8,8 @@
 
 #include "Particle.h"
 
+using namespace Volt2D;
+
 Particle::Particle():
 dead(false),
 pos(glm::vec2()),

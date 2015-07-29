@@ -13,11 +13,11 @@
 #include "Sprite.h"
 #include "BattleHUDLayer.h"
 
-class BattleScene : public Scene{
+class BattleScene : public Volt2D::Scene{
 private:
-    Sprite* bg;
-    Sprite* playerFieldSlot;
-    Sprite* enemyFieldSlot;
+    Volt2D::Sprite* bg;
+    Volt2D::Sprite* playerFieldSlot;
+    Volt2D::Sprite* enemyFieldSlot;
     BattleHUDLayer* HUD_Layer;
     
 public:

@@ -8,12 +8,13 @@
 
 #include "Texture.h"
 #include "Director.h"
-#include "Program.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_ASSERT(x)
 
-const std::string Texture::textureFolderPath = Director::getInstance().getWorkingDir() + "/../Texture/";
+using namespace Volt2D;
+
+const std::string Texture::textureFolderPath = Volt2D::Director::getInstance().getWorkingDir() + "/../Texture/";
 
 GLuint Texture::curBoundedTexture = -1;
 
@@ -26,7 +27,7 @@ channel(0),
 loaded(false),
 textureLocation(-1)
 {
-    this->textureLocation = glGetUniformLocation(Director::getInstance().getProgramPtr()->getObject(), "tex");
+    this->textureLocation = glGetUniformLocation(Volt2D::Director::getInstance().getProgramPtr()->getObject(), "tex");
 }
 
 Texture::Texture(GLuint texObj, GLenum texTarget):
@@ -35,7 +36,7 @@ textureTarget(texTarget),
 textureLocation(-1)
 {
     
-    this->textureLocation = glGetUniformLocation(Director::getInstance().getProgramPtr()->getObject(), "tex");
+    this->textureLocation = glGetUniformLocation(Volt2D::Director::getInstance().getProgramPtr()->getObject(), "tex");
 }
 
 Texture* Texture::createTextureWithFile(std::string textureName, GLenum textureTarget){
@@ -222,7 +223,7 @@ void Texture::initTextureArray(int layer){
         stbi_image_free(it);
     }
     
-    this->textureLocation = glGetUniformLocation(Director::getInstance().getProgramPtr()->getObject(), "texArray");
+    this->textureLocation = glGetUniformLocation(Volt2D::Director::getInstance().getProgramPtr()->getObject(), "texArray");
 }
 
 void Texture::bind(GLenum textureUnit, int uniform){

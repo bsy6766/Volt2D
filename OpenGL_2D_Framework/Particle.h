@@ -12,6 +12,7 @@
 #include "Utility.hpp"
 #include "Color.h"
 
+namespace Volt2D{
 class Particle{
 private:
     /**
@@ -106,5 +107,6 @@ public:
     Color getCurColor();
     void setColor(Color start, Color end);
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__Particle__) */

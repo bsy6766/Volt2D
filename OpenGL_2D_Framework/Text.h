@@ -14,12 +14,13 @@
 #include <vector>
 #include "Color.h"
 
+namespace Volt2D{
 /**
  *  @class Text
  *  @brief Load string text and renders
  *  @note Requires Font
  */
-class Text : public RenderableObject{
+class Text : public Volt2D::RenderableObject{
 private:
     /**
      *  A string text to display
@@ -151,5 +152,6 @@ public:
      */
     void setTextRange(int start, int end);
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__Text__) */

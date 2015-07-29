@@ -10,6 +10,8 @@
 
 #define VOID_OFFSET(i) (GLvoid*)(i)
 
+using namespace Volt2D;
+
 Text::Text():
 RenderableObject(),
 align(ALIGN_RIGHT),
@@ -18,7 +20,7 @@ end(-1),
 width(0),
 height(0)
 {
-    this->progPtr = Director::getInstance().getProgramPtr("Text");
+    this->progPtr = Volt2D::Director::getInstance().getProgramPtr("Text");
     Color textColor = Color::WHITE;
     fontColor = textColor.getRGB();
 }
@@ -128,14 +130,14 @@ void Text::computeVertexData(){
             glm::vec2 p2 = glm::vec2(glyphWidth / 2, bearingY);
             
             //scale down to world size
-            p1 /= SCREEN_TO_WORLD_SCALE;
-            p2 /= SCREEN_TO_WORLD_SCALE;
+            p1 /= Volt2D::SCREEN_TO_WORLD_SCALE;
+            p2 /= Volt2D::SCREEN_TO_WORLD_SCALE;
 
             //get point where each char has to move
             glm::vec3 fPos = glm::vec3(origin.x + glyphWidth/2, origin.y, 0);
             glm::vec3 distance = (fPos - this->position);
-            distance.x /= SCREEN_TO_WORLD_SCALE;
-            distance.y /= SCREEN_TO_WORLD_SCALE;
+            distance.x /= Volt2D::SCREEN_TO_WORLD_SCALE;
+            distance.y /= Volt2D::SCREEN_TO_WORLD_SCALE;
             glm::mat4 transMatToFPos = glm::translate(glm::mat4(), distance);
             //compute translate matrix to fPos from origin
             translationData.push_back(transMatToFPos);
@@ -282,8 +284,8 @@ void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
     
     this->width = maxWidth;
     this->height = totalHeight;
-    this->RenderableObject::width = maxWidth / SCREEN_TO_WORLD_SCALE;
-    this->RenderableObject::height = totalHeight / SCREEN_TO_WORLD_SCALE;
+    this->RenderableObject::width = maxWidth / Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->RenderableObject::height = totalHeight / Volt2D::SCREEN_TO_WORLD_SCALE;
 }
 
 bool Text::hasEmptyText(){
@@ -299,7 +301,7 @@ void Text::render(){
     
     font->bindTextTextureAtlas();
     
-    glm::mat4 cameraMat = Director::getInstance().getCameraPtr()->getMatrix();
+    glm::mat4 cameraMat = Volt2D::Director::getInstance().getCameraPtr()->getMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
     glm::mat4 parentMat = glm::mat4();
     if(this->parent)

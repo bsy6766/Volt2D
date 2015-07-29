@@ -9,14 +9,15 @@
 #ifndef __OpenGL_2D_Framework__ActionScaleTo__
 #define __OpenGL_2D_Framework__ActionScaleTo__
 
-#include "SpriteObject.h"
+#include "Sprite.h"
 #include "ActionObject.h"
 
+namespace Volt2D{
 /**
  *  @class ActionScaleBy
  *  @brief Scale target by specific scale
  */
-class ActionScaleTo : public ActionObject{
+class ActionScaleTo : public Volt2D::ActionObject{
 private:
     /**
      *  Final scale value to scale
@@ -93,5 +94,6 @@ public:
     virtual ActionObject* clone();
     
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__ActionScaleTo__) */

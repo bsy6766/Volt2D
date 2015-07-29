@@ -9,17 +9,18 @@
 #ifndef __OpenGL_2D_Framework__ActionRotateTo__
 #define __OpenGL_2D_Framework__ActionRotateTo__
 
-#include "SpriteObject.h"
+#include "Sprite.h"
 #include "ActionObject.h"
 #include "RotationType.h"
 
+namespace Volt2D{
 /**
  *  @class ActionRotateTo
  *  @brief Rotate target to specific angle in degree within duration
  *  @note Angle is degree. RotationType is RIGHT by default.
  *  \todo need to fix angle rotation direction
  */
-class ActionRotateTo :  public ActionObject{
+class ActionRotateTo :  public Volt2D::ActionObject{
 private:
     /**
      *  Target's angle
@@ -101,5 +102,6 @@ public:
      */
     virtual ActionObject* clone();
 };
+}
 
 #endif /* defined(__OpenGL_2D_Framework__ActionRotateTo__) */

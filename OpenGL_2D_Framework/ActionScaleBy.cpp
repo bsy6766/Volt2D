@@ -8,6 +8,8 @@
 
 #include "ActionScaleBy.h"
 
+using namespace Volt2D;
+
 ActionScaleBy::ActionScaleBy():
 ActionObject(),
 totalScalingAmount(0),

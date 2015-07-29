@@ -9,14 +9,15 @@
 #ifndef __OpenGL_2D_Framework__ActionMoveTo__
 #define __OpenGL_2D_Framework__ActionMoveTo__
 
-#include "SpriteObject.h"
+#include "Sprite.h"
 #include "ActionObject.h"
 
+namespace Volt2D{
 /**
  *  @class ActionMoveTo
  *  @brief Move target object to position within duration
  */
-class ActionMoveTo :  public ActionObject{
+class ActionMoveTo :  public Volt2D::ActionObject{
 private:
     /**
      *  A destination to move
@@ -93,5 +94,6 @@ public:
      */
     virtual ActionObject* clone();
 };
-
+}
+    
 #endif /* defined(__OpenGL_2D_Framework__ActionMoveTo__) */

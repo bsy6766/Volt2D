@@ -7,6 +7,7 @@
 //
 
 #include "ActionFadeTo.h"
+using namespace Volt2D;
 
 ActionFadeTo::ActionFadeTo():
 ActionObject(),
