@@ -299,25 +299,22 @@ void Volt2D::Director::createWindow(const int &screenWidth, const int &screenHei
     glfwSetMouseButtonCallback(window, mouse_button_callback);
     
     //capture mouse on screen
-    if(this->fullscreen){
-        //if it's full screen,
-        if(this->captureMouse){
-            //capturing mouse in fullscreen mode.
-            //cursor is hidden by default
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-            this->cursorHidden = true;
+    if(this->captureMouse){
+        //capturing mouse in fullscreen mode.
+        //cursor is hidden by default
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        this->cursorHidden = true;
+    }
+    else{
+        //not capturing mouse cursor.
+        //user can freely move mouse cursor around the window even out side of window even while fullscreen.
+        //if it's fullscreen, it will iconify window if user click other window.
+        //set option for hiding cursor
+        if(this->cursorHidden){
+            //cursor will be hidden if it's on top of the app's window. Else, it's show as normal.
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
         }
-        else{
-            //not capturing mouse cursor.
-            //user can freely move mouse cursor around the window even out side of window even while fullscreen.
-            //if it's fullscreen, it will iconify window if user click other window.
-            //set option for hiding cursor
-            if(this->cursorHidden){
-                //cursor will be hidden if it's on top of the app's window. Else, it's show as normal.
-                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-            }
-            //else, use default
-        }
+        //else, use default
     }
     
     glfwSetCursorPos(this->window, 0, 0);
