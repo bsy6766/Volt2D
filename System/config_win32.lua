@@ -1,17 +1,13 @@
 system = {
 	window = {
 		size = {
-	    	screenWidth = 1440,
-	   		screenHeight = 900
-	    	-- screenWidth = 1280,
-	   		-- screenHeight = 720
+	    	screenWidth = 1920,
+	   		screenHeight = 1080
 		},
 		title = "JB_Engine Test Build",
 		fullscreen = false,
-	 	borderless = true,
-	 	captureMouse = true,
-	 	cursorHidden = false,
-	 	vsync = true
+	 	windowed = true,
+	 	borderless = true
 	},
 	clearBuffer = {
 		r = 0,
