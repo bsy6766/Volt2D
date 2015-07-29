@@ -10,6 +10,8 @@
 #define __Volt2D__Transition__
 
 #include "Scene.h"
+#include "Sprite.h"
+#include "RenderableObject.h"
 #include "Color.h"
 
 namespace Volt2D{
@@ -20,20 +22,24 @@ protected:
     Scene* nextScene;
     
     void setNextScene(Scene* nextScene);
-private:
+    
     double duration;
+    double totalElapsedTime;
+    
+    bool running;
+private:
 public:
     virtual ~Transition();
+    Scene* getNextScene();
 };
     
 
 class TransitionFade : public Volt2D::Transition{
 private:
-    TransitionFade() = delete;
     /**
      *  Private constructor.
      */
-    TransitionFade(Color color);
+    TransitionFade();
     
     /**
      *  Color to fade
@@ -43,10 +49,20 @@ private:
     /**
      *  Custom texture with color
      */
+    Texture* texture;
+    Sprite* effect;
+    
+    GLuint vao;
+    
+    bool initTransition(Color color, Scene* nextScene);
+    
+    void swapScene();
     
 public:
     static TransitionFade* createWithColor(Color color, Scene* scene);
     ~TransitionFade();
+    
+    void run();
 };
     
 }
