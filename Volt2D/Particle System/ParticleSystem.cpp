@@ -407,8 +407,8 @@ void ParticleSystem::update(double dt){
             if (this->parent) {
                 realSpawnPos = glm::vec2(this->parent->getTransformMat() * glm::vec4(this->position / SCREEN_TO_WORLD_SCALE, 1));
             }
-            float randX = (realSpawnPos.x + (this->posVar.x * Volt2D::randf()));
-            float randY = (realSpawnPos.y + (this->posVar.y * Volt2D::randf()));
+            float randX = (realSpawnPos.x + (this->posVar.x * Volt2D::randf())/SCREEN_TO_WORLD_SCALE);
+            float randY = (realSpawnPos.y + (this->posVar.y * Volt2D::randf())/SCREEN_TO_WORLD_SCALE);
             
             //radial
             float randRadial = this->radialAccel + (this->radialAccelVar * Volt2D::randf());
