@@ -12,6 +12,7 @@
 #include <GL/glew.h>
 #include <map>
 #include "Utility.hpp"
+#include "ActionSchedule.h"
 #include "BoundingBox.h"
 #include "Z_Float.h"
 
@@ -73,6 +74,12 @@ protected:
      */
     bool needToUpdateBB;
     
+    /** Flag of action running */
+    bool actionRunning;
+    
+    /** List of ActionSchedule */
+    std::list<ActionSchedule *> actionScheduleList;
+    
     /**
      *  Pointer to parent
      */
@@ -108,6 +115,24 @@ protected:
      *  Scale axis of object. Each attrib represent each axis
      */
     glm::vec3 scale;
+    
+    /**
+     *  Anchor point.
+     *  @note Default is (0, 0). Max 0.5(top, right), Min -0.5(bot, left)
+     */
+    glm::vec2 anchorPoint;
+    
+    /**
+     *  A opacity of this object.
+     *  max = 255, min = 0
+     */
+    GLfloat opacity;
+    
+    /** Object's scaled size */
+    float scaledWidth;
+    
+    /** Object's scaled size */
+    float scaledHeight;
     
     /**
      *  Add child
@@ -293,6 +318,33 @@ public:
      *  @return (const) A float z value of scale
      */
     const GLfloat getScaleZ();
+    
+    /**
+     *  Set opacity ot current object
+     *  @param A opcity value to set.
+     */
+    void setOpacity(GLfloat opacity);
+    
+    /**
+     *  Add opacity to current object's opacity.
+     *  Opacity can not be greater than 255 or less than 255
+     *  @param opacity A opacity value to add.
+     */
+    void addOpacity(GLfloat opacity);
+    
+    /**
+     *  Get object's opacity
+     *  @return Object's opacity
+     */
+    GLfloat getOpacity();
+    
+    /**
+     *  Set object's anchor point
+     */
+    void setAnchorPoint(glm::vec2 anchorPoint);
+    
+    /** Get anchor point */
+    glm::vec2 getAnchorPoint();
     /// @}
     
     /**
@@ -332,6 +384,44 @@ public:
      *  @return true if object has z order. Else, false.
      */
     bool isZValid();
+    
+    /**
+     *  Add single action.
+     *  This will call RenderableObject::addAction(ActionObject*, int) with 0 repeat.
+     *  @param action An ActionObject to add
+     */
+    void addAction(ActionObject* action);
+    
+    /**
+     *  Add single action with desired repeat.
+     *  @param action An ActionObject to add
+     *  @param repeat A number to repeat action
+     */
+    void addAction(ActionObject* action, int repeat);
+    
+    /**
+     *  Add multiple action.
+     *  @param actions A std::initializer_list with ActionObject*
+     *  @param repeat A number to repeat action
+     */
+    virtual void addActions(std::initializer_list<ActionObject*> actions, int repeat);
+    
+    /**
+     *  Run the action
+     *  This set RenderableObject::actionRunning to true
+     */
+    void runAction();
+    
+    /**
+     *  Stop all actions that this object has and deletes
+     */
+    void stopAllActions();
+    
+    /**
+     *  Tells if object currently running action objects.
+     *  @Return A bool that represent wether this object is running action or not
+     */
+    bool isActionRunning();
     
     /**
      *  Virtual function for rendering

@@ -14,7 +14,11 @@ using namespace Volt2D;
 
 Object::Object():
 position(glm::vec3(0, 0, 0)),
+opacity(255),
+anchorPoint(glm::vec2()),
 parent(0),
+scaledWidth(0),
+scaledHeight(0),
 needToUpdateBB(false),
 boundingBox(0),
 modelMat(glm::mat4()),
@@ -23,13 +27,18 @@ rotateMat(glm::mat4()),
 scaleMat(glm::mat4()),
 angle(0),
 scale(glm::vec3(1, 1, 1)),
-alive(true)
+alive(true),
+actionRunning(false)
 {
 //    cout << "[SYSTEM::INFO] Creating Object" << endl;
 }
 
 Object::~Object(){
-//    cout << "[SYSTEM::INFO] Releasing Object" << endl;
+    //    cout << "[SYSTEM::INFO] Releasing Object" << endl;
+    for (std::list<ActionSchedule*>::const_iterator ci = actionScheduleList.begin(); ci != actionScheduleList.end(); ++ci){
+        delete (*ci);
+    }
+    
     cleanChildList();
 }
 
@@ -156,6 +165,41 @@ void Object::scaleBy(glm::vec3 scale){
     this->scale += scale;
     scaleMat = glm::scale(glm::mat4(), this->scale);
     needToUpdateBB = true;
+}
+
+void Object::setOpacity(GLfloat opacity){
+    if(opacity < 0)
+        opacity = 0;
+    else if(opacity > 255)
+        opacity = 255;
+    
+    this->opacity = opacity;
+}
+
+void Object::addOpacity(GLfloat opacity){
+    this->opacity += opacity;
+    
+    if(this->opacity < 0)
+        this->opacity = 0;
+    else if(this->opacity > 255)
+        this->opacity = 255;
+}
+
+GLfloat Object::getOpacity(){
+    return this->opacity;
+}
+
+void Object::setAnchorPoint(glm::vec2 anchorPoint){
+    this->anchorPoint = anchorPoint;
+    glm::vec3 anchorDistance = glm::vec3();
+    float shiftX = -anchorPoint.x * this->scaledWidth;
+    float shiftY = anchorPoint.y * this->scaledHeight;
+    anchorDistance = glm::vec3(shiftX, shiftY, 0);
+    this->modelMat = glm::translate(glm::mat4(), anchorDistance);
+}
+
+glm::vec2 Object::getAnchorPoint(){
+    return this->getAnchorPoint();
 }
 
 glm::mat4 Object::getTransformMat(){
@@ -416,6 +460,41 @@ void Object::changeZ(Object *object, float z){
         //this object doens't have
         cout << "Z_Deprth ERROR: z_depth value not found for this object" << endl;
     }
+}
+
+void Object::addAction(ActionObject* action){
+    addAction(action, 0);
+}
+
+void Object::addAction(ActionObject *action, int repeat){
+    addActions({action}, repeat);
+}
+
+void Object::addActions(std::initializer_list<ActionObject *> actions, int repeat){
+    for(auto it:actions){
+        it->bindTarget(this);
+    }
+    ActionSchedule* singleActionSchedule = new ActionSchedule();
+    singleActionSchedule->createSchedule(actions, repeat);
+    actionScheduleList.push_back(singleActionSchedule);
+}
+
+void Object::runAction(){
+    actionRunning = true;
+}
+
+void Object::stopAllActions(){
+    actionRunning = false;
+    
+    for(std::list<ActionSchedule*>::const_iterator ci = actionScheduleList.begin(); ci != actionScheduleList.end(); ++ci){
+        (*ci)->terminateAllAction();
+        delete (*ci);
+    }
+    actionScheduleList.clear();
+}
+
+bool Object::isActionRunning(){
+    return actionRunning;
 }
 
 bool Object::isDead(){

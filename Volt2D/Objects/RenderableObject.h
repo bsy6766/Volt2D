@@ -11,7 +11,6 @@
 
 #include "Object.h"
 #include "Program.h"
-#include "ActionSchedule.h"
 #include "Scene.h"
 #include <vector>
 #include <gl/glew.h>
@@ -56,35 +55,12 @@ protected:
      */
     std::vector<GLushort> indicesData;
     
-    /** Object's scaled size */
-    float width;
-    
-    /** Object's scaled size */
-    float height;
-    
-    /**
-     *  Anchor point.
-     *  @note Default is (0, 0). Max 0.5(top, right), Min -0.5(bot, left)
-     */
-    glm::vec2 anchorPoint;
-    
-    /**
-     *  A opacity of this object.
-     *  max = 255, min = 0
-     */
-    GLfloat opacity;
-    
     /** Pointer to rendering OpenGL Progream */
     Volt2D::Program *progPtr;
     
-    /** Flag of action running */
-    bool actionRunning;
     
     /** true if using sprite sheet */
     bool useSpriteSheet;
-    
-    /** List of ActionSchedule */
-    std::list<ActionSchedule *> actionScheduleList;
     
     /**
      *  Pass int value to shader
@@ -126,30 +102,6 @@ public:
     virtual ~RenderableObject();
     
     /**
-     *  Set opacity ot current object
-     *  @param A opcity value to set.
-     */
-    void setOpacity(GLfloat opacity);
-    
-    /**
-     *  Add opacity to current object's opacity.
-     *  Opacity can not be greater than 255 or less than 255
-     *  @param opacity A opacity value to add.
-     */
-    void addOpacity(GLfloat opacity);
-    
-    /**
-     *  Get object's opacity
-     *  @return Object's opacity
-     */
-    GLfloat getOpacity();
-    
-    /**
-     *  Set object's anchor point
-     */
-    void setAnchrPoint(glm::vec2 anchorPoint);
-    
-    /**
      *  Clear vertices and indices vectors and delete buffer objects.
      */
     void deleteVertexData();
@@ -164,44 +116,6 @@ public:
      *  Visibility.
      */
     bool visible;
-    
-    /**
-     *  Add single action.
-     *  This will call RenderableObject::addAction(ActionObject*, int) with 0 repeat.
-     *  @param action An ActionObject to add
-     */
-    void addAction(ActionObject* action);
-    
-    /**
-     *  Add single action with desired repeat.
-     *  @param action An ActionObject to add
-     *  @param repeat A number to repeat action
-     */
-    void addAction(ActionObject* action, int repeat);
-    
-    /**
-     *  Add multiple action. 
-     *  @param actions A std::initializer_list with ActionObject*
-     *  @param repeat A number to repeat action
-     */
-    virtual void addActions(std::initializer_list<ActionObject*> actions, int repeat);
-    
-    /**
-     *  Run the action
-     *  This set RenderableObject::actionRunning to true
-     */
-    void runAction();
-    
-    /**
-     *  Stop all actions that this object has and deletes
-     */
-    void stopAllActions();
-    
-    /**
-     *  Tells if object currently running action objects.
-     *  @Return A bool that represent wether this object is running action or not
-     */
-    bool isActionRunning();
     
     /**
      *  Implements Object::update()

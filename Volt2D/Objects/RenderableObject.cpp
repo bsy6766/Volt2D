@@ -14,13 +14,8 @@ using namespace Volt2D;
 RenderableObject::RenderableObject():
 Object(),
 bufferObject({0, 0, 0, 0}),
-opacity(255),
 visible(true),
-width(0),
-height(0),
-anchorPoint(glm::vec2()),
 progPtr(Volt2D::Director::getInstance().getProgramPtr()),   //get default program
-actionRunning(false),
 useSpriteSheet(false)
 {
 //    cout << "[SYSTEM::INFO] Creating RednerableObject" << endl;
@@ -29,32 +24,7 @@ useSpriteSheet(false)
 RenderableObject::~RenderableObject(){
     deleteVertexData();
 //    cout << "[SYSTEM::INFO] Releasing RenderableObject" << endl;
-    for (std::list<ActionSchedule*>::const_iterator ci = actionScheduleList.begin(); ci != actionScheduleList.end(); ++ci){
-        delete (*ci);
-}
     delete boundingBox;
-}
-
-void RenderableObject::setOpacity(GLfloat opacity){
-    if(opacity < 0)
-        opacity = 0;
-    else if(opacity > 255)
-        opacity = 255;
-    
-    this->opacity = opacity;
-}
-
-void RenderableObject::addOpacity(GLfloat opacity){
-    this->opacity += opacity;
-    
-    if(this->opacity < 0)
-        this->opacity = 0;
-    else if(this->opacity > 255)
-        this->opacity = 255;
-}
-
-GLfloat RenderableObject::getOpacity(){
-    return this->opacity;
 }
 
 void RenderableObject::deleteVertexData(){
@@ -75,41 +45,6 @@ void RenderableObject::deleteVertexData(){
 
 void RenderableObject::bindProgram(std::string programName){
     progPtr = Volt2D::Director::getInstance().getProgramPtr(programName);
-}
-
-void RenderableObject::addAction(ActionObject* action){
-    addAction(action, 0);
-}
-
-void RenderableObject::addAction(ActionObject *action, int repeat){
-    addActions({action}, repeat);
-}
-
-void RenderableObject::addActions(std::initializer_list<ActionObject *> actions, int repeat){
-    for(auto it:actions){
-        it->bindTarget(this);
-    }
-    ActionSchedule* singleActionSchedule = new ActionSchedule();
-    singleActionSchedule->createSchedule(actions, repeat);
-    actionScheduleList.push_back(singleActionSchedule);
-}
-
-void RenderableObject::runAction(){
-    actionRunning = true;
-}
-
-void RenderableObject::stopAllActions(){
-    actionRunning = false;
-    
-    for(std::list<ActionSchedule*>::const_iterator ci = actionScheduleList.begin(); ci != actionScheduleList.end(); ++ci){
-        (*ci)->terminateAllAction();
-        delete (*ci);
-    }
-    actionScheduleList.clear();
-}
-
-bool RenderableObject::isActionRunning(){
-    return actionRunning;
 }
 
 void RenderableObject::update(double dt){
@@ -195,13 +130,4 @@ void RenderableObject::matrixUniformLocation(std::string name, glm::mat4 &matrix
     if(uniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + name);
     glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &matrix[0][0]);
-}
-
-void RenderableObject::setAnchrPoint(glm::vec2 anchorPoint){
-    this->anchorPoint = anchorPoint;
-    glm::vec3 anchorDistance = glm::vec3();
-    float shiftX = -anchorPoint.x * this->width;
-    float shiftY = anchorPoint.y * this->height;
-    anchorDistance = glm::vec3(shiftX, shiftY, 0);
-    this->modelMat = glm::translate(glm::mat4(), anchorDistance);
 }
