@@ -284,8 +284,8 @@ void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
     
     this->width = maxWidth;
     this->height = totalHeight;
-    this->RenderableObject::width = maxWidth / Volt2D::SCREEN_TO_WORLD_SCALE;
-    this->RenderableObject::height = totalHeight / Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->Object::scaledWidth = maxWidth / Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->Object::scaledHeight = totalHeight / Volt2D::SCREEN_TO_WORLD_SCALE;
 }
 
 bool Text::hasEmptyText(){
