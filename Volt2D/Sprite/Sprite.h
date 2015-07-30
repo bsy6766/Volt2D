@@ -61,7 +61,7 @@ private:
     /**
      *
      */
-    void setTexture(Texture* texture);
+    void initCustom(Texture* texture, float width, float height);
     
     /**
      *  Initialize Sprite with Sprite Sheet
@@ -99,7 +99,7 @@ public:
     /**
      *
      */
-    static Sprite* createWith2DTexture(std::string objectName, Texture* texture);
+    static Sprite* createCustom(std::string objectName, Texture* texture, float width, float height);
     
     //destructor
     ~Sprite();

@@ -22,7 +22,7 @@ textureHeight(0)
 }
 
 Sprite::~Sprite(){
-    cout << "[SYSTEM::RELEASE] Deleting Sprite object" << endl;
+//    cout << "[SYSTEM::RELEASE] Deleting Sprite object" << endl;
 	if (texture && !useSpriteSheet){
 		delete texture;
 		texture = nullptr;
@@ -35,7 +35,7 @@ Sprite::~Sprite(){
 }
 
 Sprite* Sprite::createSprite(std::string objectName, const char *fileName, GLenum textureTarget){
-    std::cout << "[SYSTEM::INFO] Initializing sprite with texture. \"" << fileName << "\"" << endl;
+//    std::cout << "[SYSTEM::INFO] Initializing sprite with texture. \"" << fileName << "\"" << endl;
     
     Sprite* newSprite = new Sprite();
     newSprite->setName(objectName);
@@ -67,10 +67,10 @@ Sprite* Sprite::createSpriteWithFrameName(std::string objectName, std::string fr
     }
 }
 
-Sprite* Sprite::createWith2DTexture(std::string objectName, Volt2D::Texture *texture){
+Sprite* Sprite::createCustom(std::string objectName, Volt2D::Texture *texture, float width, float height){
     Sprite* newSprite = new Sprite();
     newSprite->setName(objectName);
-    newSprite->setTexture(texture);
+    newSprite->initCustom(texture, width, height);
     return newSprite;
 }
 
@@ -89,9 +89,12 @@ void Sprite::initTexture(const std::string& fileName, GLenum textureTarget){
                                         (float)this->textureHeight/2.0f);
 }
 
-void Sprite::setTexture(Volt2D::Texture *texture){
+void Sprite::initCustom(Volt2D::Texture *texture, float width, float height){
     this->texture = texture;
-    this->texture->getTextureSize(this->textureWidth, this->textureHeight);
+//    this->texture->getTextureSize(this->textureWidth, this->textureHeight);
+    //redirect desired size of quad.
+    this->textureWidth = width;
+    this->textureHeight = height;
     
     computeVertexData();
     loadVertexData();
