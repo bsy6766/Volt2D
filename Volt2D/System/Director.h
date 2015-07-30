@@ -29,6 +29,7 @@
 #include "Camera.h"
 #include "Sprite.h"
 #include "SpriteSheet.h"
+#include "Transition.h"
 
 //Max number of joystick that glfw supports
 #define MAX_JOYSTICK 16
@@ -65,6 +66,7 @@ private:
     //Friends
     friend class Volt2D::SpriteSheet;
     friend class Volt2D::Sprite;
+    friend class Volt2D::Transition;
     
     //mouse icon
     Volt2D::Sprite* mouseCursor;
@@ -135,11 +137,11 @@ private:
     /** Holds previously running scene. Gets deleted. */
     Volt2D::Scene* dyingScene;
     
-    /** true if system needs to transition scene */
-    bool waitingForSceneTransition;
+    void replaceScene(Scene* newScene);
     
-    /** Swap scene */
-    void doSceneTransition();
+    Volt2D::Transition* sceneTransition;
+    
+    bool transitioning = false;
     
     /**
      *  Get chached sprite sheet by name
@@ -288,8 +290,9 @@ public:
     void pushScene(Volt2D::Scene* pScene);
     //get currently running scene
     Volt2D::Scene* getRunningScene(){return this->runningScene;};
-    //transition to next scene. 
-    void transitionToNextScene(bool wait);
+    //transition to next scene.
+//    void transitionToNextScene(bool wait);
+    void transitionToNextScene(Transition* transition);
     /// @}
     
     /// @{

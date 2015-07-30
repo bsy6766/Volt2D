@@ -18,7 +18,6 @@ soundManager(0),
 ps3Joysticks(),   //init all to 0,
 joystickEnabled(false),
 paused(false),
-waitingForSceneTransition(false),
 clearBufferColor(glm::vec3()),
 vsync(false),
 //By default, window will be created as fullscreen(not windowed and boderless)
@@ -355,33 +354,18 @@ void Volt2D::Director::pushScene(Volt2D::Scene* newScene){
 //    }
 //}
 
-void Volt2D::Director::transitionToNextScene(bool wait = true){
-    //check if there is running scene and next scene
-    //first, init next scene and prepare all the materials for that scene
-    //if there's any issue, remove the scene and cancel this event
-    //else, you are good to go. swap the scene
-    //if wait, then don't render and run sprites and actions till the transition is done,
-    //else, run as soon as init is done
-    //at the end, delete dying scene
-    
-    waitingForSceneTransition = wait;
+void Volt2D::Director::transitionToNextScene(Volt2D::Transition *transition){
+    this->sceneTransition = transition;
+    this->transitioning = true;
+    this->sceneTransition->start();
 }
 
-void Volt2D::Director::doSceneTransition(){
-    dyingScene = runningScene;
-    runningScene = nextScene;
-    nextScene = 0;
-    //can show scene transition effect here
-    
-    //initialize entering scene
-    runningScene->init();
-    //release leaving scene
-    dyingScene->exit();
-    //then delete the object
-    delete dyingScene;
-    dyingScene = 0;
-    
-    waitingForSceneTransition = false;
+void Volt2D::Director::replaceScene(Volt2D::Scene *newScene){
+    if(this->runningScene){
+        delete this->runningScene;
+        this->runningScene = 0;
+    }
+    this->runningScene = newScene;
 }
 
 #pragma mark System
@@ -405,34 +389,66 @@ void Volt2D::Director::run(){
     while (!glfwWindowShouldClose(window)){
         Volt2D::Timer::getInstance().recordTime();
         double elapsedTime = Volt2D::Timer::getInstance().getElapsedTime();
-        //update joystick
-        if(joystickEnabled){
-            for(int i = 0; i<MAX_JOYSTICK; i++){
-                if(ps3Joysticks[i]){
-                    int buttonCount;
-                    const unsigned char* buttonInputs = glfwGetJoystickButtons(i, &buttonCount);
-                    if(buttonCount)
-                        ps3Joysticks[i]->receiveButtonInput(buttonInputs);
-                    
-                    int axisCount;
-                    const float* axisInputs = glfwGetJoystickAxes(i, &axisCount);
-                    if(axisCount)
-                        ps3Joysticks[i]->receiveAxisInput(axisInputs);
-                    break;
+        
+        if(!this->transitioning){
+            if(joystickEnabled){
+                //update joystick
+                for(int i = 0; i<MAX_JOYSTICK; i++){
+                    if(ps3Joysticks[i]){
+                        int buttonCount;
+                        const unsigned char* buttonInputs = glfwGetJoystickButtons(i, &buttonCount);
+                        if(buttonCount)
+                            ps3Joysticks[i]->receiveButtonInput(buttonInputs);
+                        
+                        int axisCount;
+                        const float* axisInputs = glfwGetJoystickAxes(i, &axisCount);
+                        if(axisCount)
+                            ps3Joysticks[i]->receiveAxisInput(axisInputs);
+                        break;
+                    }
                 }
+            }
+            //update by elapsed time
+            this->update(elapsedTime);
+        }
+        
+        //render the scene no matter what it's
+        render();
+        //temp
+        mouseCursor->render();
+        
+        //if transitioning
+        if(this->transitioning){
+            //and transition object isn't nullptr
+            if(sceneTransition != nullptr){
+                //and it's done
+                if(sceneTransition->isDone()){
+                    //finish it
+                    this->transitioning = false;
+                    if(this->dyingScene){
+                        delete this->dyingScene;
+                        this->dyingScene = nullptr;
+                    }
+                    delete this->sceneTransition;
+                    this->sceneTransition = nullptr;
+                }
+                //but not done yet
+                else{
+                    sceneTransition->update(elapsedTime);
+                    sceneTransition->render();
+                }
+            }
+            //but it's done. what are you doing here?
+            else{
+                this->transitioning = false;
             }
         }
         
-        this->update(elapsedTime);
-        
-        //        if(!paused)
-        render();
-        
-        mouseCursor->render();
-        
+        //swapf buffer and poll input(key, mouse, window size) event
         glfwSwapBuffers(window);
         glfwPollEvents();
         
+        //FPS counter
         timeCounter += elapsedTime;
         if(timeCounter > 1){
             fps++;
@@ -442,10 +458,6 @@ void Volt2D::Director::run(){
         }
         else{
             fps++;
-        }
-        
-        if(waitingForSceneTransition){
-            doSceneTransition();
         }
     }
 }
