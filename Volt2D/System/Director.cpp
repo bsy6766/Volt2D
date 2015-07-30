@@ -320,26 +320,26 @@ void Volt2D::Director::createWindow(const int &screenWidth, const int &screenHei
 }
 
 #pragma mark Scene Management
-void Volt2D::Director::pushScene(Volt2D::Scene* newScene){
-    if(!runningScene){
-        cout << "No running scene exists. Pushing new scene to running scene" << endl;
-        runningScene = newScene;
-//        runningScene->bindWindow(window);
-        //if no scene exist, call init right now
-        runningScene->init();
-    }
-    else{
-        //if there's next scene already, replace it
-        if(nextScene){
-            delete nextScene;
-        }
-        
-        nextScene = newScene;
-//        nextScene->bindWindow(window);
-        //call init on switching
-        //        nextScene->init();
-    }
-}
+//void Volt2D::Director::pushScene(Volt2D::Scene* newScene){
+//    if(!runningScene){
+//        cout << "No running scene exists. Pushing new scene to running scene" << endl;
+//        runningScene = newScene;
+////        runningScene->bindWindow(window);
+//        //if no scene exist, call init right now
+//        runningScene->init();
+//    }
+//    else{
+//        //if there's next scene already, replace it
+//        if(nextScene){
+//            delete nextScene;
+//        }
+//        
+//        nextScene = newScene;
+////        nextScene->bindWindow(window);
+//        //call init on switching
+//        //        nextScene->init();
+//    }
+//}
 
 //void Volt2D::Director::popScene(){
 //    if(runningScene){
@@ -389,6 +389,7 @@ void Volt2D::Director::run(){
     while (!glfwWindowShouldClose(window)){
         Volt2D::Timer::getInstance().recordTime();
         double elapsedTime = Volt2D::Timer::getInstance().getElapsedTime();
+//        cout << "elapsed time = " << elapsedTime << endl;
         
         if(!this->transitioning){
             if(joystickEnabled){
@@ -408,10 +409,10 @@ void Volt2D::Director::run(){
                     }
                 }
             }
-            //update by elapsed time
-            this->update(elapsedTime);
         }
         
+        //update by elapsed time
+        this->update(elapsedTime);
         //render the scene no matter what it's
         render();
         //temp
@@ -473,8 +474,8 @@ void Volt2D::Director::render(){
 
 void Volt2D::Director::update(double dt){
     if(runningScene){
-        runningScene->injectKey();
-        runningScene->injectMouseMove();
+//        runningScene->injectKey();
+//        runningScene->injectMouseMove();
         if(!paused)
             runningScene->update(dt);
         //at least once per frame. update it

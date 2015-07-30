@@ -286,12 +286,9 @@ public:
     
     /// @{
     /// @name Scene management
-    //push scene to next scene
-    void pushScene(Volt2D::Scene* pScene);
     //get currently running scene
     Volt2D::Scene* getRunningScene(){return this->runningScene;};
     //transition to next scene.
-//    void transitionToNextScene(bool wait);
     void transitionToNextScene(Transition* transition);
     /// @}
     
