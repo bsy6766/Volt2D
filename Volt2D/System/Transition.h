@@ -15,25 +15,53 @@
 #include "Color.h"
 
 namespace Volt2D{
+/**
+ *  @class Transition
+ *  @brief Virtual base class for Scene transitions.
+ */
 class Transition{
 protected:
+    /** Protected constructor */
     Transition();
-    Scene* currentScene;
+
+    /** Next scene to replace */
     Scene* nextScene;
     
-    void setNextScene(Scene* nextScene);
-    
+    /** total duration of scene transition */
     double duration;
-    double totalElapsedTime;
     
-    bool running;
+    /** Finish flag. ture if transition is done. */
+    bool done;
 private:
+    //no private sir
 public:
+    /** virtual desctructor */
     virtual ~Transition();
-    Scene* getNextScene();
+    
+    /** Check if transition is done or not */
+    bool isDone();
+    
+    /** Swap current scene with next scene. */
+    void swapScene();
+    
+    /// @{
+    /// @name Pure virtual functions
+    /** Start scene transition */
+    virtual void start() = 0;
+    
+    /** Update scene transition effects */
+    virtual void update(double dt) = 0;
+    
+    /** Render scene transition effects */
+    virtual void render() = 0;
+    /// @}
 };
     
-
+/**
+ *  @class TransitionFade
+ *  @brief Transition between scene by color fade
+ *  @note Duration means total time that will take to finish scene traistion, not for each fade effect.
+ */
 class TransitionFade : public Volt2D::Transition{
 private:
     /**
@@ -41,30 +69,47 @@ private:
      */
     TransitionFade();
     
-    /**
-     *  Color to fade
-     */
-    Color color;
-    
-    /**
-     *  Custom texture with color
-     */
+    /** Custom texture with color */
     Texture* texture;
+    
+    /** Fade sprite */
     Sprite* effect;
     
-    GLuint vao;
+    /**
+     *  Initialize transiton fade
+     *  @param duration Total duration of scene transition
+     *  @param color Fading color.
+     *  @param nextScene Next scene to replace
+     */
+    bool initTransition(double duration, Color color, Scene* nextScene);
     
-    bool initTransition(Color color, Scene* nextScene);
-    
-    void swapScene();
+    /** Finish scene transition */
+    void end();
     
 public:
-    static TransitionFade* createWithColor(Color color, Scene* scene);
+    /**
+     *  Create TransitionFade.
+     *  @param duration Total duration of scene transition
+     *  @param color Fading color
+     *  @param nextScene Next scene to replace
+     */
+    static TransitionFade* createWithColor(double duration, Color color, Scene* scene);
+    
+    /** Destructor */
     ~TransitionFade();
     
-    void run();
-};
+    /// @{
+    /// @name Override from Volt2D::Transition class
+    /** Start scene transition */
+    virtual void start() override;
     
-}
+    /** Update scene transition effects */
+    virtual void update(double dt) override;
+    
+    /** Render scene transition effects */
+    virtual void render() override;
+    /// @}
+};
+}   //namespace end
 
 #endif /* defined(__Volt2D__Transition__) */
