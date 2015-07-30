@@ -21,6 +21,9 @@ Layer::~Layer(){
 }
 
 void Layer::update(double dt){
+    //update it self first.
+    Object::update(dt);
+    //then update child.
     this->updateChild(dt);
 }
 

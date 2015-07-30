@@ -21,10 +21,14 @@ Scene::~Scene(){
 }
 
 void Scene::update(double dt){
+    //update scene itself first.
+    Object::update(dt);
+    //then updat child
     this->updateChild(dt);
 }
 
 void Scene::render(){
+    //Scene has nothing to render but children
     this->renderChild();
 }
 
