@@ -32,94 +32,150 @@ TitleButtonLayer::~TitleButtonLayer(){
 }
 
 void TitleButtonLayer::init(){
-    float buttonsX = 535;
-    float buttonsYGap = 40;
-    float buttonsYStarting = -105;
-    
-    continueButton = Sprite::createSprite("continueButton", "title scene/continue_button.png");
-    continueButton->setZDepth(z_buttons);
-    continueButton->setPosition(glm::vec3(buttonsX, buttonsYStarting, 0));
-    if(!hasSavedData)
-        continueButton->setOpacity(90);
-    this->addChild(continueButton);
-    
-    newGameButton = Sprite::createSprite("newGameButton", "title scene/new_game_button.png");
-    newGameButton->setZDepth(z_buttons);
-    newGameButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap, 0));
-    this->addChild(newGameButton);
-    
-    optionsButton = Sprite::createSprite("optionButton", "title scene/options_button.png");
-    optionsButton->setZDepth(z_buttons);
-    optionsButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 2, 0));
-    this->addChild(optionsButton);
-    
-    creditsButton = Sprite::createSprite("creditsButton", "title scene/credits_button.png");
-    creditsButton->setZDepth(z_buttons);
-    creditsButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 3, 0));
-    this->addChild(creditsButton);
-    
-    exitGameButton = Sprite::createSprite("exitGameButton", "title scene/exit_game_button.png");
-    exitGameButton->setZDepth(z_buttons);
-    exitGameButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 4, 0));
-    this->addChild(exitGameButton);
-    
-//    mouseCursor = Sprite::createSprite("moundIcon", "mouse_icon.png");
-//    mouseCursor->setZDepth(z_mouse_cursor);
-//    this->addChild(mouseCursor);
-    
-    selectingArrowIcon = Sprite::createSprite("selectingArrowIcon", "title scene/selecting_arrow_icon.png");
-    selectingArrowIcon->setZDepth(z_selecting_icon);
-    selectingArrowIcon->setPosition(glm::vec3(selectingArrowIconX, newGameButton->getPosition().y, 0));
-    this->addChild(selectingArrowIcon);
-    
-    creditScreen = Sprite::createSprite("creditScreen", "title scene/credit_screen.png");
-    creditScreen->setZDepth(z_credit_screen);
-    this->addChild(creditScreen);
-    creditScreen->setOpacity(0);
-    creditScreen->setScale(glm::vec3(0, 0, 1));
-    
-//    originPoint = new Sprite();
-//    originPoint->initSpriteWithTexture("test/point.png");
-//    originPoint->setZDepth(998);
-//    this->addObject("originPoint", originPoint);
-    
-//    endPoint = new Sprite();
-//    endPoint->initSpriteWithTexture("test/point.png");
-//    endPoint->setZDepth(999);
-//    this->addObject("endPoint", endPoint);
-    
-//    ActionDelay delayLoading;
-//    delayLoading.initDelay(3);
-//    ProgressFromTo fromTo;
-//    fromTo.initProgressFromTo(10, 97, 3);
-//    ActionCallFunc callbackAction;
-//    callbackAction.initActionCallFunc(std::bind(&TitleButtonLayer::testFunc, this));
-//    ActionCallFunc cbWithParam;
-//    cbWithParam.initActionCallFunc(std::bind(&TitleButtonLayer::testFunc2, this, 1));
-//    loadingBar->addActions({new ActionDelay(delayLoading), new ProgressFromTo(fromTo), new ActionCallFunc(callbackAction), new ActionCallFunc(cbWithParam)}, 0);
-//    auto delay = ActionDelay::createDelay(1);
-//    auto moveTo = ActionMoveTo::createMoveTo(8, glm::vec3(600, -250, 0));
-    
+//    float buttonsX = 535;
+//    float buttonsYGap = 40;
+//    float buttonsYStarting = -105;
+//    
+//    continueButton = Sprite::createSprite("continueButton", "title scene/continue_button.png");
+//    continueButton->setZDepth(z_buttons);
+//    continueButton->setPosition(glm::vec3(buttonsX, buttonsYStarting, 0));
+//    if(!hasSavedData)
+//        continueButton->setOpacity(90);
+//    this->addChild(continueButton);
+//    
+//    newGameButton = Sprite::createSprite("newGameButton", "title scene/new_game_button.png");
+//    newGameButton->setZDepth(z_buttons);
+//    newGameButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap, 0));
+//    this->addChild(newGameButton);
+//    
+//    optionsButton = Sprite::createSprite("optionButton", "title scene/options_button.png");
+//    optionsButton->setZDepth(z_buttons);
+//    optionsButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 2, 0));
+//    this->addChild(optionsButton);
+//    
+//    creditsButton = Sprite::createSprite("creditsButton", "title scene/credits_button.png");
+//    creditsButton->setZDepth(z_buttons);
+//    creditsButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 3, 0));
+//    this->addChild(creditsButton);
+//    
+//    exitGameButton = Sprite::createSprite("exitGameButton", "title scene/exit_game_button.png");
+//    exitGameButton->setZDepth(z_buttons);
+//    exitGameButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 4, 0));
+//    this->addChild(exitGameButton);
+//    
+////    mouseCursor = Sprite::createSprite("moundIcon", "mouse_icon.png");
+////    mouseCursor->setZDepth(z_mouse_cursor);
+////    this->addChild(mouseCursor);
+//    
+//    selectingArrowIcon = Sprite::createSprite("selectingArrowIcon", "title scene/selecting_arrow_icon.png");
+//    selectingArrowIcon->setZDepth(z_selecting_icon);
+//    selectingArrowIcon->setPosition(glm::vec3(selectingArrowIconX, newGameButton->getPosition().y, 0));
+//    this->addChild(selectingArrowIcon);
+//    
+//    creditScreen = Sprite::createSprite("creditScreen", "title scene/credit_screen.png");
+//    creditScreen->setZDepth(z_credit_screen);
+//    this->addChild(creditScreen);
+//    creditScreen->setOpacity(0);
+//    creditScreen->setScale(glm::vec3(0, 0, 1));
+//    
+////    originPoint = new Sprite();
+////    originPoint->initSpriteWithTexture("test/point.png");
+////    originPoint->setZDepth(998);
+////    this->addObject("originPoint", originPoint);
+//    
+////    endPoint = new Sprite();
+////    endPoint->initSpriteWithTexture("test/point.png");
+////    endPoint->setZDepth(999);
+////    this->addObject("endPoint", endPoint);
+//    
+////    ActionDelay delayLoading;
+////    delayLoading.initDelay(3);
+////    ProgressFromTo fromTo;
+////    fromTo.initProgressFromTo(10, 97, 3);
+////    ActionCallFunc callbackAction;
+////    callbackAction.initActionCallFunc(std::bind(&TitleButtonLayer::testFunc, this));
+////    ActionCallFunc cbWithParam;
+////    cbWithParam.initActionCallFunc(std::bind(&TitleButtonLayer::testFunc2, this, 1));
+////    loadingBar->addActions({new ActionDelay(delayLoading), new ProgressFromTo(fromTo), new ActionCallFunc(callbackAction), new ActionCallFunc(cbWithParam)}, 0);
+////    auto delay = ActionDelay::createDelay(1);
+////    auto moveTo = ActionMoveTo::createMoveTo(8, glm::vec3(600, -250, 0));
+//    
     fireBall = ParticleSystem::createWithLuaConfig("fireBallParticleLayer", "Particle/fireBall.lua");
-    fireBall->setPosition(glm::vec3(-600, -250, 0));
+    fireBall->setPosition(glm::vec3(100.0f, 0, 0));
 //    fireBall->addActions({delay, moveTo, delay}, 0);
     fireBall->setZDepth(100);
-    
+//
     magicalOrbits = ParticleSystem::createWithLuaConfig("magicalOrbitsLayer", "Particle/magicalOrbits.lua");
-    magicalOrbits->setPosition(vec3(-400, 0, 0));
-    magicalOrbits->setZDepth(99);
+    magicalOrbits->setPosition(vec3(100.0f, 0, 0));
+    magicalOrbits->setZDepth(100);
+//
+//    flame = ParticleSystem::createWithLuaConfig("flameParticleLayer", "Particle/flame.lua");
+//    flame->setPosition(vec3(-200, 0, 0));
+//    flame->setZDepth(99);
+//    
+//    blueMeteor = ParticleSystem::createWithLuaConfig("blueMeteorParticleLayer", "Particle/blueMeteor.lua");
+//    blueMeteor->setPosition(vec3(50, 0, 0));
+//    blueMeteor->setZDepth(99);
+//    
+//    muhanDojun = ParticleSystem::createWithLuaConfig("muhanDojunParticleLayer", "Particle/muhanDojun.lua");
+//    muhanDojun->setPosition(vec3(300, 100, 0))  ;
+//    muhanDojun->setZDepth(99);
     
-    flame = ParticleSystem::createWithLuaConfig("flameParticleLayer", "Particle/flame.lua");
-    flame->setPosition(vec3(-200, 0, 0));
-    flame->setZDepth(99);
-    
-    blueMeteor = ParticleSystem::createWithLuaConfig("blueMeteorParticleLayer", "Particle/blueMeteor.lua");
-    blueMeteor->setPosition(vec3(50, 0, 0));
-    blueMeteor->setZDepth(99);
-    
-    muhanDojun = ParticleSystem::createWithLuaConfig("muhanDojunParticleLayer", "Particle/muhanDojun.lua");
-    muhanDojun->setPosition(vec3(300, 100, 0))  ;
-    muhanDojun->setZDepth(99);
+    tentacle = Sprite::createSprite("tentacleBody", "title scene/tentacle_body.png");
+    tentacle->setPosition(glm::vec3(100, 0, 0));
+    tentacle->setZDepth(z_top);
+    {
+        arm1 = Sprite::createSprite("arm1", "title scene/bone.png");
+        arm1->setZDepth(z_top);
+        arm1->addPosition(glm::vec3(25.0f, 0, 0));
+        arm1->setAnchorPoint(glm::vec2(-0.5f, 0));
+        tentacle->addChild(arm1);
+        
+        auto rotateLeftTo = ActionRotateTo::createRotateTo(2, -45, RotationType::LEFT);
+        auto rotateRightTo = ActionRotateTo::createRotateTo(2, 45);
+        arm1->addActions({rotateLeftTo, rotateRightTo}, -1);
+        arm1->runAction();
+        
+        arm2 = Sprite::createSprite("arm2", "title scene/bone.png");
+        arm2->setZDepth(z_top);
+        arm2->addPosition(glm::vec3(100.0f, 0, 0));
+        arm2->setAnchorPoint(glm::vec2(-0.5f, 0));
+        arm1->addChild(arm2);
+        
+        arm2->addActions({rotateLeftTo, rotateRightTo}, -1);
+        arm2->runAction();
+        
+        arm3 = Sprite::createSprite("arm3", "title scene/bone.png");
+        arm3->setZDepth(z_top);
+        arm3->addPosition(glm::vec3(100.0f, 0, 0));
+        arm3->setAnchorPoint(glm::vec2(-0.5f, 0));
+        arm2->addChild(arm3);
+        
+        arm3->addActions({rotateLeftTo, rotateRightTo}, -1);
+        arm3->runAction();
+        
+//        arm3->addChild(fireBall);
+        arm3->addChild(magicalOrbits);
+//        this->addChild(fireBall);
+        
+        Sprite* topArm1 = Sprite::createSprite("topArm1", "title scene/bone.png");
+        topArm1->setZDepth(z_top);
+        topArm1->addPosition(glm::vec3(0, 25.0f, 0));
+        topArm1->setAnchorPoint(glm::vec2(0.5f, 0));
+        topArm1->setAngle(90);
+        
+        auto rotateTopLeftTo = ActionRotateTo::createRotateTo(2, topArm1->getAngle() - 45, RotationType::LEFT);
+        auto rotateTopRightTo = ActionRotateTo::createRotateTo(2, topArm1->getAngle() + 45);
+        
+        topArm1->addActions({rotateTopLeftTo, rotateTopRightTo}, -1);
+        topArm1->runAction();
+        tentacle->addChild(topArm1);
+    }
+    auto delay = ActionDelay::createDelay(3);
+    auto rotateBy = ActionRotateBy::createRotateBy(3, 360);
+    tentacle->addActions({delay, rotateBy}, 0);
+//    tentacle->runAction();
+    this->addChild(tentacle);
 }
 
 void TitleButtonLayer::exit(){
@@ -203,8 +259,9 @@ void TitleButtonLayer::keyPressed(int key, int mods){
     if(key == GLFW_KEY_ENTER){
         switch (selectingButtonID) {
             case NEW_GAME:
-                Volt2D::Director::getInstance().pushScene(new BattleScene());
-                Volt2D::Director::getInstance().transitionToNextScene(true);
+//                Volt2D::Director::getInstance().pushScene(new BattleScene());
+                Volt2D::Director::getInstance().transitionToNextScene(TransitionFade::createWithColor(1.0f, Color::HOTPINK, new BattleScene()));
+//                Volt2D::Director::getInstance().transitionToNextScene(true);
                 Volt2D::Director::getInstance().getSoundManager()->playSFX("titleSceneMenuSelect", 0.1);
                 break;
             case EXIT_GAME:
@@ -387,28 +444,28 @@ void TitleButtonLayer::mouseButton(double x, double y, int button, int action){
 void TitleButtonLayer::mouseMove(double x, double y){
 	glm::vec3 mousePoint = glm::vec3(x, y, 0);
 //	mouseCursor->setPosition(mousePoint);
-	if (!openingCredits){
-        if (continueButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
-            selectingButtonID = CONTINUE;
-            selectingArrowIcon->setY(continueButton->getPosition().y);
-        }
-		else if (newGameButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
-			selectingButtonID = NEW_GAME;
-			selectingArrowIcon->setY(newGameButton->getPosition().y);
-		}
-		else if (optionsButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
-			selectingButtonID = OPTIONS;
-			selectingArrowIcon->setY(optionsButton->getPosition().y);
-		}
-		else if (creditsButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
-			selectingButtonID = CREDITS;
-			selectingArrowIcon->setY(creditsButton->getPosition().y);
-		}
-		else if (exitGameButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
-			selectingButtonID = EXIT_GAME;
-			selectingArrowIcon->setY(exitGameButton->getPosition().y);
-		}
-	}
+//	if (!openingCredits){
+//        if (continueButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
+//            selectingButtonID = CONTINUE;
+//            selectingArrowIcon->setY(continueButton->getPosition().y);
+//        }
+//		else if (newGameButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
+//			selectingButtonID = NEW_GAME;
+//			selectingArrowIcon->setY(newGameButton->getPosition().y);
+//		}
+//		else if (optionsButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
+//			selectingButtonID = OPTIONS;
+//			selectingArrowIcon->setY(optionsButton->getPosition().y);
+//		}
+//		else if (creditsButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
+//			selectingButtonID = CREDITS;
+//			selectingArrowIcon->setY(creditsButton->getPosition().y);
+//		}
+//		else if (exitGameButton->getBoundingBox()->containsPoint(glm::vec2(mousePoint))){
+//			selectingButtonID = EXIT_GAME;
+//			selectingArrowIcon->setY(exitGameButton->getPosition().y);
+//		}
+//	}
 }
 
 void TitleButtonLayer::testFunc(){

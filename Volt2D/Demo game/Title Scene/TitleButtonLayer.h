@@ -13,6 +13,7 @@
 #include "Layer.h"
 #include "Sprite.h"
 #include "ParticleSystem.h"
+#include "Actions.h"
 #include <map>
 #include "BattleScene.h"
 
@@ -33,6 +34,11 @@ private:
     Volt2D::ParticleSystem* muhanDojun;
     Volt2D::ParticleSystem* fireBall;
     
+    Volt2D::Sprite* tentacle;
+    Volt2D::Sprite* arm1;
+    Volt2D::Sprite* arm2;
+    Volt2D::Sprite* arm3;
+    
     bool hasSavedData;
     
     std::unordered_map<unsigned int, bool> joystickMap;
@@ -46,7 +52,8 @@ private:
         z_buttons = 0,
         z_selecting_icon,
         z_credit_screen,
-        z_mouse_cursor
+        z_mouse_cursor,
+        z_top
     };
     
     enum ButtonID{
