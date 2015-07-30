@@ -197,6 +197,13 @@ public:
      */
     glm::mat4 getTransformMat();
     
+    /**
+     *  Get this object's hierarchal position. 
+     *  All position from parent objects will be sumed on return
+     *  @return Object's real position on screen
+     */
+    glm::vec3 getHierarchalPosition();
+    
     /// @{
     /// @name Setters and Getters for Position, Angle, and Scale
     /**

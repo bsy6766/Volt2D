@@ -167,6 +167,16 @@ glm::mat4 Object::getTransformMat(){
     }
 }
 
+glm::vec3 Object::getHierarchalPosition(){
+    if(this->parent){
+        //if has parent, go recursive
+        return this->position + this->parent->getHierarchalPosition();
+    }
+    else{
+        return this->position;
+    }
+}
+
 std::string Object::getName(){
     return this->objectName;
 }
@@ -303,7 +313,7 @@ void Object::renderChild(){
         else{
             //first render itself
             std::string objName = it->second->getName();
-            cout << "rendering = " << objName << endl;
+//            cout << "rendering = " << objName << endl;
             //render renderable object.
             //but layer it self is not a redernable even if it inherites.
             //Layer is just place holder.
