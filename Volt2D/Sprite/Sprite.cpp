@@ -177,8 +177,8 @@ void Sprite::computeVertices(){
     float width = (float)this->textureWidth / Volt2D::SCREEN_TO_WORLD_SCALE;
     float height = (float)this->textureHeight / Volt2D::SCREEN_TO_WORLD_SCALE;
     
-    this->RenderableObject::width = width;
-    this->RenderableObject::height = height;
+    this->Object::scaledWidth = width;
+    this->Object::scaledHeight = height;
     
     /*
      

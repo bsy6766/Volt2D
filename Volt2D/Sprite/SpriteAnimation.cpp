@@ -119,8 +119,8 @@ void SpriteAnimation::computeVertexData(float texW, float texH, float imgW, floa
     float height = imgH / Volt2D::SCREEN_TO_WORLD_SCALE;
     
     //store above size
-    this->RenderableObject::width = width;
-    this->RenderableObject::height = height;
+    this->Object::scaledWidth = width;
+    this->Object::scaledHeight = height;
     
     vertexData.push_back(glm::vec3(-(width/2), -(height/2), Volt2D::GLOBAL_Z_VALUE));
     vertexData.push_back(glm::vec3(-(width/2), height/2, Volt2D::GLOBAL_Z_VALUE));
