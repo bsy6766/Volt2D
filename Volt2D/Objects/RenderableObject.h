@@ -116,11 +116,6 @@ public:
      *  Visibility.
      */
     bool visible;
-    
-    /**
-     *  Implements Object::update()
-     */
-    virtual void update(double dt);
 };
 }   //namespace end
 

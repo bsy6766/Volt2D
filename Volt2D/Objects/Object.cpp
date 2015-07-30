@@ -497,6 +497,53 @@ bool Object::isActionRunning(){
     return actionRunning;
 }
 
+void Object::update(double dt){
+    //if there is no action, set running to false and return
+    if(actionScheduleList.empty()){
+        actionRunning = false;
+        return;
+    }
+    
+    //check if object can run action
+    if(!actionRunning){
+        return;
+    }
+    
+    //    //iterate through schedule list
+    for(auto schedule_it = actionScheduleList.begin(); schedule_it != actionScheduleList.end(); ){
+        //        cout << "Updating schedule" << endl;
+        (*schedule_it)->updateSchedule();
+        
+        if((*schedule_it)->isEmpty()){
+            delete *schedule_it;
+            schedule_it = actionScheduleList.erase(schedule_it);
+            continue;
+        }
+        else{
+            //not empty, but is done?
+            if((*schedule_it)->isFinished()){
+                if((*schedule_it)->needRepeat()){
+                    //revive, increment counter
+                    //                    cout << "Reviving schedule." << endl;
+                    (*schedule_it)->reviveSchedule();
+                    schedule_it++;
+                }
+                else{
+                    //repeat done. delete list
+                    //                    cout << "Repeat done. deleting list." << endl;
+                    delete *schedule_it;
+                    schedule_it = actionScheduleList.erase(schedule_it);
+                    continue;
+                }
+                
+            }
+            else{
+                schedule_it++;
+            }
+        }
+    }
+}
+
 bool Object::isDead(){
     return (!this->alive);
 }

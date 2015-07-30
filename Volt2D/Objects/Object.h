@@ -135,21 +135,6 @@ protected:
     float scaledHeight;
     
     /**
-     *  Add child
-     *  @param child A child object to add
-     *  @param parent A parent to bind
-     *  @param replace A replace flag. true will replace existing object.
-     */
-    bool addChild(Object* child, Object* parent, bool replace = false);
-    
-    /**
-     *  Remove child from object
-     *  @param child A object to remove
-     *  @param deleteObject true if you want to delete object and release from memory. Else, false.
-     */
-    bool removechild(Object* child, bool deleteObject);
-    
-    /**
      *  Update all children objects that object has
      */
     void updateChild(double dt);
@@ -431,7 +416,22 @@ public:
     /**
      *  Virtual function for updating.
      */
-    virtual void update(double dt) = 0;
+    virtual void update(double dt);
+    
+    /**
+     *  Add child
+     *  @param child A child object to add
+     *  @param parent A parent to bind
+     *  @param replace A replace flag. true will replace existing object.
+     */
+    bool addChild(Object* child, Object* parent, bool replace = false);
+    
+    /**
+     *  Remove child from object
+     *  @param child A object to remove
+     *  @param deleteObject true if you want to delete object and release from memory. Else, false.
+     */
+    bool removechild(Object* child, bool deleteObject);
     
     /**
      *  true if object is dead and ready to get released.
