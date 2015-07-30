@@ -12,7 +12,7 @@
 #include "Utility.hpp"
 
 namespace Volt2D{
-class RenderableObject;
+class Object;
     
 /**
  *  @class AcitonObject
@@ -43,7 +43,7 @@ protected:
     /**
      *  A target to update from this action
      */
-    RenderableObject* target;
+    Object* target;
 private:
 public:
     virtual ~ActionObject();
@@ -117,13 +117,13 @@ public:
      *  Get target of this object
      *  @return Object's target
      */
-    RenderableObject* getTarget();
+    Object* getTarget();
     
     /**
      *  Bind target to update
      *  @param target A RenderableObject pointer of target
      */
-    void bindTarget(RenderableObject* target);
+    void bindTarget(Object* target);
     
     /**
      *  Clone object

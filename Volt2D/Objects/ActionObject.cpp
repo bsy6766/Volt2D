@@ -83,10 +83,10 @@ void ActionObject::revive(){
     }
 }
 
-RenderableObject* ActionObject::getTarget(){
+Object* ActionObject::getTarget(){
     return target;
 }
 
-void ActionObject::bindTarget(RenderableObject *target){
+void ActionObject::bindTarget(Object *target){
     this->target = target;
 }
