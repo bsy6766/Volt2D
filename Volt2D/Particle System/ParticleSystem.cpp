@@ -402,8 +402,13 @@ void ParticleSystem::update(double dt){
             float randEmitAngle = this->emitAngle + (this->emitAngleVar * Volt2D::randf());
             
             //create, init, add
-            float randX = (this->position.x + (this->posVar.x * Volt2D::randf())) / Volt2D::SCREEN_TO_WORLD_SCALE;
-            float randY = (this->position.y + (this->posVar.y * Volt2D::randf())) / Volt2D::SCREEN_TO_WORLD_SCALE;
+            //add parents's position if needed
+            glm::vec2 realSpawnPos = glm::vec2();
+            if (this->parent) {
+                realSpawnPos = glm::vec2(this->parent->getTransformMat() * glm::vec4(this->position / SCREEN_TO_WORLD_SCALE, 1));
+            }
+            float randX = (realSpawnPos.x + (this->posVar.x * Volt2D::randf()));
+            float randY = (realSpawnPos.y + (this->posVar.y * Volt2D::randf()));
             
             //radial
             float randRadial = this->radialAccel + (this->radialAccelVar * Volt2D::randf());
@@ -418,25 +423,17 @@ void ParticleSystem::update(double dt){
                                 ) * randSpeed / Volt2D::SCREEN_TO_WORLD_SCALE /*works as power scale*/;
             
             //color
-            Color minStartColor = startColor - startColorVar;
-            Color maxStartColor = startColor + startColorVar;
             Color randStartColor =
-                        Color::createWithRGBA(
-                                Volt2D::randRange(minStartColor.getR(), maxStartColor.getR()),
-                                Volt2D::randRange(minStartColor.getG(), maxStartColor.getG()),
-                                Volt2D::randRange(minStartColor.getB(), maxStartColor.getB()),
-                                Volt2D::randRange(minStartColor.getA(), maxStartColor.getA())
-                                             );
+                    Color::createWithRGBA(startColor.getR() + (startColorVar.getR() * Volt2D::randf()),
+                                          startColor.getG() + (startColorVar.getG() * Volt2D::randf()),
+                                          startColor.getB() + (startColorVar.getB() * Volt2D::randf()),
+                                          startColor.getA() + (startColorVar.getA() * Volt2D::randf()));
             
-            Color minEndColor = endColor - endColorVar;
-            Color maxEndColor = endColor + endColorVar;
             Color randEndColor =
-                        Color::createWithRGBA(
-                                Volt2D::randRange(minEndColor.getR(), maxEndColor.getR()),
-                                Volt2D::randRange(minEndColor.getG(), maxEndColor.getG()),
-                                Volt2D::randRange(minEndColor.getB(), maxEndColor.getB()),
-                                Volt2D::randRange(minEndColor.getA(), maxEndColor.getA())
-                                 );
+                    Color::createWithRGBA(endColor.getR() + (endColorVar.getR() * Volt2D::randf()),
+                                          endColor.getG() + (endColorVar.getG() * Volt2D::randf()),
+                                          endColor.getB() + (endColorVar.getB() * Volt2D::randf()),
+                                          endColor.getA() + (endColorVar.getA() * Volt2D::randf()));
             
             float randStartSize = this->startSize + (this->startSizeVar * Volt2D::randf());
             
@@ -636,9 +633,9 @@ void ParticleSystem::render(){
     matrixUniformLocation("cameraMat", cameraMat);
     
     //get parent matrix
-    glm::mat4 parentMat;
+    glm::mat4 parentMat = glm::mat4();
     if(this->parent){
-        parentMat = this->parent->getTransformMat();
+//        parentMat = this->parent->getTransformMat();
     }
     
     matrixUniformLocation("parentMat", parentMat);
@@ -647,7 +644,11 @@ void ParticleSystem::render(){
     mat4 tMat = mat4();
     matrixUniformLocation("translateMat", tMat);
     matrixUniformLocation("scaleMat", this->scaleMat);
-//    floatUniformLocation("opacity", this->opacity);
+    
+//    printMat4(parentMat, "parentMat");
+//    printMat4(modelMat, "model");
+//    printMat4(rotateMat, "rotate");
+//    printMat4(scaleMat, "scale");
     
     //bind vertex array
     glBindVertexArray(this->bufferObject.vao);
