@@ -39,11 +39,11 @@ void ProgressBar::initProgressBar(const std::string barTextureName, GLenum textu
 }
 
 void ProgressBar::computeVertexData(){
-    width /= Volt2D::SCREEN_TO_WORLD_SCALE;
-    height /= Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->Object::scaledWidth = w / Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->Object::scaledHeight = h / Volt2D::SCREEN_TO_WORLD_SCALE;
     
-    this->RenderableObject::width = w / Volt2D::SCREEN_TO_WORLD_SCALE;
-    this->RenderableObject::height = h / Volt2D::SCREEN_TO_WORLD_SCALE;
+    float width = this->scaledWidth;
+    float height = this->scaledHeight;
     
     /*
      

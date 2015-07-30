@@ -41,11 +41,11 @@ void ProgressRadian::computeVertexData(){
     std::vector<float> heightGapList;
     std::vector<float> uvGapList;   //since u and v have same range of value(0~1), only need 1 for both width and height
     
-    width /= Volt2D::SCREEN_TO_WORLD_SCALE;
-    height /= Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->Object::scaledWidth = w / Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->Object::scaledHeight = h / Volt2D::SCREEN_TO_WORLD_SCALE;
     
-    this->RenderableObject::width = w / Volt2D::SCREEN_TO_WORLD_SCALE;
-    this->RenderableObject::height = h / Volt2D::SCREEN_TO_WORLD_SCALE;
+    float width = this->scaledWidth;
+    float height = this->scaledHeight;
     
     float angle = 0;
     for(int i = 0; i<12; i++){
