@@ -115,7 +115,8 @@ void ProgressBar::loadVertexData(){
 
 void ProgressBar::render(){    
     glUseProgram(progPtr->getObject());
-    glm::mat4 cameraMat = Volt2D::Director::getInstance().getCameraPtr()->getMatrix();
+    
+    const glm::mat4 cameraMat = Volt2D::Director::getInstance().getProjectiveViewMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
     
     glm::mat4 parentMat;

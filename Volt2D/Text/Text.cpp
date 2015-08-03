@@ -301,8 +301,9 @@ void Text::render(){
     
     font->bindTextTextureAtlas();
     
-    glm::mat4 cameraMat = Volt2D::Director::getInstance().getCameraPtr()->getMatrix();
+    const glm::mat4 cameraMat = Volt2D::Director::getInstance().getProjectiveViewMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
+    
     glm::mat4 parentMat = glm::mat4();
     if(this->parent)
         parentMat = this->parent->getTransformMat();

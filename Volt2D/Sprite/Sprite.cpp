@@ -139,8 +139,8 @@ void Sprite::render(){
     if(this->texture->canBoundThisTexture()){
         texture->bind(GL_TEXTURE0);
     }
-
-    glm::mat4 cameraMat = Volt2D::Director::getInstance().getCameraPtr()->getMatrix();
+    
+    const glm::mat4 cameraMat = Volt2D::Director::getInstance().getProjectiveViewMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
     
     glm::mat4 parentMat = glm::mat4();

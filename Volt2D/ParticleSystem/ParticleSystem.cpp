@@ -631,7 +631,7 @@ void ParticleSystem::render(){
     }
     
     //get main camera
-    glm::mat4 cameraMat = Volt2D::Director::getInstance().getCameraPtr()->getMatrix();
+    const glm::mat4 cameraMat = Volt2D::Director::getInstance().getProjectiveViewMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
     
     //get parent matrix
