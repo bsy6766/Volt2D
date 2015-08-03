@@ -35,6 +35,9 @@ private:
      */
     float movedAngle;
     
+    /** Rotation axis */
+    glm::vec3 axis;
+    
     /**
      *  Instant update.
      *  This is called when duration is 0
@@ -55,16 +58,18 @@ private:
      *  Initialize ActionRotateBy
      *  @param angle An angle to rotate
      *  @param duration An duration to rotate
+     *  @param axis Rotation axis
      */
-    void initRotateBy(float angle, double duration);
+    void initRotateBy(float angle, double duration, glm::vec3 axis = Z_AXIS);
     
 public:
     /**
      *  Create ActionRotateTo
      *  @param duration A duration to rotate
      *  @param angle An angle to rotate by
+     *  @param axis A rotation axis. Z axis by default
      */
-    static ActionRotateBy* createRotateBy(double duration, float angle);
+    static ActionRotateBy* createRotateBy(double duration, float angle, glm::vec3 axis = Z_AXIS);
     
     //Destructor
     ~ActionRotateBy();

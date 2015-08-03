@@ -14,7 +14,8 @@ ActionRotateBy::ActionRotateBy():
 ActionObject(),
 rotatingAngle(0),
 previousAngle(0),
-movedAngle(0)
+movedAngle(0),
+axis(glm::vec3())
 {
 //    cout << "[SYSTEM::INFO] Creating ActionRotateBy" << endl;
 }
@@ -23,17 +24,18 @@ ActionRotateBy::~ActionRotateBy(){
 //    cout << "[SYSTEM::INFO] Releasing ActionRotateBy" << endl;
 }
 
-ActionRotateBy* ActionRotateBy::createRotateBy(double duration, float angle){
+ActionRotateBy* ActionRotateBy::createRotateBy(double duration, float angle, glm::vec3 axis){
     ActionRotateBy* newActionMoveBy = new ActionRotateBy();
-    newActionMoveBy->initRotateBy(angle, duration);
+    newActionMoveBy->initRotateBy(angle, duration, axis);
     return newActionMoveBy;
 }
 
-void ActionRotateBy::initRotateBy(float angle, double duration){
+void ActionRotateBy::initRotateBy(float angle, double duration, glm::vec3 axis){
     this->duration = duration;
     this->rotatingAngle = angle;
     this->movedAngle = 0;
     this->previousAngle = 0;
+    this->axis = axis;
 }
 
 void ActionRotateBy::updateAction(double& remainedTime){
@@ -75,7 +77,7 @@ void ActionRotateBy::intervalUpdate(double& remainedTime){
             previousAngle += diff;
         }
     }
-    this->target->addAngle(movedAngle);
+    this->target->addAngle(movedAngle, axis);
 }
 
 void ActionRotateBy::revive(){
@@ -91,6 +93,6 @@ void ActionRotateBy::revive(){
 
 ActionObject* ActionRotateBy::clone(){
     ActionRotateBy* cloneRotateBy = new ActionRotateBy();
-    cloneRotateBy->initRotateBy(this->rotatingAngle, this->duration);
+    cloneRotateBy->initRotateBy(this->rotatingAngle, this->duration, this->axis);
     return cloneRotateBy;
 }
