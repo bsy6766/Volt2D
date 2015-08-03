@@ -28,6 +28,7 @@
 #include "Program.h"
 #include "Camera.h"
 #include "Sprite.h"
+#include "ParticleSystem.h"
 #include "SpriteSheet.h"
 #include "Transition.h"
 
@@ -67,6 +68,7 @@ private:
     friend class Volt2D::SpriteSheet;
     friend class Volt2D::Sprite;
     friend class Volt2D::Transition;
+    friend class Volt2D::ParticleSystem;
     
     //mouse icon
     Volt2D::Sprite* mouseCursor;
@@ -137,7 +139,7 @@ private:
     /** Holds previously running scene. Gets deleted. */
     Volt2D::Scene* dyingScene;
     
-    void replaceScene(Scene* newScene);
+    void swapScene(Scene* newScene);
     
     Volt2D::Transition* sceneTransition;
     
@@ -286,6 +288,8 @@ public:
     
     /// @{
     /// @name Scene management
+    //Replace current scene with new scene
+    void replaceScene(Scene* newScene);
     //get currently running scene
     Volt2D::Scene* getRunningScene(){return this->runningScene;};
     //transition to next scene.

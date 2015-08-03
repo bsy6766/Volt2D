@@ -354,18 +354,41 @@ void Volt2D::Director::createWindow(const int &screenWidth, const int &screenHei
 //    }
 //}
 
+//!! This function is public and will be called by users. Transitions will not use this.
+void Volt2D::Director::replaceScene(Volt2D::Scene *newScene){
+    if(runningScene == nullptr){
+        runningScene = newScene;
+        runningScene->init();
+        //onEnter
+    }
+    else{
+        dyingScene = runningScene;
+        runningScene = newScene;
+        runningScene->init();
+        //OnEnter
+        dyingScene->exit();   
+        delete dyingScene;
+        dyingScene = nullptr;
+    }
+}
+
 void Volt2D::Director::transitionToNextScene(Volt2D::Transition *transition){
     this->sceneTransition = transition;
     this->transitioning = true;
     this->sceneTransition->start();
 }
 
-void Volt2D::Director::replaceScene(Volt2D::Scene *newScene){
+//!! This function is private and will be only called by Transition classes.
+void Volt2D::Director::swapScene(Volt2D::Scene *newScene){
+    //only valid if there's running scene
     if(this->runningScene){
-        delete this->runningScene;
-        this->runningScene = 0;
+        //delete dying scene
+        dyingScene = runningScene;
+        //assign new one. Transition class will init for us.
+        this->runningScene = newScene;
+        dyingScene->exit();
+        delete dyingScene;
     }
-    this->runningScene = newScene;
 }
 
 #pragma mark System
@@ -386,7 +409,11 @@ void Volt2D::Director::run(){
     int fps = 0;
     double timeCounter=  0;
     
+    //Main game loop
     while (!glfwWindowShouldClose(window)){
+        glClearColor(clearBufferColor.r, clearBufferColor.g, clearBufferColor.b, 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
         Volt2D::Timer::getInstance().recordTime();
         double elapsedTime = Volt2D::Timer::getInstance().getElapsedTime();
 //        cout << "elapsed time = " << elapsedTime << endl;
@@ -413,10 +440,6 @@ void Volt2D::Director::run(){
         
         //update by elapsed time
         this->update(elapsedTime);
-        //render the scene no matter what it's
-        render();
-        //temp
-        mouseCursor->render();
         
         //if transitioning
         if(this->transitioning){
@@ -426,12 +449,11 @@ void Volt2D::Director::run(){
                 if(sceneTransition->isDone()){
                     //finish it
                     this->transitioning = false;
-                    if(this->dyingScene){
-                        delete this->dyingScene;
-                        this->dyingScene = nullptr;
-                    }
                     delete this->sceneTransition;
                     this->sceneTransition = nullptr;
+                    //normal render will not called on end of transition, so render once here
+                    //to prevent blinking
+                    render();
                 }
                 //but not done yet
                 else{
@@ -444,6 +466,14 @@ void Volt2D::Director::run(){
                 this->transitioning = false;
             }
         }
+        else{
+            //render current scene only when it's not transitioning.
+            //Transition object will render it instead
+            render();
+        }
+        
+        //temp. Render mouse cursor last
+        mouseCursor->render();
         
         //swapf buffer and poll input(key, mouse, window size) event
         glfwSwapBuffers(window);
@@ -464,8 +494,8 @@ void Volt2D::Director::run(){
 }
 
 void Volt2D::Director::render(){
-    glClearColor(clearBufferColor.r, clearBufferColor.g, clearBufferColor.b, 1);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    glClearColor(clearBufferColor.r, clearBufferColor.g, clearBufferColor.b, 1);
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     if(runningScene)
         runningScene->render();
@@ -532,6 +562,10 @@ void Volt2D::Director::key_callback(GLFWwindow* window, int key, int scancode, i
     //}
     if(action == GLFW_PRESS){
         directorPtr->runningScene->keyPressed(key, mods);
+        
+        if(key == GLFW_KEY_Y){
+            directorPtr->runningScene->addAngle(10, X_AXIS);
+        }
         //        if(key == GLFW_KEY_S){
         //            directorPtr->camera->moveBackward();
         //            glm::vec3 cPos = directorPtr->camera->getPosition();
@@ -564,10 +598,6 @@ void Volt2D::Director::key_callback(GLFWwindow* window, int key, int scancode, i
         //            glm::vec3 cPos = directorPtr->camera->getPosition();
         //            cout << "cpos = (" << cPos.x << ", " << cPos.y << ", " << cPos.z << ")" << endl;
         //        }
-        
-        if(key == GLFW_KEY_H){
-            glfwSetCursorPos(directorPtr->window, 100, 100);
-        }
     }
     else if(action == GLFW_RELEASE){
         directorPtr->runningScene->keyReleased(key, mods);
