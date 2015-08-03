@@ -344,7 +344,7 @@ void ParticleSystem::update(double dt){
     
     //update number for new particles.
     //do this unitl it spawns all particles
-    if(this->totalCreatedParticles < this->size * this->duration){
+    if(this->totalCreatedParticles < this->size * this->duration || this->duration == -1){
         //add up elapsed time
         this->totalElapsedTime += dt;
         
@@ -404,9 +404,11 @@ void ParticleSystem::update(double dt){
             //create, init, add
             //add parents's position if needed
             glm::vec2 realSpawnPos = glm::vec2();
+            //The reason why using parent transform matrix on spawing is because all particles must be free from parent's object except scene and layer.
             if (this->parent) {
-                realSpawnPos = glm::vec2(this->parent->getTransformMat() * glm::vec4(this->position / SCREEN_TO_WORLD_SCALE, 1));
+                realSpawnPos = glm::vec2(this->parent->getTransformMatWithOutSceneAndLayer() * glm::vec4(this->position / SCREEN_TO_WORLD_SCALE, 1));
             }
+
             float randX = (realSpawnPos.x + (this->posVar.x * Volt2D::randf())/SCREEN_TO_WORLD_SCALE);
             float randY = (realSpawnPos.y + (this->posVar.y * Volt2D::randf())/SCREEN_TO_WORLD_SCALE);
             
@@ -634,8 +636,9 @@ void ParticleSystem::render(){
     
     //get parent matrix
     glm::mat4 parentMat = glm::mat4();
-    if(this->parent){
-//        parentMat = this->parent->getTransformMat();
+    //particles only get affected by scene and layer's transformative matrixes.
+    if(this->parent && Volt2D::Director::getInstance().transitioning){
+        parentMat = this->parent->getSceneAndLayerTransformMat();
     }
     
     matrixUniformLocation("parentMat", parentMat);
@@ -644,11 +647,6 @@ void ParticleSystem::render(){
     mat4 tMat = mat4();
     matrixUniformLocation("translateMat", tMat);
     matrixUniformLocation("scaleMat", this->scaleMat);
-    
-//    printMat4(parentMat, "parentMat");
-//    printMat4(modelMat, "model");
-//    printMat4(rotateMat, "rotate");
-//    printMat4(scaleMat, "scale");
     
     //bind vertex array
     glBindVertexArray(this->bufferObject.vao);
