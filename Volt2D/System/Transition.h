@@ -33,6 +33,12 @@ namespace Volt2D{
         
         /** Finish flag. ture if transition is done. */
         bool done;
+        
+        /** delay padding between actions */
+        ActionDelay* delayPad;
+        
+        ActionCallFunc* callEndFunc;
+        ActionCallFunc* callSwapSceneFunc;
     private:
         //no private sir
     public:
@@ -42,11 +48,11 @@ namespace Volt2D{
         /** Check if transition is done or not */
         bool isDone();
         
-        /** Swap current scene with next scene. */
-        virtual void swapScene();
+        /** Finish scene transition */
+        void end();
         
         /// @{
-        /// @name Pure virtual functions
+        /// @name Virtual functions
         /** Start scene transition */
         virtual void start() = 0;
         
@@ -54,7 +60,10 @@ namespace Volt2D{
         virtual void update(double dt){};
         
         /** Render scene transition effects */
-        virtual void render(){};
+        virtual void render() = 0;
+        
+        /** Swap current scene with next scene. */
+        virtual void swapScene();
         /// @}
     };
         
@@ -84,9 +93,6 @@ namespace Volt2D{
          */
         bool initTransition(double duration, Color color, Scene* nextScene);
         
-        /** Finish scene transition */
-        void end();
-        
     public:
         /**
          *  Create TransitionFade.
@@ -109,8 +115,6 @@ namespace Volt2D{
         
         /** Render scene transition effects */
         virtual void render() override;
-        
-        virtual void swapScene() override;
         /// @}
     };
     
@@ -127,18 +131,90 @@ namespace Volt2D{
      */
     class TransitionMove : public Transition{
     private:
+        /** Private constructor */
         TransitionMove();
+        
+        /**
+         *  Initialize TransitionMove
+         *  @param duration Total duration of scene transition
+         *  @param direction Direction to move scene while transition
+         *  @param nextScene Next scene to replace
+         */
         void initTransition(double duration, Volt2D::TransitionDirection direction, Scene* nextScene);
-        void end();
+        
+        /** flag for scene rendering */
+        bool sceneSwapped;
     public:
+        /**
+         *  Create TransitionMove
+         *  @param duration Total duration of scene transition
+         *  @param direction Direction to move scene while transition
+         *  @param nextScene Next scene to replace
+         */
         static TransitionMove* createWithDirection(double duration, Volt2D::TransitionDirection direction, Scene* nextScene);
+        
+        /** Destructor */
         ~TransitionMove();
+        
         /// @{
         /// @name Override from Volt2D::Transition class
         /** Start scene transition */
         virtual void start() override;
+        
+        /** Update scene transition effects */
         virtual void update(double dt) override;
+        
+        /** Render scene transition effects */
         virtual void render() override;
+        
+        /** Swap current scene with next scene. */
+        virtual void swapScene() override;
+        /// @}
+    };
+    
+    //\todo TransitionSlide
+    
+    /**
+     *  @class TransitionFlip
+     *  @brief Transition scene by flipping from direction
+     */
+    class TransitionFlip : public Transition{
+    private:
+        /** Private Constructor */
+        TransitionFlip();
+        
+        /**
+         *  Intialize Transition
+         *  @param duration Total duration of scene transition
+         *  @param direction Direction to move scene while transition
+         *  @param nextScene Next scene to replace
+         */
+        void initTransition(double duration, Volt2D::TransitionDirection direction, Scene* nextScene);
+
+    public:
+        /**
+         *  Create TransitionFlip
+         *  @param duration Total duration of scene transition
+         *  @param direction Direction to move scene while transition
+         *  @param nextScene Next scene to replace
+         */
+        static TransitionFlip* createWithDirection(double duration, Volt2D::TransitionDirection direction, Scene* nextScene);
+        
+        /** Destructor */
+        ~TransitionFlip();
+        /// @{
+        /// @name Override from Volt2D::Transition class
+        /** Start scene transition */
+        virtual void start() override;
+        
+        /** Update scene transition effects */
+        virtual void update(double dt) override;
+        
+        /** Render scene transition effects */
+        virtual void render() override;
+        
+        /** Swap current scene with next scene. */
+        virtual void swapScene() override;
         /// @}
     };
 }   //namespace end

@@ -8,6 +8,7 @@
 
 #include "Transition.h"
 #include "Director.h"
+#include "Timer.h"
 
 using namespace Volt2D;
 
@@ -17,7 +18,10 @@ using namespace Volt2D;
 Transition::Transition():
 duration(0),
 nextScene(0),
-done(false)
+done(false),
+delayPad(ActionDelay::createDelay(0.2f)),
+callEndFunc(ActionCallFunc::createCallFunc(std::bind(&Volt2D::Transition::end, this))),
+callSwapSceneFunc(ActionCallFunc::createCallFunc(std::bind(&Volt2D::Transition::swapScene, this)))
 {
     
 }
@@ -27,12 +31,16 @@ Transition::~Transition(){
 }
 
 void Transition::swapScene(){
-    Director::getInstance().getRunningScene()->exit();
-    Director::getInstance().replaceScene(nextScene);
+    //exit the scene with thread
+    Director::getInstance().swapScene(nextScene);
 }
 
 bool Transition::isDone(){
     return this->done;
+}
+
+void Transition::end(){
+    this->done = true;
 }
 
 //----------------------------------------
@@ -63,7 +71,13 @@ TransitionFade* TransitionFade::createWithColor(double duration, Volt2D::Color c
 bool TransitionFade::initTransition(double duration, Color color, Volt2D::Scene *nextScene){
     //store variables
     this->duration = duration;
+    
+    //store scene and init.
     this->nextScene = nextScene;
+    //get time tick
+    double t_start = Timer::getInstance().getCurrentTick();
+    //intialize next scene on creation
+    this->nextScene->init();
     
     //allocate empty texture data.
     unsigned char* data = new unsigned char[2/*width*/ *
@@ -95,24 +109,29 @@ bool TransitionFade::initTransition(double duration, Color color, Volt2D::Scene 
     //effect starts from 0 opacity.
     effect->setOpacity(0);
     
-    //Make actions.
     //delay -> fade in -> swap scene -> delay -> fade out -> end -> delay
     auto fadeIn = ActionFadeTo::createFadeTo(this->duration/2.0, 255.0f);
-    auto swapScene = ActionCallFunc::createCallFunc(std::bind(&Volt2D::TransitionFade::swapScene, this));
     auto fadeOut = ActionFadeTo::createFadeTo(this->duration/2.0, 0.0f);
-    auto end = ActionCallFunc::createCallFunc(std::bind(&Volt2D::TransitionFade::end, this));
-    //extra delay padding fornt and in between actions to prevent graphical glitches.
-    auto delay = ActionDelay::createDelay(0.2f);
+    
+    //initializing transition done.
+    //get time tick
+    double t_end = Timer::getInstance().getCurrentTick();
+    //calculate time spent.
+    double initElapsedTime = t_end - t_start;
+    
+    //delay action by time spend on initializing next scene .
+    auto delay = ActionDelay::createDelay(initElapsedTime + 0.5f);
     
     //Assign
-    effect->addActions({delay, fadeIn, delay, swapScene, fadeOut, end, delay}, 0);
+    effect->addActions({delay, fadeIn, delayPad, callSwapSceneFunc, fadeOut, callEndFunc, delayPad}, 0);
     
     //release
     delete fadeIn;
-    delete swapScene;
+    delete callSwapSceneFunc;
     delete fadeOut;
     delete delay;
-    delete end;
+    delete callEndFunc;
+    delete delayPad;
     
     //success
     return true;
@@ -122,21 +141,13 @@ void TransitionFade::start(){
     this->effect->runAction();
 }
 
-void TransitionFade::swapScene(){
-    this->nextScene->init();
-    Transition::swapScene();
-}
-
 void TransitionFade::update(double dt){
     this->effect->update(dt);
 }
 
 void TransitionFade::render(){
+    Director::getInstance().getRunningScene()->render();
     this->effect->render();
-}
-
-void TransitionFade::end(){
-    this->done = true;
 }
 
 //----------------------------------------
@@ -144,7 +155,8 @@ void TransitionFade::end(){
 //----------------------------------------
 
 TransitionMove::TransitionMove():
-Transition()
+Transition(),
+sceneSwapped(false)
 {
     
 }
@@ -160,18 +172,18 @@ TransitionMove* TransitionMove::createWithDirection(double duration, Volt2D::Tra
 }
 
 void TransitionMove::initTransition(double duration, Volt2D::TransitionDirection direction, Scene* nextScene){
+    this->duration = duration;
     //store scene and init.
     this->nextScene = nextScene;
+    //get time tick
+    double t_start = Timer::getInstance().getCurrentTick();
+    //intialize next scene on creation
     this->nextScene->init();
+    
+    ActionMoveBy* moveBy = nullptr;
     
     //get window size
     Volt2D::WinSize winSize = Director::getInstance().getWindowSize();
-    
-    //actions used to all direction
-    auto delay = ActionDelay::createDelay(1.0f);
-    auto swapScene = ActionCallFunc::createCallFunc(std::bind(&Volt2D::Transition::swapScene, this));
-    auto end = ActionCallFunc::createCallFunc(std::bind(&Volt2D::TransitionMove::end, this));
-    ActionMoveBy* moveBy = nullptr;
     
     switch (direction) {
         case Volt2D::TransitionDirection::UP:
@@ -206,16 +218,26 @@ void TransitionMove::initTransition(double duration, Volt2D::TransitionDirection
     //check if it's valid
     assert(moveBy != nullptr);
     
+    //get time tick
+    double t_end = Timer::getInstance().getCurrentTick();
+    //calculate time spent.
+    double initElapsedTime = t_end - t_start;
+    
+    //delay action by time spend on initializing next scene .
+    auto delay = ActionDelay::createDelay(initElapsedTime + 0.5f);
+    
     //add action
-    this->nextScene->addActions({delay, moveBy, swapScene, delay, end}, 0);
+    this->nextScene->addActions({delay, moveBy, callSwapSceneFunc, delayPad, callEndFunc}, 0);
     //set actions to current scene too.
     Director::getInstance().getRunningScene()->addActions({delay, moveBy}, 0);
     
     delete moveBy;
     
     //release action
-    delete swapScene;
-    delete end;
+    delete callSwapSceneFunc;
+    delete callEndFunc;
+    delete delayPad;
+    
     delete delay;
 }
 
@@ -229,9 +251,115 @@ void TransitionMove::update(double dt){
 }
 
 void TransitionMove::render(){
-    this->nextScene->render();
+    Director::getInstance().getRunningScene()->render();
+    if(!sceneSwapped){
+        this->nextScene->render();
+    }
 }
 
-void TransitionMove::end(){
-    this->done = true;
+void TransitionMove::swapScene(){
+    this->sceneSwapped = true;
+    Transition::swapScene();
+}
+
+//----------------------------------------
+#pragma mark TransitionFlip
+//----------------------------------------
+
+TransitionFlip::TransitionFlip():
+Transition()
+{
+    
+}
+
+TransitionFlip::~TransitionFlip(){
+    
+}
+
+TransitionFlip* TransitionFlip::createWithDirection(double duration, Volt2D::TransitionDirection direction, Scene* nextScene){
+    TransitionFlip* newTransition = new TransitionFlip();
+    newTransition->initTransition(duration, direction, nextScene);
+    return newTransition;
+}
+
+void TransitionFlip::initTransition(double duration, Volt2D::TransitionDirection direction, Scene* nextScene){
+    this->duration = duration;
+    //store scene and init.
+    this->nextScene = nextScene;
+    //get time tick
+    double t_start = Timer::getInstance().getCurrentTick();
+    //intialize next scene on creation
+    this->nextScene->init();
+    
+    ActionRotateBy* rotateBy = nullptr;
+    
+    switch (direction) {
+        case Volt2D::TransitionDirection::UP:
+        {
+            //set starting angle for next scene
+            this->nextScene->setAngle(-180, X_AXIS);
+            rotateBy = ActionRotateBy::createRotateBy(duration/2.0f, 90.0f, X_AXIS);
+        }
+            break;
+        case Volt2D::TransitionDirection::DOWN:
+        {
+            this->nextScene->setAngle(180, X_AXIS);
+            rotateBy = ActionRotateBy::createRotateBy(duration/2.0f, -90.0f, X_AXIS);
+        }
+            break;
+        case Volt2D::TransitionDirection::RIGHT:
+        {
+            this->nextScene->setAngle(-180, Y_AXIS);
+            rotateBy = ActionRotateBy::createRotateBy(duration/2.0f, 90.0f, Y_AXIS);
+        }
+            break;
+        case Volt2D::TransitionDirection::LEFT:
+        {
+            this->nextScene->setAngle(180, Y_AXIS);
+            rotateBy = ActionRotateBy::createRotateBy(duration/2.0f, -90.0f, Y_AXIS);
+        }
+            break;
+        default:
+            break;
+    }
+    //check if it's valid
+    assert(rotateBy != nullptr);
+    
+    //get time tick
+    double t_end = Timer::getInstance().getCurrentTick();
+    //calculate time spent.
+    double initElapsedTime = t_end - t_start;
+    
+    //delay action by time spend on initializing next scene .
+    auto delay = ActionDelay::createDelay(initElapsedTime + 0.5f);
+    
+    //add action
+    this->nextScene->addActions({delay, rotateBy, callSwapSceneFunc, delayPad, rotateBy, delayPad, callEndFunc}, 0);
+    //set actions to current scene too.
+    Director::getInstance().getRunningScene()->addActions({delay, rotateBy}, 0);
+    
+    delete rotateBy;
+    
+    //release action
+    delete callSwapSceneFunc;
+    delete callEndFunc;
+    delete delayPad;
+    delete delay;
+}
+
+void TransitionFlip::start(){
+    this->nextScene->runAction();
+    Director::getInstance().getRunningScene()->runAction();
+}
+
+void TransitionFlip::update(double dt){
+    this->nextScene->update(dt);
+}
+
+void TransitionFlip::render(){
+    Director::getInstance().getRunningScene()->render();
+}
+
+void TransitionFlip::swapScene(){
+    Transition::swapScene();
 }
