@@ -15,15 +15,21 @@
 #include "ParticleSystem.h"
 #include "Text.h"
 
-class MenuScene : public Scene{
+class MenuScene : public Volt2D::Scene{
 private:
-    
+    Volt2D::Sprite* spriteBtn;
+    Volt2D::Sprite* spriteAnimationBtn;
+    Volt2D::Sprite* spriteSheetBtn;
+    Volt2D::Sprite* progressBtn;
+    Volt2D::Sprite* particleSysBtn;
+    Volt2D::Sprite* textBtn;
     
 public:
     MenuScene();
     ~MenuScene();
     
     void init() override;
+    void onEnter() override;
     void exit() override;
 };
 

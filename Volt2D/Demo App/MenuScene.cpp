@@ -15,3 +15,15 @@ MenuScene::MenuScene(){
 MenuScene::~MenuScene(){
     
 }
+
+void MenuScene::init(){
+    
+}
+
+void MenuScene::onEnter(){
+    
+}
+
+void MenuScene::exit(){
+    
+}
