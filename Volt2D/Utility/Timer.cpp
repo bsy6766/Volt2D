@@ -39,3 +39,7 @@ double Timer::getTotalElapsedTime(){
     //return current time(ms)
     return currentTime;
 }
+
+double Timer::getCurrentTick(){
+    return glfwGetTime();
+}

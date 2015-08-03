@@ -72,6 +72,12 @@ public:
      *  @return Total elapsed time
      */
     double getTotalElapsedTime();
+    
+    /**
+     *  Get current time tick
+     *  @return current time tick
+     */
+    double getCurrentTick();
 };
 }   //namespace end
 
