@@ -38,7 +38,7 @@ void ActionCallFunc::startAction(){
 void ActionCallFunc::updateAction(double &remainedTime){
     //since this is instant, 
     remainedTime += this->totalElapsedTime;
-    cout << "callfunc. this iter time = " << this->totalElapsedTime << ", adding to remained = " << remainedTime << endl;
+//    cout << "callfunc. this iter time = " << this->totalElapsedTime << ", adding to remained = " << remainedTime << endl;
 	(function)();
     this->alive = false;
 }
