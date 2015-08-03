@@ -21,9 +21,10 @@ namespace Volt2D{
  */
 class Scene : public Volt2D::Object{
 protected:
-    
+    /** Protected constructor */
+    Scene();
 public:
-	Scene();
+    /** Virtual desturctor */
     virtual ~Scene();
     
     /**
