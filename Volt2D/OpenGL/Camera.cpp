@@ -17,9 +17,9 @@ position(0, 0, 0),
 verticalAngle(0),
 horizontalAngle(0),
 fovy(90.0f),
-aspect(1.6f),
-nears(35.0f),
-fars(55.0f),
+//aspect(1.6f),
+//nears(35.0f),
+//fars(55.0f),
 speed(0.5f)
 {
     /*
@@ -39,14 +39,17 @@ speed(0.5f)
     this->aspect = (screenWidth / screenHeight);
     
     //Since this is 2D engine, we don't need to view too close and too far
-    float gap = 200.0f;
-    float possibleNear = (offset - gap) / Volt2D::SCREEN_TO_WORLD_SCALE;
+    float gap = 100.0f;
+//    float possibleNear = (offset - gap) / Volt2D::SCREEN_TO_WORLD_SCALE;
+//    float possibleNear = offset - gap;
+    float possibleNear = 0.01f;
     
     if(possibleNear < 0.01f)
         possibleNear = 0.01f;
     
     this->nears = possibleNear;
-    this->fars = (offset + gap) / Volt2D::SCREEN_TO_WORLD_SCALE;
+//    this->fars = (offset + gap) / Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->fars = offset + gap;
     
     cout << "[SYSTEM::INFO] Creating Main Camera." << endl;
     cout << "[SYSTEM::INFO] Position = (" << this->position.x << ", " << this->position.y << ", " << this->position.z << ")" << endl;
