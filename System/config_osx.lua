@@ -9,8 +9,8 @@ system = {
 		title = "JB_Engine Test Build",
 		fullscreen = false,
 	 	borderless = true,
-	 	captureMouse = true,
-	 	cursorHidden = true,
+	 	captureMouse = false,
+	 	cursorHidden = false,
 	 	vsync = true
 	},
 	clearBuffer = {
