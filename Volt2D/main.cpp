@@ -85,7 +85,7 @@ int main(int argc, const char * argv[]) {
                                         captureMouse,
                                         cursorHidden);
         TitleScene* titleScene = new TitleScene();
-        Volt2D::Director::getInstance().pushScene(titleScene);
+        Volt2D::Director::getInstance().replaceScene(titleScene);
         Volt2D::Director::getInstance().run();
     }
     catch(std::exception &e){
