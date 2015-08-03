@@ -8,6 +8,7 @@
 
 #include "Transition.h"
 #include "Director.h"
+#include "Scene.h"
 #include "Timer.h"
 
 using namespace Volt2D;
@@ -31,8 +32,18 @@ Transition::~Transition(){
 }
 
 void Transition::swapScene(){
-    //exit the scene with thread
-    Director::getInstance().swapScene(nextScene);
+    //This function is friend of Director.
+    Volt2D::Director& directorRef = Volt2D::Director::getInstance();
+    if(directorRef.runningScene){
+        //delete dying scene
+        directorRef.dyingScene = directorRef.runningScene;
+        //assign new one. Transition class will init for us.
+        directorRef.runningScene = this->nextScene;
+        //enters the screen
+        directorRef.runningScene->onEnter();
+        directorRef.dyingScene->exit();
+        delete directorRef.dyingScene;
+    }
 }
 
 bool Transition::isDone(){
@@ -93,7 +104,7 @@ bool TransitionFade::initTransition(double duration, Color color, Volt2D::Scene 
     //create teture with custom data
     this->texture = Texture::createCustom2DTexture(2, 2, data, 4);
     //delete allocated data.
-    delete data;
+    delete [] data;
     
     //return false if failed to generate texture
     if(this->texture == nullptr)
@@ -146,7 +157,7 @@ void TransitionFade::update(double dt){
 }
 
 void TransitionFade::render(){
-    Director::getInstance().getRunningScene()->render();
+    Volt2D::Director::getInstance().getRunningScene()->render();
     this->effect->render();
 }
 
