@@ -9,7 +9,7 @@
 #include "BattleHUDLayer.h"
 
 BattleHUDLayer::BattleHUDLayer(){
-    this->init();
+
 }
 
 BattleHUDLayer::~BattleHUDLayer(){
@@ -18,6 +18,7 @@ BattleHUDLayer::~BattleHUDLayer(){
 
 void BattleHUDLayer::init(){
     StatusBar* testBar = new StatusBar("test", glm::vec3(-635, 415, 0));
+    testBar->bindTo(this);
     statusBars.push_back(testBar);
 }
 

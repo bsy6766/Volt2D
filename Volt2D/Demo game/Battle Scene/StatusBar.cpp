@@ -7,6 +7,7 @@
 //
 
 #include "StatusBar.h"
+#include "Object.h"
 
 using namespace Volt2D;
 
@@ -16,7 +17,6 @@ pos(pos)
     frame = Sprite::createSprite(objName + "Frame", "battle scene/status_frame.png");
     frame->setPosition(pos);
     frame->setZDepth(199);
-    Volt2D::Director::getInstance().getRunningScene()->addChild(frame);
     
     pos.x += 26;
     
@@ -26,13 +26,11 @@ pos(pos)
     hpBarPos.y += 17;
     hpBar->setPosition(hpBarPos);
     hpBar->setZDepth(200);
-    Volt2D::Director::getInstance().getRunningScene()->addChild(hpBar);
     
     mpBar = ProgressBar::createProgressBar(objName + "MpBar", "battle scene/mp_bar.png");
     mpBar->setPercentage(100);
     mpBar->setPosition(pos);
     mpBar->setZDepth(200);
-    Volt2D::Director::getInstance().getRunningScene()->addChild(mpBar);
     
     apBar = ProgressBar::createProgressBar(objName + "ApBar", "battle scene/ap_bar.png");
     apBar->setPercentage(100);
@@ -40,7 +38,6 @@ pos(pos)
     apBarPos.y -= 17;
     apBar->setPosition(apBarPos);
     apBar->setZDepth(200);
-    Volt2D::Director::getInstance().getRunningScene()->addChild(apBar);
 }
 
 StatusBar::~StatusBar(){
@@ -58,3 +55,18 @@ void StatusBar::updateMpBar(int mp){
 void StatusBar::updateApBar(int ap){
     apBar->setPercentage(ap);
 }
+
+void StatusBar::bindTo(Volt2D::Object *obj){
+    obj->addChild(frame, obj);
+    obj->addChild(hpBar, obj);
+    obj->addChild(mpBar, obj);
+    obj->addChild(apBar, obj);
+}
+
+
+
+
+
+
+
+

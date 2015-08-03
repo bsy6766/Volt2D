@@ -32,6 +32,8 @@ public:
     void updateHpBar(int hp);
     void updateMpBar(int mp);
     void updateApBar(int ap);
+    
+    void bindTo(Volt2D::Object* obj);
 };
 
 #endif /* defined(__Volt2D__StatusBar__) */

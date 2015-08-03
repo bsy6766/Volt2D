@@ -97,12 +97,12 @@ void TitleButtonLayer::init(){
 ////    ActionCallFunc cbWithParam;
 ////    cbWithParam.initActionCallFunc(std::bind(&TitleButtonLayer::testFunc2, this, 1));
 ////    loadingBar->addActions({new ActionDelay(delayLoading), new ProgressFromTo(fromTo), new ActionCallFunc(callbackAction), new ActionCallFunc(cbWithParam)}, 0);
-////    auto delay = ActionDelay::createDelay(1);
-////    auto moveTo = ActionMoveTo::createMoveTo(8, glm::vec3(600, -250, 0));
-//    
+    auto delay = ActionDelay::createDelay(1);
+    auto moveTo = ActionMoveTo::createMoveTo(8, glm::vec3(600, -250, 0));
+//
     fireBall = ParticleSystem::createWithLuaConfig("fireBallParticleLayer", "Particle/fireBall.lua");
-    fireBall->setPosition(glm::vec3(100.0f, 0, 0));
-//    fireBall->addActions({delay, moveTo, delay}, 0);
+    fireBall->setPosition(glm::vec3(-200, -250, 0));
+    fireBall->addActions({delay, moveTo, delay}, 0);
     fireBall->setZDepth(100);
 //
     magicalOrbits = ParticleSystem::createWithLuaConfig("magicalOrbitsLayer", "Particle/magicalOrbits.lua");
@@ -154,9 +154,7 @@ void TitleButtonLayer::init(){
         arm3->addActions({rotateLeftTo, rotateRightTo}, -1);
         arm3->runAction();
         
-//        arm3->addChild(fireBall);
         arm3->addChild(magicalOrbits);
-//        this->addChild(fireBall);
         
         Sprite* topArm1 = Sprite::createSprite("topArm1", "title scene/bone.png");
         topArm1->setZDepth(z_top);
@@ -171,9 +169,9 @@ void TitleButtonLayer::init(){
         topArm1->runAction();
         tentacle->addChild(topArm1);
     }
-    auto delay = ActionDelay::createDelay(3);
+    auto delayTentacle = ActionDelay::createDelay(3);
     auto rotateBy = ActionRotateBy::createRotateBy(3, 360);
-    tentacle->addActions({delay, rotateBy}, 0);
+    tentacle->addActions({delayTentacle, rotateBy}, 0);
 //    tentacle->runAction();
     this->addChild(tentacle);
 }
@@ -211,8 +209,6 @@ void TitleButtonLayer::update(double dt){
             cout << "DPAD up released" << endl;
         }
     }
-
-    
     
     //must call base class update()
     Layer::update(dt);
@@ -248,10 +244,10 @@ void TitleButtonLayer::closeCredits(){
 
 void TitleButtonLayer::keyPressed(int key, int mods){
     if(key == GLFW_KEY_PERIOD){
-        this->addChild(magicalOrbits);
-        this->addChild(flame);
-        this->addChild(blueMeteor);
-        this->addChild(muhanDojun);
+//        this->addChild(magicalOrbits);
+//        this->addChild(flame);
+//        this->addChild(blueMeteor);
+//        this->addChild(muhanDojun);
         fireBall->runAction();
         this->addChild(fireBall);
     }
@@ -260,7 +256,10 @@ void TitleButtonLayer::keyPressed(int key, int mods){
         switch (selectingButtonID) {
             case NEW_GAME:
 //                Volt2D::Director::getInstance().pushScene(new BattleScene());
-                Volt2D::Director::getInstance().transitionToNextScene(TransitionFade::createWithColor(1.0f, Color::HOTPINK, new BattleScene()));
+//                Volt2D::Director::getInstance().transitionToNextScene(TransitionFade::createWithColor(2.0f, Color::DEEPPINK, new BattleScene()));
+//                Volt2D::Director::getInstance().transitionToNextScene(TransitionMove::createWithDirection(2.0f, TransitionDirection::LEFT, new BattleScene()));
+                Volt2D::Director::getInstance().transitionToNextScene(TransitionFlip::createWithDirection(4.0f, TransitionDirection::LEFT, new BattleScene));
+                
 //                Volt2D::Director::getInstance().transitionToNextScene(true);
                 Volt2D::Director::getInstance().getSoundManager()->playSFX("titleSceneMenuSelect", 0.1);
                 break;

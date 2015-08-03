@@ -39,8 +39,8 @@ void TitleScene::init(){
 
     SpriteSheet::createSpriteSheet("titleSceneSpriteSheet", "title scene/title_scene_sprite_sheet.png", "title scene/title_scene_sprite_sheet.xml");
     
-//    bg = Sprite::createSprite("titleSceneBg", "title scene/title_scene_bg.png");
-    bg = Sprite::createSpriteWithFrameName("titleSceneBg", "titleSceneSpriteSheet", "title_scene_bg.png");
+    bg = Sprite::createSprite("gridBg", "grid_bg.png");
+//    bg = Sprite::createSpriteWithFrameName("titleSceneBg", "titleSceneSpriteSheet", "title_scene_bg.png");
     bg->setZDepth(z_bg);
 //    bg->setAnchorPoint(glm::vec2(0.5, 0.5));
     this->addChild(bg);
@@ -56,67 +56,67 @@ void TitleScene::init(){
 //    delete rotateIt2;
 //    delete moveIt;
     
-//    title = Sprite::createSprite("titleSceneTitle", "title scene/scrolls_title.png");
-////    title = Sprite::createSpriteWithFrameName("titleSceneTitle", "titleSceneSpriteSheet", "title.png");
-//    title->setZDepth(z_title);
-//    title->setY(170);
-////    auto delay = ActionDelay::createDelay(2);
-////    auto rotateTo = ActionRotateTo::createRotateTo(1, 80, RotationType::LEFT);
-////    auto rotateTo2 = ActionRotateTo::createRotateTo(1, 40);
-////    auto print = ActionCallFunc::createCallFunc(std::bind(&TitleScene::printAngle, this));
-////    title->addActions({delay, print, rotateTo, print, delay, rotateTo2, print, delay, rotateTo, print, delay, rotateTo2, print}, 0);
-////    title->runAction();
-////    delete rotateTo;
-//    this->addChild(title);
-//    
-//    version = Sprite::createSprite("titleSceneTitle", "title scene/version.png");
-//    version->setZDepth(z_title);
-//    version->setX(-648);
-//    version->setY(-432);
-//    this->addChild(version);
-//    
-//    Text* title;
-//    FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
-//    title = Text::createText("titleText", "Engine Test", "UhBee Kang-Ja.ttf");
-//    title->setColor(Color::WHITE);
-////    title->setTextAlign(Text::TextAlign::ALIGN_LEFT);
-////    title->initText("Engine Test", "UhBee Kang-Ja.ttf");
-//    title->setZDepth(z_text);
-////    title->setPosition(glm::vec3(0, 100, 0));
-//    this->addChild(title);
-//    
-//    character = SpriteAnimation::createWithAnimation("character", "run", "title scene/run.png", 8, 0.1);
-//    character->setZDepth(999);
-//    character->addPosition(glm::vec3(-100, -100, 0));
-//	character->setZDepth(z_animation);
-////    character->addActions({delay, rotateTo}, 0);
-////    character->runAction();
-//    this->addChild(character);
-//    
-//    auto delay = ActionDelay::createDelay(1);
-//    auto moveTo = ActionMoveTo::createMoveTo(8, glm::vec3(600, -250, 0));
-//    
-//    fireBall = ParticleSystem::createWithLuaConfig("fireBallParticle", "Particle/fireBall.lua");
-//    fireBall->setPosition(glm::vec3(-600, -250, 0));
-//    fireBall->addActions({delay, moveTo, delay}, 0);
-//	fireBall->setZDepth(z_fireball);
-//    
-//    magicalOrbits = ParticleSystem::createWithLuaConfig("testParticle", "Particle/magicalOrbits.lua");
-//    magicalOrbits->setPosition(vec3(-400, 0, 0));
-//	magicalOrbits->setZDepth(z_particles);
-//    
-//    flame = ParticleSystem::createWithLuaConfig("flameParticle", "Particle/flame.lua");
-//	flame->setPosition(vec3(-200, 0, 0));
-//	flame->setZDepth(z_particles);
-//    
-//    blueMeteor = ParticleSystem::createWithLuaConfig("blueMeteorParticle", "Particle/blueMeteor.lua");
-//	blueMeteor->setPosition(vec3(50, 0, 0));
-//	blueMeteor->setZDepth(z_particles);
-//    
-//    muhanDojun = ParticleSystem::createWithLuaConfig("muhanDojunParticle", "Particle/muhanDojun.lua");
-//	muhanDojun->setPosition(vec3(300, 100, 0))  ;
-//	muhanDojun->setZDepth(z_particles);
-//    
+    title = Sprite::createSprite("titleSceneTitle", "title scene/scrolls_title.png");
+//    title = Sprite::createSpriteWithFrameName("titleSceneTitle", "titleSceneSpriteSheet", "title.png");
+    title->setZDepth(z_title);
+    title->setY(170);
+//    auto delay = ActionDelay::createDelay(2);
+//    auto rotateTo = ActionRotateTo::createRotateTo(1, 80, RotationType::LEFT);
+//    auto rotateTo2 = ActionRotateTo::createRotateTo(1, 40);
+//    auto print = ActionCallFunc::createCallFunc(std::bind(&TitleScene::printAngle, this));
+//    title->addActions({delay, print, rotateTo, print, delay, rotateTo2, print, delay, rotateTo, print, delay, rotateTo2, print}, 0);
+//    title->runAction();
+//    delete rotateTo;
+    this->addChild(title);
+    
+    version = Sprite::createSprite("titleSceneTitle", "title scene/version.png");
+    version->setZDepth(z_title);
+    version->setX(-648);
+    version->setY(-432);
+    this->addChild(version);
+    
+    Text* title;
+    FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
+    title = Text::createText("titleText", "Engine Test", "UhBee Kang-Ja.ttf");
+    title->setColor(Color::WHITE);
+//    title->setTextAlign(Text::TextAlign::ALIGN_LEFT);
+//    title->initText("Engine Test", "UhBee Kang-Ja.ttf");
+    title->setZDepth(z_text);
+//    title->setPosition(glm::vec3(0, 100, 0));
+    this->addChild(title);
+    
+    character = SpriteAnimation::createWithAnimation("character", "run", "title scene/run.png", 8, 0.1);
+    character->setZDepth(999);
+    character->addPosition(glm::vec3(-100, -100, 0));
+	character->setZDepth(z_animation);
+//    character->addActions({delay, rotateTo}, 0);
+//    character->runAction();
+    this->addChild(character);
+    
+    auto delay = ActionDelay::createDelay(1);
+    auto moveTo = ActionMoveTo::createMoveTo(8, glm::vec3(600, -250, 0));
+    
+    fireBall = ParticleSystem::createWithLuaConfig("fireBallParticle", "Particle/fireBall.lua");
+    fireBall->setPosition(glm::vec3(-600, -250, 0));
+    fireBall->addActions({delay, moveTo, delay}, 0);
+	fireBall->setZDepth(z_fireball);
+    
+    magicalOrbits = ParticleSystem::createWithLuaConfig("testParticle", "Particle/magicalOrbits.lua");
+    magicalOrbits->setPosition(vec3(-400, 0, 0));
+	magicalOrbits->setZDepth(z_particles);
+    
+    flame = ParticleSystem::createWithLuaConfig("flameParticle", "Particle/flame.lua");
+	flame->setPosition(vec3(-200, 0, 0));
+	flame->setZDepth(z_particles);
+    
+    blueMeteor = ParticleSystem::createWithLuaConfig("blueMeteorParticle", "Particle/blueMeteor.lua");
+	blueMeteor->setPosition(vec3(50, 0, 0));
+	blueMeteor->setZDepth(z_particles);
+    
+    muhanDojun = ParticleSystem::createWithLuaConfig("muhanDojunParticle", "Particle/muhanDojun.lua");
+	muhanDojun->setPosition(vec3(300, 100, 0))  ;
+	muhanDojun->setZDepth(z_particles);
+//
     initLayers();
 }
 
