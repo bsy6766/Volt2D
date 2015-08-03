@@ -3,7 +3,7 @@ particleSystem = {
 	pause = false,
 	blend = true,
 	size = 350,
-	duration = 10,
+	duration = -1,
 
 	posVar = {
 		x = 0,
