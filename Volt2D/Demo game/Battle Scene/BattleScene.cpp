@@ -40,6 +40,10 @@ void BattleScene::init(){
     this->addChild(HUD_Layer);
 }
 
+void BattleScene::onEnter(){
+    
+}
+
 void BattleScene::update(double dt){
     Scene::update(dt);
 }
@@ -59,14 +63,6 @@ void BattleScene::update(double dt){
 //void BattleScene::mouseMove(double x, double y){
 //
 //}
-
-void BattleScene::injectKey(){
-    
-}
-
-void BattleScene::injectMouseMove(){
-    
-}
 
 void BattleScene::exit(){
     cout << "BattleScene::init" << endl;

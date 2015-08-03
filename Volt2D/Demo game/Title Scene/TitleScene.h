@@ -56,16 +56,15 @@ public:
     ~TitleScene();
     
     //override pure
-    virtual void init();
-    virtual void exit();
-	virtual void keyPressed(int key, int mode);
+    void init() override;
+    void onEnter() override;
+    void exit() override;
+    void keyPressed(int key, int mode) override;
 //    virtual void keyReleased(int key, int mode);
-    virtual void mouseButton(double x, double y, int button, int action);
+    void mouseButton(double x, double y, int button, int action) override;
 //    virtual void mouseMove(double x, double y);
-    
-    virtual void injectKey();
-    virtual void injectMouseMove();
-    virtual void update(double dt) override;
+
+    void update(double dt) override;
     
     void updateMouseInput();
 };

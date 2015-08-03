@@ -34,19 +34,16 @@ public:
      */
     virtual void init() = 0;
     
-    /**
-     *  Exit func. This called when Director deletes old scenes.
-     */
+    /** Entering function. Called when Scene enters the screen */
+    virtual void onEnter() = 0;
+    
+    /** Exit func. This called when Director deletes old scenes */
     virtual void exit() = 0;
     
-    /**
-     *  Implement Object::update().
-     */
+    /** Implements Object::update() */
     virtual void update(double dt);
     
-    /**
-     *  Impelment Object::render().
-     */
+    /** Impelments Object::render() */
     virtual void render();
     
     /**
@@ -72,24 +69,6 @@ public:
      *  If you override this, make sure to call Scene::mouseMove(double, double) to foward again to child layers.
      */
     virtual void mouseMove(double x, double y);
-    
-    /**
-     *  Pure virtual of key input.
-     *  This function will be called on every iteration
-     */
-    virtual void injectKey() = 0;
-    
-    /**
-     *  Pure virtual of mouse input.
-     *  This function will be called on every iteration
-     */
-    virtual void injectMouseMove() = 0;
-    
-    /**
-     *  Bind current window to this scene to get key and mouse input.
-     *  Can be used for Scene::injectKey() and Scene::injectMouseMove()
-     */
-//    void bindWindow(GLFWwindow* window);
     
     /**
      *  Add child wrapper.

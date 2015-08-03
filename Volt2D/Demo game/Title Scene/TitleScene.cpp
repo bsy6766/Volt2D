@@ -120,6 +120,10 @@ void TitleScene::init(){
     initLayers();
 }
 
+void TitleScene::onEnter(){
+    
+}
+
 void TitleScene::printAngle(){
     cout << "angle = " << title->getAngle() << endl;
 }
@@ -242,14 +246,6 @@ void TitleScene::keyPressed(int key, int mods){
 void TitleScene::mouseButton(double x, double y, int button, int action){
 //    ps->setPosition(glm::vec3(x, y, 0));
     Scene::mouseButton(x, y, button, action);
-}
-
-void TitleScene::injectKey(){
-    
-}
-
-void TitleScene::injectMouseMove(){
-
 }
 
 void TitleScene::exit(){

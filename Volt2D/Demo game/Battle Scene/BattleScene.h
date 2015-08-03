@@ -24,14 +24,13 @@ public:
     BattleScene();
     ~BattleScene();
     
-    virtual void init();
-    virtual void update(double dt) override;
+    void init() override;
+    void onEnter() override;
+    void update(double dt) override;
 //	virtual void keyPressed(int key, int mods);
 //	virtual void keyReleased(int key, int mods);
 //    virtual void mouseButton(double x, double y, int button, int action);
 //    virtual void mouseMove(double x, double y);
-    virtual void injectKey();
-    virtual void injectMouseMove();
     
     enum BattleState{
         PLAYER_TURN = 0,        //Player's turn

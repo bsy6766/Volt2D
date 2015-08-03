@@ -360,12 +360,14 @@ void Volt2D::Director::replaceScene(Volt2D::Scene *newScene){
         runningScene = newScene;
         runningScene->init();
         //onEnter
+        runningScene->onEnter();
     }
     else{
         dyingScene = runningScene;
         runningScene = newScene;
         runningScene->init();
         //OnEnter
+        runningScene->onEnter();
         dyingScene->exit();   
         delete dyingScene;
         dyingScene = nullptr;
@@ -386,6 +388,8 @@ void Volt2D::Director::swapScene(Volt2D::Scene *newScene){
         dyingScene = runningScene;
         //assign new one. Transition class will init for us.
         this->runningScene = newScene;
+        //enters the screen
+        this->runningScene->onEnter();
         dyingScene->exit();
         delete dyingScene;
     }
