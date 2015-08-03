@@ -94,7 +94,7 @@ protected:
      *  @param name Uniform name
      *  @param matrix A glm::mat4 value to pass to shader
      */
-    void matrixUniformLocation(std::string name, glm::mat4& matrix);
+    void matrixUniformLocation(const std::string name, const glm::mat4& matrix);
 private:
     //no privates
 public:

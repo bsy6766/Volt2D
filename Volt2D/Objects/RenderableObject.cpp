@@ -78,7 +78,7 @@ void RenderableObject::vec3UniformLocation(std::string name, glm::vec3 &vec){
     glUniform3fv(uniformLocation, 1, &vec[0]);
 }
 
-void RenderableObject::matrixUniformLocation(std::string name, glm::mat4 &matrix){
+void RenderableObject::matrixUniformLocation(const std::string name, const glm::mat4 &matrix){
     GLint uniformLocation = glGetUniformLocation(progPtr->getObject(), name.c_str());
     if(uniformLocation == -1)
         throw std::runtime_error( std::string("Program uniform not found: " ) + name);
