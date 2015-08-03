@@ -57,6 +57,7 @@ struct WinSize{
 	float w;
 	float h;
 };
+    
 /**
  *  @class Director
  *  @brief Manages scene and underlying systems
@@ -67,14 +68,14 @@ private:
     //Friends
     friend class Volt2D::SpriteSheet;
     friend class Volt2D::Sprite;
-    friend class Volt2D::Transition;
     friend class Volt2D::ParticleSystem;
     
     //mouse icon
     Volt2D::Sprite* mouseCursor;
-    
+    //temp
     glm::vec2 prevMousePos = glm::vec2();
     
+#pragma mark OpenGL
 /// -------------------- OpenGL ---------------------
 /// @{
 /// @name OpenGL attributes
@@ -94,56 +95,47 @@ private:
 /// @}
 /// -------------------------------------------------
 
+#pragma mark System
 /// -------------------- System ---------------------
 /// @{
-/// @name OpenGL attributes
+/// @name System atrributes
     
-    //wd
+    /** Application's working directory */
     std::string workingDirectory;
     
-    //GLFW window
+    /** Main GLFW window */
     GLFWwindow* window;
     
-    //SoundManager
+    /** SoundManager instance */
     Volt2D::SoundManager* soundManager;
     
     //@deprecated
     bool paused;
     
+    
+    /// @{
+    /// @name Application window & input settings
     bool vsync;
     bool fullscreen;
     bool borderless;
     bool captureMouse;
     bool cursorHidden;
+    /// @}
     
-    //Window size
+    
+    /** Window size */
     WinSize winSize;
     
-    //SpriteSheet
+    /** Change window size */
+    void changeWindowSize(const int w, const int h);
+    
+    /// @{
+    /// @name SpriteSheets
+    /**
+     *  Sprite sheet container
+     *  Stores SpriteSheet pointer with std::string name as an ID
+     */
     std::unordered_map<std::string, Volt2D::SpriteSheet*> spriteSheets;
-    
-    //PS3 Controller.
-    //Enable flag
-    bool joystickEnabled;
-    //Controller storage.
-    //\todo Make one for XBOX controller as well(but I don't have one...)
-    Volt2D::PS3ControllerWrapper* ps3Joysticks[MAX_JOYSTICK];
-    
-    //Scens
-    /** Currently running scene */
-    Volt2D::Scene* runningScene;
-    
-    /** Next scene waiting to get pushed */
-    Volt2D::Scene* nextScene;
-    
-    /** Holds previously running scene. Gets deleted. */
-    Volt2D::Scene* dyingScene;
-    
-    void swapScene(Scene* newScene);
-    
-    Volt2D::Transition* sceneTransition;
-    
-    bool transitioning = false;
     
     /**
      *  Get chached sprite sheet by name
@@ -170,6 +162,41 @@ private:
      *  @return true if there is sprite sheet with same name. Else, false.
      */
     bool hasSpriteSheetFrameName(std::string frameName);
+    ///@}
+    
+    
+    /// @{
+    /// @name Joysticks
+    /** true if at least one joystick is connected */
+    bool joystickEnabled;
+    
+    /** Joystick container */
+    //\todo Make one for XBOX controller as well(but I don't have one...)
+    Volt2D::PS3ControllerWrapper* ps3Joysticks[MAX_JOYSTICK];
+    /// @}
+    
+    /// @{
+    /// @name Scene and Transitions
+    /** Currently running scene */
+    Volt2D::Scene* runningScene;
+    
+    /** Next scene waiting to get pushed */
+    Volt2D::Scene* nextScene;
+    
+    /** Holds previously running scene. Gets deleted. */
+    Volt2D::Scene* dyingScene;
+    
+    /** Let Transition's swapScene function to access Scene instances */
+    friend void Transition::swapScene();
+    
+    /** Transition object pointer */
+    Volt2D::Transition* sceneTransition;
+    
+    /** true if scene is transitioning. Else, false. */
+    bool transitioning;
+    /// @}
+    
+    
 /// @}
 /// -------------------------------------------------
     
@@ -251,14 +278,17 @@ private:
 /// -------------------------------------------------
     
 public:
-    //Instance getter
+#pragma mark Init & Release
+/// ---------------- Init & Release ------------------
+/// @{
+/// @Application init & release
+    
+    /** Instance getter */
     static Director& getInstance(){
         static Director instance;
         return instance;
     }
     
-    /// @{
-    /// @Application related
     /**
      *  Initialize app.
      *  @note throws runtime error if fails to initialize.
@@ -272,35 +302,40 @@ public:
      */
     void initApp(const int screenWidth, const int screenHeight, const std::string windowTitle , glm::vec3 clearBuffColor, bool vsync, bool fullscreen, bool borderelss, bool captureMouse, bool cursorHidden);
     
-    // closw GLFW window
+    /** Terminate GLFW window */
     void terminateApp();
-    // Run application
-    void run();
-    /// @}
     
-    /// @{
-    /// @name Window sie
-    //get window size
+    /** Run application (main game loop) */
+    void run();
+/// @}
+/// -------------------------------------------------
+    
+    
+    /** Get window size */
     WinSize getWindowSize();
-    //change window size
-    void changeWindowSize(int w, int h);
-    /// @}
+    
     
     /// @{
     /// @name Scene management
-    //Replace current scene with new scene
+    /** Replace scene */
     void replaceScene(Scene* newScene);
-    //get currently running scene
-    Volt2D::Scene* getRunningScene(){return this->runningScene;};
-    //transition to next scene.
+    
+    /** Get running scene. Returning scene pointer might be vulnerable from getting deleted or modified, but that's none of my business and user must be able to control the scene freely but Director */
+    Volt2D::Scene* getRunningScene();
+    
+    /**
+     *  Transition scene to next scene
+     *  @param Transition object to transition
+     */
     void transitionToNextScene(Transition* transition);
     /// @}
     
     /// @{
     /// @name Working directory
-    //wd getter
+    /** Get application's working directory */
     std::string getWorkingDir();
-    //wd setter
+    
+    /** Set application's working directory */
     void setWorkingDir(std::string wd);
     /// @}
     
@@ -308,25 +343,34 @@ public:
      *  Render the scene
      */
     void render();
+    
     /**
      *  Update the scene.
      *  @param dt Elapsed time since last iteration
      */
     void update(double dt);
     
-    //Add opengl program
+    /** Add OpenGL program to system */
     void addProgramWithShader(const std::string programName, const std::string vertexShaderPath, const std::string fragmentShaderPath);
-    //get opengl program
+    
+    /** Get OpenGL program */
     Volt2D::Program* getProgramPtr(std::string programName="Default");
     
-    //get camera
-    Volt2D::Camera* getCameraPtr();
+    /** Get Projection * View matrix of screen */
+    const glm::mat4 getProjectiveViewMatrix();
     
-    //get sound manager
+    /** Get SoundManager instance pointer */
+    //\todo Instead of returning pointer, make Director to have wrapper functions to controll sound
     Volt2D::SoundManager* getSoundManager();
     
-    //get ps3 controller
+    /** Get joystick by number ID */
     Volt2D::PS3ControllerWrapper* getJoyStick(int num);
+    
+    
+    
+    
+    
+    
     //    void pause(){this->paused = true;}
     //    bool isScenePaused(){return this->paused;}
     //    void resume(){this->paused = false;}

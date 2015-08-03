@@ -23,8 +23,11 @@ vsync(false),
 //By default, window will be created as fullscreen(not windowed and boderless)
 fullscreen(true),
 borderless(false),
-cursorHidden(false)
+cursorHidden(false),
+transitioning(false)
 {
+    Timer::getInstance().recordTime();
+    //get Working directory.
     char cCurrentPath[FILENAME_MAX];
     
     if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
@@ -320,53 +323,27 @@ void Volt2D::Director::createWindow(const int &screenWidth, const int &screenHei
 }
 
 #pragma mark Scene Management
-//void Volt2D::Director::pushScene(Volt2D::Scene* newScene){
-//    if(!runningScene){
-//        cout << "No running scene exists. Pushing new scene to running scene" << endl;
-//        runningScene = newScene;
-////        runningScene->bindWindow(window);
-//        //if no scene exist, call init right now
-//        runningScene->init();
-//    }
-//    else{
-//        //if there's next scene already, replace it
-//        if(nextScene){
-//            delete nextScene;
-//        }
-//        
-//        nextScene = newScene;
-////        nextScene->bindWindow(window);
-//        //call init on switching
-//        //        nextScene->init();
-//    }
-//}
-
-//void Volt2D::Director::popScene(){
-//    if(runningScene){
-//        cout << "Volt2D::Director::popScene() popping current running scene" << endl;
-//        delete runningScene;
-//    }
-//
-//    if(nextScene){
-//        cout << "Volt2D::Director::popScene() next scene exists." << endl;
-//        runningScene = nextScene;
-//        nextScene = 0;
-//    }
-//}
+Volt2D::Scene* Volt2D::Director::getRunningScene(){
+    return this->runningScene;
+};
 
 //!! This function is public and will be called by users. Transitions will not use this.
 void Volt2D::Director::replaceScene(Volt2D::Scene *newScene){
     if(runningScene == nullptr){
+        //no running scene exists. Just replace then.
         runningScene = newScene;
+        //initialize scene
         runningScene->init();
-        //onEnter
+        //and enter
         runningScene->onEnter();
     }
     else{
+        //store running scene to dying scene
         dyingScene = runningScene;
+        //assign next scene
         runningScene = newScene;
+        //init and enter
         runningScene->init();
-        //OnEnter
         runningScene->onEnter();
         dyingScene->exit();   
         delete dyingScene;
@@ -381,19 +358,20 @@ void Volt2D::Director::transitionToNextScene(Volt2D::Transition *transition){
 }
 
 //!! This function is private and will be only called by Transition classes.
-void Volt2D::Director::swapScene(Volt2D::Scene *newScene){
-    //only valid if there's running scene
-    if(this->runningScene){
-        //delete dying scene
-        dyingScene = runningScene;
-        //assign new one. Transition class will init for us.
-        this->runningScene = newScene;
-        //enters the screen
-        this->runningScene->onEnter();
-        dyingScene->exit();
-        delete dyingScene;
-    }
-}
+//void Volt2D::Director::swapScene(Volt2D::Scene *newScene){
+//    //only valid if there's running scene
+//    if(this->runningScene){
+//        //delete dying scene
+//        dyingScene = runningScene;
+//        //assign new one. Transition class will init for us.
+//        this->runningScene = newScene;
+//        //enters the screen
+//        this->runningScene->onEnter();
+//        dyingScene->exit();
+//        delete dyingScene;
+//    }
+//}
+
 
 #pragma mark System
 void Volt2D::Director::addProgramWithShader(const std::string programName, const std::string vertexShaderPath, const std::string fragmentShaderPath){
@@ -413,6 +391,8 @@ void Volt2D::Director::run(){
     int fps = 0;
     double timeCounter=  0;
     
+    Volt2D::Timer::getInstance().recordTime();
+    
     //Main game loop
     while (!glfwWindowShouldClose(window)){
         glClearColor(clearBufferColor.r, clearBufferColor.g, clearBufferColor.b, 1);
@@ -420,7 +400,6 @@ void Volt2D::Director::run(){
         
         Volt2D::Timer::getInstance().recordTime();
         double elapsedTime = Volt2D::Timer::getInstance().getElapsedTime();
-//        cout << "elapsed time = " << elapsedTime << endl;
         
         if(!this->transitioning){
             if(joystickEnabled){
@@ -533,8 +512,8 @@ Volt2D::Program* Volt2D::Director::getProgramPtr(std::string programName){
         return 0;
 }
 
-Volt2D::Camera* Volt2D::Director::getCameraPtr(){
-    return camera;
+const glm::mat4 Volt2D::Director::getProjectiveViewMatrix(){
+    return this->camera->getMatrix();
 }
 
 void Volt2D::Director::setWorkingDir(std::string wd){
@@ -545,7 +524,7 @@ Volt2D::SoundManager* Volt2D::Director::getSoundManager(){
     return this->soundManager;
 }
 
-void Volt2D::Director::changeWindowSize(int w, int h){
+void Volt2D::Director::changeWindowSize(const int w, const int h){
     glfwSetWindowSize(window, w, h);
 }
 
