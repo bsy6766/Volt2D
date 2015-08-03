@@ -25,7 +25,9 @@ modelMat(glm::mat4()),
 translateMat(glm::mat4()),
 rotateMat(glm::mat4()),
 scaleMat(glm::mat4()),
-angle(0),
+angleX(0),
+angleY(0),
+angleZ(0),
 scale(glm::vec3(1, 1, 1)),
 alive(true),
 actionRunning(false)
@@ -100,35 +102,56 @@ void Object::addAngle(GLfloat angle, glm::vec3 axis){
     rotateBy(angle, axis);
 }
 
-//void Object::wrapAngle(GLfloat& angle){
-//    if(angle < 0)
-//        angle += 360;
-//    else if(angle > 360)
-//        angle -= 360;
-//    else if(angle == 360)
-//        angle = 0;
-//}
-
 const GLfloat Object::getAngle(){
-    return this->angle;
+    return this->angleZ;
 }
 
-void Object::rotateTo(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
-    //rotate in 2d space by default
-//    wrapAngle(angle);
+void Object::rotateTo(GLfloat angle, glm::vec3 axis){
+    //wrap da angle first
     Volt2D::wrapAngle(angle);
-    rotateMat = glm::rotate(glm::mat4(), -angle, axis);
-    this->angle = angle;
-    needToUpdateBB = true;
+    
+    //default rotation.
+    if(axis == Z_AXIS || axis == Z_NAXIS){
+        //rotate in 2d space by default
+        rotateMat = glm::rotate(glm::mat4(), -angle, axis);
+        this->angleZ = angle;
+        //@warning. make other rotation to update bounding box?
+        needToUpdateBB = true;
+    }
+    //optional x and y axis rotations.
+    //\todo make these angle movement private and make only accessable from Transition
+    else if(axis == X_AXIS || axis == X_NAXIS){
+        rotateMat = glm::rotate(glm::mat4(), -angle, axis);
+        this->angleX = angle;
+    }
+    else if(axis == Y_AXIS || axis == Y_NAXIS){
+        rotateMat = glm::rotate(glm::mat4(), -angle, axis);
+        this->angleY = angle;
+    }
 }
 
-void Object::rotateBy(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1)){
-    //rotate in 2D space by default
-    this->angle += angle;
-//    wrapAngle(this->angle);
-    Volt2D::wrapAngle(this->angle);
-    rotateMat = glm::rotate(rotateMat, -angle, axis);
-    needToUpdateBB = true;
+void Object::rotateBy(GLfloat angle, glm::vec3 axis){
+    if(axis == Z_AXIS || axis == Z_NAXIS){
+        //rotate in 2D space by default
+        this->angleZ += angle;
+        //    wrapAngle(this->angle);
+        Volt2D::wrapAngle(this->angleZ);
+        rotateMat = glm::rotate(rotateMat, -angle, axis);
+        needToUpdateBB = true;
+    }
+    //optional x and y axis rotations.
+    //\todo make these angle movement private and make only accessable from Transition
+    else if(axis == X_AXIS || axis == X_NAXIS){
+        this->angleX += angle;
+        Volt2D::wrapAngle(this->angleX);
+        rotateMat = glm::rotate(rotateMat, -angle, axis);
+    }
+    else if(axis == Y_AXIS || axis == Y_NAXIS){
+        this->angleY += angle;
+        Volt2D::wrapAngle(this->angleY);
+        rotateMat = glm::rotate(rotateMat, -angle, axis);
+    }
+    
 }
 
 const glm::vec3 Object::getScale(){
@@ -208,6 +231,51 @@ glm::mat4 Object::getTransformMat(){
     }
     else{
         return translateMat * rotateMat * scaleMat;
+    }
+}
+
+glm::mat4 Object::getSceneAndLayerTransformMat(){
+    //if it's scene or layer and has parent
+    if(dynamic_cast<Scene*>(this)){
+        //scene. Scene doesn't have parent
+        return this->translateMat * this->rotateMat * this->scaleMat;
+    }
+    else if(dynamic_cast<Layer*>(this)){
+        //layer
+        if(this->parent == nullptr){
+            //but no parent,
+            return glm::mat4();
+        }
+        else{
+            return this->parent->getSceneAndLayerTransformMat() * this->translateMat * this->rotateMat * this->scaleMat;
+        }
+    }
+    else{
+        if(this->parent == nullptr){
+            return glm::mat4();
+        }
+        else{
+            return this->parent->getSceneAndLayerTransformMat();
+        }
+    }
+}
+
+glm::mat4 Object::getTransformMatWithOutSceneAndLayer(){
+    //Getting parent transformative matrix without Scene and Layer.
+    if(dynamic_cast<Scene*>(this) || dynamic_cast<Layer*>(this)){
+        //return indentity matrix if it's scene or layer
+        return glm::mat4();
+    }
+    else{
+        //if not scene or layer
+        if(this->parent != nullptr){
+            //and has parent, recursive call
+            return this->parent->getTransformMatWithOutSceneAndLayer() * translateMat * rotateMat * scaleMat;
+        }
+        else{
+            //has no parent. return itself's transformative matrix
+            return translateMat * rotateMat * scaleMat;
+        }
     }
 }
 
@@ -333,10 +401,10 @@ void Object::updateChild(double dt){
                 //update child's child
                 std::string objName = it->second->getName();
 //                cout << "updating = " << objName << endl;
+                (it->second)->update(dt);
                 if(!dynamic_cast<Layer*>(it->second)){
-                    (it->second)->update(dt);
+                    (it->second)->updateChild(dt);
                 }
-                (it->second)->updateChild(dt);
                 ++it;
             }
         }
@@ -362,10 +430,10 @@ void Object::renderChild(){
             //but layer it self is not a redernable even if it inherites.
             //Layer is just place holder.
             //so render it self when only it's not Layer
+            (it->second)->render();
             if(!dynamic_cast<Layer*>(it->second)){
-                (it->second)->render();
+                (it->second)->renderChild();
             }
-            (it->second)->renderChild();
             ++it;
         }
     }

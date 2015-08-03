@@ -109,7 +109,9 @@ protected:
      *  Angle of object. 
      *  @note max = 360, min = 0
      */
-    GLfloat angle;
+    GLfloat angleX;
+    GLfloat angleY;
+    GLfloat angleZ; //Z is base
     
     /**
      *  Scale axis of object. Each attrib represent each axis
@@ -161,14 +163,14 @@ protected:
      *  @param angle A angle in degree to set
      *  @param axis A vec3 axis to rotate.
      */
-    void rotateTo(GLfloat angle, glm::vec3 axis);
+    void rotateTo(GLfloat angle, glm::vec3 axis = Z_AXIS);
     
     /**
      *  Rotate by specific angle with axis
      *  @param angle A angle in degree to add on current object's angle
      *  @param axis A vec3 axis to rotate.
      */
-    void rotateBy(GLfloat angle, glm::vec3 axis);
+    void rotateBy(GLfloat angle, glm::vec3 axis = Z_AXIS);
     
     /**
      *  Scale object to specific scale
@@ -202,10 +204,22 @@ public:
     virtual ~Object();
     
     /**
-     *  Get this object's model matrix (= T * R * S).
-     *  @return Object's model matrix
+     *  Get transformative matrix from the highest parent to the object it self.
+     *  @return Transformative matrix
      */
     glm::mat4 getTransformMat();
+    
+    /**
+     *  Get transformative matrix from only Scene and Layer.
+     *  @return Transformative matrix from Scene and Layer only
+     */
+    glm::mat4 getSceneAndLayerTransformMat();
+    
+    /**
+     *  Get transformative matrix from highest parent to object itself, excluding Scene and Layer.
+     *  @return Transformative matrix excluding Scene and Layer
+     */
+    glm::mat4 getTransformMatWithOutSceneAndLayer();
     
     /**
      *  Get this object's hierarchal position. 
@@ -251,14 +265,14 @@ public:
      *  @param angle An angle in degree to overwrite object's current angle
      *  @param axis An rotation axis. Set to Z-Axis by default.
      */
-    void setAngle(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1));
+    void setAngle(GLfloat angle, glm::vec3 axis = Z_AXIS);
     
     /**
      *  Add angle
      *  @param angle An angle in degree to add on current angle of object
      *  @param axis An rotation axis. Set toZ-Axis by default.
      */
-    void addAngle(GLfloat angle, glm::vec3 axis = glm::vec3(0, 0, 1));
+    void addAngle(GLfloat angle, glm::vec3 axis = Z_AXIS);
     
     /**
      *  Get angle
