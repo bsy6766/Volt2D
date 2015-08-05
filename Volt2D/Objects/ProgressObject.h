@@ -12,6 +12,7 @@
 #include "Texture.h"
 #include "RenderableObject.h"
 #include "ProgressFromTo.h"
+#include "SpriteSheet.h"
 
 #define VOID_OFFSET(i) (GLvoid*)(i)
 
@@ -21,7 +22,7 @@ namespace Volt2D{
  *  @brief Base class for ProgressBar and ProgressRadian
  *  \todo Make ProgressBar and ProgressRadian reverisble
  */
-class ProgressObject : public RenderableObject{
+class ProgressObject : public Volt2D::RenderableObject{
 protected:
     //protected constructor
     ProgressObject();
@@ -34,12 +35,12 @@ protected:
     /**
      *  texture width
      */
-    int w;
+    int textureWidth;
     
     /**
      *  texture height
      */
-    int h;
+    int textureHeight;
     
     /**
      *  total percentage

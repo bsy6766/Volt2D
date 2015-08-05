@@ -18,8 +18,8 @@ percentageRate(1),
 currentPercentage(100),
 totalSteps(100),
 texture(0),
-w(-1),
-h(-1)
+textureWidth(-1),
+textureHeight(-1)
 {
 //    cout << "[SYSTEM::INFO] Creating ProgressObject" << endl;
 }
@@ -49,6 +49,8 @@ void ProgressObject::addPercentage(int percentage){
     int sum = percentage + this->currentPercentage;
     if(sum > totalPercentage)
         sum = totalPercentage;
+    else if(sum < 0)
+        sum = 0;
     currentPercentage = sum;
 }
 
