@@ -219,6 +219,7 @@ void Object::setAnchorPoint(glm::vec2 anchorPoint){
     float shiftY = anchorPoint.y * this->scaledHeight;
     anchorDistance = glm::vec3(shiftX, shiftY, 0);
     this->modelMat = glm::translate(glm::mat4(), anchorDistance);
+    this->needToUpdateBB = true;
 }
 
 glm::vec2 Object::getAnchorPoint(){
@@ -457,11 +458,19 @@ void Object::renderChild(){
 }
 
 Volt2D::BoundingBox* const Object::getBoundingBox(){
-    if(this->boundingBox && needToUpdateBB)
+    if(this->boundingBox && needToUpdateBB){
+        
+        glm::vec3 anchorDistance = glm::vec3();
+        float shiftX = -anchorPoint.x * this->scaledWidth * Volt2D::SCREEN_TO_WORLD_SCALE;
+        float shiftY = anchorPoint.y * this->scaledHeight * Volt2D::SCREEN_TO_WORLD_SCALE;
+        anchorDistance = glm::vec3(shiftX, shiftY, 0);
+        
         this->boundingBox->updateBoundingBox(
                                              glm::translate(glm::mat4(), this->position),
                                              this->scaleMat,
-                                             this->rotateMat);
+                                             this->rotateMat,
+                                             glm::translate(glm::mat4(), anchorDistance));
+    }
     needToUpdateBB = false;
     return this->boundingBox;
 }
@@ -481,7 +490,7 @@ void Object::setZDepth(float z){
 
 bool Object::getZDepth(float& z){
     if(this->z_depth.dirty){
-        z = this->z_depth.getZ(z);
+        this->z_depth.getZ(z);
         return true;
     }
     else{
