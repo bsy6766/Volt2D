@@ -22,10 +22,10 @@ SpriteSheet::~SpriteSheet(){
     }
 }
 
-void SpriteSheet::createSpriteSheet(std::string frameName, const char *textureName, const char *xmlFileName){
+void SpriteSheet::createSpriteSheet(const std::string frameName, const std::string filePath, const std::string fileName){
     if(!Volt2D::Director::getInstance().hasSpriteSheetFrameName(frameName)) {
         SpriteSheet* newSpriteSheet = new SpriteSheet();
-        if(newSpriteSheet->initSpriteSheetWithXML(textureName, xmlFileName)){
+        if(newSpriteSheet->initSpriteSheetWithXML(filePath, fileName)){
             Volt2D::Director::getInstance().cacheSpriteSheet(frameName, newSpriteSheet);
         }
         else{
@@ -35,12 +35,13 @@ void SpriteSheet::createSpriteSheet(std::string frameName, const char *textureNa
     }
 }
 
-bool SpriteSheet::initSpriteSheetWithXML(std::string texturePath, std::string xmlFileName){
+bool SpriteSheet::initSpriteSheetWithXML(const std::string filePath, const std::string fileName){
     rapidxml::xml_document<> doc;
     rapidxml::xml_node<> * root_node;
     // Read the xml file into a vector
     std::string wd = Volt2D::Director::getInstance().getWorkingDir();
-    std::ifstream theFile (wd + "/../Texture/" + xmlFileName);
+    std::string basePath = wd + "/../Texture/" + filePath + fileName;
+    std::ifstream theFile (basePath + ".xml");
     if(theFile) {
         std::vector<char> buffer((std::istreambuf_iterator<char>(theFile)), std::istreambuf_iterator<char>());
         //close the file.
@@ -54,7 +55,7 @@ bool SpriteSheet::initSpriteSheetWithXML(std::string texturePath, std::string xm
         root_node = doc.first_node("TextureAtlas");
         
         // Iterate over the brewerys
-        textureName = texturePath;
+        textureName = root_node->first_attribute("imagePath")->value();
         
         cout << "imageName: " << textureName << endl;
         
@@ -64,7 +65,7 @@ bool SpriteSheet::initSpriteSheetWithXML(std::string texturePath, std::string xm
         cout << "width: " << this->w << endl;
         cout << "height: " << this->h << endl;
         
-        this->texture = Texture::createTextureWithFile(texturePath);
+        this->texture = Texture::createTextureWithFile(filePath + "/" + fileName + ".png");
         this->texture->getImageSize(this->w, this->h);
         
         for (rapidxml::xml_node<> * sprite_node = root_node->first_node("sprite"); sprite_node; sprite_node = sprite_node->next_sibling())
@@ -93,7 +94,7 @@ bool SpriteSheet::initSpriteSheetWithXML(std::string texturePath, std::string xm
         return true;
     }
     else{
-        cout << "[SYSTEM::ERROR] Sprite sheet XML data file \"" << xmlFileName << "\" does not exist" << endl;
+        cout << "[SYSTEM::ERROR] Sprite sheet XML data file \"" << basePath + ".xml" << "\" does not exist" << endl;
         return false;
     }
 }

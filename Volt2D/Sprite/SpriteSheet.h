@@ -63,9 +63,12 @@ private:
     
     std::unordered_map<std::string, ImageEntry> entryMap;
     
-    bool initSpriteSheetWithXML(std::string texturePath, std::string xmlFileName);
+    bool initSpriteSheetWithXML(const std::string filePath, const std::string fileName);
     
     friend class Sprite;
+    friend class ProgressBar;
+    friend class ProgressRadian;
+    
     const ImageEntry* getImageEntry(std::string imageName);
     Volt2D::Texture* getTexture();
 public:
@@ -73,10 +76,10 @@ public:
      *  Create sprite sheet.
      *  Requires texture image and xml data file
      *  @param frameName Sprite sheet name
-     *  @param textureName Texture image file name
-     *  @param xmlFileName Sprite sheet xml data file.
+     *  @param filePath Path to sprite sheet image file and xml
+     *  @param fileName Name of file for both image and xml
      */
-    static void createSpriteSheet(std::string frameName, const char* textureName, const char* xmlFileName);
+    static void createSpriteSheet(const std::string frameName, const std::string filePath, const std::string fileName);
     ~SpriteSheet();
 };
 }
