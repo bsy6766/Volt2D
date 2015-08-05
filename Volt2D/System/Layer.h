@@ -73,7 +73,7 @@ public:
      *  @param button An int GLFW value for type of button clicked
      *  @param action An int GLFW value for pressing, releasing or repeating
      */
-    virtual void mouseButton(double x, double y, int button, int action){};
+    virtual void mouseButton(double x, double y, int button, int action, int mods){};
     
     /**
      *  Empty virtual class for mouse button click input event
