@@ -55,14 +55,17 @@ Sprite* Sprite::createSpriteWithFrameName(std::string objectName, std::string fr
                 return newSprite;
             }
             else{
+                cout << "[SYSTEM::ERROR] \"" << imageFileName << "\" does not exists in \"" << frameName << "\" SpriteSheet." << endl;
                 return nullptr;
             }
         }
         else{
+            cout << "[SYSTEM::ERROR] SpriteSheet called \"" << frameName << "\" does not exists in the system." << endl;
             return nullptr;
         }
     }
     else{
+        cout << "[SYSTEM::ERROR] SpriteSheet called \"" << frameName << "\" does not exists in the system." << endl;
         return nullptr;
     }
 }
