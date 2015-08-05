@@ -466,7 +466,7 @@ void Volt2D::Director::run(){
         timeCounter += elapsedTime;
         if(timeCounter > 1){
             fps++;
-            cout << "fps = " << fps << endl;
+//            cout << "fps = " << fps << endl;
             fps = 0;
             timeCounter--;
         }
@@ -616,7 +616,8 @@ void Volt2D::Director::mouse_move_callback(GLFWwindow *window, double xPos, doub
 //    }
 //
     //send raw mouse position instead of world coordinate
-    directorPtr->runningScene->mouseMove(x, y);
+//    directorPtr->runningScene->mouseMove(x, y);
+    directorPtr->runningScene->mouseMove(x - (w/2.0f), (h/2.0f) - y);
     directorPtr->mouseCursor->setPosition(glm::vec3(x - (w/2.0f), (h/2.0f) - y, 0));
     
     //camera movement
@@ -636,8 +637,11 @@ void Volt2D::Director::mouse_button_callback(GLFWwindow *window, int button, int
     Director *directorPtr = static_cast<Director*>(glfwGetWindowUserPointer(window));
     double x, y;
     glfwGetCursorPos(window, &x, &y);
-    directorPtr->runningScene->mouseButton(x, -y, button, action);
-    cout << "x = " << x <<", y = << " << -y << endl;
+    //    directorPtr->runningScene->mouseButton(x, -y, button, action);
+    float w = directorPtr->winSize.w;
+    float h = directorPtr->winSize.h;
+    directorPtr->runningScene->mouseButton(x - (w/2.0f), (h/2.0f) - y, button, action, mods);
+    cout << "x = " << x - (w/2.0f) <<", y = << " << (h/2.0f) - y << endl;
 }
 
 #pragma mark SpriteSheet caching

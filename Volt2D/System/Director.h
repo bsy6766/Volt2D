@@ -28,6 +28,8 @@
 #include "Program.h"
 #include "Camera.h"
 #include "Sprite.h"
+#include "ProgressBar.h"
+#include "ProgressRadian.h"
 #include "ParticleSystem.h"
 #include "SpriteSheet.h"
 #include "Transition.h"
@@ -69,6 +71,8 @@ private:
     friend class Volt2D::SpriteSheet;
     friend class Volt2D::Sprite;
     friend class Volt2D::ParticleSystem;
+    friend class Volt2D::ProgressBar;
+    friend class Volt2D::ProgressRadian;
     
     //mouse icon
     Volt2D::Sprite* mouseCursor;
