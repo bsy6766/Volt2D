@@ -22,6 +22,9 @@ runningAnimationName("")
 SpriteAnimation::~SpriteAnimation(){
     auto it = animationMap.begin();
     //First buffer object is released by Renderable Object
+    //just delete texture array
+    delete (it->second).textureAtlas;
+    //next
     it++;
     
     for(; it != animationMap.end(); it++){
@@ -100,7 +103,7 @@ bool SpriteAnimation::initWithAnimation(string name, string textureName, int siz
     //compute vertex data.
     computeVertexData((float)texW, (float)texH, (float)imgW, (float)imgH);
     
-    
+    //load vertex data to animation
     loadVertexData(na);
     
     this->boundingBox = new Volt2D::BoundingBox(-na.textureWidth/2, -na.textureHeight/2, na.textureWidth/2, na.textureHeight/2);
@@ -138,6 +141,42 @@ void SpriteAnimation::computeVertexData(float texW, float texH, float imgW, floa
     indicesData.push_back(1);
     indicesData.push_back(2);
     indicesData.push_back(3);
+}
+
+void SpriteAnimation::addAnimation(std::string name, string textureName, int frameSize, double frameInterval){
+    //new animation
+    Animation na;
+    na.name = name;
+    na.size = frameSize;
+    na.currentFrameIndex = 0;
+    na.interval = frameInterval;
+    na.bufferObject.vao = -1;
+    na.bufferObject.vbo = -1;
+    na.bufferObject.uvbo = -1;
+    na.bufferObject.ibo = -1;
+    na.textureAtlas = 0;
+    na.intervalCounter = 0;
+    
+    //new texture
+    Texture* animationTextureAtlas = Texture::create2DTextureArrayWithFiles(textureName, frameSize);
+    int texW, texH;
+    animationTextureAtlas->getTextureSize(texW, texH);
+    
+    //check
+    assert(animationTextureAtlas != nullptr);
+    
+    //store texture
+    na.textureAtlas = animationTextureAtlas;
+    
+    if(animationMap.empty()){
+        this->runningAnimationName = name;
+    }
+    
+    //load vertex data to animation
+    loadVertexData(na);
+    
+    //save animation data
+    animationMap[name] = na;
 }
 
 void SpriteAnimation::loadVertexData(Animation& ani){
@@ -261,6 +300,10 @@ void SpriteAnimation::render(){
 void SpriteAnimation::playAnimation(string name){
     this->stopAnimation();
     this->runningAnimationName = name;
+}
+
+std::string SpriteAnimation::getPlayingAnimationName(){
+    return this->runningAnimationName;
 }
 
 void SpriteAnimation::stopAnimation(){

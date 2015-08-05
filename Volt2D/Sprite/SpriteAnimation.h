@@ -127,6 +127,8 @@ public:
      */
     void playAnimation(string name);
     
+    std::string getPlayingAnimationName();
+    
     /**
      *  Stop animation.
      */
