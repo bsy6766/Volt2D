@@ -9,6 +9,8 @@
 #include "ProgressBar.h"
 #include "Director.h"
 
+using namespace Volt2D;
+
 ProgressBar::ProgressBar():
 ProgressObject()
 {
@@ -19,29 +21,83 @@ ProgressBar::~ProgressBar(){
     cout << "Deleting Progress Bar" << endl;
 }
 
-ProgressBar* ProgressBar::createProgressBar(std::string objectName, const char *barTextureName, GLenum textureTarget){
+ProgressBar* ProgressBar::create(std::string objectName, const char *barTextureName, GLenum textureTarget){
     ProgressBar* newProgressBar = new ProgressBar();
-    newProgressBar->initProgressBar(barTextureName);
+    newProgressBar->init(barTextureName);
     newProgressBar->setName(objectName);
     return newProgressBar;
 }
 
-void ProgressBar::initProgressBar(const std::string barTextureName, GLenum textureTarget){
-    cout << "init progress bar with texture with path of " << barTextureName << endl;
-    std::string textureDir = Volt2D::Director::getInstance().getWorkingDir() + "/../Texture/";
+ProgressBar* ProgressBar::createWithSpriteSheet(std::string objectName, std::string frameName, std::string textureName){
+    if(Volt2D::Director::getInstance().hasSpriteSheetFrameName(frameName)) {
+        if(SpriteSheet* const ssPtr = Volt2D::Director::getInstance().getSpriteSheet(frameName)){
+            const ImageEntry* ie = ssPtr->getImageEntry(textureName);
+            if(ie){
+                ProgressBar* newProgressBar = new ProgressBar();
+                Texture* ssTex = ssPtr->getTexture();
+                newProgressBar->setName(objectName);
+                newProgressBar->initWithSpriteSheet(ie, ssTex);
+                return newProgressBar;
+            }
+            else{
+                cout << "[SYSTEM::ERROR] \"" << textureName << "\" does not exists in \"" << frameName << "\" SpriteSheet." << endl;
+                return nullptr;
+            }
+        }
+        else{
+            cout << "[SYSTEM::ERROR] SpriteSheet called \"" << frameName << "\" does not exists in the system." << endl;
+            return nullptr;
+        }
+    }
+    else{
+        cout << "[SYSTEM::ERROR] SpriteSheet called \"" << frameName << "\" does not exists in the system." << endl;
+        return nullptr;
+    }
+}
+
+void ProgressBar::init(const std::string barTextureName, GLenum textureTarget){
     this->texture = Volt2D::Texture::createTextureWithFile(barTextureName, textureTarget);
-    texture->getImageSize(w, h);
+    texture->getTextureSize(this->textureWidth, this->textureHeight);
     
     computeVertexData();
     loadVertexData();
     
-    this->boundingBox = new Volt2D::BoundingBox(-this->w/2, -this->h/2, this->w/2, this->h/2);
+    this->boundingBox = new Volt2D::BoundingBox(-this->textureWidth/2.0f,
+                                                -this->textureHeight/2.0f,
+                                                this->textureWidth/2.0f,
+                                                this->textureHeight/2.0f);
+}
+
+void ProgressBar::initWithSpriteSheet(const ImageEntry* ie, Texture* texture){
+    this->texture = texture;
+    //    this->texture->getImageSize(this->w, this->h);
+    this->textureWidth = ie->w;
+    this->textureHeight = ie->h;
+    
+    this->useSpriteSheet = true;
+    
+    computeVertices();
+    computeTextureCoordinates(
+                              glm::vec2(ie->ImageEntry::uvOriginX,
+                                        ie->ImageEntry::uvOriginY),
+                              glm::vec2(ie->ImageEntry::uvEndX,
+                                        ie->ImageEntry::uvEndY)
+                              );
+    computeIndices();
+    loadVertexData();
+    
+    this->boundingBox = new Volt2D::BoundingBox(-(float)this->textureWidth/2.0f,
+                                                -(float)this->textureHeight/2.0f,
+                                                (float)this->textureWidth/2.0f,
+                                                (float)this->textureHeight/2.0f);
 }
 
 void ProgressBar::computeVertexData(){
-    this->Object::scaledWidth = w / Volt2D::SCREEN_TO_WORLD_SCALE;
-    this->Object::scaledHeight = h / Volt2D::SCREEN_TO_WORLD_SCALE;
+    //store scaled width and height
+    this->Object::scaledWidth = this->textureWidth / Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->Object::scaledHeight = this->textureHeight / Volt2D::SCREEN_TO_WORLD_SCALE;
     
+    //copy
     float width = this->scaledWidth;
     float height = this->scaledHeight;
     
@@ -78,6 +134,76 @@ void ProgressBar::computeVertexData(){
         uvVertexData.push_back(glm::vec2((i+1) * textureStepWidth, 0));	//bot right
         uvVertexData.push_back(glm::vec2((i+1) * textureStepWidth, 1));	//top right
         
+        //indices
+        indicesData.push_back(i * 4);
+        indicesData.push_back(i * 4 + 1);
+        indicesData.push_back(i * 4 + 2);
+        indicesData.push_back(i * 4 + 1);
+        indicesData.push_back(i * 4 + 2);
+        indicesData.push_back(i * 4 + 3);
+    }
+}
+
+void ProgressBar::computeVertices(){
+    float width = (float)this->textureWidth / Volt2D::SCREEN_TO_WORLD_SCALE;
+    float height = (float)this->textureHeight / Volt2D::SCREEN_TO_WORLD_SCALE;
+    
+    this->Object::scaledWidth = width;
+    this->Object::scaledHeight = height;
+    
+    int totalQuadNum = this->totalPercentage / this->percentageRate;
+    
+    float stepWidth = width / totalQuadNum;
+    float startingWidth = -(width/2);
+    
+    for(int i = 0; i<totalQuadNum; i++){
+        vertexData.push_back(glm::vec3(startingWidth + (i * stepWidth), -(height/2), Volt2D::GLOBAL_Z_VALUE));	//bot left
+        vertexData.push_back(glm::vec3(startingWidth + (i * stepWidth), height/2, Volt2D::GLOBAL_Z_VALUE));		//top left
+        vertexData.push_back(glm::vec3(startingWidth + ((i+1) * stepWidth), -(height/2), Volt2D::GLOBAL_Z_VALUE));		//bot right
+        vertexData.push_back(glm::vec3(startingWidth + ((i+1) * stepWidth), height/2, Volt2D::GLOBAL_Z_VALUE));			//top right
+    }
+}
+
+void ProgressBar::computeTextureCoordinates(glm::vec2 origin, glm::vec2 end){
+    //origin is top left corner. end is bot right corner
+    //left x = origin.x
+    //right x = end.x
+    //top y = origin.y
+    //bot y = end.y
+    origin.y = 1.0 - origin.y;
+    end.y = 1.0 - end.y;
+    
+    int totalQuadNum = this->totalPercentage / this->percentageRate;
+    
+    int spriteSheetWidth = 0;
+    int spriteSheetHeight = 0;  //not used. \todo make getter for only width or height
+    this->texture->getTextureSize(spriteSheetWidth, spriteSheetHeight);
+    
+    float textureStepWidth = this->textureWidth / static_cast<float>(spriteSheetWidth) / static_cast<float>(totalQuadNum);
+    
+    for(int i = 0; i<totalQuadNum; i++){        
+        if(useSpriteSheet) {
+            uvVertexData.push_back(glm::vec2(origin.x + i * textureStepWidth, end.y));	//bot left
+            uvVertexData.push_back(glm::vec2(origin.x + i * textureStepWidth, origin.y));	//top left
+            uvVertexData.push_back(glm::vec2(origin.x + (i+1) * textureStepWidth, end.y));	//bot right
+            uvVertexData.push_back(glm::vec2(origin.x + (i+1) * textureStepWidth, origin.y));	//top right
+        }
+        else{
+            uvVertexData.push_back(glm::vec2(0, 0));	//bot left
+            uvVertexData.push_back(glm::vec2(0, 1));	//top left
+            uvVertexData.push_back(glm::vec2(1, 0));	//bot right
+            uvVertexData.push_back(glm::vec2(1, 1));	//top right
+        }
+    }
+}
+
+void ProgressBar::computeIndices(){
+    //NOTE: if you don't flip the texture and want to handle with UV coordinate, go on this order
+    //top left->bot left->top right->bot right
+    
+    int totalQuadNum = this->totalPercentage / this->percentageRate;
+    
+    for(int i = 0; i<totalQuadNum; i++){
         //indices
         indicesData.push_back(i * 4);
         indicesData.push_back(i * 4 + 1);
@@ -136,7 +262,9 @@ void ProgressBar::render(){
     glEnableVertexAttribArray(progPtr->attrib("vert"));
     glEnableVertexAttribArray(progPtr->attrib("uvVert"));
     
-    this->texture->bind(GL_TEXTURE0);
+    if(this->texture->canBoundThisTexture()){
+        texture->bind(GL_TEXTURE0);
+    }
     
     for(int i = 0; i<this->currentPercentage; i+=this->percentageRate){
         glDrawRangeElements(

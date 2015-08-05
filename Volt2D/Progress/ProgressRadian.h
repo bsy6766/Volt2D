@@ -11,6 +11,7 @@
 
 #include "ProgressObject.h"
 
+namespace Volt2D{
 /**
  *  @class ProgressRadian
  *  @brief A progress radian
@@ -21,27 +22,9 @@ private:
     ProgressRadian();
     
     /**
-     *  Initialize ProgressRadian
-     *  @param radianTextureName Texture name for progress radian
-     *  @param textureTarget GL_TEXTURE_2D
-     */
-    void initProgressRadian(const std::string radianTextureName, GLenum textureTarget = GL_TEXTURE_2D);
-public:
-    /**
-     *  Create ProgressRadian
-     *  @param objectName Name for ProgressRadian object
-     *  @param radianTextureName Texture name for progress radian
-     *  @param textureTarget GL_TEXTURE_2D
-     */
-    static ProgressRadian* createProgressRadian(std::string objectName, const char* radianTextureName, GLenum textureTarget = GL_TEXTURE_2D);
-    
-    //Destructor
-    ~ProgressRadian();
-    
-    /**
      *  Compute vertex and indices
      */
-    void computeVertexData();
+    void computeVertexData(glm::vec2 origin, glm::vec2 end);
     
     /**
      *  Load computed vertex.
@@ -49,10 +32,33 @@ public:
     void loadVertexData();
     
     /**
+     *  Initialize ProgressRadian
+     *  @param radianTextureName Texture name for progress radian
+     *  @param textureTarget GL_TEXTURE_2D
+     */
+    void init(const std::string radianTextureName, GLenum textureTarget = GL_TEXTURE_2D);
+    
+    void initWithSpriteSheet(const ImageEntry* ie, Texture* texture);
+public:
+    /**
+     *  Create ProgressRadian
+     *  @param objectName Name for ProgressRadian object
+     *  @param radianTextureName Texture name for progress radian
+     *  @param textureTarget GL_TEXTURE_2D
+     */
+    static ProgressRadian* create(std::string objectName, const char* radianTextureName, GLenum textureTarget = GL_TEXTURE_2D);
+    
+    static ProgressRadian* createWithSpriteSheet(std::string objectName, std::string frameName, std::string textureName);
+    
+    //Destructor
+    ~ProgressRadian();
+    
+    /**
      *  Overrides's Object::render();
      *  Render object
      */
     virtual void render() override;
 };
+}
 
 #endif /* defined(__Volt2D__ProgressRadian__) */
