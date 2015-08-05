@@ -11,6 +11,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "Utility.hpp"
 
 namespace Volt2D{
 /**
@@ -35,7 +36,7 @@ private:
     /**
      *  Update bounding box with Object's transformation matrix
      */
-    void updateBoundingBox(glm::mat4 translateMat, glm::mat4 scaledMat, glm::mat4 rotateMat);
+    void updateBoundingBox(glm::mat4 translateMat, glm::mat4 scaledMat, glm::mat4 rotateMat, glm::mat4 modelMat);
     
     /**
      *  Reorganize updated origin and end point

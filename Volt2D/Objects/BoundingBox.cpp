@@ -30,12 +30,12 @@ bool BoundingBox::containsPoint(glm::vec2 point){
         return false;
 }
 
-void BoundingBox::updateBoundingBox(glm::mat4 translateMat, glm::mat4 scaledMat, glm::mat4 rotateMat){
+void BoundingBox::updateBoundingBox(glm::mat4 translateMat, glm::mat4 scaledMat, glm::mat4 rotateMat, glm::mat4 modelMat){
     glm::vec4 castedOrigin = glm::vec4(originalOrigin.x, originalOrigin.y, 1, 1);
     glm::vec4 castedEnd = glm::vec4(originalEnd.x, originalEnd.y, 1, 1);
-    glm::mat4 modelMat = glm::mat4() * translateMat * rotateMat * scaledMat;
-    origin = glm::vec2(modelMat * castedOrigin);
-    end = glm::vec2(modelMat * castedEnd);
+    glm::mat4 bbMat = glm::mat4() * translateMat * rotateMat * scaledMat * modelMat;
+    origin = glm::vec2(bbMat * castedOrigin);
+    end = glm::vec2(bbMat * castedEnd);
     updatePointWithMax();
 }
 
