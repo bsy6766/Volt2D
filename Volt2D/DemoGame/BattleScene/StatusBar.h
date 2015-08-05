@@ -16,9 +16,9 @@
 class StatusBar{
 private:
     //    Hero* target;
-    ProgressBar* hpBar; //hit point
-    ProgressBar* mpBar; //mana point
-    ProgressBar* apBar; //action point
+    Volt2D::ProgressBar* hpBar; //hit point
+    Volt2D::ProgressBar* mpBar; //mana point
+    Volt2D::ProgressBar* apBar; //action point
     
     Volt2D::Sprite* frame;
     Volt2D::Sprite* portrait;

@@ -20,19 +20,19 @@ pos(pos)
     
     pos.x += 26;
     
-    hpBar = ProgressBar::createProgressBar(objName + "HpBar", "battle scene/hp_bar.png");
+    hpBar = ProgressBar::create(objName + "HpBar", "battle scene/hp_bar.png");
     hpBar->setPercentage(100);
     glm::vec3 hpBarPos = pos;
     hpBarPos.y += 17;
     hpBar->setPosition(hpBarPos);
     hpBar->setZDepth(200);
     
-    mpBar = ProgressBar::createProgressBar(objName + "MpBar", "battle scene/mp_bar.png");
+    mpBar = ProgressBar::create(objName + "MpBar", "battle scene/mp_bar.png");
     mpBar->setPercentage(100);
     mpBar->setPosition(pos);
     mpBar->setZDepth(200);
     
-    apBar = ProgressBar::createProgressBar(objName + "ApBar", "battle scene/ap_bar.png");
+    apBar = ProgressBar::create(objName + "ApBar", "battle scene/ap_bar.png");
     apBar->setPercentage(100);
     glm::vec3 apBarPos = pos;
     apBarPos.y -= 17;

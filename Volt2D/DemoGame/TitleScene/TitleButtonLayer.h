@@ -80,7 +80,7 @@ public:
     virtual void update(double dt);
     
 	virtual void keyPressed(int key, int mods);
-    virtual void mouseButton(double x, double y, int button, int aciton);
+    virtual void mouseButton(double x, double y, int button, int aciton, int mods);
     virtual void mouseMove(double x, double y);
 };
 

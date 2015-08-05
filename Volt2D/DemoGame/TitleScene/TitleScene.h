@@ -61,7 +61,7 @@ public:
     void exit() override;
     void keyPressed(int key, int mode) override;
 //    virtual void keyReleased(int key, int mode);
-    void mouseButton(double x, double y, int button, int action) override;
+    void mouseButton(double x, double y, int button, int action, int mods) override;
 //    virtual void mouseMove(double x, double y);
 
     void update(double dt) override;

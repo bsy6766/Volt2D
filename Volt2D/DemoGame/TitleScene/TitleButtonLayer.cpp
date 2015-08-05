@@ -256,9 +256,9 @@ void TitleButtonLayer::keyPressed(int key, int mods){
         switch (selectingButtonID) {
             case NEW_GAME:
 //                Volt2D::Director::getInstance().pushScene(new BattleScene());
-//                Volt2D::Director::getInstance().transitionToNextScene(TransitionFade::createWithColor(2.0f, Color::DEEPPINK, new BattleScene()));
-//                Volt2D::Director::getInstance().transitionToNextScene(TransitionMove::createWithDirection(2.0f, TransitionDirection::LEFT, new BattleScene()));
-                Volt2D::Director::getInstance().transitionToNextScene(TransitionFlip::createWithDirection(4.0f, TransitionDirection::LEFT, new BattleScene));
+//                Volt2D::Director::getInstance().transitionToNextScene(TransitionFade::createWithColor(2.0f, Color::AQUA, new BattleScene()));
+                Volt2D::Director::getInstance().transitionToNextScene(TransitionMove::createWithDirection(2.0f, TransitionDirection::LEFT, new BattleScene()));
+//                Volt2D::Director::getInstance().transitionToNextScene(TransitionFlip::createWithDirection(4.0f, TransitionDirection::LEFT, new BattleScene));
                 
 //                Volt2D::Director::getInstance().transitionToNextScene(true);
                 Volt2D::Director::getInstance().getSoundManager()->playSFX("titleSceneMenuSelect", 0.1);
@@ -406,7 +406,7 @@ void TitleButtonLayer::keyPressed(int key, int mods){
 	cout << "key #" << key << endl;
 }
 
-void TitleButtonLayer::mouseButton(double x, double y, int button, int action){
+void TitleButtonLayer::mouseButton(double x, double y, int button, int action, int mods){
     if(button == GLFW_MOUSE_BUTTON_LEFT){
         if(action == GLFW_PRESS){
             if(openingCredits){

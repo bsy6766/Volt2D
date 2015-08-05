@@ -37,7 +37,7 @@ void TitleScene::init(){
     sm->bindSoundToChannelGroup("titleSceneBgm", "BGMGroup");
 //    SoundManager::getInstance().addSoundToChannelGroup("bgmChannelGroup", "titleSceneBgm");
 
-    SpriteSheet::createSpriteSheet("titleSceneSpriteSheet", "title scene/title_scene_sprite_sheet.png", "title scene/title_scene_sprite_sheet.xml");
+//    SpriteSheet::createSpriteSheet("titleSceneSpriteSheet", "title scene/title_scene_sprite_sheet.png", "title scene/title_scene_sprite_sheet.xml");
     
     bg = Sprite::createSprite("gridBg", "grid_bg.png");
 //    bg = Sprite::createSpriteWithFrameName("titleSceneBg", "titleSceneSpriteSheet", "title_scene_bg.png");
@@ -243,9 +243,9 @@ void TitleScene::keyPressed(int key, int mods){
 	Scene::keyPressed(key, mods);
 }
 
-void TitleScene::mouseButton(double x, double y, int button, int action){
+void TitleScene::mouseButton(double x, double y, int button, int action, int mods){
 //    ps->setPosition(glm::vec3(x, y, 0));
-    Scene::mouseButton(x, y, button, action);
+    Scene::mouseButton(x, y, button, action, mods);
 }
 
 void TitleScene::exit(){
