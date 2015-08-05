@@ -72,7 +72,7 @@ void Scene::keyReleased(int key, int mods){
     }
 }
 
-void Scene::mouseButton(double x, double y, int button, int action){
+void Scene::mouseButton(double x, double y, int button, int action, int mods){
     for (auto it = this->childObjMap.begin(); it != this->childObjMap.end();){
         //if pointer is null, delete pointer and remove from the list.
         if(it->second == nullptr){
@@ -83,7 +83,7 @@ void Scene::mouseButton(double x, double y, int button, int action){
             //call mouse move
             if(Layer* childLayer = dynamic_cast<Layer*>((it->second))){
                 if(childLayer->isLayerInputListenable())
-                    childLayer->mouseButton(x, y, button, action);
+                    childLayer->mouseButton(x, y, button, action, mods);
             }
             ++it;
         }

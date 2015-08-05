@@ -62,7 +62,7 @@ public:
      *  Forwarding mouse button callback from Director.
      *  If you override this, make sure to call Scene::mouseButton(double, double, int, int) to foward again to child layers.
      */
-    virtual void mouseButton(double x, double y, int button, int action);
+    virtual void mouseButton(double x, double y, int button, int action, int mods);
     
     /**
      *  Forwarding mouse move callback from Director.
