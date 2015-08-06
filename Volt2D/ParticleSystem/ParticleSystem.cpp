@@ -54,6 +54,7 @@ lifeTime(0),
 lifeTimeVar(0),
 texture(0),
 vpbo(0),
+vspbo(0),
 cbo(0),
 srbo(0),
 newLifePoint(0)
@@ -69,6 +70,7 @@ ParticleSystem::~ParticleSystem(){
     }
     
     glDeleteBuffers(1, &vpbo);
+    glDeleteBuffers(1, &vspbo);
     glDeleteBuffers(1, &cbo);
     glDeleteBuffers(1, &srbo);
 }
@@ -256,6 +258,11 @@ void ParticleSystem::loadVertexData(){
     glBufferData(GL_ARRAY_BUFFER, this->size * sizeof(glm::vec3), NULL, GL_STREAM_DRAW);
     glVertexAttribPointer(progPtr->attrib("posVert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
     
+    glGenBuffers(1, &this->vspbo);
+    glBindBuffer(GL_ARRAY_BUFFER, this->vspbo);
+    glBufferData(GL_ARRAY_BUFFER, this->size * sizeof(glm::vec3), NULL, GL_STREAM_DRAW);
+    glVertexAttribPointer(progPtr->attrib("spawnPosVert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    
     //color
     glGenBuffers(1, &this->cbo);
     glBindBuffer(GL_ARRAY_BUFFER, this->cbo);
@@ -286,6 +293,7 @@ void ParticleSystem::initCustomTexture(string textureName, GLenum target){
     if(this->bufferObject.vao){
         //delete all buffer and generate new
         glDeleteBuffers(1, &this->vpbo);
+        glDeleteBuffers(1, &this->vspbo);
         glDeleteBuffers(1, &this->cbo);
         glDeleteBuffers(1, &this->srbo);
         this->deleteVertexData();
@@ -472,6 +480,7 @@ void ParticleSystem::update(double dt){
     
     //distance vector.
     std::vector<GLfloat> vertexDistanceData;
+    std::vector<GLfloat> vertexSpawnDistanceData;
     
     //color vector
     std::vector<glm::vec4> colorData;
@@ -570,8 +579,16 @@ void ParticleSystem::update(double dt){
                 //update pos vert.
                 //beware that all rendering starts from world origin (0, 0).
                 //origin -> spawn pos -> current particle pos.
-                vertexDistanceData.push_back(p->pos.x);
-                vertexDistanceData.push_back(p->pos.y);
+                //give shader distance to spawn pos from origin
+                vertexSpawnDistanceData.push_back(p->spawnedPosition.x);
+                vertexSpawnDistanceData.push_back(p->spawnedPosition.y);
+                vertexSpawnDistanceData.push_back(0);
+                //give shader distance to final pos from spawn pos
+                glm::vec2 distanceFromSpawn = p->pos - p->spawnedPosition;
+                vertexDistanceData.push_back(distanceFromSpawn.x);
+                vertexDistanceData.push_back(distanceFromSpawn.y);
+//                vertexDistanceData.push_back(p->pos.x);
+//                vertexDistanceData.push_back(p->pos.y);
                 vertexDistanceData.push_back(0);
                 
 				//increment iterator
@@ -600,7 +617,10 @@ void ParticleSystem::update(double dt){
     if (livingParticleNum > 0){
         glBindBuffer(GL_ARRAY_BUFFER, vpbo);
 		glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(GLfloat) * 3, &vertexDistanceData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
+        glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(GLfloat) * 3, &vertexDistanceData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
+        glBindBuffer(GL_ARRAY_BUFFER, vspbo);
+        glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(GLfloat) * 3, &vertexSpawnDistanceData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
         
         glBindBuffer(GL_ARRAY_BUFFER, cbo);
         assert(colorData.size() == livingParticleNum);
@@ -655,6 +675,7 @@ void ParticleSystem::render(){
     glEnableVertexAttribArray(progPtr->attrib("vert"));
     glEnableVertexAttribArray(progPtr->attrib("uvVert"));
     glEnableVertexAttribArray(progPtr->attrib("posVert"));
+    glEnableVertexAttribArray(progPtr->attrib("spawnPosVert"));
     glEnableVertexAttribArray(progPtr->attrib("particleColor"));
     glEnableVertexAttribArray(progPtr->attrib("particleTransform"));
     
@@ -662,6 +683,7 @@ void ParticleSystem::render(){
     glVertexAttribDivisor(progPtr->attrib("vert"), 0);		//0. Always use same quad vertex
     glVertexAttribDivisor(progPtr->attrib("uvVert"), 0);	//0. Always use same indices
     glVertexAttribDivisor(progPtr->attrib("posVert"), 1);	//1, Use 1 pos(vec3) value for each quad
+    glVertexAttribDivisor(progPtr->attrib("spawnPosVert"), 1);	//1, Use 1 pos(vec3) value for each quad
     glVertexAttribDivisor(progPtr->attrib("particleColor"), 1);	//1, Use 1 color(vec4) value for each quad
     glVertexAttribDivisor(progPtr->attrib("particleTransform"), 1);	//1, Use 1 scaleXY(vec2) value for each quad
     
@@ -698,6 +720,9 @@ void ParticleSystem::reset(bool pause){
     particleList.clear();
     
     glBindBuffer(GL_ARRAY_BUFFER, vpbo);
+    glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, vspbo);
     glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
     
     glBindBuffer(GL_ARRAY_BUFFER, cbo);

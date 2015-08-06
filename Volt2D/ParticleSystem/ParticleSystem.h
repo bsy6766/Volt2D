@@ -236,9 +236,12 @@ private:
     Texture *texture;
     
     /**
-     *  Particle's position data buffer object
+     *  Particle's position data buffer object from spawn point to final position
      */
     GLuint vpbo;
+    
+    /** Particle's position data buffer object from origin to spawn point  */
+    GLuint vspbo;
     
     /**
      *  Particle's color data buffer object
