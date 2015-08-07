@@ -14,7 +14,7 @@ using namespace Volt2D;
 
 Text::Text():
 RenderableObject(),
-align(ALIGN_RIGHT),
+align(ALIGN_CENTER),
 start(-1),
 end(-1),
 width(0),
@@ -199,7 +199,7 @@ void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
     int h = 0;
     int totalHeight = 0;
     int maxWidth = 0;
-    int bearingY = 0;
+    int maxBearingY = 0;
     int maxBotY = 0;
     
     std::vector<int> offsetY;
@@ -212,8 +212,10 @@ void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
         h = 0;
         //iterate each line by char
         for(unsigned int i = 0; i < it.length(); i++){
+            //convert to char array and get char by index i
             const char* cStr = it.c_str();
             char c = cStr[i];
+            
             //get GlyphData
             GlyphData* gData = font->getGlyphDataFromChar(c);
             if(gData == nullptr){
@@ -223,19 +225,24 @@ void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
             //sum up all char's width
             w += (gData->metrics.horiAdvance >> 6);
             
+            //get height
             int newHeight = (int)(gData->metrics.height >> 6);
-            //store highest height among the chars.
+            //and store highest height among the chars.
             if(newHeight >= h)
                 h = newHeight;
             
+            //get bearing y for char
             int newBearingY = (int)(gData->metrics.horiBearingY >> 6);
-            //store highest bearingY among the chars.
+            //store highest botY (= diff from total glyph's height and bearing y)
             int botY = newHeight - newBearingY;
+            
+            //and store the max bot y
             if(botY > maxBotY)
                 maxBotY = botY;
             
-            if(newBearingY >= bearingY)
-                bearingY = newBearingY;
+            //and also save max bearing y
+            if(newBearingY >= maxBearingY)
+                maxBearingY = newBearingY;
             
         }
         //check if this line has max width
@@ -245,24 +252,24 @@ void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
         //sum total hiehgt
         totalHeight += h;
         
-        //create origin (center aligned)
+        //create origin. origin is the starting point of text quad vertices. y will be updated after this loop
         glm::vec2 origin = glm::vec2(0, 0);
-        origin.x = w/2 * (-1);
-        origin.y = 0;
+//        origin.x = w/2 * (-1);
+//        origin.y = 0;
         originList.push_back(origin);
         
         //save offsets
-        offsetY.push_back(bearingY);
+        offsetY.push_back(maxBearingY);
 //        offsetY.push_back(h - bearingY);
         offsetY.push_back(maxBotY);
         
         widthList.push_back(w);
     }
 //
-    int lineNumber = (int)originList.size();
-    int lineSpace = font->getLineSpace();
+//    int lineNumber = (int)originList.size();
+//    int lineSpace = font->getLineSpace();
 
-    totalHeight = ((lineNumber - 1) * lineSpace) + offsetY.at(0) + offsetY.at(offsetY.size() - 1);
+//    totalHeight = ((lineNumber - 1) * lineSpace) + offsetY.at(0) + offsetY.at(offsetY.size() - 1);
     int baseY = totalHeight / 2;
     
     int newY = 0 - offsetY.at(0) + baseY;
@@ -271,11 +278,16 @@ void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
     int originIndex = 0;
     for (unsigned int i = 0; i < offsetY.size(); i+=2){
         if(align == ALIGN_RIGHT){
-            originList.at(originIndex).x = ((-1) * (maxWidth / 2)) + (maxWidth - widthList.at(i));
+//            originList.at(originIndex).x = ((-1) * (maxWidth / 2)) + (maxWidth - widthList.at(i));
+            originList.at(originIndex).x = ((-1) * (maxWidth / 2)) + (maxWidth - widthList.at(originIndex));
         }
         else if(align == ALIGN_LEFT){
             originList.at(originIndex).x = maxWidth / 2 * (-1);
         }
+        else{
+            originList.at(originIndex).x = widthList.at(originIndex) / -2.0f;
+        }
+        
         originList.at(originIndex).y = newY;
 //        newY -= lineSpace;
         newY -= (offsetY.at(i) + offsetY.at(i + 1));
