@@ -37,6 +37,11 @@ private:
     Volt2D::Sprite* sampleProgBarBg;
     Volt2D::ProgressRadian* sampleProgRad;
     Volt2D::Sprite* sampleProgRadBg;
+    Volt2D::ParticleSystem* sampleParticleSystem;
+    Volt2D::Text* sampleText;
+    
+    Volt2D::Sprite* waitingTransitionMsg;
+    Volt2D::Sprite* exitMsgBox;
     
     Volt2D::Sprite* displayBorderline;
     
@@ -46,10 +51,8 @@ private:
     Volt2D::Sprite* exitConfirm;
     Volt2D::Sprite* exitCancel;
     
-    Volt2D::Sprite* originPoint;
-    Volt2D::Sprite* endPoint;
-    
     bool waitingExit;
+    bool waitingTransition;
     bool mouseClicked;
     bool mouseDragged;
     bool ctrlPressed;

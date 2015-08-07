@@ -20,6 +20,8 @@ sampleProgBarBg(0),
 sampleProgBar(0),
 sampleProgRadBg(0),
 sampleProgRad(0),
+sampleParticleSystem(0),
+sampleText(0),
 mouseClicked(false),
 prevMousePos(0),
 mouseDragged(false),
@@ -44,16 +46,7 @@ void MenuScene::init(){
                                                        frameName,
                                                        "menu_bg.png");
     menuBg->setZDepth(z_bg);
-    this->addChild(menuBg);
-    
-    originPoint = Volt2D::Sprite::createSprite("originPoint", "test/point.png");
-    originPoint->setZDepth(100);
-    this->addChild(originPoint);
-    
-    endPoint = Volt2D::Sprite::createSprite("endPoint", "test/point.png");
-    endPoint->setZDepth(100);
-    this->addChild(endPoint);
-    
+    this->addChild(menuBg);    
     
     float x = -700.0f - 428;
     float yGap = 42.0f;
@@ -163,6 +156,15 @@ void MenuScene::init(){
     delete delay;
     delete moveUp;
     delete fadeIn;
+    
+    //add font
+    Volt2D::FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
+    
+    waitingTransitionMsg = Volt2D::Sprite::createSpriteWithFrameName("waitingTransition", frameName, "waiting_transition.png");
+    waitingTransitionMsg->setZDepth(z_samples);
+    waitingTransitionMsg->setPosition(glm::vec3(227, 89, 0));
+    waitingTransitionMsg->setOpacity(0);
+    this->addChild(waitingTransitionMsg);
 }
 
 void MenuScene::onEnter(){
@@ -179,8 +181,7 @@ void MenuScene::onEnter(){
 }
 
 void MenuScene::update(double dt){
-    originPoint->setPosition(glm::vec3(spriteBtn->getBoundingBox()->origin, 0));
-    endPoint->setPosition(glm::vec3(spriteBtn->getBoundingBox()->end, 0));
+    //empty?
     Scene::update(dt);
 }
 
@@ -214,7 +215,6 @@ void MenuScene::keyPressed(int key, int mods){
         }
     }
     
-    
     if(key == GLFW_KEY_ESCAPE){
         if(this->waitingExit){
             //cancel waiting
@@ -223,6 +223,12 @@ void MenuScene::keyPressed(int key, int mods){
         else{
             //show exit prompt
             this->waitingExit = true;
+        }
+    }
+    else if(key == GLFW_KEY_ENTER) {
+        if(this->waitingExit){
+            //exit program
+            Volt2D::Director::getInstance().terminateApp();
         }
     }
     
@@ -302,6 +308,30 @@ void MenuScene::keyPressed(int key, int mods){
                     }
                 }
                 break;
+            case s_particle_system:
+                if(sampleParticleSystem->getName() != "sampleParticleSystem_magicalOribts"){
+                    this->removechild(sampleParticleSystem, true);
+                    sampleParticleSystem = Volt2D::ParticleSystem::createWithLuaConfig("sampleParticleSystem_magicalOrbits", "Particle/magicalOrbits.lua");
+                    sampleParticleSystem->setZDepth(z_samples);
+                    sampleParticleSystem->setPosition(glm::vec3(227, 89, 0));
+                    this->addChild(sampleParticleSystem);
+                }
+                break;
+            case s_st_move:
+                if(this->waitingTransition){
+                    Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionMove::createWithDirection(1.0f, Volt2D::TransitionDirection::UP, new MenuScene()));
+                }
+                break;
+            case s_st_fade:
+                if(this->waitingTransition){
+                    Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionFade::createWithColor(1.0f, Volt2D::Color::BLACK, new MenuScene()));
+                }
+                break;
+            case s_st_flip:
+                if(this->waitingTransition){
+                    Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionFlip::createWithDirection(1.0f, Volt2D::TransitionDirection::UP, new MenuScene()));
+                }
+                break;
             default:
                 break;
         }
@@ -329,6 +359,30 @@ void MenuScene::keyPressed(int key, int mods){
                         delete fromTo;
                         delete toggleFunc;
                     }
+                }
+                break;
+            case s_particle_system:
+                if(sampleParticleSystem->getName() != "sampleParticleSystem_flame"){
+                    this->removechild(sampleParticleSystem, true);
+                    sampleParticleSystem = Volt2D::ParticleSystem::createWithLuaConfig("sampleParticleSystem_flame", "Particle/flame.lua");
+                    sampleParticleSystem->setZDepth(z_samples);
+                    sampleParticleSystem->setPosition(glm::vec3(227, 89, 0));
+                    this->addChild(sampleParticleSystem);
+                }
+                break;
+            case s_st_move:
+                if(this->waitingTransition){
+                    Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionMove::createWithDirection(1.0f, Volt2D::TransitionDirection::DOWN, new MenuScene()));
+                }
+                break;
+            case s_st_fade:
+                if(this->waitingTransition){
+                    Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionFade::createWithColor(1.0f, Volt2D::Color::RED, new MenuScene()));
+                }
+                break;
+            case s_st_flip:
+                if(this->waitingTransition){
+                    Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionFlip::createWithDirection(1.0f, Volt2D::TransitionDirection::DOWN, new MenuScene()));
                 }
                 break;
             default:
@@ -360,6 +414,30 @@ void MenuScene::keyPressed(int key, int mods){
                     }
                 }
                 break;
+            case s_particle_system:
+                if(sampleParticleSystem->getName() != "sampleParticleSystem_blueMeteor"){
+                    this->removechild(sampleParticleSystem, true);
+                    sampleParticleSystem = Volt2D::ParticleSystem::createWithLuaConfig("sampleParticleSystem_blueMeteor", "Particle/blueMeteor.lua");
+                    sampleParticleSystem->setZDepth(z_samples);
+                    sampleParticleSystem->setPosition(glm::vec3(227, 89, 0));
+                    this->addChild(sampleParticleSystem);
+                }
+                break;
+            case s_st_move:
+                if(this->waitingTransition){
+                    Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionMove::createWithDirection(1.0f, Volt2D::TransitionDirection::LEFT, new MenuScene()));
+                }
+                break;
+            case s_st_fade:
+                if(this->waitingTransition){
+                    Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionFade::createWithColor(1.0f, Volt2D::Color::NAVY, new MenuScene()));
+                }
+                break;
+            case s_st_flip:
+                if(this->waitingTransition){
+                    Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionFlip::createWithDirection(1.0f, Volt2D::TransitionDirection::LEFT, new MenuScene()));
+                }
+                break;
             default:
                 break;
         }
@@ -379,6 +457,21 @@ void MenuScene::keyPressed(int key, int mods){
                         delete fromTo;
                         delete toggleFunc;
                     }
+                }
+                break;
+            case s_st_move:
+                if(this->waitingTransition){
+                    Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionMove::createWithDirection(1.0f, Volt2D::TransitionDirection::RIGHT, new MenuScene()));
+                }
+                break;
+            case s_st_fade:
+                if(this->waitingTransition){
+                    Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionFade::createWithColor(1.0f, Volt2D::Color::WHITE, new MenuScene()));
+                }
+                break;
+            case s_st_flip:
+                if(this->waitingTransition){
+                    Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionFlip::createWithDirection(1.0f, Volt2D::TransitionDirection::RIGHT, new MenuScene()));
                 }
                 break;
             default:
@@ -443,7 +536,19 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                                 }
                             }
                             break;
-                            
+                        case s_particle_system:
+                            if(sampleParticleSystem != nullptr){
+                                if(!sampleActioning){
+                                    sampleActioning = true;
+                                    auto moveTo = Volt2D::ActionMoveTo::createMoveTo(0.5f, glm::vec3(point, Volt2D::GLOBAL_Z_VALUE));
+                                    auto toggleFunc = Volt2D::ActionCallFunc::createCallFunc(std::bind(&MenuScene::toggleActionFlag, this));
+                                    sampleParticleSystem->addActions({moveTo, toggleFunc}, 0);
+                                    sampleParticleSystem->runAction();
+                                    delete moveTo;
+                                    delete toggleFunc;
+                                }
+                            }
+                            break;
                         default:
                             break;
                     }
@@ -529,29 +634,61 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                         }
                     }
                     else if(this->particleSysBtn->getBoundingBox()->containsPoint(point)){
-                        resetPrevBtn();
-                        this->curState = s_particle_system;
-                        this->particleSysBtn->setOpacity(255.0f);
+                        if(curState != s_particle_system){
+                            resetPrevBtn();
+                            this->curState = s_particle_system;
+                            this->particleSysBtn->setOpacity(255.0f);
+                            if(sampleParticleSystem != nullptr){
+                                this->removechild(sampleParticleSystem, true);
+                            }
+                            sampleParticleSystem = Volt2D::ParticleSystem::createWithLuaConfig("sampleParticleSystem_magicalOrbits", "Particle/magicalOrbits.lua");
+                            sampleParticleSystem->setZDepth(z_samples);
+                            sampleParticleSystem->setPosition(glm::vec3(227, 89, 0));
+                            this->addChild(sampleParticleSystem);
+                        }
                     }
                     else if(this->textBtn->getBoundingBox()->containsPoint(point)){
-                        resetPrevBtn();
-                        this->curState = s_text;
-                        this->textBtn->setOpacity(255.0f);
+                        if(curState != s_text){
+                            resetPrevBtn();
+                            this->curState = s_text;
+                            this->textBtn->setOpacity(255.0f);
+                            if(sampleText != nullptr){
+                                this->removechild(sampleText, true);
+                            }
+                            sampleText = Volt2D::Text::createText("titleText", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris \nnisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in \nreprehenderit in voluptate velit esse cillum dolore eu fugiat \nnulla pariatur. Excepteur sint occaecat cupidatat non proident,\nsunt in culpa qui officia deserunt mollit anim id est laborum.", "UhBee Kang-Ja.ttf");
+                            sampleText->setZDepth(z_samples);
+                            sampleText->setScale(glm::vec3(0.5f, 0.5f, 1.0f));
+                            sampleText->setPosition(glm::vec3(227, 89, 0));
+                            sampleText->setColor(Volt2D::Color::WHITE);
+                            this->addChild(sampleText);
+                        }
                     }
                     else if(this->sceneTransitionMoveBtn->getBoundingBox()->containsPoint(point)){
-                        resetPrevBtn();
-                        this->curState = s_st_move;
-                        this->sceneTransitionMoveBtn->setOpacity(255.0f);
+                        if(curState != s_st_move){
+                            resetPrevBtn();
+                            this->curState = s_st_move;
+                            this->sceneTransitionMoveBtn->setOpacity(255.0f);
+                            this->waitingTransitionMsg->setOpacity(255);
+                            this->waitingTransition = true;
+                        }
                     }
                     else if(this->sceneTransitionFadeBtn->getBoundingBox()->containsPoint(point)){
-                        resetPrevBtn();
-                        this->curState = s_st_fade;
-                        this->sceneTransitionFadeBtn->setOpacity(255.0f);
+                        if(curState != s_st_fade){
+                            resetPrevBtn();
+                            this->curState = s_st_fade;
+                            this->sceneTransitionFadeBtn->setOpacity(255.0f);
+                            this->waitingTransitionMsg->setOpacity(255);
+                            this->waitingTransition = true;
+                        }
                     }
                     else if(this->sceneTransitionFlipBtn->getBoundingBox()->containsPoint(point)){
-                        resetPrevBtn();
-                        this->curState = s_st_flip;
-                        this->sceneTransitionFlipBtn->setOpacity(255.0f);
+                        if(curState != s_st_flip){
+                            resetPrevBtn();
+                            this->curState = s_st_flip;
+                            this->sceneTransitionFlipBtn->setOpacity(255.0f);
+                            this->waitingTransitionMsg->setOpacity(255);
+                            this->waitingTransition = true;
+                        }
                     }
                 }
             }//if mouse drag
@@ -577,7 +714,12 @@ void MenuScene::mouseMove(double x, double y){
                     case s_sprite_animation:
                         sampleAnimation->addScale(glm::vec3(diff_x/100.0f, diff_y/100.0f, 0));
                         break;
-                        
+                    case s_particle_system:
+                        sampleParticleSystem->addScale(glm::vec3(diff_x/100.0f, diff_y/100.0f, 0));
+                        break;
+                    case s_text:
+                        sampleText->addScale(glm::vec3(diff_x/100.0f, diff_y/100.0f, 0));
+                        break;
                     default:
                         break;
                 }
@@ -591,7 +733,12 @@ void MenuScene::mouseMove(double x, double y){
                     case s_sprite_animation:
                         sampleAnimation->addAngle(diff_x);
                         break;
-                        
+                    case s_particle_system:
+                        sampleParticleSystem->addAngle(diff_x);
+                        break;
+                    case s_text:
+                        sampleText->addAngle(diff_x);
+                        break;
                     default:
                         break;
                 }
@@ -625,18 +772,26 @@ void MenuScene::resetPrevBtn(){
             break;
         case s_particle_system:
             particleSysBtn->setOpacity(defaultBtnOpacity);
+            this->removechild(sampleParticleSystem, true);
             break;
         case s_text:
             textBtn->setOpacity(defaultBtnOpacity);
+            this->removechild(sampleText, true);
             break;
         case s_st_fade:
             sceneTransitionFadeBtn->setOpacity(defaultBtnOpacity);
+            waitingTransition = false;
+            waitingTransitionMsg->setOpacity(0);
             break;
         case s_st_move:
             sceneTransitionMoveBtn->setOpacity(defaultBtnOpacity);
+            waitingTransition = false;
+            waitingTransitionMsg->setOpacity(0);
             break;
         case s_st_flip:
             sceneTransitionFlipBtn->setOpacity(defaultBtnOpacity);
+            waitingTransition = false;
+            waitingTransitionMsg->setOpacity(0);
             break;
         default:
             break;
