@@ -39,6 +39,9 @@ namespace Volt2D{
         
         ActionCallFunc* callEndFunc;
         ActionCallFunc* callSwapSceneFunc;
+        ActionCallFunc* callOnEnter;
+        
+        void callEnterFunc();
     private:
         //no private sir
     public:
@@ -212,9 +215,6 @@ namespace Volt2D{
         
         /** Render scene transition effects */
         virtual void render() override;
-        
-        /** Swap current scene with next scene. */
-        virtual void swapScene() override;
         /// @}
     };
 }   //namespace end

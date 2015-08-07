@@ -22,13 +22,17 @@ nextScene(0),
 done(false),
 delayPad(ActionDelay::createDelay(0.2f)),
 callEndFunc(ActionCallFunc::createCallFunc(std::bind(&Volt2D::Transition::end, this))),
-callSwapSceneFunc(ActionCallFunc::createCallFunc(std::bind(&Volt2D::Transition::swapScene, this)))
+callSwapSceneFunc(ActionCallFunc::createCallFunc(std::bind(&Volt2D::Transition::swapScene, this))),
+callOnEnter(ActionCallFunc::createCallFunc(std::bind(&Volt2D::Transition::callEnterFunc, this)))
 {
     
 }
 
 Transition::~Transition(){
-    
+    delete callEndFunc;
+    delete callSwapSceneFunc;
+    delete callOnEnter;
+    delete delayPad;
 }
 
 void Transition::swapScene(){
@@ -39,8 +43,6 @@ void Transition::swapScene(){
         directorRef.dyingScene = directorRef.runningScene;
         //assign new one. Transition class will init for us.
         directorRef.runningScene = this->nextScene;
-        //enters the screen
-        directorRef.runningScene->onEnter();
         directorRef.dyingScene->exit();
         delete directorRef.dyingScene;
     }
@@ -52,6 +54,11 @@ bool Transition::isDone(){
 
 void Transition::end(){
     this->done = true;
+}
+
+void Transition::callEnterFunc(){
+    //some transition need to enter after some other action
+    Director::getInstance().getRunningScene()->onEnter();
 }
 
 //----------------------------------------
@@ -134,15 +141,12 @@ bool TransitionFade::initTransition(double duration, Color color, Volt2D::Scene 
     auto delay = ActionDelay::createDelay(initElapsedTime + 0.5f);
     
     //Assign
-    effect->addActions({delay, fadeIn, delayPad, callSwapSceneFunc, fadeOut, callEndFunc, delayPad}, 0);
+    effect->addActions({delay, fadeIn, delayPad, callSwapSceneFunc, callOnEnter, fadeOut, callEndFunc, delayPad}, 0);
     
     //release
     delete fadeIn;
-    delete callSwapSceneFunc;
     delete fadeOut;
     delete delay;
-    delete callEndFunc;
-    delete delayPad;
     
     //success
     return true;
@@ -238,17 +242,11 @@ void TransitionMove::initTransition(double duration, Volt2D::TransitionDirection
     auto delay = ActionDelay::createDelay(initElapsedTime + 0.5f);
     
     //add action
-    this->nextScene->addActions({delay, moveBy, callSwapSceneFunc, delayPad, callEndFunc}, 0);
+    this->nextScene->addActions({delay, moveBy, callSwapSceneFunc, callOnEnter, delayPad, callEndFunc}, 0);
     //set actions to current scene too.
     Director::getInstance().getRunningScene()->addActions({delay, moveBy}, 0);
     
     delete moveBy;
-    
-    //release action
-    delete callSwapSceneFunc;
-    delete callEndFunc;
-    delete delayPad;
-    
     delete delay;
 }
 
@@ -262,10 +260,11 @@ void TransitionMove::update(double dt){
 }
 
 void TransitionMove::render(){
-    Director::getInstance().getRunningScene()->render();
+    //must render next scene first because next scene can have other sprites that are positioned off screen
     if(!sceneSwapped){
         this->nextScene->render();
     }
+    Director::getInstance().getRunningScene()->render();
 }
 
 void TransitionMove::swapScene(){
@@ -345,16 +344,11 @@ void TransitionFlip::initTransition(double duration, Volt2D::TransitionDirection
     auto delay = ActionDelay::createDelay(initElapsedTime + 0.5f);
     
     //add action
-    this->nextScene->addActions({delay, rotateBy, callSwapSceneFunc, delayPad, rotateBy, delayPad, callEndFunc}, 0);
+    this->nextScene->addActions({delay, rotateBy, callSwapSceneFunc, rotateBy, callOnEnter, delayPad, callEndFunc}, 0);
     //set actions to current scene too.
     Director::getInstance().getRunningScene()->addActions({delay, rotateBy}, 0);
     
     delete rotateBy;
-    
-    //release action
-    delete callSwapSceneFunc;
-    delete callEndFunc;
-    delete delayPad;
     delete delay;
 }
 
@@ -368,9 +362,6 @@ void TransitionFlip::update(double dt){
 }
 
 void TransitionFlip::render(){
+    //must render next scene first because next scene can have other sprites that are positioned off screen
     Director::getInstance().getRunningScene()->render();
-}
-
-void TransitionFlip::swapScene(){
-    Transition::swapScene();
 }
