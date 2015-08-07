@@ -587,8 +587,6 @@ void ParticleSystem::update(double dt){
                 glm::vec2 distanceFromSpawn = p->pos - p->spawnedPosition;
                 vertexDistanceData.push_back(distanceFromSpawn.x);
                 vertexDistanceData.push_back(distanceFromSpawn.y);
-//                vertexDistanceData.push_back(p->pos.x);
-//                vertexDistanceData.push_back(p->pos.y);
                 vertexDistanceData.push_back(0);
                 
 				//increment iterator
