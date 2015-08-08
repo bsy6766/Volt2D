@@ -30,6 +30,11 @@ private:
     Volt2D::Sprite* sceneTransitionMoveBtn;
     Volt2D::Sprite* sceneTransitionFadeBtn;
     Volt2D::Sprite* sceneTransitionFlipBtn;
+    Volt2D::Sprite* soundBtn;
+    float bgmVol, sfxVol;
+    Volt2D::Sprite* volumeLabel;
+    Volt2D::ProgressBar* bgmVolBar;
+    Volt2D::ProgressBar* sfxVolBar;
     
     Volt2D::Sprite* sampleSprite;
     Volt2D::SpriteAnimation* sampleAnimation;
@@ -41,15 +46,13 @@ private:
     Volt2D::Text* sampleText;
     
     Volt2D::Sprite* waitingTransitionMsg;
-    Volt2D::Sprite* exitMsgBox;
     
     Volt2D::Sprite* displayBorderline;
     
     Volt2D::Sprite* instructionBox;
+    Volt2D::Sprite* instructionMsg;
     
     Volt2D::Sprite* exitMsgWindow;
-    Volt2D::Sprite* exitConfirm;
-    Volt2D::Sprite* exitCancel;
     
     bool waitingExit;
     bool waitingTransition;
@@ -66,8 +69,7 @@ private:
         z_dispaly_frame,
         z_samples_bg,
         z_samples,
-        z_exit,
-        z_exit_btn
+        z_exit
     };
     
     enum State{
@@ -79,7 +81,8 @@ private:
         s_text,
         s_st_fade,
         s_st_move,
-        s_st_flip
+        s_st_flip,
+        s_sound
     };
     
     State curState;

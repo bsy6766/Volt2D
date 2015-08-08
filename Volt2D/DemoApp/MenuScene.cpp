@@ -22,10 +22,13 @@ sampleProgRadBg(0),
 sampleProgRad(0),
 sampleParticleSystem(0),
 sampleText(0),
+instructionMsg(0),
 mouseClicked(false),
 prevMousePos(0),
 mouseDragged(false),
-ctrlPressed(false)
+ctrlPressed(false),
+bgmVol(1.0f),
+sfxVol(1.0f)
 {
     
 }
@@ -35,6 +38,13 @@ MenuScene::~MenuScene(){
 }
 
 void MenuScene::init(){
+    //add sounds
+    Volt2D::SoundManager* sm = Volt2D::Director::getInstance().getSoundManager();
+    sm->createBGM("main_bgm", "title bgm.mp3");
+    sm->createSFX("browse_sfx", "title_scene_menu_browse.mp3");
+    sm->createSFX("select_sfx", "title_scene_menu_select.mp3");
+    sm->createSFX("1up_sfx", "1up.mp3");
+    
     std::string frameName = "demoMenu";
     //create sprite sheet
     Volt2D::
@@ -135,6 +145,16 @@ void MenuScene::init(){
     sceneTransitionFlipBtn->setOpacity(defaultBtnOpacity);
     this->addChild(sceneTransitionFlipBtn);
     
+    soundBtn = Volt2D::Sprite::createSpriteWithFrameName("soundBtn",
+                                                         frameName,
+                                                         "sounds_btn.png");
+    soundBtn->setPosition(glm::vec3(x, 420 - yGap * 8, 0));
+    soundBtn->setAnchorPoint(anchor);
+    soundBtn->setZDepth(z_btn);
+    soundBtn->addActions({delay, moveRight}, 0);
+    soundBtn->setOpacity(defaultBtnOpacity);
+    this->addChild(soundBtn);
+    
     displayBorderline = Volt2D::Sprite::createSpriteWithFrameName("displayFrame",
                                                                   frameName,
                                                                   "display_borderline.png");
@@ -144,6 +164,30 @@ void MenuScene::init(){
     auto fadeIn = Volt2D::ActionFadeTo::createFadeTo(1.0f, 255.0f);
     displayBorderline->addActions({delay, fadeIn}, 0);
     this->addChild(displayBorderline);
+    
+    volumeLabel = Volt2D::Sprite::createSpriteWithFrameName("volumeLabel",
+                                                            frameName,
+                                                            "sound_volume_display.png");
+    volumeLabel->setPosition(glm::vec3(227, 173, 0));
+    volumeLabel->setZDepth(z_samples);
+    volumeLabel->setOpacity(0);
+    this->addChild(volumeLabel);
+    
+    bgmVolBar = Volt2D::ProgressBar::createWithSpriteSheet("bgmVolBar",
+                                                           frameName,
+                                                           "sound_bar.png");
+    bgmVolBar->setPosition(glm::vec3(39, 27, 0));
+    bgmVolBar->setZDepth(z_samples);
+    bgmVolBar->setOpacity(0);
+    this->addChild(bgmVolBar);
+    
+    sfxVolBar = Volt2D::ProgressBar::createWithSpriteSheet("sfxVolBar",
+                                                           frameName,
+                                                           "sound_bar.png");
+    sfxVolBar->setPosition(glm::vec3(424, 27, 0));
+    sfxVolBar->setZDepth(z_samples);
+    sfxVolBar->setOpacity(0);
+    this->addChild(sfxVolBar);
     
     instructionBox = Volt2D::Sprite::createSpriteWithFrameName("instructionBox",
                                                                frameName,
@@ -165,6 +209,11 @@ void MenuScene::init(){
     waitingTransitionMsg->setPosition(glm::vec3(227, 89, 0));
     waitingTransitionMsg->setOpacity(0);
     this->addChild(waitingTransitionMsg);
+    
+    exitMsgWindow = Volt2D::Sprite::createSpriteWithFrameName("exitMsgWindow", frameName, "exit_msg_window.png");
+    exitMsgWindow->setZDepth(z_exit);
+    exitMsgWindow->setOpacity(0);
+    this->addChild(exitMsgWindow);
 }
 
 void MenuScene::onEnter(){
@@ -178,6 +227,7 @@ void MenuScene::onEnter(){
     sceneTransitionFlipBtn->runAction();
     displayBorderline->runAction();
     instructionBox->runAction();
+    soundBtn->runAction();
 }
 
 void MenuScene::update(double dt){
@@ -219,10 +269,13 @@ void MenuScene::keyPressed(int key, int mods){
         if(this->waitingExit){
             //cancel waiting
             this->waitingExit = false;
+            exitMsgWindow->setOpacity(0);
         }
         else{
             //show exit prompt
             this->waitingExit = true;
+            exitMsgWindow->setOpacity(255.0f);
+
         }
     }
     else if(key == GLFW_KEY_ENTER) {
@@ -332,6 +385,9 @@ void MenuScene::keyPressed(int key, int mods){
                     Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionFlip::createWithDirection(1.0f, Volt2D::TransitionDirection::UP, new MenuScene()));
                 }
                 break;
+            case s_sound:
+                Volt2D::Director::getInstance().getSoundManager()->playBGM("main_bgm");
+                break;
             default:
                 break;
         }
@@ -384,6 +440,9 @@ void MenuScene::keyPressed(int key, int mods){
                 if(this->waitingTransition){
                     Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionFlip::createWithDirection(1.0f, Volt2D::TransitionDirection::DOWN, new MenuScene()));
                 }
+                break;
+            case s_sound:
+                Volt2D::Director::getInstance().getSoundManager()->stopSound("main_bgm");
                 break;
             default:
                 break;
@@ -438,6 +497,8 @@ void MenuScene::keyPressed(int key, int mods){
                     Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionFlip::createWithDirection(1.0f, Volt2D::TransitionDirection::LEFT, new MenuScene()));
                 }
                 break;
+            case s_sound:
+                Volt2D::Director::getInstance().getSoundManager()->pauseBGM("main_bgm");
             default:
                 break;
         }
@@ -474,8 +535,58 @@ void MenuScene::keyPressed(int key, int mods){
                     Volt2D::Director::getInstance().transitionToNextScene(Volt2D::TransitionFlip::createWithDirection(1.0f, Volt2D::TransitionDirection::RIGHT, new MenuScene()));
                 }
                 break;
+            case s_sound:
+                this->bgmVol -= 0.2f;
+                if(bgmVol < 0)
+                    bgmVol = 0;
+                else if(bgmVol > 1.0f)
+                    bgmVol = 1.0f;
+                Volt2D::Director::getInstance().getSoundManager()->setSoundVolume("main_bgm", bgmVol);
+                bgmVolBar->setPercentage(bgmVol * 100.0f);
+                break;
             default:
                 break;
+        }
+    }
+    else if(key == GLFW_KEY_5){
+        if(curState == s_sound){
+            this->bgmVol += 0.2f;
+            if(bgmVol < 0)
+                bgmVol = 0;
+            else if(bgmVol > 1.0f)
+                bgmVol = 1.0f;
+            Volt2D::Director::getInstance().getSoundManager()->setSoundVolume("main_bgm", bgmVol);
+            bgmVolBar->setPercentage(bgmVol * 100.0f);
+        }
+    }
+    else if(key == GLFW_KEY_6){
+        if(curState == s_sound){
+            Volt2D::Director::getInstance().getSoundManager()->playSFX("select_sfx", sfxVol);
+        }
+    }
+    else if(key == GLFW_KEY_7){
+        if(curState == s_sound){
+            Volt2D::Director::getInstance().getSoundManager()->playSFX("1up_sfx", sfxVol);
+        }
+    }
+    else if(key == GLFW_KEY_8){
+        if(curState == s_sound){
+            this->sfxVol -= 0.2f;
+            if (this->sfxVol < 0)
+                this->sfxVol = 0;
+            else if(this->sfxVol > 1.0f)
+                this->sfxVol = 1.0f;
+            sfxVolBar->setPercentage(sfxVol * 100.0f);
+        }
+    }
+    else if(key == GLFW_KEY_9){
+        if(curState == s_sound){
+            this->sfxVol += 0.2f;
+            if (this->sfxVol < 0)
+                this->sfxVol = 0;
+            else if(this->sfxVol > 1.0f)
+                this->sfxVol = 1.0f;
+            sfxVolBar->setPercentage(sfxVol * 100.0f);
         }
     }
     
@@ -508,18 +619,16 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
             else{
                 //if left button clicked
                 if(this->displayBoxClicked){
-                    cout << "display box" << endl;
+                    //display box clicked
+                    auto moveTo = Volt2D::ActionMoveTo::createMoveTo(0.5f, glm::vec3(point, Volt2D::GLOBAL_Z_VALUE));
+                    auto toggleFunc = Volt2D::ActionCallFunc::createCallFunc(std::bind(&MenuScene::toggleActionFlag, this));
                     switch (curState) {
                         case s_sprite:
                             if(sampleSprite != nullptr){
                                 if(!sampleActioning){
                                     sampleActioning = true;
-                                    auto moveTo = Volt2D::ActionMoveTo::createMoveTo(0.5f, glm::vec3(point, Volt2D::GLOBAL_Z_VALUE));
-                                    auto toggleFunc = Volt2D::ActionCallFunc::createCallFunc(std::bind(&MenuScene::toggleActionFlag, this));
                                     sampleSprite->addActions({moveTo, toggleFunc}, 0);
                                     sampleSprite->runAction();
-                                    delete moveTo;
-                                    delete toggleFunc;
                                 }
                             }
                             break;
@@ -527,12 +636,8 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             if(sampleAnimation != nullptr){
                                 if(!sampleActioning){
                                     sampleActioning = true;
-                                    auto moveTo = Volt2D::ActionMoveTo::createMoveTo(0.5f, glm::vec3(point, Volt2D::GLOBAL_Z_VALUE));
-                                    auto toggleFunc = Volt2D::ActionCallFunc::createCallFunc(std::bind(&MenuScene::toggleActionFlag, this));
                                     sampleAnimation->addActions({moveTo, toggleFunc}, 0);
                                     sampleAnimation->runAction();
-                                    delete moveTo;
-                                    delete toggleFunc;
                                 }
                             }
                             break;
@@ -540,18 +645,25 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             if(sampleParticleSystem != nullptr){
                                 if(!sampleActioning){
                                     sampleActioning = true;
-                                    auto moveTo = Volt2D::ActionMoveTo::createMoveTo(0.5f, glm::vec3(point, Volt2D::GLOBAL_Z_VALUE));
-                                    auto toggleFunc = Volt2D::ActionCallFunc::createCallFunc(std::bind(&MenuScene::toggleActionFlag, this));
                                     sampleParticleSystem->addActions({moveTo, toggleFunc}, 0);
                                     sampleParticleSystem->runAction();
-                                    delete moveTo;
-                                    delete toggleFunc;
+                                }
+                            }
+                            break;
+                        case s_text:
+                            if(sampleText != nullptr){
+                                if(!sampleActioning){
+                                    sampleActioning = true;
+                                    sampleText->addActions({moveTo, toggleFunc}, 0);
+                                    sampleText->runAction();
                                 }
                             }
                             break;
                         default:
                             break;
                     }
+                    delete moveTo;
+                    delete toggleFunc;
                 }
                 else{
                     //not display box. then buttons?
@@ -567,6 +679,14 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             sampleSprite->setZDepth(z_samples);
                             sampleSprite->setPosition(glm::vec3(227, 89, 0));
                             this->addChild(sampleSprite);
+                            if(instructionMsg != nullptr){
+                                this->removechild(instructionMsg, true);
+                            }
+                            instructionMsg = Volt2D::Sprite::createSpriteWithFrameName("instructionMsg", "demoMenu", "sprite_instruction.png");
+                            instructionMsg->setAnchorPoint(glm::vec2(-0.5, 0));
+                            instructionMsg->setPosition(glm::vec3(-704, -350, 0));
+                            this->addChild(instructionMsg);
+                            Volt2D::Director::getInstance().getSoundManager()->playSFX("browse_sfx");
                         }
                         
                     }
@@ -584,6 +704,15 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             sampleAnimation->setPosition(glm::vec3(227, 89, 0));
                             sampleAnimation->setZDepth(z_samples);
                             this->addChild(sampleAnimation);
+                            
+                            if(instructionMsg != nullptr){
+                                this->removechild(instructionMsg, true);
+                            }
+                            instructionMsg = Volt2D::Sprite::createSpriteWithFrameName("instructionMsg", "demoMenu", "spriteanimation_instruction.png");
+                            instructionMsg->setAnchorPoint(glm::vec2(-0.5, 0));
+                            instructionMsg->setPosition(glm::vec3(-704, -350, 0));
+                            this->addChild(instructionMsg);
+                            Volt2D::Director::getInstance().getSoundManager()->playSFX("browse_sfx");
                         }
                     }
                     else if(this->progressBtn->getBoundingBox()->containsPoint(point)){
@@ -631,6 +760,15 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             
                             this->curState = s_progress;
                             this->progressBtn->setOpacity(255.0f);
+                            
+                            if(instructionMsg != nullptr){
+                                this->removechild(instructionMsg, true);
+                            }
+                            instructionMsg = Volt2D::Sprite::createSpriteWithFrameName("instructionMsg", "demoMenu", "progress_instruction.png");
+                            instructionMsg->setAnchorPoint(glm::vec2(-0.5, 0));
+                            instructionMsg->setPosition(glm::vec3(-704, -350, 0));
+                            this->addChild(instructionMsg);
+                            Volt2D::Director::getInstance().getSoundManager()->playSFX("browse_sfx");
                         }
                     }
                     else if(this->particleSysBtn->getBoundingBox()->containsPoint(point)){
@@ -645,6 +783,15 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             sampleParticleSystem->setZDepth(z_samples);
                             sampleParticleSystem->setPosition(glm::vec3(227, 89, 0));
                             this->addChild(sampleParticleSystem);
+                            
+                            if(instructionMsg != nullptr){
+                                this->removechild(instructionMsg, true);
+                            }
+                            instructionMsg = Volt2D::Sprite::createSpriteWithFrameName("instructionMsg", "demoMenu", "particlesystem_instruction.png");
+                            instructionMsg->setAnchorPoint(glm::vec2(-0.5, 0));
+                            instructionMsg->setPosition(glm::vec3(-704, -350, 0));
+                            this->addChild(instructionMsg);
+                            Volt2D::Director::getInstance().getSoundManager()->playSFX("browse_sfx");
                         }
                     }
                     else if(this->textBtn->getBoundingBox()->containsPoint(point)){
@@ -661,6 +808,7 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             sampleText->setPosition(glm::vec3(227, 89, 0));
                             sampleText->setColor(Volt2D::Color::WHITE);
                             this->addChild(sampleText);
+                            Volt2D::Director::getInstance().getSoundManager()->playSFX("browse_sfx");
                         }
                     }
                     else if(this->sceneTransitionMoveBtn->getBoundingBox()->containsPoint(point)){
@@ -670,6 +818,15 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             this->sceneTransitionMoveBtn->setOpacity(255.0f);
                             this->waitingTransitionMsg->setOpacity(255);
                             this->waitingTransition = true;
+                            
+                            if(instructionMsg != nullptr){
+                                this->removechild(instructionMsg, true);
+                            }
+                            instructionMsg = Volt2D::Sprite::createSpriteWithFrameName("instructionMsg", "demoMenu", "transition_direction_instruction.png");
+                            instructionMsg->setAnchorPoint(glm::vec2(-0.5, 0));
+                            instructionMsg->setPosition(glm::vec3(-704, -350, 0));
+                            this->addChild(instructionMsg);
+                            Volt2D::Director::getInstance().getSoundManager()->playSFX("browse_sfx");
                         }
                     }
                     else if(this->sceneTransitionFadeBtn->getBoundingBox()->containsPoint(point)){
@@ -679,6 +836,15 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             this->sceneTransitionFadeBtn->setOpacity(255.0f);
                             this->waitingTransitionMsg->setOpacity(255);
                             this->waitingTransition = true;
+                            
+                            if(instructionMsg != nullptr){
+                                this->removechild(instructionMsg, true);
+                            }
+                            instructionMsg = Volt2D::Sprite::createSpriteWithFrameName("instructionMsg", "demoMenu", "transition_color_instruction.png");
+                            instructionMsg->setAnchorPoint(glm::vec2(-0.5, 0));
+                            instructionMsg->setPosition(glm::vec3(-704, -350, 0));
+                            this->addChild(instructionMsg);
+                            Volt2D::Director::getInstance().getSoundManager()->playSFX("browse_sfx");
                         }
                     }
                     else if(this->sceneTransitionFlipBtn->getBoundingBox()->containsPoint(point)){
@@ -688,6 +854,33 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             this->sceneTransitionFlipBtn->setOpacity(255.0f);
                             this->waitingTransitionMsg->setOpacity(255);
                             this->waitingTransition = true;
+                            
+                            if(instructionMsg != nullptr){
+                                this->removechild(instructionMsg, true);
+                            }
+                            instructionMsg = Volt2D::Sprite::createSpriteWithFrameName("instructionMsg", "demoMenu", "transition_direction_instruction.png");
+                            instructionMsg->setAnchorPoint(glm::vec2(-0.5, 0));
+                            instructionMsg->setPosition(glm::vec3(-704, -350, 0));
+                            this->addChild(instructionMsg);
+                            Volt2D::Director::getInstance().getSoundManager()->playSFX("browse_sfx");
+                        }
+                    }
+                    else if(this->soundBtn->getBoundingBox()->containsPoint(point)){
+                        if(curState != s_sound){
+                            resetPrevBtn();
+                            this->curState = s_sound;
+                            this->soundBtn->setOpacity(255.0f);
+                            if(instructionMsg != nullptr){
+                                this->removechild(instructionMsg, true);
+                            }
+                            instructionMsg = Volt2D::Sprite::createSpriteWithFrameName("instructionMsg", "demoMenu", "sound_instruction.png");
+                            instructionMsg->setAnchorPoint(glm::vec2(-0.5, 0));
+                            instructionMsg->setPosition(glm::vec3(-704, -374, 0));
+                            this->addChild(instructionMsg);
+                            Volt2D::Director::getInstance().getSoundManager()->playSFX("browse_sfx");
+                            bgmVolBar->setOpacity(255.0f);
+                            sfxVolBar->setOpacity(255.0f);
+                            volumeLabel->setOpacity(255.0f);
                         }
                     }
                 }
@@ -756,10 +949,12 @@ void MenuScene::resetPrevBtn(){
         case s_sprite:
             spriteBtn->setOpacity(defaultBtnOpacity);
             this->removechild(sampleSprite, true);
+            this->removechild(instructionMsg, true);
             break;
         case s_sprite_animation:
             spriteAnimationBtn->setOpacity(defaultBtnOpacity);
             this->removechild(sampleAnimation, true);
+            this->removechild(instructionMsg, true);
             break;
         case s_progress:
             progressBtn->setOpacity(defaultBtnOpacity);
@@ -769,29 +964,43 @@ void MenuScene::resetPrevBtn(){
             //prog radian
             this->removechild(sampleProgRad, true);
             this->removechild(sampleProgRadBg, true);
+            this->removechild(instructionMsg, true);
             break;
         case s_particle_system:
             particleSysBtn->setOpacity(defaultBtnOpacity);
             this->removechild(sampleParticleSystem, true);
+            this->removechild(instructionMsg, true);
             break;
         case s_text:
             textBtn->setOpacity(defaultBtnOpacity);
             this->removechild(sampleText, true);
+            this->removechild(instructionMsg, true);
             break;
         case s_st_fade:
             sceneTransitionFadeBtn->setOpacity(defaultBtnOpacity);
             waitingTransition = false;
             waitingTransitionMsg->setOpacity(0);
+            this->removechild(instructionMsg, true);
             break;
         case s_st_move:
             sceneTransitionMoveBtn->setOpacity(defaultBtnOpacity);
             waitingTransition = false;
             waitingTransitionMsg->setOpacity(0);
+            this->removechild(instructionMsg, true);
             break;
         case s_st_flip:
             sceneTransitionFlipBtn->setOpacity(defaultBtnOpacity);
             waitingTransition = false;
             waitingTransitionMsg->setOpacity(0);
+            this->removechild(instructionMsg, true);
+            break;
+        case s_sound:
+            soundBtn->setOpacity(defaultBtnOpacity);
+            this->removechild(instructionMsg, true);
+            Volt2D::Director::getInstance().getSoundManager()->stopSound("main_bgm");
+            bgmVolBar->setOpacity(0);
+            sfxVolBar->setOpacity(0);
+            volumeLabel->setOpacity(0);
             break;
         default:
             break;

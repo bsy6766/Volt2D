@@ -17,7 +17,8 @@
 #define GetCurrentDir getcwd
 #endif
 #include "Director.h"
-#include "TitleScene.h"
+//#include "TitleScene.h"
+#include "MenuScene.h"
 #include "LuaConfig.h"
 
 void splitFilename (std::string& str)
@@ -84,8 +85,8 @@ int main(int argc, const char * argv[]) {
                                         windowed,
                                         captureMouse,
                                         cursorHidden);
-        TitleScene* titleScene = new TitleScene();
-        Volt2D::Director::getInstance().replaceScene(titleScene);
+//        Volt2D::Director::getInstance().replaceScene(new TitleScene());
+        Volt2D::Director::getInstance().replaceScene(new MenuScene());
         Volt2D::Director::getInstance().run();
     }
     catch(std::exception &e){
