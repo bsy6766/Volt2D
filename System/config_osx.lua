@@ -10,7 +10,7 @@ system = {
 		fullscreen = false,
 	 	borderless = true,
 	 	captureMouse = false,
-	 	cursorHidden = false,
+	 	cursorHidden = true,
 	 	vsync = true
 	},
 	clearBuffer = {

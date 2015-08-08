@@ -1,9 +1,9 @@
 particleSystem = {
 	name = "blueMeteor",
-	pause = true,
+	pause = false,
 	blend = true,
 	size = 150,
-	duration = 5,
+	duration = -1,
 
 	posVar = {
 		x = 0,

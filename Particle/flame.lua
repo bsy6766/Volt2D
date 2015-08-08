@@ -1,9 +1,9 @@
 particleSystem = {
 	name = "flame",
-	pause = true,
+	pause = false,
 	blend = true,
 	size = 250,
-	duration = 5,
+	duration = -1,
 	posVar = {
 		x = 40,
 		y = 20,
