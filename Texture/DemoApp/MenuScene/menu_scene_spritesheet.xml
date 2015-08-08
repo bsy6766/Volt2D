@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:04251a228aba1c1f867d4977c68a8739:14a3a6e47406f7fd036f1dcbbaa59309:8fdefd3fe3a29350db40ab1540c09d19$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+pX => x pos of the pivot point (relative to sprite width)
+pY => y pos of the pivot point (relative to sprite height)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+-->
+<TextureAtlas imagePath="menu_scene_spritesheet.png" width="4096" height="2048">
+    <sprite n="menu_bg.png" x="2" y="2" w="1440" h="900" pX="0.5" pY="0.5"/>
+    <sprite n="display_borderline.png" x="1444" y="2" w="813" h="541" pX="0.5" pY="0.5"/>
+    <sprite n="exit_msg_window.png" x="2259" y="2" w="947" h="492" pX="0.5" pY="0.5"/>
+    <sprite n="instruction_box.png" x="2" y="904" w="1440" h="200" pX="0.5" pY="0.5"/>
+    <sprite n="idle-1.png" x="1444" y="904" w="73" h="146" pX="0.5" pY="0.5" oX="7" oY="0" oW="87" oH="146"/>
+    <sprite n="idle-4.png" x="1519" y="904" w="75" h="144" pX="0.5" pY="0.5" oX="7" oY="2" oW="87" oH="146"/>
+    <sprite n="idle-2.png" x="1519" y="904" w="75" h="144" pX="0.5" pY="0.5" oX="7" oY="2" oW="87" oH="146"/>
+    <sprite n="idle-3.png" x="1596" y="904" w="81" h="141" pX="0.5" pY="0.5" oX="6" oY="5" oW="87" oH="146"/>
+    <sprite n="run_7.png" x="1679" y="904" w="64" h="140" pX="0.5" pY="0.5" oX="41" oY="21" oW="120" oH="161"/>
+    <sprite n="run_6.png" x="1812" y="904" w="74" h="139" pX="0.5" pY="0.5" oX="32" oY="22" oW="120" oH="161"/>
+    <sprite n="run_2.png" x="1888" y="904" w="81" h="139" pX="0.5" pY="0.5" oX="24" oY="22" oW="120" oH="161"/>
+    <sprite n="run_3.png" x="1745" y="904" w="65" h="139" pX="0.5" pY="0.5" oX="40" oY="22" oW="120" oH="161"/>
+    <sprite n="run_8.png" x="1971" y="904" w="86" h="136" pX="0.5" pY="0.5" oX="25" oY="25" oW="120" oH="161"/>
+    <sprite n="run_4.png" x="2059" y="904" w="86" h="135" pX="0.5" pY="0.5" oX="25" oY="26" oW="120" oH="161"/>
+    <sprite n="sample_sprite.png" x="2147" y="904" w="100" h="133" pX="0.5" pY="0.5"/>
+    <sprite n="blocking-1.png" x="2249" y="904" w="92" h="133" pX="0.5" pY="0.5" oX="8" oY="0" oW="108" oH="133"/>
+    <sprite n="blocking-4.png" x="2343" y="904" w="98" h="128" pX="0.5" pY="0.5" oX="5" oY="5" oW="108" oH="133"/>
+    <sprite n="blocking-2.png" x="2343" y="904" w="98" h="128" pX="0.5" pY="0.5" oX="5" oY="5" oW="108" oH="133"/>
+    <sprite n="run_5.png" x="2553" y="904" w="120" h="127" pX="0.5" pY="0.5" oX="0" oY="34" oW="120" oH="161"/>
+    <sprite n="run_1.png" x="2675" y="904" w="120" h="127" pX="0.5" pY="0.5" oX="0" oY="34" oW="120" oH="161"/>
+    <sprite n="blocking-3.png" x="2443" y="904" w="108" h="127" pX="0.5" pY="0.5" oX="0" oY="6" oW="108" oH="133"/>
+    <sprite n="waiting_transition.png" x="2797" y="904" w="518" h="119" pX="0.5" pY="0.5"/>
+    <sprite n="sample_progress_radian.png" x="3419" y="904" w="100" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="sample_progress_radian_bg.png" x="3317" y="904" w="100" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="sound_bar.png" x="3521" y="904" w="253" h="86" pX="0.5" pY="0.5"/>
+    <sprite n="sound_instruction.png" x="2" y="1106" w="1234" h="84" pX="0.5" pY="0.5"/>
+    <sprite n="progress_btn.png" x="1513" y="1106" w="366" h="39" pX="0.5" pY="0.5"/>
+    <sprite n="particlesystem_btn.png" x="1238" y="1106" w="273" h="39" pX="0.5" pY="0.5"/>
+    <sprite n="transition_color_instruction.png" x="2" y="1192" w="698" h="38" pX="0.5" pY="0.5"/>
+    <sprite n="spritesheet_btn.png" x="702" y="1192" w="219" h="38" pX="0.5" pY="0.5"/>
+    <sprite n="transition_direction_instruction.png" x="923" y="1192" w="647" h="38" pX="0.5" pY="0.5"/>
+    <sprite n="sprite_btn.png" x="1572" y="1192" w="102" h="38" pX="0.5" pY="0.5"/>
+    <sprite n="sprite_instruction.png" x="1881" y="1106" w="1210" h="38" pX="0.5" pY="0.5"/>
+    <sprite n="spriteanimation_btn.png" x="3468" y="1106" w="289" h="38" pX="0.5" pY="0.5"/>
+    <sprite n="scenetransitionflip_btn.png" x="3093" y="1106" w="373" h="38" pX="0.5" pY="0.5"/>
+    <sprite n="progress_instruction.png" x="1676" y="1192" w="1393" h="37" pX="0.5" pY="0.5"/>
+    <sprite n="sample_progress_bar_bg.png" x="3071" y="1192" w="241" h="36" pX="0.5" pY="0.5"/>
+    <sprite n="spriteanimation_instruction.png" x="3314" y="1192" w="479" h="35" pX="0.5" pY="0.5"/>
+    <sprite n="particlesystem_instruction.png" x="2" y="1232" w="723" h="35" pX="0.5" pY="0.5"/>
+    <sprite n="sample_progress_bar.png" x="727" y="1232" w="211" h="32" pX="0.5" pY="0.5"/>
+    <sprite n="sounds_btn.png" x="2364" y="1232" w="134" h="31" pX="0.5" pY="0.5"/>
+    <sprite n="scenetransitionmove_btn.png" x="1956" y="1232" w="406" h="31" pX="0.5" pY="0.5"/>
+    <sprite n="scenetransitionfade_btn.png" x="1554" y="1232" w="400" h="31" pX="0.5" pY="0.5"/>
+    <sprite n="sound_volume_display.png" x="940" y="1232" w="612" h="31" pX="0.5" pY="0.5"/>
+    <sprite n="text_btn.png" x="2500" y="1232" w="77" h="30" pX="0.5" pY="0.5"/>
+</TextureAtlas>
