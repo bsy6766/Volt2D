@@ -367,8 +367,10 @@ bool Object::removechild(Object* child, bool deleteObject){
             child->getZDepth(z);
             
             if(objMapIt->first == z && objMapIt->second->getName() == objName){
-                if(deleteObject)
+                if(deleteObject){
                     delete objMapIt->second;
+                    objMapIt->second = nullptr;
+                }
                 childObjMap.erase(objMapIt);
                 break;
             }

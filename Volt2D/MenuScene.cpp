@@ -950,11 +950,15 @@ void MenuScene::resetPrevBtn(){
             spriteBtn->setOpacity(defaultBtnOpacity);
             this->removechild(sampleSprite, true);
             this->removechild(instructionMsg, true);
+            sampleSprite = nullptr;
+            instructionMsg = nullptr;
             break;
         case s_sprite_animation:
             spriteAnimationBtn->setOpacity(defaultBtnOpacity);
             this->removechild(sampleAnimation, true);
             this->removechild(instructionMsg, true);
+            sampleAnimation = nullptr;
+            instructionMsg = nullptr;
             break;
         case s_progress:
             progressBtn->setOpacity(defaultBtnOpacity);
@@ -965,34 +969,44 @@ void MenuScene::resetPrevBtn(){
             this->removechild(sampleProgRad, true);
             this->removechild(sampleProgRadBg, true);
             this->removechild(instructionMsg, true);
+            sampleProgBar = nullptr;
+            sampleProgBarBg = nullptr;
+            sampleProgRad = nullptr;
+            sampleProgRadBg = nullptr;
+            instructionMsg = nullptr;
             break;
         case s_particle_system:
             particleSysBtn->setOpacity(defaultBtnOpacity);
             this->removechild(sampleParticleSystem, true);
             this->removechild(instructionMsg, true);
+            sampleParticleSystem = nullptr;
+            instructionMsg = nullptr;
             break;
         case s_text:
             textBtn->setOpacity(defaultBtnOpacity);
             this->removechild(sampleText, true);
-            this->removechild(instructionMsg, true);
+            sampleText = nullptr;
             break;
         case s_st_fade:
             sceneTransitionFadeBtn->setOpacity(defaultBtnOpacity);
             waitingTransition = false;
             waitingTransitionMsg->setOpacity(0);
             this->removechild(instructionMsg, true);
+            instructionMsg = nullptr;
             break;
         case s_st_move:
             sceneTransitionMoveBtn->setOpacity(defaultBtnOpacity);
             waitingTransition = false;
             waitingTransitionMsg->setOpacity(0);
             this->removechild(instructionMsg, true);
+            instructionMsg = nullptr;
             break;
         case s_st_flip:
             sceneTransitionFlipBtn->setOpacity(defaultBtnOpacity);
             waitingTransition = false;
             waitingTransitionMsg->setOpacity(0);
             this->removechild(instructionMsg, true);
+            instructionMsg = nullptr;
             break;
         case s_sound:
             soundBtn->setOpacity(defaultBtnOpacity);
@@ -1001,6 +1015,7 @@ void MenuScene::resetPrevBtn(){
             bgmVolBar->setOpacity(0);
             sfxVolBar->setOpacity(0);
             volumeLabel->setOpacity(0);
+            instructionMsg = nullptr;
             break;
         default:
             break;
