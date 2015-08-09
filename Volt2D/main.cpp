@@ -56,7 +56,7 @@ int main(int argc, const char * argv[]) {
 
     Volt2D::LuaConfig* systemConfig = Volt2D::LuaConfig::create("systemConfig");
 #if _WIN32
-	systemConfig->loadConfig("system", runningPath + "/../config_win32.lua");
+	systemConfig->loadConfig("system", runningPath + "/../System/config_win32.lua");
 #elif __APPLE__
 	systemConfig->loadConfig("system", runningPath + "/../System/config_osx.lua");
 #endif
