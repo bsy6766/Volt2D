@@ -85,6 +85,9 @@ bool SpriteAnimation::initWithAnimation(string name, string textureName, int siz
     na.bufferObject.ibo = -1;
     na.textureAtlas = 0;
     na.intervalCounter = 0;
+    na.vertexData.clear();
+    na.uvVertexData.clear();
+    na.indicesData.clear();
     
     //Create texture array.
     Texture* animationTextureAtlas = Texture::create2DTextureArrayWithFiles(textureName, size);
@@ -101,7 +104,7 @@ bool SpriteAnimation::initWithAnimation(string name, string textureName, int siz
     int imgW, imgH;
     animationTextureAtlas->getImageSize(imgW, imgH);
     //compute vertex data.
-    computeVertexData((float)texW, (float)texH, (float)imgW, (float)imgH);
+    computeVertexData((float)texW, (float)texH, (float)imgW, (float)imgH, na);
     
     //load vertex data to animation
     loadVertexData(na);
@@ -116,7 +119,7 @@ bool SpriteAnimation::initWithAnimation(string name, string textureName, int siz
     return true;
 }
 
-void SpriteAnimation::computeVertexData(float texW, float texH, float imgW, float imgH){
+void SpriteAnimation::computeVertexData(float texW, float texH, float imgW, float imgH, Animation& ani){
     //compute vertex size that will be render in screen
     float width = imgW / Volt2D::SCREEN_TO_WORLD_SCALE;
     float height = imgH / Volt2D::SCREEN_TO_WORLD_SCALE;
@@ -125,22 +128,49 @@ void SpriteAnimation::computeVertexData(float texW, float texH, float imgW, floa
     this->Object::scaledWidth = width;
     this->Object::scaledHeight = height;
     
-    vertexData.push_back(glm::vec3(-(width/2), -(height/2), Volt2D::GLOBAL_Z_VALUE));
-    vertexData.push_back(glm::vec3(-(width/2), height/2, Volt2D::GLOBAL_Z_VALUE));
-    vertexData.push_back(glm::vec3(width/2, -(height/2), Volt2D::GLOBAL_Z_VALUE));
-    vertexData.push_back(glm::vec3(width/2, height/2, Volt2D::GLOBAL_Z_VALUE));
+    ani.textureHeight = texH;
+    ani.textureWidth = texW;
     
-    uvVertexData.push_back(glm::vec2(0, (imgH / texH)));
-    uvVertexData.push_back(glm::vec2(0, 0));
-    uvVertexData.push_back(glm::vec2((imgW / texW), (imgH / texH)));
-    uvVertexData.push_back(glm::vec2((imgW / texW), 0));
-    
-    indicesData.push_back(0);
-    indicesData.push_back(1);
-    indicesData.push_back(2);
-    indicesData.push_back(1);
-    indicesData.push_back(2);
-    indicesData.push_back(3);
+    if(animationMap.empty()){
+        vertexData.push_back(glm::vec3(-(width/2), -(height/2), Volt2D::GLOBAL_Z_VALUE));
+        vertexData.push_back(glm::vec3(-(width/2), height/2, Volt2D::GLOBAL_Z_VALUE));
+        vertexData.push_back(glm::vec3(width/2, -(height/2), Volt2D::GLOBAL_Z_VALUE));
+        vertexData.push_back(glm::vec3(width/2, height/2, Volt2D::GLOBAL_Z_VALUE));
+        
+        uvVertexData.push_back(glm::vec2(0, (imgH / texH)));
+        uvVertexData.push_back(glm::vec2(0, 0));
+        uvVertexData.push_back(glm::vec2((imgW / texW), (imgH / texH)));
+        uvVertexData.push_back(glm::vec2((imgW / texW), 0));
+        
+        indicesData.push_back(0);
+        indicesData.push_back(1);
+        indicesData.push_back(2);
+        indicesData.push_back(1);
+        indicesData.push_back(2);
+        indicesData.push_back(3);
+        
+        ani.vertexData = vertexData;
+        ani.uvVertexData = uvVertexData;
+        ani.indicesData = indicesData;
+    }
+    else{
+        ani.vertexData.push_back(glm::vec3(-(width/2), -(height/2), Volt2D::GLOBAL_Z_VALUE));
+        ani.vertexData.push_back(glm::vec3(-(width/2), height/2, Volt2D::GLOBAL_Z_VALUE));
+        ani.vertexData.push_back(glm::vec3(width/2, -(height/2), Volt2D::GLOBAL_Z_VALUE));
+        ani.vertexData.push_back(glm::vec3(width/2, height/2, Volt2D::GLOBAL_Z_VALUE));
+        
+        ani.uvVertexData.push_back(glm::vec2(0, (imgH / texH)));
+        ani.uvVertexData.push_back(glm::vec2(0, 0));
+        ani.uvVertexData.push_back(glm::vec2((imgW / texW), (imgH / texH)));
+        ani.uvVertexData.push_back(glm::vec2((imgW / texW), 0));
+        
+        ani.indicesData.push_back(0);
+        ani.indicesData.push_back(1);
+        ani.indicesData.push_back(2);
+        ani.indicesData.push_back(1);
+        ani.indicesData.push_back(2);
+        ani.indicesData.push_back(3);
+    }
 }
 
 void SpriteAnimation::addAnimation(std::string name, string textureName, int frameSize, double frameInterval){
@@ -171,6 +201,11 @@ void SpriteAnimation::addAnimation(std::string name, string textureName, int fra
     if(animationMap.empty()){
         this->runningAnimationName = name;
     }
+    
+    int imgW, imgH;
+    animationTextureAtlas->getImageSize(imgW, imgH);
+    //compute vertex data.
+    computeVertexData((float)texW, (float)texH, (float)imgW, (float)imgH, na);
     
     //load vertex data to animation
     loadVertexData(na);
@@ -207,17 +242,17 @@ void SpriteAnimation::loadVertexData(Animation& ani){
     
     glGenBuffers(1, vbo);
     glBindBuffer(GL_ARRAY_BUFFER, *vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * vertexData.size(), &vertexData[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * ani.vertexData.size(), &ani.vertexData[0], GL_STATIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("vert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
     
     glGenBuffers(1, uvbo);
     glBindBuffer(GL_ARRAY_BUFFER, *uvbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * uvVertexData.size(), &uvVertexData[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * ani.uvVertexData.size(), &ani.uvVertexData[0], GL_STATIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("uvVert"), 2, GL_FLOAT, GL_FALSE, 0, NULL);
     
     glGenBuffers(1, ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), &indicesData[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * ani.indicesData.size(), &ani.indicesData[0], GL_STATIC_DRAW);
     
     ani.bufferObject = BufferObject({*vao, *vbo, *uvbo, *ibo});
     

@@ -46,13 +46,17 @@ private:
         string name;
         Texture* textureAtlas;
         /**
-         *  First animation ever uses
+         *  First animation uses RenderableObject's bufferObject.
          */
         RenderableObject::BufferObject bufferObject;
         int currentFrameIndex;
         float textureWidth;
         float textureHeight;
         double intervalCounter;
+        
+        std::vector<glm::vec3> vertexData;
+        std::vector<glm::vec2> uvVertexData;
+        std::vector<GLushort> indicesData;
     };
     
     /**
@@ -70,7 +74,7 @@ private:
      *  @param width Quad width
      *  @param height Quad height
      */
-    void computeVertexData(float texWidth, float texHeight, float imgW, float imgH);
+    void computeVertexData(float texWidth, float texHeight, float imgW, float imgH, Animation& ani);
     
     /**
      *  Load computed vertex.
