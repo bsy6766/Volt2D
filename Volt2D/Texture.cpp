@@ -214,9 +214,19 @@ void Texture::initTextureArray(int layer){
     this->width = Volt2D::findNearestPowTwo(width);
     this->height = Volt2D::findNearestPowTwo(height);
     
-    //generate empty texture
-    this->generate2DArrayTexture(this->width, this->height, layer, this->channel);
+    //generate empty texture.
+	/**
+	 *	Note
+	 *	On win32, initializing empty texture with NULL(0) resulted some
+	 *	dirty texture instead of
+	 */
+	//unsigned char* emptyData = new unsigned char[this->width * this->height * 4]{0};
+	std::vector<GLubyte> emptyData(this->width * this->height * 4, 0);
+
+    this->generate2DArrayTexture(this->width, this->height, layer, this->channel, &emptyData[0]);
     GLenum type = this->getTextureType(this->channel);
+
+	//delete[] emptyData;
 
     assert(type >= 0);
     
@@ -361,7 +371,7 @@ void Texture::generate2DTexture(int width, int height, int channel, unsigned cha
 void Texture::generate2DArrayTexture(int width, int height, int layerSize, int channel, unsigned char* data){
     glGenTextures(1, &this->textureObject);
     glBindTexture(this->textureTarget, this->textureObject);
-    
+
     glTexParameteri(this->textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(this->textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(this->textureTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -381,9 +391,24 @@ void Texture::generate2DArrayTexture(int width, int height, int layerSize, int c
         case Format_RGBA:
             //Has alpha. ex)png
 //            glTexImage3D(this->textureTarget, 1, GL_RGBA8, width, height, layerSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-            glTexStorage3D(this->textureTarget, 1, GL_RGBA8, width, height, layerSize);
+			glTexStorage3D(this->textureTarget, 1, GL_RGBA8, width, height, layerSize);
+			//glTexSubImage3D(this->textureTarget, 0, 0, 0, 0, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			//\todo Fix this!
+			for (int i = 0; i< layerSize; i++){
+				//update texture
+				glTexSubImage3D(this->textureTarget,    //GL_TEXTURE_2D_ARRay
+								0,                      //level(mipmap)
+								0, 0, i,                //x,y,z offset
+								width,            //texture width
+								height,           //texture height
+								1,                      //texture depth
+								GL_RGBA,                //format
+								GL_UNSIGNED_BYTE,       //type
+								data
+								);
+			}
             break;
-    }
+	}
 }
 
 GLenum Texture::getTextureType(int channel){
