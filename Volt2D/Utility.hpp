@@ -170,6 +170,13 @@ namespace Volt2D{
         
         return -1.0;
     }
+    
+    inline void splitFilename (std::string& str)
+    {
+        size_t found;
+        found=str.find_last_of("/\\");
+        str = str.substr(0, found);
+    }
 }
 
 #endif /* defined(__Volt2D__Utility__) */
