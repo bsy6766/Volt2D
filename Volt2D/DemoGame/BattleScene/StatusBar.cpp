@@ -14,7 +14,7 @@ using namespace Volt2D;
 StatusBar::StatusBar(std::string objName, glm::vec3 pos):
 pos(pos)
 {
-    frame = Sprite::createSprite(objName + "Frame", "battle scene/status_frame.png");
+    frame = Sprite::create(objName + "Frame", "battle scene/status_frame.png");
     frame->setPosition(pos);
     frame->setZDepth(199);
     

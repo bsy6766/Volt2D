@@ -36,43 +36,43 @@ void TitleButtonLayer::init(){
 //    float buttonsYGap = 40;
 //    float buttonsYStarting = -105;
 //    
-//    continueButton = Sprite::createSprite("continueButton", "title scene/continue_button.png");
+//    continueButton = Sprite::create("continueButton", "title scene/continue_button.png");
 //    continueButton->setZDepth(z_buttons);
 //    continueButton->setPosition(glm::vec3(buttonsX, buttonsYStarting, 0));
 //    if(!hasSavedData)
 //        continueButton->setOpacity(90);
 //    this->addChild(continueButton);
 //    
-//    newGameButton = Sprite::createSprite("newGameButton", "title scene/new_game_button.png");
+//    newGameButton = Sprite::create("newGameButton", "title scene/new_game_button.png");
 //    newGameButton->setZDepth(z_buttons);
 //    newGameButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap, 0));
 //    this->addChild(newGameButton);
 //    
-//    optionsButton = Sprite::createSprite("optionButton", "title scene/options_button.png");
+//    optionsButton = Sprite::create("optionButton", "title scene/options_button.png");
 //    optionsButton->setZDepth(z_buttons);
 //    optionsButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 2, 0));
 //    this->addChild(optionsButton);
 //    
-//    creditsButton = Sprite::createSprite("creditsButton", "title scene/credits_button.png");
+//    creditsButton = Sprite::create("creditsButton", "title scene/credits_button.png");
 //    creditsButton->setZDepth(z_buttons);
 //    creditsButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 3, 0));
 //    this->addChild(creditsButton);
 //    
-//    exitGameButton = Sprite::createSprite("exitGameButton", "title scene/exit_game_button.png");
+//    exitGameButton = Sprite::create("exitGameButton", "title scene/exit_game_button.png");
 //    exitGameButton->setZDepth(z_buttons);
 //    exitGameButton->setPosition(glm::vec3(buttonsX, buttonsYStarting - buttonsYGap * 4, 0));
 //    this->addChild(exitGameButton);
 //    
-////    mouseCursor = Sprite::createSprite("moundIcon", "mouse_icon.png");
+////    mouseCursor = Sprite::create("moundIcon", "mouse_icon.png");
 ////    mouseCursor->setZDepth(z_mouse_cursor);
 ////    this->addChild(mouseCursor);
 //    
-//    selectingArrowIcon = Sprite::createSprite("selectingArrowIcon", "title scene/selecting_arrow_icon.png");
+//    selectingArrowIcon = Sprite::create("selectingArrowIcon", "title scene/selecting_arrow_icon.png");
 //    selectingArrowIcon->setZDepth(z_selecting_icon);
 //    selectingArrowIcon->setPosition(glm::vec3(selectingArrowIconX, newGameButton->getPosition().y, 0));
 //    this->addChild(selectingArrowIcon);
 //    
-//    creditScreen = Sprite::createSprite("creditScreen", "title scene/credit_screen.png");
+//    creditScreen = Sprite::create("creditScreen", "title scene/credit_screen.png");
 //    creditScreen->setZDepth(z_credit_screen);
 //    this->addChild(creditScreen);
 //    creditScreen->setOpacity(0);
@@ -121,11 +121,11 @@ void TitleButtonLayer::init(){
 //    muhanDojun->setPosition(vec3(300, 100, 0))  ;
 //    muhanDojun->setZDepth(99);
     
-    tentacle = Sprite::createSprite("tentacleBody", "title scene/tentacle_body.png");
+    tentacle = Sprite::create("tentacleBody", "title scene/tentacle_body.png");
     tentacle->setPosition(glm::vec3(100, 0, 0));
     tentacle->setZDepth(z_top);
     {
-        arm1 = Sprite::createSprite("arm1", "title scene/bone.png");
+        arm1 = Sprite::create("arm1", "title scene/bone.png");
         arm1->setZDepth(z_top);
         arm1->addPosition(glm::vec3(25.0f, 0, 0));
         arm1->setAnchorPoint(glm::vec2(-0.5f, 0));
@@ -136,7 +136,7 @@ void TitleButtonLayer::init(){
         arm1->addActions({rotateLeftTo, rotateRightTo}, -1);
         arm1->runAction();
         
-        arm2 = Sprite::createSprite("arm2", "title scene/bone.png");
+        arm2 = Sprite::create("arm2", "title scene/bone.png");
         arm2->setZDepth(z_top);
         arm2->addPosition(glm::vec3(100.0f, 0, 0));
         arm2->setAnchorPoint(glm::vec2(-0.5f, 0));
@@ -145,7 +145,7 @@ void TitleButtonLayer::init(){
         arm2->addActions({rotateLeftTo, rotateRightTo}, -1);
         arm2->runAction();
         
-        arm3 = Sprite::createSprite("arm3", "title scene/bone.png");
+        arm3 = Sprite::create("arm3", "title scene/bone.png");
         arm3->setZDepth(z_top);
         arm3->addPosition(glm::vec3(100.0f, 0, 0));
         arm3->setAnchorPoint(glm::vec2(-0.5f, 0));
@@ -156,7 +156,7 @@ void TitleButtonLayer::init(){
         
         arm3->addChild(magicalOrbits);
         
-        Sprite* topArm1 = Sprite::createSprite("topArm1", "title scene/bone.png");
+        Sprite* topArm1 = Sprite::create("topArm1", "title scene/bone.png");
         topArm1->setZDepth(z_top);
         topArm1->addPosition(glm::vec3(0, 25.0f, 0));
         topArm1->setAnchorPoint(glm::vec2(0.5f, 0));

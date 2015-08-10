@@ -39,7 +39,7 @@ void TitleScene::init(){
 
 //    SpriteSheet::createSpriteSheet("titleSceneSpriteSheet", "title scene/title_scene_sprite_sheet.png", "title scene/title_scene_sprite_sheet.xml");
     
-    bg = Sprite::createSprite("gridBg", "grid_bg.png");
+    bg = Sprite::create("gridBg", "grid_bg.png");
 //    bg = Sprite::createSpriteWithFrameName("titleSceneBg", "titleSceneSpriteSheet", "title_scene_bg.png");
     bg->setZDepth(z_bg);
 //    bg->setAnchorPoint(glm::vec2(0.5, 0.5));
@@ -56,7 +56,7 @@ void TitleScene::init(){
 //    delete rotateIt2;
 //    delete moveIt;
     
-    title = Sprite::createSprite("titleSceneTitle", "title scene/scrolls_title.png");
+    title = Sprite::create("titleSceneTitle", "title scene/scrolls_title.png");
 //    title = Sprite::createSpriteWithFrameName("titleSceneTitle", "titleSceneSpriteSheet", "title.png");
     title->setZDepth(z_title);
     title->setY(170);
@@ -69,7 +69,7 @@ void TitleScene::init(){
 //    delete rotateTo;
     this->addChild(title);
     
-    version = Sprite::createSprite("titleSceneTitle", "title scene/version.png");
+    version = Sprite::create("titleSceneTitle", "title scene/version.png");
     version->setZDepth(z_title);
     version->setX(-648);
     version->setY(-432);

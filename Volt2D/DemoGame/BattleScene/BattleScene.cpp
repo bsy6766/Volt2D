@@ -21,16 +21,16 @@ BattleScene::~BattleScene(){
 }
 
 void BattleScene::init(){
-    bg = Sprite::createSprite("battleSceneBg", "battle scene/battle_scene_bg.png");
+    bg = Sprite::create("battleSceneBg", "battle scene/battle_scene_bg.png");
     bg->setPosition(glm::vec3(0, 0, 0));
     this->addChild(bg);
     
-    playerFieldSlot = Sprite::createSprite("playerFieldSlot", "battle scene/field_slot.png");
+    playerFieldSlot = Sprite::create("playerFieldSlot", "battle scene/field_slot.png");
     playerFieldSlot->setOpacity(50);
     playerFieldSlot->setPosition(glm::vec3(-360, 0, 0));
     this->addChild(playerFieldSlot);
     
-    enemyFieldSlot = Sprite::createSprite("enemyFieldSlot", "battle scene/field_slot.png");
+    enemyFieldSlot = Sprite::create("enemyFieldSlot", "battle scene/field_slot.png");
     enemyFieldSlot->setOpacity(50);
     enemyFieldSlot->setPosition(glm::vec3(360, 0, 0));
     this->addChild(enemyFieldSlot);

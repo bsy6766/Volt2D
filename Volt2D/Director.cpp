@@ -159,7 +159,7 @@ void Volt2D::Director::initApp(const int screenWidth, const int screenHeight, co
     }
     
     //Hardcoded sprite.
-    mouseCursor = Volt2D::Sprite::createSprite("globalMouseCursor", "mouse_icon.png");
+    mouseCursor = Volt2D::Sprite::create("globalMouseCursor", "mouse_icon.png");
     
     //set clear buffer color
     this->clearBufferColor = clearBuffColor;
