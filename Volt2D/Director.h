@@ -20,6 +20,7 @@
 //utility
 #include "Utility.hpp"
 #include "PS3ControllerWrapper.h"
+#include "LuaConfig.h"
 
 //System
 #include "Scene.h"
@@ -304,7 +305,8 @@ public:
      *  @param borderless true if application is borderless. Else, false. Will forced to true if fullscreen is true.
      *  @param captureMouse true if want to capture mouse cursor.
      */
-    void initApp(const int screenWidth, const int screenHeight, const std::string windowTitle , glm::vec3 clearBuffColor, bool vsync, bool fullscreen, bool borderelss, bool captureMouse, bool cursorHidden);
+//    void initApp(const int screenWidth, const int screenHeight, const std::string windowTitle , glm::vec3 clearBuffColor, bool vsync, bool fullscreen, bool borderelss, bool captureMouse, bool cursorHidden);
+    bool initApp(int argc, const char * argv[]);
     
     /** Terminate GLFW window */
     void terminateApp();

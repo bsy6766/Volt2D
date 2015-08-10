@@ -9,6 +9,15 @@
 #include "Director.h"
 #include "Timer.h"
 
+#include <stdio.h>  /* defines FILENAME_MAX */
+#ifdef _WIN32
+#include <direct.h>
+#define GetCurrentDir _getcwd
+#elif __APPLE__
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#endif
+
 #pragma mark Constructor & Destructor
 Volt2D::Director::Director():
 winSize({ 0, 0 }),
@@ -95,7 +104,46 @@ Volt2D::Director::~Director(){
 }
 
 #pragma mark Init & Release
-void Volt2D::Director::initApp(const int screenWidth, const int screenHeight, const std::string windowTitle, glm::vec3 clearBuffColor, bool vsync, bool fullscreen, bool borderless, bool captureMouse, bool cursorHidden){
+bool Volt2D::Director::initApp(int argc, const char * argv[]){
+    //Get working directory.
+#if RELEASE
+    if(argc > 0){
+        std::string wd(argv[0]);
+        Volt2D::splitFilename(wd);
+        setWorkingDir(wd);
+    }
+    else{
+        return false;
+    }
+#endif
+    
+    char cCurrentPath[FILENAME_MAX];
+    
+    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
+    {
+        return false;
+    }
+    
+    cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
+    
+    std::string runningPath(cCurrentPath);
+    std::cout << "[main] Working directory = " << runningPath << std::endl;
+    
+    Volt2D::LuaConfig* systemConfig = Volt2D::LuaConfig::create("systemConfig");
+    
+    if(systemConfig == nullptr){
+        return false;
+    }
+    
+#if _WIN32
+    systemConfig->loadConfig("system", runningPath + "/../System/config_win32.lua");
+#elif __APPLE__
+    systemConfig->loadConfig("system", runningPath + "/../System/config_osx.lua");
+#endif
+    
+    int screenWidth = systemConfig->getFloat("system", "window.size.screenWidth");
+    int screenHeight = systemConfig->getFloat("system", "window.size.screenHeight");
+    
     //pre check
     if(screenWidth == 0){
         throw std::runtime_error("Screen width can not be 0.");
@@ -105,14 +153,19 @@ void Volt2D::Director::initApp(const int screenWidth, const int screenHeight, co
         throw std::runtime_error("Screen height can not be 0.");
     }
     
-    this->vsync = vsync;
-    this->fullscreen = fullscreen;
-    this->borderless = borderless;
-    this->captureMouse = captureMouse;
-    this->cursorHidden = cursorHidden;
+    std::string windowTitle = systemConfig->getString("system", "window.title");
+    this->clearBufferColor = glm::vec3(systemConfig->getFloat("system", "clearBuffer.r"),
+                                           systemConfig->getFloat("system", "clearBuffer.g"),
+                                           systemConfig->getFloat("system", "clearBuffer.b"));
+    this->vsync = systemConfig->getBoolean("system", "window.vsync");
+    this->fullscreen = systemConfig->getBoolean("system", "window.fullscreen");
+    this->borderless = systemConfig->getBoolean("system", "window.borderless");
+    this->captureMouse = systemConfig->getBoolean("system", "window.captureMouse");
+    this->cursorHidden = systemConfig->getBoolean("system", "window.cursorHidden");
+    
+    delete systemConfig;
     
     //window title can be empty...if you wish...
-    
     cout << "[SYSTEM::INFO] Initializing application." << endl;
     cout << "[SYSTEM::INFO] Application title = " << windowTitle << endl;
     cout << "[SYSTEM::INFO] Screen width = " << screenWidth << endl;
@@ -161,8 +214,7 @@ void Volt2D::Director::initApp(const int screenWidth, const int screenHeight, co
     //Hardcoded sprite.
     mouseCursor = Volt2D::Sprite::create("globalMouseCursor", "mouse_icon.png");
     
-    //set clear buffer color
-    this->clearBufferColor = clearBuffColor;
+    return true;
 }
 
 void Volt2D::Director::terminateApp(){
