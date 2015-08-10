@@ -215,19 +215,11 @@ void Texture::initTextureArray(int layer){
     this->height = Volt2D::findNearestPowTwo(height);
     
     //generate empty texture.
-	/**
-	 *	Note
-	 *	On win32, initializing empty texture with NULL(0) resulted some
-	 *	dirty texture instead of
-	 */
-	//unsigned char* emptyData = new unsigned char[this->width * this->height * 4]{0};
+	//Win32 need to initalize texture array with empty transparent data.
 	std::vector<GLubyte> emptyData(this->width * this->height * 4, 0);
 
     this->generate2DArrayTexture(this->width, this->height, layer, this->channel, &emptyData[0]);
     GLenum type = this->getTextureType(this->channel);
-
-	//delete[] emptyData;
-
     assert(type >= 0);
     
     for(int i = 0; i< layer; i++){
@@ -378,6 +370,7 @@ void Texture::generate2DArrayTexture(int width, int height, int layerSize, int c
     glTexParameteri(this->textureTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     
     switch (channel) {
+		//Below three (grayscale, grayscalealpha and rgb) is not checked. Never used yet.
         case Format_Grayscale:
             glTexImage3D(this->textureTarget, 1, GL_RGBA8, width, height, layerSize, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
             break;
@@ -388,14 +381,13 @@ void Texture::generate2DArrayTexture(int width, int height, int layerSize, int c
             //jpg
             glTexImage3D(this->textureTarget, 1, GL_RGBA8, width, height, layerSize, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             break;
+		//RGBA is the only thing we use for now because we are using PNG for all texture.
         case Format_RGBA:
             //Has alpha. ex)png
 //            glTexImage3D(this->textureTarget, 1, GL_RGBA8, width, height, layerSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			glTexStorage3D(this->textureTarget, 1, GL_RGBA8, width, height, layerSize);
-			//glTexSubImage3D(this->textureTarget, 0, 0, 0, 0, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-			//\todo Fix this!
+			//OS X was fine but on Win32, I had to actually switch texture data to empty transparent (0) by calling glTexSubImage3D on each layer to elminate white line bleeding on sprite animation
 			for (int i = 0; i< layerSize; i++){
-				//update texture
 				glTexSubImage3D(this->textureTarget,    //GL_TEXTURE_2D_ARRay
 								0,                      //level(mipmap)
 								0, 0, i,                //x,y,z offset
