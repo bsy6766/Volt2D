@@ -7,6 +7,26 @@
 //  Copyright (c) 2014-2015 Seung Youp Baek. All rights reserved.
 //
 
+/**
+ *  Sprite class
+ *  
+ *  Sprite class is the most basic object that exists in this system.
+ *  Since the system is targeted to 2D, Sprite will only use 2 coordinates x and y
+ *  but because the underlying implementation is 3D, it is always possible to
+ *  apply z coordinate to Sprite object.
+ *
+ *  Like said above, x and y coordinate is the primary coordinate that Sprite object
+ *  uses and initial creation will only set these two coordinate and use shared z
+ *  coordinate for vertices data. However, like other object, z coordinate in vertices
+ *  merely represent the origin state/position of object and it won't affect 
+ *  rendering order, which is z-order.
+ *
+ *  Sprite class originally created to have it's own texture object for rendering,
+ *  but now it supports sprite sheet. If sprite is created with sprite sheet, then
+ *  sprite object will not release the sprite sheet texture on destruction while 
+ *  normal sprite object does.
+ */
+
 #include "Sprite.h"
 #include "Director.h"
 
@@ -22,48 +42,68 @@ textureHeight(0)
 }
 
 Sprite::~Sprite(){
-//    cout << "[SYSTEM::RELEASE] Deleting Sprite object" << endl;
-	if (texture && !useSpriteSheet){
-		delete texture;
-		texture = nullptr;
+    //if Sprite uses SpriteSheet, just release reference to texture pointer
+	if (useSpriteSheet){
+        texture = nullptr;
 	}
+    //else, delete texture if Sprite is using own texture.
     else{
-        texture = 0;
+        if(this->texture != nullptr){
+            delete this->texture;
+            this->texture = nullptr;
+        }
     }
-    
+    //just making sure. Set action running flag to false
     actionRunning = false;
 }
 
-Sprite* Sprite::createSprite(std::string objectName, const char *fileName, GLenum textureTarget){
-//    std::cout << "[SYSTEM::INFO] Initializing sprite with texture. \"" << fileName << "\"" << endl;
-    
+Sprite* Sprite::create(std::string objectName, std::string fileName, GLenum textureTarget){
+    //Create new Sprite. This creation will use own texture.
     Sprite* newSprite = new Sprite();
-    newSprite->setName(objectName);
-    newSprite->initTexture(fileName, textureTarget);
-    return newSprite;
+    if(newSprite->initTexture(fileName, textureTarget)){
+        //successfully initialized sprite with texture.
+        //set the object name and return the instance pointer.
+        newSprite->setName(objectName);
+        return newSprite;
+    }
+    else{
+        //failed to initialize. Delete instance and return null pointer
+        delete newSprite;
+        return nullptr;
+    }
 }
 
-Sprite* Sprite::createSpriteWithFrameName(std::string objectName, std::string frameName, std::string imageFileName){
+Sprite* Sprite::createWithSpriteSheet(std::string objectName, std::string frameName, std::string imageFileName){
+    //Creating sprite with SpriteSheet.
+    //First check if system has the SpriteSheet
     if(Volt2D::Director::getInstance().hasSpriteSheetFrameName(frameName)) {
+        //if exists, check if we can get the SpriteSheet and check if it's valid
         if(SpriteSheet* const ssPtr = Volt2D::Director::getInstance().getSpriteSheet(frameName)){
+            //and get the specific sprite's texture image infos.
             const ImageEntry* ie = ssPtr->getImageEntry(imageFileName);
+            //if image data instance is valid,
             if(ie){
+                //Create instance.
                 Sprite* newSprite = new Sprite();
+                //get the sprite sheet texture pointer
                 Texture* ssTex = ssPtr->getTexture();
                 newSprite->setName(objectName);
                 newSprite->initSpriteWithSpriteSheet(ie, ssTex);
                 return newSprite;
             }
+            //Image data instance is not valid. nullptr?
             else{
                 cout << "[SYSTEM::ERROR] \"" << imageFileName << "\" does not exists in \"" << frameName << "\" SpriteSheet." << endl;
                 return nullptr;
             }
         }
+        //sprite sheet is not valid. nullptr?
         else{
             cout << "[SYSTEM::ERROR] SpriteSheet called \"" << frameName << "\" does not exists in the system." << endl;
             return nullptr;
         }
     }
+    //Sprite sheet not found
     else{
         cout << "[SYSTEM::ERROR] SpriteSheet called \"" << frameName << "\" does not exists in the system." << endl;
         return nullptr;
@@ -77,19 +117,27 @@ Sprite* Sprite::createCustom(std::string objectName, Volt2D::Texture *texture, f
     return newSprite;
 }
 
-void Sprite::initTexture(const std::string& fileName, GLenum textureTarget){
+bool Sprite::initTexture(const std::string& fileName, GLenum textureTarget){
     std::string textureDir = Volt2D::Director::getInstance().getWorkingDir() + "/../Texture/";
     this->texture = Texture::createTextureWithFile(fileName, textureTarget);
-//    texture->getImageSize(w, h);
+    
+    //the only case failing is that when it fails to read texture.
+    if(texture == nullptr){
+        return false;
+    }
+    //store texture size
     this->texture->getTextureSize(this->textureWidth, this->textureHeight);
     
+    //compute vertex data and load to vao
     computeVertexData();
     loadVertexData();
     
+    //init bouding box
     this->boundingBox = new Volt2D::BoundingBox(-(float)this->textureWidth/2.0f,
                                         -(float)this->textureHeight/2.0f,
                                         (float)this->textureWidth/2.0f,
                                         (float)this->textureHeight/2.0f);
+    return true;
 }
 
 void Sprite::initCustom(Volt2D::Texture *texture, float width, float height){
@@ -109,23 +157,31 @@ void Sprite::initCustom(Volt2D::Texture *texture, float width, float height){
 }
 
 void Sprite::initSpriteWithSpriteSheet(const ImageEntry* ie, Texture* texture){
+    //store texture for binding
     this->texture = texture;
-//    this->texture->getImageSize(this->w, this->h);
+    
+    //store texture(the portion of using image) size
     this->textureWidth = ie->w;
     this->textureHeight = ie->h;
     
+    //set the flag
     this->useSpriteSheet = true;
     
+    //compute vertices.
     computeVertices();
+    //for texturer coordinate, use Image data's uv positions
     computeTextureCoordinates(
                               glm::vec2(ie->ImageEntry::uvOriginX,
                                         ie->ImageEntry::uvOriginY),
                               glm::vec2(ie->ImageEntry::uvEndX,
                                         ie->ImageEntry::uvEndY)
                               );
+    //indices.
     computeIndices();
+    //load to vao
     loadVertexData();
     
+    //init bounding box
     this->boundingBox = new Volt2D::BoundingBox(-(float)this->textureWidth/2.0f,
                                         -(float)this->textureHeight/2.0f,
                                         (float)this->textureWidth/2.0f,

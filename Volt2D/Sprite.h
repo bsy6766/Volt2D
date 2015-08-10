@@ -18,7 +18,6 @@ namespace Volt2D{
  *  @class Sprite
  *  @brief Simple sprite object loaded with single texture
  *  @note 4 Vertices, 4 UV vertices, 6 indices
- *  \todo Give Sprite class option to search SpriteSheet on creation
  */
 class Sprite : public Volt2D::RenderableObject{
 private:
@@ -28,7 +27,7 @@ private:
     /**
      *  A texture.
      */
-    Texture *texture;
+    Texture* texture;
     
     /**
      *  texture width
@@ -56,10 +55,10 @@ private:
     /**
      *  Initialize texture
      */
-    void initTexture(const std::string& fileName, GLenum textureTarget = GL_TEXTURE_2D);
+    bool initTexture(const std::string& fileName, GLenum textureTarget = GL_TEXTURE_2D);
     
     /**
-     *
+     *  Initialize custom sprite with texture and size provided.ß
      */
     void initCustom(Texture* texture, float width, float height);
     
@@ -89,12 +88,12 @@ public:
      *  @param textureName Sprite's texture name
      *  @param textuerTarget = GL_TEXTURE_2D
      */
-    static Sprite* createSprite(std::string objectName, const char* textureName, GLenum textureTarget = GL_TEXTURE_2D);
+    static Sprite* create(std::string objectName, std::string textureName, GLenum textureTarget = GL_TEXTURE_2D);
     
     /**
      *  Create sprite object with sprite sheet
      */
-    static Sprite* createSpriteWithFrameName(std::string objectName, std::string frameName, std::string imageFileName);
+    static Sprite* createWithSpriteSheet(std::string objectName, std::string frameName, std::string imageFileName);
     
     /**
      *
@@ -110,6 +109,9 @@ public:
      */
     virtual void render() override;
     
+    /**
+     *  Wrapper for Object::addChild.
+     */
     void addChild(Object* child);
 };
 }   //namespace end
