@@ -127,13 +127,13 @@ private:
 	* Initialize texture.
 	* Generate the texture and bind the texture object to GL_TEXTRE_2D
 	*/
-    void generate2DTexture(int width, int height, int channel, unsigned char* data = 0);
+    void generate2DTexture(int width, int height, int channel, unsigned char* data = NULL);
     
     /**
      *  Initailize texture array
      * Generate the texture and bind the texture object to GL_TEXTRE_2D_ARRAY
      */
-    void generate2DArrayTexture(int width, int height, int size, int channel, unsigned char* data = 0);
+    void generate2DArrayTexture(int width, int height, int size, int channel, unsigned char* data = NULL);
     
     /**
      *  Get texture type corresponding to channel
