@@ -300,6 +300,11 @@ void Object::setName(std::string objectName){
 }
 
 bool Object::addChild(Object *child, Object *parent, bool replace){
+    //reject Scene object. Scene can not be added as child
+    if(dynamic_cast<Scene*>(child)){
+        return false;
+    }
+    
     child->parent = parent;
     
     auto obj_it = childObjectLUT.find(child->objectName);
