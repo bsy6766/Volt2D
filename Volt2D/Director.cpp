@@ -466,7 +466,7 @@ void Volt2D::Director::run(){
         timeCounter += elapsedTime;
         if(timeCounter > 1){
             fps++;
-//            cout << "fps = " << fps << endl;
+            cout << "fps = " << fps << endl;
             fps = 0;
             timeCounter--;
         }
