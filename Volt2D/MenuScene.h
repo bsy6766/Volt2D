@@ -24,6 +24,7 @@ private:
     Volt2D::Sprite* sceneTransitionMoveBtn;
     Volt2D::Sprite* sceneTransitionFadeBtn;
     Volt2D::Sprite* sceneTransitionFlipBtn;
+    Volt2D::Sprite* objectHierarchyBtn;
     Volt2D::Sprite* soundBtn;
     float bgmVol, sfxVol;
     Volt2D::Sprite* volumeLabel;
@@ -38,6 +39,12 @@ private:
     Volt2D::Sprite* sampleProgRadBg;
     Volt2D::ParticleSystem* sampleParticleSystem;
     Volt2D::Text* sampleText;
+    Volt2D::Sprite* sampleBody;
+    Volt2D::Sprite* sampleArm1;
+    Volt2D::Sprite* sampleArm2;
+    Volt2D::Sprite* sampleArm3;
+    Volt2D::ParticleSystem* armPS;
+    int level;
     
     Volt2D::Sprite* waitingTransitionMsg;
     
@@ -76,7 +83,8 @@ private:
         s_st_fade,
         s_st_move,
         s_st_flip,
-        s_sound
+        s_sound,
+        s_object_hierarchy
     };
     
     State curState;

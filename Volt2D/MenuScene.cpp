@@ -22,6 +22,12 @@ sampleProgRadBg(0),
 sampleProgRad(0),
 sampleParticleSystem(0),
 sampleText(0),
+sampleBody(0),
+sampleArm1(0),
+sampleArm2(0),
+sampleArm3(0),
+armPS(0),
+level(0),
 instructionMsg(0),
 mouseClicked(false),
 prevMousePos(0),
@@ -155,6 +161,16 @@ void MenuScene::init(){
     soundBtn->setOpacity(defaultBtnOpacity);
     this->addChild(soundBtn);
     
+    objectHierarchyBtn = Volt2D::Sprite::createWithSpriteSheet("objectHierarchyBtn",
+                                                               frameName,
+                                                               "object_hierarchy_btn.png");
+    objectHierarchyBtn->setPosition(glm::vec3(x, 420 - yGap * 9, 0));
+    objectHierarchyBtn->setAnchorPoint(anchor);
+    objectHierarchyBtn->setZDepth(z_btn);
+    objectHierarchyBtn->addActions({delay, moveRight}, 0);
+    objectHierarchyBtn->setOpacity(defaultBtnOpacity);
+    this->addChild(objectHierarchyBtn);
+    
     displayBorderline = Volt2D::Sprite::createWithSpriteSheet("displayFrame",
                                                                   frameName,
                                                                   "display_borderline.png");
@@ -228,6 +244,7 @@ void MenuScene::onEnter(){
     displayBorderline->runAction();
     instructionBox->runAction();
     soundBtn->runAction();
+    objectHierarchyBtn->runAction();
 }
 
 void MenuScene::update(double dt){
@@ -391,6 +408,74 @@ void MenuScene::keyPressed(int key, int mods){
             case s_text:
                 sampleText->setColor(Volt2D::Color::VIOLET);
                 break;
+            case s_object_hierarchy:
+                //add level
+                switch (level) {
+                    case 0:
+                    {
+                        level = 1;
+                        if(sampleArm1 != nullptr){
+                            this->removechild(sampleArm1, true);
+                        }
+                        sampleArm1 = Volt2D::Sprite::createWithSpriteSheet("sampleArm1", "demoMenu", "sample_arm.png");
+                        sampleArm1->setAnchorPoint(glm::vec2(-0.5, 0));
+                        sampleArm1->setPosition(glm::vec3(39, 0, 0));
+                        sampleArm1->setZDepth(z_samples+1);
+                        auto rotateToLeft = Volt2D::ActionRotateTo::createRotateTo(1.0f, -45.0f, RotationType::LEFT);
+                        auto rotateToRight = Volt2D::ActionRotateTo::createRotateTo(1.0f, 45.0f);
+                        
+                        sampleArm1->addActions({rotateToLeft, rotateToRight}, -1);
+                        this->sampleBody->addChild(sampleArm1);
+                        sampleArm1->runAction();
+                        delete rotateToLeft;
+                        delete rotateToRight;
+                    }
+                        break;
+                    case 1:
+                    {
+                        level = 2;
+                        if(sampleArm2 != nullptr){
+                            this->removechild(sampleArm2, true);
+                        }
+                        sampleArm2 = Volt2D::Sprite::createWithSpriteSheet("sampleArm2", "demoMenu", "sample_arm.png");
+                        sampleArm2->setAnchorPoint(glm::vec2(-0.5, 0));
+                        sampleArm2->setPosition(glm::vec3(78, 0, 0));
+                        sampleArm2->setZDepth(z_samples+2);
+                        auto rotateToLeft = Volt2D::ActionRotateTo::createRotateTo(1.0f, -45.0f, RotationType::LEFT);
+                        auto rotateToRight = Volt2D::ActionRotateTo::createRotateTo(1.0f, 45.0f);
+                        
+                        sampleArm2->addActions({rotateToLeft, rotateToRight}, -1);
+                        sampleArm1->addChild(sampleArm2);
+                        delete rotateToLeft;
+                        delete rotateToRight;
+                        sampleArm2->runAction();
+                    }
+                        break;
+                    case 2:
+                    {
+                        level = 3;
+                        if(sampleArm3 != nullptr){
+                            this->removechild(sampleArm3, true);
+                        }
+                        sampleArm3 = Volt2D::Sprite::createWithSpriteSheet("sampleArm3", "demoMenu", "sample_arm.png");
+                        sampleArm3->setAnchorPoint(glm::vec2(-0.5, 0));
+                        sampleArm3->setPosition(glm::vec3(78, 0, 0));
+                        sampleArm3->setZDepth(z_samples+3);
+                        auto rotateToLeft = Volt2D::ActionRotateTo::createRotateTo(1.0f, -45.0f, RotationType::LEFT);
+                        auto rotateToRight = Volt2D::ActionRotateTo::createRotateTo(1.0f, 45.0f);
+                        
+                        sampleArm3->addActions({rotateToLeft, rotateToRight}, -1);
+                        sampleArm2->addChild(sampleArm3);
+                        delete rotateToLeft;
+                        delete rotateToRight;
+                        sampleArm3->runAction();
+                    }
+                        break;
+                        
+                    default:
+                        break;
+                }
+                break;
             default:
                 break;
         }
@@ -450,6 +535,29 @@ void MenuScene::keyPressed(int key, int mods){
             case s_text:
                 sampleText->setColor(Volt2D::Color::MIDNIGHTBLUE);
                 break;
+            case s_object_hierarchy:
+                switch (level) {
+                    case 1:
+                    {
+                        sampleBody->removechild(sampleArm1, true);
+                        level = 0;
+                    }
+                        break;
+                    case 2:
+                    {
+                        sampleArm1->removechild(sampleArm2, true);
+                        level = 1;
+                    }
+                        break;
+                    case 3:
+                    {
+                        sampleArm2->removechild(sampleArm3, true);
+                        level = 2;
+                    }
+                        break;
+                    default:
+                        break;
+                }
             default:
                 break;
         }
@@ -507,7 +615,18 @@ void MenuScene::keyPressed(int key, int mods){
                 Volt2D::Director::getInstance().getSoundManager()->pauseBGM("main_bgm");
                 break;
             case s_text:
-                sampleText->setColor(Volt2D::Color::AZURE);
+                sampleText->setColor(Volt2D::Color::LIME);
+                break;
+            case s_object_hierarchy:
+                if(level == 3){
+                    if(armPS != nullptr){
+                        this->removechild(armPS, true);
+                    }
+                    armPS = Volt2D::ParticleSystem::createWithLuaConfig("armPS", "Particle/magicalOrbits.lua");
+                    armPS->setZDepth(z_samples+4);
+                    armPS->setPosition(glm::vec3(78, 0, 0));
+                    sampleArm3->addChild(armPS);
+                }
                 break;
             default:
                 break;
@@ -684,6 +803,14 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                                 }
                             }
                             break;
+                        case s_object_hierarchy:
+                            if(sampleBody != nullptr){
+                                if(!sampleActioning){
+                                    sampleActioning = true;
+                                    sampleBody->addActions({moveTo, toggleFunc}, 0);
+                                    sampleBody->runAction();
+                                }
+                            }
                         default:
                             break;
                     }
@@ -833,7 +960,14 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             sampleText->setPosition(glm::vec3(227, 89, 0));
                             sampleText->setColor(Volt2D::Color::WHITE);
                             this->addChild(sampleText);
-                            Volt2D::Director::getInstance().getSoundManager()->playSFX("browse_sfx");
+                            
+                            if(instructionMsg != nullptr){
+                                this->removechild(instructionMsg, true);
+                            }
+                            instructionMsg = Volt2D::Sprite::createWithSpriteSheet("instructionMsg", "demoMenu", "text_instruction.png");
+                            instructionMsg->setAnchorPoint(glm::vec2(-0.5, 0));
+                            instructionMsg->setPosition(glm::vec3(-704, -374, 0));
+                            this->addChild(instructionMsg);
                         }
                     }
                     else if(this->sceneTransitionMoveBtn->getBoundingBox()->containsPoint(point)){
@@ -908,6 +1042,26 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             volumeLabel->setOpacity(255.0f);
                         }
                     }
+                    else if(this->objectHierarchyBtn->getBoundingBox()->containsPoint(point)){
+                        if(curState != s_object_hierarchy){
+                            resetPrevBtn();
+                            this->curState = s_object_hierarchy;
+                            this->objectHierarchyBtn->setOpacity(255.0f);
+                            if(instructionMsg != nullptr){
+                                this->removechild(instructionMsg, true);
+                            }
+                            instructionMsg = Volt2D::Sprite::createWithSpriteSheet("instructionMsg", "demoMenu", "object_hierarchy_instruction.png");
+                            instructionMsg->setAnchorPoint(glm::vec2(-0.5, 0));
+                            instructionMsg->setPosition(glm::vec3(-704, -374, 0));
+                            this->addChild(instructionMsg);
+                            Volt2D::Director::getInstance().getSoundManager()->playSFX("browse_sfx");
+                            
+                            sampleBody = Volt2D::Sprite::createWithSpriteSheet("samplebody", "demoMenu", "sample_body.png");
+                            sampleBody->setPosition(glm::vec3(227, 89, 0));
+                            sampleBody->setZDepth(z_samples);
+                            this->addChild(sampleBody);
+                        }
+                    }
                 }
             }//if mouse drag
             this->displayBoxClicked = false;
@@ -956,6 +1110,9 @@ void MenuScene::mouseMove(double x, double y){
                         break;
                     case s_text:
                         sampleText->addAngle(diff_x);
+                        break;
+                    case s_object_hierarchy:
+                        sampleBody->addAngle(diff_x);
                         break;
                     default:
                         break;
@@ -1011,6 +1168,8 @@ void MenuScene::resetPrevBtn(){
             textBtn->setOpacity(defaultBtnOpacity);
             this->removechild(sampleText, true);
             sampleText = nullptr;
+            this->removechild(instructionMsg, true);
+            instructionMsg = nullptr;
             break;
         case s_st_fade:
             sceneTransitionFadeBtn->setOpacity(defaultBtnOpacity);
@@ -1040,6 +1199,16 @@ void MenuScene::resetPrevBtn(){
             bgmVolBar->setOpacity(0);
             sfxVolBar->setOpacity(0);
             volumeLabel->setOpacity(0);
+            instructionMsg = nullptr;
+            break;
+        case s_object_hierarchy:
+            objectHierarchyBtn->setOpacity(defaultBtnOpacity);
+            this->removechild(instructionMsg, true);
+            this->removechild(sampleBody, true);
+            sampleBody = nullptr;
+            sampleArm1 = nullptr;
+            sampleArm2 = nullptr;
+            sampleArm3 = nullptr;
             instructionMsg = nullptr;
             break;
         default:
