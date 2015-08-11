@@ -388,6 +388,9 @@ void MenuScene::keyPressed(int key, int mods){
             case s_sound:
                 Volt2D::Director::getInstance().getSoundManager()->playBGM("main_bgm");
                 break;
+            case s_text:
+                sampleText->setColor(Volt2D::Color::VIOLET);
+                break;
             default:
                 break;
         }
@@ -444,6 +447,9 @@ void MenuScene::keyPressed(int key, int mods){
             case s_sound:
                 Volt2D::Director::getInstance().getSoundManager()->stopSound("main_bgm");
                 break;
+            case s_text:
+                sampleText->setColor(Volt2D::Color::MIDNIGHTBLUE);
+                break;
             default:
                 break;
         }
@@ -499,6 +505,10 @@ void MenuScene::keyPressed(int key, int mods){
                 break;
             case s_sound:
                 Volt2D::Director::getInstance().getSoundManager()->pauseBGM("main_bgm");
+                break;
+            case s_text:
+                sampleText->setColor(Volt2D::Color::AZURE);
+                break;
             default:
                 break;
         }
@@ -544,6 +554,9 @@ void MenuScene::keyPressed(int key, int mods){
                 Volt2D::Director::getInstance().getSoundManager()->setSoundVolume("main_bgm", bgmVol);
                 bgmVolBar->setPercentage(bgmVol * 100.0f);
                 break;
+            case s_text:
+                sampleText->setLabel("1234567890");
+                break;
             default:
                 break;
         }
@@ -558,15 +571,24 @@ void MenuScene::keyPressed(int key, int mods){
             Volt2D::Director::getInstance().getSoundManager()->setSoundVolume("main_bgm", bgmVol);
             bgmVolBar->setPercentage(bgmVol * 100.0f);
         }
+        else if(curState == s_text){
+            sampleText->setLabel("Lorem ipsum dolor sit amet, consectetur adipiscing elit, \nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris \nnisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in \nreprehenderit in voluptate velit esse cillum dolore eu fugiat \nnulla pariatur. Excepteur sint occaecat cupidatat non proident,\nsunt in culpa qui officia deserunt mollit anim id est laborum.");
+        }
     }
     else if(key == GLFW_KEY_6){
         if(curState == s_sound){
             Volt2D::Director::getInstance().getSoundManager()->playSFX("select_sfx", sfxVol);
         }
+        else if(curState == s_text){
+            sampleText->setAlign(Volt2D::TEXT_ALIGN::ALIGN_LEFT);
+        }
     }
     else if(key == GLFW_KEY_7){
         if(curState == s_sound){
             Volt2D::Director::getInstance().getSoundManager()->playSFX("1up_sfx", sfxVol);
+        }
+        else if(curState == s_text){
+            sampleText->setAlign(Volt2D::TEXT_ALIGN::ALIGN_CENTER);
         }
     }
     else if(key == GLFW_KEY_8){
@@ -577,6 +599,9 @@ void MenuScene::keyPressed(int key, int mods){
             else if(this->sfxVol > 1.0f)
                 this->sfxVol = 1.0f;
             sfxVolBar->setPercentage(sfxVol * 100.0f);
+        }
+        else if(curState == s_text){
+            sampleText->setAlign(Volt2D::TEXT_ALIGN::ALIGN_RIGHT);
         }
     }
     else if(key == GLFW_KEY_9){
@@ -802,7 +827,7 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             if(sampleText != nullptr){
                                 this->removechild(sampleText, true);
                             }
-                            sampleText = Volt2D::Text::createText("titleText", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris \nnisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in \nreprehenderit in voluptate velit esse cillum dolore eu fugiat \nnulla pariatur. Excepteur sint occaecat cupidatat non proident,\nsunt in culpa qui officia deserunt mollit anim id est laborum.", "UhBee Kang-Ja.ttf");
+                            sampleText = Volt2D::Text::create("sampleText", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris \nnisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in \nreprehenderit in voluptate velit esse cillum dolore eu fugiat \nnulla pariatur. Excepteur sint occaecat cupidatat non proident,\nsunt in culpa qui officia deserunt mollit anim id est laborum.", "UhBee Kang-Ja.ttf", Volt2D::TEXT_ALIGN::ALIGN_RIGHT, Volt2D::Color::WHITE, Volt2D::TEXT_TYPE::DYNAMIC);
                             sampleText->setZDepth(z_samples);
                             sampleText->setScale(glm::vec3(0.5f, 0.5f, 1.0f));
                             sampleText->setPosition(glm::vec3(227, 89, 0));

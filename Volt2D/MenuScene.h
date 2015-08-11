@@ -10,13 +10,7 @@
 #define __Volt2D__MenuScene__
 
 #include "Scene.h"
-#include "Sprite.h"
-#include "SpriteAnimation.h"
-#include "ProgressBar.h"
-#include "ProgressRadian.h"
-#include "ParticleSystem.h"
-#include "Text.h"
-#include "Actions.h"
+#include "Volt2D_Essentials.h"
 
 class MenuScene : public Volt2D::Scene{
 private:
