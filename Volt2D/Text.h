@@ -11,147 +11,106 @@
 
 #include "FontManager.h"
 #include "RenderableObject.h"
-#include <vector>
 #include "Color.h"
 
-namespace Volt2D{
-/**
- *  @class Text
- *  @brief Load string text and renders
- *  @note Requires Font
- */
-class Text : public Volt2D::RenderableObject{
-private:
-    /**
-     *  A string text to display
-     */
-    std::string text;
-    
-    /**
-     *  A splitted text by new line
-     */
-    std::vector<std::string> splittedText;
+#include <vector>
 
+namespace Volt2D {
     /**
-     *  A font name to use for rendering and computing data
+     *  @name TEXT_ALIGN
+     *  @brief Enum class for text align
      */
-    std::string fontName;
-    
-    /**
-     *  First string index of text to render
-     */
-    int start;
-    
-    /**
-     *  Last string index of text to render
-     */
-    int end;
-    
-    /**
-     *  width of this object's size (max width)
-     */
-    int width;
-    
-    /**
-     * height of this object's size (max height)
-     */
-    int height;
-    
-    /**
-     *  Compute origin point of each line to compute vertex data
-     */
-    void computeOrigins(Font* font, std::vector<glm::vec2>& originList);
-    
-    /**
-     *  Split text with new line
-     */
-    void splitByNewLine();
-    
-    /**
-     *  A font color to render
-     */
-    glm::vec3 fontColor;
-    
-    /**
-     *  Store translation matrix for each character from pivot point of objevct
-     */
-    std::vector<glm::mat4> translationData;
-    
-    //private constructor
-    Text();
-    
-    /**
-     *  Initialize Text.
-     */
-    void initText(std::string label, std::string fontName = "arial.tff");
-public:
-    /**
-     *  Create Text object
-     *  @param objectName An object name
-     *  @param label A text to render
-     *  @param fontName A font name to use. "arial.ttf" by default.
-     */
-    static Text* createText(std::string objectName, std::string label, std::string fontName = "arial.tff");
-    ~Text();
-    
-    /**
-     *  Get rendering text
-     */
-    std::string getText();
-    
-    /**
-     *  Set rendering text
-     */
-    void setText(std::string);
-    
-    /**
-     *  Check if text is empty styring
-     */
-    bool hasEmptyText();
-    
-    /**
-     *  Set color of font.
-     */
-    void setColor(Color color);
-    
-    /**
-     *  Compute vertex and indices
-     *  @param width Quad width
-     *  @param height Quad height
-     */
-    void computeVertexData();
-    
-    /**
-     *  Load computed vertex.
-     */
-    void loadVertexData();
-    
-    /**
-     *  Overrides's Object::render();
-     *  Render object
-     */
-    virtual void render() override;
-    
-    /**
-     *  Text align type
-     */
-    enum TextAlign{
+    enum class TEXT_ALIGN{
         ALIGN_LEFT = 0,
         ALIGN_CENTER,
         ALIGN_RIGHT
     };
     
-    TextAlign align;
     /**
-     *  Align setter
+     *  @name TEXT_TYPE
+     *  @brief Enum class for text rendering type
      */
-    void setTextAlign(TextAlign mode);
+    enum class TEXT_TYPE{
+        STATIC = 0,
+        DYNAMIC
+    };
     
     /**
-     *  Range setter
+     *  @name Text
+     *  @brief Render text
      */
-    void setTextRange(int start, int end);
-};
+    class Text : public Volt2D::RenderableObject{
+    private:
+        /** Text label */
+        std::string label;
+        
+        /** Text label spliited by new line */
+        std::vector<std::string> splittedLabel;
+        
+        /** TTF font name */
+        std::string font;
+        
+        /** Text align */
+        TEXT_ALIGN align;
+        
+        /** Text color */
+        Color color;
+        
+        /** Text type */
+        TEXT_TYPE type;
+        
+        /** vertex position buffer object */
+        GLuint vpbo;
+        
+        /** Translation mat to vec3 for all chars */
+        std::vector<glm::vec3> translationData;
+        
+        /** Max width of vertex */
+        float maxWidth;
+        /** Total height of vertex */
+        float totalHeight;
+        
+        /** Split label by \n char */
+        void splitByNewLine();
+        
+        /** Clear all data and compute new vertices */
+        bool computeVertices();
+        
+        /** Compute origins for current label */
+        void computeOrigins(Font* font, std::vector<glm::vec2>& originList);
+        
+        /** Load and bind data */
+        void loadVertexData();
+        
+        /** Orphan existing buffer objects and rebind */
+        void subVertexData();
+        
+        /** Private constructor */
+        Text();
+        
+        /** Initialize Text */
+        bool initText(std::string label, std::string font, TEXT_ALIGN align, Color color, TEXT_TYPE type);
+    public:
+        /** Create text */
+        static Text* create(std::string objectName, std::string label, std::string font, TEXT_ALIGN align, Color color, TEXT_TYPE type);
+        
+        /** Desturctor */
+        ~Text();
+        
+        /** Set color of text. This doesn't change text vertices */
+        void setColor(Color color);
+        
+        /** Change text label. Only dynamic type can perform this */
+        bool setLabel(std::string label);
+        
+        bool setAlign(TEXT_ALIGN align);
+        
+        /** Get current label */
+        std::string getLabel();
+        
+        /** Render. Override Object::render() */
+        void render() override;
+    };
 }
 
 #endif /* defined(__Volt2D__Text__) */

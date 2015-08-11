@@ -14,95 +14,74 @@ using namespace Volt2D;
 
 Text::Text():
 RenderableObject(),
-align(ALIGN_CENTER),
-start(-1),
-end(-1),
-width(0),
-height(0)
+color(Color::NONE),
+maxWidth(0),
+totalHeight(0),
+type(TEXT_TYPE::STATIC)
 {
     this->progPtr = Volt2D::Director::getInstance().getProgramPtr("Text");
-    Color textColor = Color::WHITE;
-    fontColor = textColor.getRGB();
 }
 
 Text::~Text(){
-    translationData.clear();
+    glDeleteBuffers(1, &vpbo);
 }
 
-Text* Text::createText(std::string objectName, std::string label, std::string fontName){
-    cout << "Creating new Text object" << endl;
-    
-    Text* newText = new Text();
-    newText->setName(objectName);
-    newText->initText(label, fontName);
-    
-    return newText;
-}
-
-void Text::initText(std::string label, std::string fontName){
-    this->fontName = fontName;
-    text = label;
-    start = 0;
-    end = (int)strlen(label.c_str()) - 1;
-    computeVertexData();
-    loadVertexData();
-    
-    this->boundingBox = new BoundingBox(-width/2, -height/2, width/2, height/2);
-}
-
-std::string Text::getText(){
-    return this->text;
-}
-
-void Text::setText(std::string newText = ""){
-    if (newText != text) {
-        this->text = newText;
-        computeVertexData();
+Text* Text::create(std::string objectName, std::string label, std::string font, TEXT_ALIGN align, Color color, TEXT_TYPE type){
+    Text* newLabel = new Text();
+    if(newLabel->initText(label, font, align, color, type)){
+        newLabel->setName(objectName);
+        return newLabel;
+    }
+    else{
+        delete newLabel;
+        return nullptr;
     }
 }
 
-void Text::setColor(Color color){
-    glm::vec3 textColor = color.getRGB();
+bool Text::initText(std::string label, std::string font, TEXT_ALIGN align, Color color, TEXT_TYPE type){
+    this->label = label;
+    this->font = font;
+    this->align = align;
+    this->color = color;
+    this->type = type;
+    splitByNewLine();
     
-    if(textColor.r > 255)
-        textColor.r = 255;
+    if(computeVertices()){
+        loadVertexData();
+    }
+    else{
+        return false;
+    }
     
-    if(textColor.g > 255)
-        textColor.g = 255;
-    
-    if(textColor.b > 255)
-        textColor.b = 255;
-    
-    this->fontColor = textColor;
+    return true;
 }
 
-void Text::computeVertexData(){
-    //Compute new vertex data based on new text
-    if(hasEmptyText())
-        return;
-    
+bool Text::computeVertices(){
     //clear vertex data
     vertexData.clear();
     uvVertexData.clear();
     indicesData.clear();
+    translationData.clear();
     
     //get font.
-    Font* font = FontManager::getInstance().getFont(fontName);
-    if(!font){
+    Font* ttfFont = FontManager::getInstance().getFont(this->font);
+    if(!ttfFont){
         cout << "Failed to find font." << endl;
-        return;
+        return false;
     }
     
     std::vector<glm::vec2> originList;
     //Sprite text with new line character.
     splitByNewLine();
     //iterate through each line and compute originList to compute vertex
-    computeOrigins(font, originList);
+    //Origin list is a point where label on each line starts.
+    //This is same as how human writes letter on paper.
+    computeOrigins(ttfFont, originList);
     
     unsigned short indicesIndex = 0;
     int index = 0;
     //iterate text splitted by new line char (\n)
-    for(auto it : splittedText){
+    for(auto it : splittedLabel){
         //get the origin of the each line
         glm::vec2 origin = originList.at(index);
         index++;
@@ -110,7 +89,7 @@ void Text::computeVertexData(){
             //for each character
             char c = it[i];
             //get GlyphData
-            GlyphData* gData = font->getGlyphDataFromChar(c);
+            GlyphData* gData = ttfFont->getGlyphDataFromChar(c);
             if(gData == nullptr){
                 cout << "Failed to find GlyphData for char \"" << c << "\"." << endl;
                 continue;
@@ -120,39 +99,54 @@ void Text::computeVertexData(){
             if(!gData->valid)
                 continue;
             
-            //get data from glyph
+            //get data from glyph. Assume they don't have floating point for below values.
             int bearingY = (int)(gData->metrics.horiBearingY >> 6);
             int glyphHeight = (int)(gData->metrics.height >> 6);
             int glyphWidth = (int)(gData->metrics.width >> 6);
             
             //compute vertex quad at origin.
-            glm::vec2 p1 = glm::vec2((-1) * glyphWidth / 2, (-1) * (glyphHeight - bearingY)); //left bottom
-            glm::vec2 p2 = glm::vec2(glyphWidth / 2, bearingY);
+            //Left bottom.
+            glm::vec2 p1 = glm::vec2((-1) * glyphWidth / 2,
+                                     (-1) * (glyphHeight - bearingY)/*botY*/);
+            //Top right
+            glm::vec2 p2 = glm::vec2(glyphWidth / 2,
+                                     bearingY); //top right
             
             //scale down to world size
             p1 /= Volt2D::SCREEN_TO_WORLD_SCALE;
             p2 /= Volt2D::SCREEN_TO_WORLD_SCALE;
-
-            //get point where each char has to move
+            
+            //get point where each char has to move (center of quad).
+            //y just follows origin's y because that is the guidline for each line.
             glm::vec3 fPos = glm::vec3(origin.x + glyphWidth/2, origin.y, 0);
-            glm::vec3 distance = (fPos - this->position);
+            //get distance from origin
+            glm::vec3 distance = (fPos - glm::vec3(0));
+            //scale down.
             distance.x /= Volt2D::SCREEN_TO_WORLD_SCALE;
             distance.y /= Volt2D::SCREEN_TO_WORLD_SCALE;
+            //compute translation matrix to desired position
             glm::mat4 transMatToFPos = glm::translate(glm::mat4(), distance);
+            //convert to vec3(x,y,z)
+            glm::vec3 translateVec3 = glm::vec3(transMatToFPos[3][0],
+                                                transMatToFPos[3][1],
+                                                transMatToFPos[3][2]);
             //compute translate matrix to fPos from origin
-            translationData.push_back(transMatToFPos);
-
+            translationData.push_back(translateVec3);
+            translationData.push_back(translateVec3);
+            translationData.push_back(translateVec3);
+            translationData.push_back(translateVec3);
+            
             //compute vertex data
-            vertexData.push_back(glm::vec3(p1.x, p1.y, 0)); //Left bottom
-            vertexData.push_back(glm::vec3(p1.x, p2.y, 0)); //Left top
-            vertexData.push_back(glm::vec3(p2.x, p1.y, 0)); //Right bottom
-            vertexData.push_back(glm::vec3(p2.x, p2.y, 0)); //Right top
+            vertexData.push_back(glm::vec3(p1.x, p1.y, Volt2D::GLOBAL_Z_VALUE)); //Left bottom
+            vertexData.push_back(glm::vec3(p1.x, p2.y, Volt2D::GLOBAL_Z_VALUE)); //Left top
+            vertexData.push_back(glm::vec3(p2.x, p1.y, Volt2D::GLOBAL_Z_VALUE)); //Right bottom
+            vertexData.push_back(glm::vec3(p2.x, p2.y, Volt2D::GLOBAL_Z_VALUE)); //Right top
             
             //compute uv coordinates
-            uvVertexData.push_back(glm::vec2(gData->uvTopLeft.x, gData->uvBotRight.y));
-            uvVertexData.push_back(gData->uvTopLeft);
-            uvVertexData.push_back(gData->uvBotRight);
-            uvVertexData.push_back(glm::vec2(gData->uvBotRight.x, gData->uvTopLeft.y));
+            uvVertexData.push_back(glm::vec2(gData->uvTopLeft.x, gData->uvBotRight.y)); //Left bottom
+            uvVertexData.push_back(gData->uvTopLeft);                                   //Left top
+            uvVertexData.push_back(gData->uvBotRight);                                  //Right bottom
+            uvVertexData.push_back(glm::vec2(gData->uvBotRight.x, gData->uvTopLeft.y)); //Right top
             
             //add indices based on char
             indicesData.push_back(indicesIndex * 4);
@@ -161,37 +155,16 @@ void Text::computeVertexData(){
             indicesData.push_back(indicesIndex * 4 + 1);
             indicesData.push_back(indicesIndex * 4 + 2);
             indicesData.push_back(indicesIndex * 4 + 3);
+            //increase indicies index
+            indicesIndex++;
             
             //advance origin
             origin.x += (gData->metrics.horiAdvance >> 6);
-            
-            indicesIndex++;
         }
     }
+    
+    return true;
 }
-
-void Text::loadVertexData(){
-    glGenVertexArrays(1, &this->bufferObject.vao);
-    glBindVertexArray(this->bufferObject.vao);
-    
-    //generate vertex buffer object for quad
-    glGenBuffers(1, &this->bufferObject.vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, this->bufferObject.vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * vertexData.size(), &vertexData[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(progPtr->attrib("vert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
-    
-    //generate texture uv buffer object for quad
-    glGenBuffers(1, &this->bufferObject.uvbo);
-    glBindBuffer(GL_ARRAY_BUFFER, this->bufferObject.uvbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * uvVertexData.size(), &uvVertexData[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(progPtr->attrib("uvVert"), 2, GL_FLOAT, GL_FALSE, 0, NULL);
-    
-    //generate indices buffer
-    glGenBuffers(1, &this->bufferObject.ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->bufferObject.ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), &indicesData[0], GL_STATIC_DRAW);
-}
-
 void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
     originList.clear();
     
@@ -206,7 +179,7 @@ void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
     std::vector<int> widthList;
     
     //iterate text that is separated by new line
-    for(auto it : splittedText){
+    for(auto it : splittedLabel){
         //reset width and height
         w = 0;
         h = 0;
@@ -254,64 +227,202 @@ void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
         
         //create origin. origin is the starting point of text quad vertices. y will be updated after this loop
         glm::vec2 origin = glm::vec2(0, 0);
-//        origin.x = w/2 * (-1);
-//        origin.y = 0;
         originList.push_back(origin);
         
         //save offsets
         offsetY.push_back(maxBearingY);
-//        offsetY.push_back(h - bearingY);
         offsetY.push_back(maxBotY);
         
         widthList.push_back(w);
     }
-//
-//    int lineNumber = (int)originList.size();
-//    int lineSpace = font->getLineSpace();
-
-//    totalHeight = ((lineNumber - 1) * lineSpace) + offsetY.at(0) + offsetY.at(offsetY.size() - 1);
+    
+    //get center of height
     int baseY = totalHeight / 2;
     
     int newY = 0 - offsetY.at(0) + baseY;
-
-//    for(unsigned int i = 0; i<originList.size(); i++){
+    
     int originIndex = 0;
+    //update origin list.
+    //origin list starts from left and advance to right(like human writes)
     for (unsigned int i = 0; i < offsetY.size(); i+=2){
-        if(align == ALIGN_RIGHT){
-//            originList.at(originIndex).x = ((-1) * (maxWidth / 2)) + (maxWidth - widthList.at(i));
+        if(align == TEXT_ALIGN::ALIGN_RIGHT){
+            //right align. Add amount of diff between max with and current line's width to most left width position.
             originList.at(originIndex).x = ((-1) * (maxWidth / 2)) + (maxWidth - widthList.at(originIndex));
         }
-        else if(align == ALIGN_LEFT){
+        else if(align == TEXT_ALIGN::ALIGN_LEFT){
+            //left align. Each line starts from left side.
             originList.at(originIndex).x = maxWidth / 2 * (-1);
         }
         else{
+            //center align. Each line starts according to their own width.
             originList.at(originIndex).x = widthList.at(originIndex) / -2.0f;
         }
-        
+        //set the y position of origin.
         originList.at(originIndex).y = newY;
-//        newY -= lineSpace;
+        //move down the y position.
+        //CHECK!! I think offsetY isn't correct.
         newY -= (offsetY.at(i) + offsetY.at(i + 1));
+        
+        //increment index
         originIndex++;
     }
     
-    this->width = maxWidth;
-    this->height = totalHeight;
+    //store size
+    this->maxWidth = maxWidth;
+    this->totalHeight = totalHeight;
+    
+    //store sacled size
     this->Object::scaledWidth = maxWidth / Volt2D::SCREEN_TO_WORLD_SCALE;
     this->Object::scaledHeight = totalHeight / Volt2D::SCREEN_TO_WORLD_SCALE;
 }
 
-bool Text::hasEmptyText(){
-    return text.empty();
+void Text::loadVertexData(){
+    glGenVertexArrays(1, &this->bufferObject.vao);
+    glBindVertexArray(this->bufferObject.vao);
+    
+    GLenum usage;
+    if(this->type == TEXT_TYPE::STATIC){
+        usage = GL_STATIC_DRAW;
+    }
+    else if(this->type == TEXT_TYPE::DYNAMIC){
+        usage = GL_DYNAMIC_DRAW;
+    }
+    
+    //generate vertex buffer object for quad
+    glGenBuffers(1, &this->bufferObject.vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, this->bufferObject.vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * vertexData.size(), &vertexData[0], usage);
+    glVertexAttribPointer(progPtr->attrib("vert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    
+    //generate texture uv buffer object for quad
+    glGenBuffers(1, &this->bufferObject.uvbo);
+    glBindBuffer(GL_ARRAY_BUFFER, this->bufferObject.uvbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * uvVertexData.size(), &uvVertexData[0], usage);
+    glVertexAttribPointer(progPtr->attrib("uvVert"), 2, GL_FLOAT, GL_FALSE, 0, NULL);
+    
+    //generate indices buffer
+    glGenBuffers(1, &this->bufferObject.ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->bufferObject.ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), &indicesData[0], usage);
+    
+    //allocating blank position buffer
+    glGenBuffers(1, &this->vpbo);
+    glBindBuffer(GL_ARRAY_BUFFER, this->vpbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * translationData.size(), &translationData[0], usage);
+    glVertexAttribPointer(progPtr->attrib("posVert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
+}
+
+void Text::subVertexData(){
+    GLenum usage;
+    if(this->type == TEXT_TYPE::STATIC){
+        usage = GL_STATIC_DRAW;
+    }
+    else if(this->type == TEXT_TYPE::DYNAMIC){
+        usage = GL_DYNAMIC_DRAW;
+    }
+    
+    //bind vertex coordinates buffer
+    glBindBuffer(GL_ARRAY_BUFFER, this->bufferObject.vbo);
+    //orphan it
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * vertexData.size(), &vertexData[0], usage);
+    //fill with new vertex coordinates
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec3) * vertexData.size(), &vertexData[0]);
+    
+    //bind uv coordinates buffer
+    glBindBuffer(GL_ARRAY_BUFFER, this->bufferObject.uvbo);
+    //orphan it
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * uvVertexData.size(), &uvVertexData[0], usage);
+    //fill with new uv coordinates
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec2) * uvVertexData.size(), &uvVertexData[0]);
+    
+    //bind indices buffer
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->bufferObject.ibo);
+    //orphan it
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indicesData.size(), NULL, usage);
+    //fill with new indicies
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(GLushort) * indicesData.size(), &indicesData[0]);
+    
+    //bind translation data buffer
+    glBindBuffer(GL_ARRAY_BUFFER, this->vpbo);
+    //orphan buffer
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * translationData.size(), NULL, usage);
+    //fill buffer with new data
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec3) * translationData.size(), &this->translationData[0]);
+}
+
+std::string Text::getLabel(){
+    return this->label;
+}
+
+bool Text::setLabel(std::string label){
+    if(this->type == TEXT_TYPE::STATIC){
+        return false;
+    }
+    else{
+        //backup
+        std::string prevLabel = this->label;
+        std::vector<std::string> prevSplit = this->splittedLabel;
+        //update label
+        this->label = label;
+        
+        if(computeVertices()){
+            //updated vertex buffer
+            subVertexData();
+            return true;
+        }
+        else{
+            //rollback
+            this->label = prevLabel;
+            this->splittedLabel = prevSplit;
+            return false;
+        }
+    }
+}
+
+bool Text::setAlign(Volt2D::TEXT_ALIGN align){
+    if(this->type == TEXT_TYPE::STATIC){
+        return false;
+    }
+    else{
+        //backup
+        TEXT_ALIGN prevAlign = this->align;
+
+        this->align = align;
+        if(computeVertices()){
+            //updated vertex buffer
+            subVertexData();
+            return true;
+        }
+        else{
+            //rollback
+            this->align = prevAlign;
+            return false;
+        }
+    }}
+
+void Text::setColor(Color color){
+    this->color = color;
+}
+
+void Text::splitByNewLine(){
+    this->splittedLabel.clear();
+    std::stringstream ss(label); // Turn the string into a stream.
+    std::string tok;
+    
+    while(getline(ss, tok, '\n')) {
+        this->splittedLabel.push_back(tok);
+    }
 }
 
 void Text::render(){
     if(!visible) return;
-
+    if(label.empty()) return;
+    
     glUseProgram(progPtr->getObject());
     
-    Font* font = FontManager::getInstance().getFont(fontName);
+    Font* ttfFont = FontManager::getInstance().getFont(font);
     
-    font->bindTextTextureAtlas();
+    ttfFont->bindTextTextureAtlas();
     
     const glm::mat4 cameraMat = Volt2D::Director::getInstance().getProjectiveViewMatrix();
     matrixUniformLocation("cameraMat", cameraMat);
@@ -326,97 +437,18 @@ void Text::render(){
     matrixUniformLocation("translateMat", translateMat);
     matrixUniformLocation("scaleMat", scaleMat);
     floatUniformLocation("opacity", opacity);
-    vec3UniformLocation("fontColor", fontColor);
+    glm::vec3 colorRGB = color.getRGB();
+    vec3UniformLocation("fontColor", colorRGB);
     
     glBindVertexArray(this->bufferObject.vao);
     
     glEnableVertexAttribArray(progPtr->attrib("vert"));
     glEnableVertexAttribArray(progPtr->attrib("uvVert"));
+    glEnableVertexAttribArray(progPtr->attrib("posVert"));
     
-//    glActiveTexture(GL_TEXTURE0);
+    //maybe instancing is not right...just use normal draw call...
+    glDrawElements(GL_TRIANGLES, (int)this->indicesData.size(), GL_UNSIGNED_SHORT, 0);
     
-//    //한글 확인
-//    std::wstring wStr(L"한글 출력 입니다요 walla!");
-//    const wchar_t* wCharStr = wStr.c_str();
-//
-//    for(int i = 0; i < wcslen(wCharStr); i++){
-//        cout << "char = " << wCharStr[i] << endl;
-//        if(wCharStr[i] < 0xAC00 || wCharStr[i] > 0xD7A3){
-//            if(wCharStr[i] == 0x20){
-//                cout << "space!"<< endl;
-//            }
-//            else{
-//                cout << "not korean!" << endl;
-//            }
-//        }
-//        else{
-//            cout << "korean!" << endl;
-//            
-//        }
-//    }
-    
-    unsigned int index = -1;
-    int rangeCounter = -1;
-    for(auto it : splittedText){
-        for(unsigned int i = 0; i<it.length(); i++){
-            rangeCounter++;
-            index++;
-            if(rangeCounter < start)
-                continue;
-            if(rangeCounter > end)
-                break;
-            
-            matrixUniformLocation("charTransMat", translationData.at(index));
-            
-            //get char and check validation.
-            const char* cStr = it.c_str();
-            char c = cStr[i];
-            int cInt = (int)c;
-            if(cInt < 32 || cInt > 126){
-                cout << "Unsupported text" << endl;
-//                exit(1);
-                continue;
-            }
-            
-            glDrawRangeElements(
-                                GL_TRIANGLES/*Rendering mode. draw 2 triangles for 1 quad*/,
-                                //index * 0/*start*/,
-                                //index * 0/*end*/,
-                                //Not sure what start and end do. Gonna try static number
-                                0/*start*/,
-                                6/*end*/,
-                                6/*Count. Number of elements to be rendered. Single quad contains 6 vertexes.*/,
-                                GL_UNSIGNED_SHORT/*indices type*/,
-                                VOID_OFFSET(index * 6 * sizeof(GLushort))/*offset of each char(6 vertexes)*/
-                                );
-        }
-    }
-
     glBindVertexArray(0);
     glUseProgram(0);
-}
-
-void Text::splitByNewLine(){
-    splittedText.clear();
-    std::stringstream ss(text); // Turn the string into a stream.
-    std::string tok;
-    
-    while(getline(ss, tok, '\n')) {
-        splittedText.push_back(tok);
-    }
-}
-
-void Text::setTextAlign(Text::TextAlign mode){
-    this->align = mode;
-}
-
-void Text::setTextRange(int start, int end){
-    if(start < 0)
-        start = 0;
-    this->start = start;
-    
-    int strLen = (int)strlen(text.c_str());
-    if(end > strLen)
-        end = strLen;
-    this->end = end;
 }
