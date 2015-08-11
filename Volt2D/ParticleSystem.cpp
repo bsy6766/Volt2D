@@ -255,24 +255,24 @@ void ParticleSystem::loadVertexData(){
     //allocating blank position buffer
     glGenBuffers(1, &this->vpbo);
     glBindBuffer(GL_ARRAY_BUFFER, this->vpbo);
-    glBufferData(GL_ARRAY_BUFFER, this->size * sizeof(glm::vec3), NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->size * sizeof(glm::vec3), NULL, GL_DYNAMIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("posVert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
     
     glGenBuffers(1, &this->vspbo);
     glBindBuffer(GL_ARRAY_BUFFER, this->vspbo);
-    glBufferData(GL_ARRAY_BUFFER, this->size * sizeof(glm::vec3), NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->size * sizeof(glm::vec3), NULL, GL_DYNAMIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("spawnPosVert"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
     
     //color
     glGenBuffers(1, &this->cbo);
     glBindBuffer(GL_ARRAY_BUFFER, this->cbo);
-    glBufferData(GL_ARRAY_BUFFER, this->size * sizeof(glm::vec4), NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->size * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("particleColor"), 4/*RGBA*/, GL_FLOAT, GL_FALSE, 0, NULL);
     
     //size
     glGenBuffers(1, &this->srbo);
     glBindBuffer(GL_ARRAY_BUFFER, this->srbo);
-    glBufferData(GL_ARRAY_BUFFER, this->size * sizeof(glm::vec4), NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->size * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
     glVertexAttribPointer(progPtr->attrib("particleTransform"), 4, GL_FLOAT, GL_FALSE, 0, NULL);
     
     glBindVertexArray(0);
@@ -614,20 +614,21 @@ void ParticleSystem::update(double dt){
     //update Data
     if (livingParticleNum > 0){
         glBindBuffer(GL_ARRAY_BUFFER, vpbo);
-		glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_DYNAMIC_DRAW);
         glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(GLfloat) * 3, &vertexDistanceData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
+        
         glBindBuffer(GL_ARRAY_BUFFER, vspbo);
-        glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_DYNAMIC_DRAW);
         glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(GLfloat) * 3, &vertexSpawnDistanceData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
         
         glBindBuffer(GL_ARRAY_BUFFER, cbo);
         assert(colorData.size() == livingParticleNum);
-        glBufferData(GL_ARRAY_BUFFER, livingParticleNum * sizeof(glm::vec4), NULL, GL_STREAM_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, livingParticleNum * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
         glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(glm::vec4), &colorData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
         
         glBindBuffer(GL_ARRAY_BUFFER, srbo);
         assert(scaleRotData.size() == livingParticleNum);
-        glBufferData(GL_ARRAY_BUFFER, livingParticleNum * sizeof(glm::vec4), NULL, GL_STREAM_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, livingParticleNum * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
         glBufferSubData(GL_ARRAY_BUFFER, 0, livingParticleNum * sizeof(glm::vec4), &scaleRotData[0]); // Buffer orphaning, a common way to improve streaming perf. See above link for details. So clearing data?
 	}
     
@@ -718,16 +719,16 @@ void ParticleSystem::reset(bool pause){
     particleList.clear();
     
     glBindBuffer(GL_ARRAY_BUFFER, vpbo);
-    glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_DYNAMIC_DRAW);
     
     glBindBuffer(GL_ARRAY_BUFFER, vspbo);
-    glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, livingParticleNum * 3 * sizeof(GLfloat), NULL, GL_DYNAMIC_DRAW);
     
     glBindBuffer(GL_ARRAY_BUFFER, cbo);
-    glBufferData(GL_ARRAY_BUFFER, livingParticleNum * sizeof(glm::vec4), NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, livingParticleNum * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
     
     glBindBuffer(GL_ARRAY_BUFFER, srbo);
-    glBufferData(GL_ARRAY_BUFFER, livingParticleNum * sizeof(glm::vec4), NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, livingParticleNum * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
