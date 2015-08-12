@@ -699,7 +699,7 @@ bool ParticleSystem::isDead(){
     //if time is up
     if(totalElapsedTime >= duration){
         //if all particle is dead
-        if(particleList.size() == 0){
+        if(particleList.empty()){
             return true;
         }
     }
