@@ -15,9 +15,9 @@ running(false),
 alive(true),
 isProtected(false),
 totalElapsedTime(0),
-duration(0)
+duration(0),
+target(0)
 {
-//    std::cout << "[SYSTEM::INFO] Creating ActionObject" << std::endl;
 }
 
 ActionObject::ActionObject(const ActionObject& other){
@@ -29,9 +29,7 @@ ActionObject::ActionObject(const ActionObject& other){
     this->isProtected = other.isProtected;
 }
 
-ActionObject::~ActionObject(){
-//    std::cout << "[SYSTEM::INFO] Releasing ActionObject" << std::endl;
-}
+ActionObject::~ActionObject(){}
 
 double ActionObject::getDuration(){
     return duration;
