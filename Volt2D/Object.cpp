@@ -32,11 +32,9 @@ scale(glm::vec3(1, 1, 1)),
 alive(true),
 actionRunning(false)
 {
-//    cout << "[SYSTEM::INFO] Creating Object" << endl;
 }
 
 Object::~Object(){
-    //    cout << "[SYSTEM::INFO] Releasing Object" << endl;
     for (std::list<ActionSchedule*>::const_iterator ci = actionScheduleList.begin(); ci != actionScheduleList.end(); ++ci){
         delete (*ci);
     }
@@ -214,10 +212,9 @@ GLfloat Object::getOpacity(){
 
 void Object::setAnchorPoint(glm::vec2 anchorPoint){
     this->anchorPoint = anchorPoint;
-    glm::vec3 anchorDistance = glm::vec3();
     float shiftX = -anchorPoint.x * this->scaledWidth;
     float shiftY = anchorPoint.y * this->scaledHeight;
-    anchorDistance = glm::vec3(shiftX, shiftY, 0);
+    glm::vec3 anchorDistance = glm::vec3(shiftX, shiftY, 0);
     this->modelMat = glm::translate(glm::mat4(), anchorDistance);
     this->needToUpdateBB = true;
 }

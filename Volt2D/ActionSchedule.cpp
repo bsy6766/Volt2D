@@ -137,7 +137,7 @@ void ActionSchedule::updateSchedule(){
 }
 
 bool ActionSchedule::isEmpty(){
-    return actionList.size() == 0;
+    return actionList.empty();
 }
 
 bool ActionSchedule::isFinished(){
