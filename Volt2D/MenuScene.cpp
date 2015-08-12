@@ -554,6 +554,10 @@ void MenuScene::keyPressed(int key, int mods){
                         break;
                     case 3:
                     {
+                        if(armPS != nullptr) {
+                            sampleArm3->removechild(armPS, true);
+                            armPS = nullptr;
+                        }
                         sampleArm2->removechild(sampleArm3, true);
                         sampleArm3 = nullptr;
                         level = 2;
