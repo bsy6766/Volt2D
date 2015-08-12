@@ -541,18 +541,21 @@ void MenuScene::keyPressed(int key, int mods){
                     case 1:
                     {
                         sampleBody->removechild(sampleArm1, true);
+                        sampleArm1 = nullptr;
                         level = 0;
                     }
                         break;
                     case 2:
                     {
                         sampleArm1->removechild(sampleArm2, true);
+                        sampleArm2 = nullptr;
                         level = 1;
                     }
                         break;
                     case 3:
                     {
                         sampleArm2->removechild(sampleArm3, true);
+                        sampleArm3 = nullptr;
                         level = 2;
                     }
                         break;
@@ -1205,9 +1208,12 @@ void MenuScene::resetPrevBtn(){
         case s_object_hierarchy:
             objectHierarchyBtn->setOpacity(defaultBtnOpacity);
             this->removechild(instructionMsg, true);
-            sampleArm2->removechild(sampleArm3, true);
-            sampleArm1->removechild(sampleArm2, true);
-            sampleBody->removechild(sampleArm1, true);
+            if(sampleArm3 != nullptr)
+                sampleArm2->removechild(sampleArm3, true);
+            if(sampleArm2 != nullptr)
+                sampleArm1->removechild(sampleArm2, true);
+            if(sampleArm1 != nullptr)
+                sampleBody->removechild(sampleArm1, true);
             this->removechild(sampleBody, true);
             sampleBody = nullptr;
             sampleArm1 = nullptr;
