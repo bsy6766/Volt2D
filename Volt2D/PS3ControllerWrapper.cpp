@@ -13,7 +13,9 @@ using namespace Volt2D;
 PS3ControllerWrapper::PS3ControllerWrapper(int num, int buttonCount, int axisCount):
 joystickInputNum(num),
 buttonCount(buttonCount),
-axisCount(axisCount)
+axisCount(axisCount),
+buttons(0),
+axises(0)
 {
     
 }
