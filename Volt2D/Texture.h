@@ -46,7 +46,7 @@ private:
     /**
      *  Path to texture root folder
      */
-    const static std::string textureFolderPath;
+    static std::string textureFolderPath;
     
     /**
      *  Stores Image datas.

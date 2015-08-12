@@ -118,7 +118,6 @@ Sprite* Sprite::createCustom(std::string objectName, Volt2D::Texture *texture, f
 }
 
 bool Sprite::initTexture(const std::string& fileName, GLenum textureTarget){
-    std::string textureDir = Volt2D::Director::getInstance().getWorkingDir() + "/../Texture/";
     this->texture = Texture::createTextureWithFile(fileName, textureTarget);
     
     //the only case failing is that when it fails to read texture.

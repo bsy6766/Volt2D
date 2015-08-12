@@ -9,7 +9,6 @@
 #include <iostream>
 #include <string>
 #include "Director.h"
-//#include "TitleScene.h"
 #include "MenuScene.h"
 
 int main(int argc, const char * argv[]) {
@@ -22,6 +21,10 @@ int main(int argc, const char * argv[]) {
         else{
             std::runtime_error("Failed to initialize system.");
         }
+    }
+    catch(std::bad_alloc& ba){
+        std::cout << "[SYSTEM::ERROR] Bad allocation" << endl;
+        std::cout << ba.what() << std::endl;
     }
     catch(std::exception &e){
         std::cout << e.what() << std::endl;

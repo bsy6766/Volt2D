@@ -37,17 +37,17 @@ transitioning(false)
 {
     Timer::getInstance().recordTime();
     //get Working directory.
-    char cCurrentPath[FILENAME_MAX];
-    
-    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
-    {
-//        return errno;
-    }
-    
-    cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
-    
-    workingDirectory = cCurrentPath;
-    std::cout << "[SYSTEM::INFO] Working directory = " << workingDirectory << std::endl;
+//    char cCurrentPath[FILENAME_MAX];
+//    
+//    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
+//    {
+////        return errno;
+//    }
+//    
+//    cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
+//    
+//    workingDirectory = cCurrentPath;
+//    std::cout << "[SYSTEM::INFO] Working directory = " << workingDirectory << std::endl;
 }
 
 Volt2D::Director::~Director(){
@@ -106,17 +106,8 @@ Volt2D::Director::~Director(){
 #pragma mark Init & Release
 bool Volt2D::Director::initApp(int argc, const char * argv[]){
     //Get working directory.
-#if RELEASE
-    if(argc > 0){
-        std::string wd(argv[0]);
-        Volt2D::splitFilename(wd);
-        setWorkingDir(wd);
-    }
-    else{
-        return false;
-    }
-#endif
-    
+#if DEBUG
+    cout << "DEBUG MODE" << endl;
     char cCurrentPath[FILENAME_MAX];
     
     if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
@@ -126,7 +117,21 @@ bool Volt2D::Director::initApp(int argc, const char * argv[]){
     
     cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
     
-    std::string runningPath(cCurrentPath);
+    this->workingDirectory = std::string(cCurrentPath);
+#else
+    cout << "RELEASE MODE" << endl;
+    if(argc > 0){
+        std::string wd(argv[0]);
+        cout << "[SYSTEM::INFO] Working directory = " << wd << endl;
+        Volt2D::splitFilename(wd);
+        setWorkingDir(wd);
+    }
+    else{
+        return false;
+    }
+#endif
+
+    std::string runningPath = this->workingDirectory;
     std::cout << "[main] Working directory = " << runningPath << std::endl;
     
     Volt2D::LuaConfig* systemConfig = Volt2D::LuaConfig::create("systemConfig");

@@ -14,7 +14,7 @@
 
 using namespace Volt2D;
 
-const std::string Texture::textureFolderPath = Volt2D::Director::getInstance().getWorkingDir() + "/../Texture/";
+std::string Texture::textureFolderPath = Volt2D::Director::getInstance().getWorkingDir() + "/../Texture/";
 
 GLuint Texture::curBoundedTexture = -1;
 
@@ -28,6 +28,7 @@ loaded(false),
 textureLocation(-1)
 {
     this->textureLocation = glGetUniformLocation(Volt2D::Director::getInstance().getProgramPtr()->getObject(), "tex");
+    Texture::textureFolderPath = Volt2D::Director::getInstance().getWorkingDir() + "/../Texture/";
 }
 
 Texture::Texture(GLuint texObj, GLenum texTarget):
@@ -323,7 +324,7 @@ void Texture::flipImage(unsigned char* data){
         std::memcpy(oppositeRow, rowBuffer, rowSize);
     }
     
-    delete rowBuffer;
+    delete[] rowBuffer;
 }
 
 void Texture::generate2DTexture(int width, int height, int channel, unsigned char* data){
