@@ -216,6 +216,7 @@ void MenuScene::init(){
     delete delay;
     delete moveUp;
     delete fadeIn;
+    delete moveRight;
     
     //add font
     Volt2D::FontManager::getInstance().addFont("UhBee Kang-Ja.ttf", 50);
