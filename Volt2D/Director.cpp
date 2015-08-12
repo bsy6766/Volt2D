@@ -106,31 +106,49 @@ Volt2D::Director::~Director(){
 #pragma mark Init & Release
 bool Volt2D::Director::initApp(int argc, const char * argv[]){
     //Get working directory.
-#if DEBUG
-    cout << "DEBUG MODE" << endl;
-    char cCurrentPath[FILENAME_MAX];
+
+    bool debug = false;
+#if _WIN32
+    #if _DEBUG
+        debug = true;
+    #else
+        debug = false;
+    #endif
+#elif __APPLE__
+    #if DEBUG
+        debug = true;
+    #else
+        debug = false;
+    #endif
+#endif
     
-    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
-    {
-        return false;
-    }
-    
-    cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
-    
-    this->workingDirectory = std::string(cCurrentPath);
-#else
-    cout << "RELEASE MODE" << endl;
-    if(argc > 0){
-        std::string wd(argv[0]);
-        cout << "[SYSTEM::INFO] Working directory = " << wd << endl;
-        Volt2D::splitFilename(wd);
-        setWorkingDir(wd);
+    if(debug){
+        cout << "DEBUG MODE" << endl;
+        char cCurrentPath[FILENAME_MAX];
+        
+        if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
+        {
+            return false;
+        }
+        
+        cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
+        
+        this->workingDirectory = std::string(cCurrentPath);
     }
     else{
-        return false;
+        //release
+        cout << "RELEASE MODE" << endl;
+        if(argc > 0){
+            std::string wd(argv[0]);
+            cout << "[SYSTEM::INFO] Working directory = " << wd << endl;
+            Volt2D::splitFilename(wd);
+            setWorkingDir(wd);
+        }
+        else{
+            return false;
+        }
     }
-#endif
-
+    
     std::string runningPath = this->workingDirectory;
     std::cout << "[main] Working directory = " << runningPath << std::endl;
     
@@ -434,8 +452,7 @@ void Volt2D::Director::transitionToNextScene(Volt2D::Transition *transition){
 void Volt2D::Director::addProgramWithShader(const std::string programName, const std::string vertexShaderPath, const std::string fragmentShaderPath){
     std::string shaderPath = workingDirectory + "/../Shader/";
     
-    Volt2D::Shader* vertexShader = Volt2D::Shader::
-    createShader(shaderPath + vertexShaderPath, GL_VERTEX_SHADER);
+    Volt2D::Shader* vertexShader = Volt2D::Shader::createShader(shaderPath + vertexShaderPath, GL_VERTEX_SHADER);
     
     Volt2D::Shader* fragmentShader = Volt2D::Shader::createShader(shaderPath + fragmentShaderPath, GL_FRAGMENT_SHADER);
     
