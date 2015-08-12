@@ -10,12 +10,12 @@
 
 using namespace Volt2D;
 
-Shader::Shader(){
-    shaderObject = 0;
+Shader::Shader():
+shaderObject(-1)
+{
 }
 
 Shader::~Shader(){
-    shaderObject = 0;
 }
 
 Shader* Shader::createShader(const std::string filePath, GLenum shaderType){
@@ -67,6 +67,8 @@ std::string Shader::shaderCodeFromFile(const std::string filePath){
     
     std::stringstream buffer;
     buffer << fs.rdbuf();
+    
+    fs.close();
     
     return buffer.str();
 }
