@@ -29,7 +29,6 @@ struct Image{
     float height;
     int channel;
     string name;
-    float x;
 };
 
 /**
