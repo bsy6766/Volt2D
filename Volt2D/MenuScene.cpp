@@ -1205,12 +1205,16 @@ void MenuScene::resetPrevBtn(){
         case s_object_hierarchy:
             objectHierarchyBtn->setOpacity(defaultBtnOpacity);
             this->removechild(instructionMsg, true);
+            sampleArm2->removechild(sampleArm3, true);
+            sampleArm1->removechild(sampleArm2, true);
+            sampleBody->removechild(sampleArm1, true);
             this->removechild(sampleBody, true);
             sampleBody = nullptr;
             sampleArm1 = nullptr;
             sampleArm2 = nullptr;
             sampleArm3 = nullptr;
             instructionMsg = nullptr;
+            level = 0;
             break;
         default:
             break;
