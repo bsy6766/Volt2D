@@ -193,6 +193,7 @@ void Text::computeOrigins(Font* font, std::vector<glm::vec2>& originList){
             GlyphData* gData = font->getGlyphDataFromChar(c);
             if(gData == nullptr){
                 cout << "Failed to find GlyphData for char \"" << c << "\"." << endl;
+                continue;
             }
             
             //sum up all char's width
