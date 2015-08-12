@@ -7,6 +7,7 @@
 //
 
 #include "Font.h"
+#include "Director.h"
 
 FT_Library Font::library = 0;
 

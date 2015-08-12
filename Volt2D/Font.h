@@ -18,8 +18,11 @@
 #include FT_FREETYPE_H
 #include <freetype/freetype.h>
 #endif
+
 #include <ftglyph.h>
-#include "Director.h"
+
+#include "Utility.hpp"
+#include "Texture.h"
 
 /**
  *  @class GlyphData

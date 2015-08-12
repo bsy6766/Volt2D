@@ -32,6 +32,7 @@
 #include "ProgressBar.h"
 #include "ProgressRadian.h"
 #include "ParticleSystem.h"
+#include "Text.h"
 #include "SpriteSheet.h"
 #include "Transition.h"
 
@@ -77,6 +78,8 @@ private:
     
     //mouse icon
     Volt2D::Sprite* mouseCursor;
+    Volt2D::Text* fpsLabel;
+
     //temp
     glm::vec2 prevMousePos = glm::vec2();
     

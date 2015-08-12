@@ -19,6 +19,7 @@ Shader::~Shader(){
 }
 
 Shader* Shader::createShader(const std::string filePath, GLenum shaderType){
+    //100% Memory leak detection here. wtf? 
     Shader* newShader = new Shader();
     newShader->loadShader(filePath, shaderType);
     return newShader;

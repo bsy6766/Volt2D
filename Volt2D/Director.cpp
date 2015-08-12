@@ -33,7 +33,8 @@ vsync(false),
 fullscreen(true),
 borderless(false),
 cursorHidden(false),
-transitioning(false)
+transitioning(false),
+fpsLabel(0)
 {
     Timer::getInstance().recordTime();
     //get Working directory.
@@ -99,6 +100,9 @@ Volt2D::Director::~Director(){
     
     if(mouseCursor)
         delete mouseCursor;
+    
+    if(fpsLabel)
+        delete fpsLabel;
     
     cout << "Done." << endl;
 }
@@ -236,6 +240,9 @@ bool Volt2D::Director::initApp(int argc, const char * argv[]){
     
     //Hardcoded sprite.
     mouseCursor = Volt2D::Sprite::create("globalMouseCursor", "mouse_icon.png");
+    fpsLabel = Volt2D::Text::create("DirectorVolt2D_fpsLabel", "fps: 0", "arial.ttf", Volt2D::TEXT_ALIGN::ALIGN_LEFT, Volt2D::Color::WHITE, Volt2D::TEXT_TYPE::DYNAMIC);
+    fpsLabel->setPosition(glm::vec3(screenWidth/2 - 50, screenHeight/2 - 25, 0));
+    fpsLabel->setScale(glm::vec3(0.5, 0.5, 1));
     
     return true;
 }
@@ -531,6 +538,7 @@ void Volt2D::Director::run(){
         
         //temp. Render mouse cursor last
         mouseCursor->render();
+        fpsLabel->render();
         
         //swapf buffer and poll input(key, mouse, window size) event
         glfwSwapBuffers(window);
@@ -540,7 +548,8 @@ void Volt2D::Director::run(){
         timeCounter += elapsedTime;
         if(timeCounter > 1){
             fps++;
-            cout << "fps = " << fps << endl;
+//            cout << "fps = " << fps << endl;
+            fpsLabel->setLabel("fps = " + std::to_string(fps));
             fps = 0;
             timeCounter--;
         }

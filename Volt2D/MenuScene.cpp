@@ -976,6 +976,7 @@ void MenuScene::mouseButton(double x, double y, int button, int action, int mods
                             instructionMsg->setAnchorPoint(glm::vec2(-0.5, 0));
                             instructionMsg->setPosition(glm::vec3(-704, -374, 0));
                             this->addChild(instructionMsg);
+                            Volt2D::Director::getInstance().getSoundManager()->playSFX("browse_sfx");
                         }
                     }
                     else if(this->sceneTransitionMoveBtn->getBoundingBox()->containsPoint(point)){

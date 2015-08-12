@@ -12,7 +12,6 @@
 #include "Font.h"
 #include <map>
 #include <string>
-#include "Director.h"
 
 namespace Volt2D{
 /**

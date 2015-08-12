@@ -13,6 +13,7 @@
 #include "SpriteAnimation.h"
 #include "ProgressBar.h"
 #include "ProgressRadian.h"
+#include "ParticleSystem.h"
 #include "Text.h"
 #include "Transition.h"
 #include "Director.h"

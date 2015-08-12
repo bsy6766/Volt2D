@@ -7,6 +7,7 @@
 //
 
 #include "Text.h"
+#include "Director.h"
 
 #define VOID_OFFSET(i) (GLvoid*)(i)
 

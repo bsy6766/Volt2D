@@ -7,6 +7,7 @@
 //
 
 #include "FontManager.h"
+#include "Director.h"
 
 using namespace Volt2D;
 
