@@ -33,8 +33,7 @@ vsync(false),
 fullscreen(true),
 borderless(false),
 cursorHidden(false),
-transitioning(false),
-fpsLabel(0)
+transitioning(false)
 {
     Timer::getInstance().recordTime();
     //get Working directory.
@@ -97,12 +96,6 @@ Volt2D::Director::~Director(){
         if(ps3Joysticks[i])
             delete ps3Joysticks[i];
     }
-    
-    if(mouseCursor)
-        delete mouseCursor;
-    
-    if(fpsLabel)
-        delete fpsLabel;
     
     cout << "Done." << endl;
 }
@@ -237,12 +230,6 @@ bool Volt2D::Director::initApp(int argc, const char * argv[]){
             break;
         }
     }
-    
-    //Hardcoded sprite.
-    mouseCursor = Volt2D::Sprite::create("globalMouseCursor", "mouse_icon.png");
-    fpsLabel = Volt2D::Text::create("DirectorVolt2D_fpsLabel", "fps: 0", "arial.ttf", Volt2D::TEXT_ALIGN::ALIGN_LEFT, Volt2D::Color::WHITE, Volt2D::TEXT_TYPE::DYNAMIC);
-    fpsLabel->setPosition(glm::vec3(screenWidth/2 - 50, screenHeight/2 - 25, 0));
-    fpsLabel->setScale(glm::vec3(0.5, 0.5, 1));
     
     return true;
 }
@@ -536,10 +523,6 @@ void Volt2D::Director::run(){
             render();
         }
         
-        //temp. Render mouse cursor last
-        mouseCursor->render();
-        fpsLabel->render();
-        
         //swapf buffer and poll input(key, mouse, window size) event
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -549,7 +532,6 @@ void Volt2D::Director::run(){
         if(timeCounter > 1){
             fps++;
 //            cout << "fps = " << fps << endl;
-            fpsLabel->setLabel("fps = " + std::to_string(fps));
             fps = 0;
             timeCounter--;
         }
@@ -701,7 +683,7 @@ void Volt2D::Director::mouse_move_callback(GLFWwindow *window, double xPos, doub
     //send raw mouse position instead of world coordinate
 //    directorPtr->runningScene->mouseMove(x, y);
     directorPtr->runningScene->mouseMove(x - (w/2.0f), (h/2.0f) - y);
-    directorPtr->mouseCursor->setPosition(glm::vec3(x - (w/2.0f), (h/2.0f) - y, 0));
+//    directorPtr->mouseCursor->setPosition(glm::vec3(x - (w/2.0f), (h/2.0f) - y, 0));
     
     //camera movement
     //    directorPtr->runningScene->Scene::mouseMove(x, -y);

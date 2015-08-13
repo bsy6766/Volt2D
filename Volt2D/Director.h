@@ -75,10 +75,6 @@ private:
     friend class Volt2D::ParticleSystem;
     friend class Volt2D::ProgressBar;
     friend class Volt2D::ProgressRadian;
-    
-    //mouse icon
-    Volt2D::Sprite* mouseCursor;
-    Volt2D::Text* fpsLabel;
 
     //temp
     glm::vec2 prevMousePos = glm::vec2();
