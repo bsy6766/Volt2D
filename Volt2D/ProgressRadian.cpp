@@ -96,23 +96,25 @@ void ProgressRadian::computeVertexData(glm::vec2 origin, glm::vec2 end){
     std::vector<float> uvWidthGapList;
     std::vector<float> uvHeightGapList;
     
-    this->Object::scaledWidth = this->textureWidth / Volt2D::SCREEN_TO_WORLD_SCALE;
-    this->Object::scaledHeight = this->textureHeight / Volt2D::SCREEN_TO_WORLD_SCALE;
+    float width = static_cast<float>(this->textureWidth) / Volt2D::SCREEN_TO_WORLD_SCALE;
+    float height = static_cast<float>(this->textureHeight)/ Volt2D::SCREEN_TO_WORLD_SCALE;
     
-    float width = this->scaledWidth;
-    float height = this->scaledHeight;
+    //store scaled width and height
+    this->Object::scaledWidth = width;
+    this->Object::scaledHeight =  height;
+    
     
     float angle = 0;
     //compute vertex width and height gap
     //Note: 12 is hardcoded. 100 / 8 sides
     for(int i = 0; i<12; i++){
         //angle is also hardcoded as well.
-        angle+=3.6;
+        angle+=3.6f;
 		//Windows need to define M_PI
-        float radianAngle = angle * M_PI / 180;
-        float curWidthGap = tan(radianAngle) * (width/2);
+        float radianAngle = Volt2D::degreeToRadian(angle);
+        float curWidthGap = tan(radianAngle) * (width/2.0f);
         widthGapList.push_back(curWidthGap);
-        float curHeightGap = tan(radianAngle) * (height/2);
+        float curHeightGap = tan(radianAngle) * (height/2.0f);
         heightGapList.push_back(curHeightGap);
     }
     
@@ -362,13 +364,13 @@ void ProgressRadian::computeVertexData(glm::vec2 origin, glm::vec2 end){
                     else{
                         if(i <= 48){
                             //right of bottom side
-                            vertexData.push_back(glm::vec3(widthGapList.at(gapIndex), -width/2, 0));
+                            vertexData.push_back(glm::vec3(widthGapList.at(gapIndex), -height/2, 0));
                             uvVertexData.push_back(glm::vec2(uvOrigin.x + uvWidthGapList.at(gapIndex), vMin));
                             gapIndex--;
                         }
                         else{
                             //left of bototm side
-                            vertexData.push_back(glm::vec3( (-1) * widthGapList.at(gapIndex), -width/2, 0));
+                            vertexData.push_back(glm::vec3( (-1) * widthGapList.at(gapIndex), -height/2, 0));
                             uvVertexData.push_back(glm::vec2(uvOrigin.x - uvWidthGapList.at(gapIndex), vMin));
                             gapIndex++;
                         }
