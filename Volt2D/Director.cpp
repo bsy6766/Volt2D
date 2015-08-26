@@ -525,6 +525,7 @@ void Volt2D::Director::run(){
         
         //swapf buffer and poll input(key, mouse, window size) event
         glfwSwapBuffers(window);
+        //poll event. this might consume work on every iteration but it's needed for games
         glfwPollEvents();
         
         //FPS counter
@@ -537,6 +538,7 @@ void Volt2D::Director::run(){
         }
         else{
             fps++;
+//            cout << fps << " frame" << endl;
         }
     }
 }
@@ -551,6 +553,7 @@ void Volt2D::Director::render(){
 }
 
 void Volt2D::Director::update(double dt){
+//    cout << "update" << endl;
     if(runningScene){
 //        runningScene->injectKey();
 //        runningScene->injectMouseMove();
@@ -706,7 +709,7 @@ void Volt2D::Director::mouse_button_callback(GLFWwindow *window, int button, int
     float w = directorPtr->winSize.w;
     float h = directorPtr->winSize.h;
     directorPtr->runningScene->mouseButton(x - (w/2.0f), (h/2.0f) - y, button, action, mods);
-    cout << "x = " << x - (w/2.0f) <<", y = << " << (h/2.0f) - y << endl;
+//    cout << "x = " << x - (w/2.0f) <<", y = << " << (h/2.0f) - y << endl;
 }
 
 #pragma mark SpriteSheet caching
