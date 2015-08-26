@@ -232,8 +232,8 @@ void Sprite::computeVertexData(){
 }
 
 void Sprite::computeVertices(){
-    float width = (float)this->textureWidth / Volt2D::SCREEN_TO_WORLD_SCALE;
-    float height = (float)this->textureHeight / Volt2D::SCREEN_TO_WORLD_SCALE;
+    float width = static_cast<float>(this->textureWidth) / Volt2D::SCREEN_TO_WORLD_SCALE;
+    float height = static_cast<float>(this->textureHeight)/ Volt2D::SCREEN_TO_WORLD_SCALE;
     
     this->Object::scaledWidth = width;
     this->Object::scaledHeight = height;
