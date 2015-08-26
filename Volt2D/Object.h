@@ -210,6 +210,11 @@ public:
     glm::mat4 getTransformMat();
     
     /**
+     * Get transformative matrix from highest parent to object itself, excluding scene.
+     */
+    glm::mat4 getTransformMatWithOutScene();
+    
+    /**
      *  Get transformative matrix from only Scene and Layer.
      *  @return Transformative matrix from Scene and Layer only
      */

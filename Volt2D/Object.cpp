@@ -258,6 +258,25 @@ glm::mat4 Object::getSceneAndLayerTransformMat(){
     }
 }
 
+glm::mat4 Object::getTransformMatWithOutScene(){
+    //Getting parent transformative matrix without Scene and Layer.
+    if(dynamic_cast<Scene*>(this)){
+        //return indentity matrix if it's scene or layer
+        return glm::mat4();
+    }
+    else{
+        //if not scene or layer
+        if(this->parent != nullptr){
+            //and has parent, recursive call
+            return this->parent->getTransformMatWithOutScene() * translateMat * rotateMat * scaleMat;
+        }
+        else{
+            //has no parent. return itself's transformative matrix
+            return translateMat * rotateMat * scaleMat;
+        }
+    }
+}
+
 glm::mat4 Object::getTransformMatWithOutSceneAndLayer(){
     //Getting parent transformative matrix without Scene and Layer.
     if(dynamic_cast<Scene*>(this) || dynamic_cast<Layer*>(this)){
