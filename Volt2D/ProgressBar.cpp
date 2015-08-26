@@ -93,9 +93,8 @@ void ProgressBar::initWithSpriteSheet(const ImageEntry* ie, Texture* texture){
 }
 
 void ProgressBar::computeVertexData(){
-    //store scaled width and height
-    this->Object::scaledWidth = this->textureWidth / Volt2D::SCREEN_TO_WORLD_SCALE;
-    this->Object::scaledHeight = this->textureHeight / Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->Object::scaledWidth = static_cast<float>(this->textureWidth) / Volt2D::SCREEN_TO_WORLD_SCALE;
+    this->Object::scaledHeight = static_cast<float>(this->textureHeight) / Volt2D::SCREEN_TO_WORLD_SCALE;
     
     //copy
     float width = this->scaledWidth;
@@ -239,7 +238,9 @@ void ProgressBar::loadVertexData(){
     glBindVertexArray(0);
 }
 
-void ProgressBar::render(){    
+void ProgressBar::render(){
+    if(!this->visible) return;
+    
     glUseProgram(progPtr->getObject());
     
     const glm::mat4 cameraMat = Volt2D::Director::getInstance().getProjectiveViewMatrix();
