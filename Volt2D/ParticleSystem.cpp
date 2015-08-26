@@ -61,6 +61,7 @@ newLifePoint(0)
 {
     //use particle system shader
     this->progPtr = Volt2D::Director::getInstance().getProgramPtr("ParticleSystem");
+    particleList.clear();
 }
 
 ParticleSystem::~ParticleSystem(){
@@ -344,137 +345,141 @@ bool ParticleSystem::initialize(){
 }
 
 void ParticleSystem::update(double dt){
-//    cout << "dt = " << dt << endl;
+//    cout << "ps dt = " << dt << endl;
     //get elapsed time
 //	double elapsedTime = Volt2D::Timer::getInstance().getElapsedTime();
-    if(paused)
-        return;
+//    if(paused)
+//        return;
     
     //update number for new particles.
     //do this unitl it spawns all particles
-    if(this->totalCreatedParticles < this->size * this->duration || this->duration == -1){
-        //add up elapsed time
-        this->totalElapsedTime += dt;
-        
-        //init vars
-        int newParticleNumber = 0;
-        float curLifePoint = 0;
-        
-        //compute.
-        if(this->totalElapsedTime < this->duration || this->duration == -1){
-            //if time didn't exceed duration, use all elapsed time
-            curLifePoint = this->emissionRate * (float)dt;
-            //ignore floating points
-            newParticleNumber += floor(curLifePoint);
-            //store floating points
-            newLifePoint += (curLifePoint - newParticleNumber);
-            if(newLifePoint > 1){
-                //if stored floating points gathered enough to build new particle
-                //it can be more than one. get it.
-                int additionalParticle = newLifePoint / 1;
-                //sub. goes back to < 1
-                newLifePoint -= additionalParticle;
-                //prepare to spawn
-                newParticleNumber += additionalParticle;
-            }
-        }
-        else{
-            //get elapsed time without exceed time. Same as above but just using valied time
-            double exceededTime = this->totalElapsedTime - this->duration;
-            double valiedTime = dt - exceededTime;
-            curLifePoint = this->emissionRate * valiedTime;
-            newParticleNumber += floor(curLifePoint);
-            newLifePoint+= (curLifePoint - newParticleNumber);
-        }
-        
-        //sum up only if system is not infinite
-        if(this->duration >= 0)
-            totalCreatedParticles += newParticleNumber;
-        
-        //if no particle is created and not infinite.
-        if (newParticleNumber == 0)
-            return;
-        
-        //add new particle
-        for (int i = 0; i<newParticleNumber; ++i){
-            //generate random values
-            float randLifeTime = this->lifeTime + (this->lifeTimeVar * Volt2D::randf());
+    //and also only spawn new particle when it's not paused
+    if(!paused){
+        if(this->totalCreatedParticles < this->size * this->duration || this->duration == -1){
+            //add up elapsed time
+            this->totalElapsedTime += dt;
             
-            if(randLifeTime < 0)
-                randLifeTime = 0;
+            //init vars
+            int newParticleNumber = 0;
+            float curLifePoint = 0;
             
-            //speed
-            float randSpeed = this->speed + (this->speedVar * Volt2D::randf());
-            
-            //emitAngle
-            float randEmitAngle = this->emitAngle + (this->emitAngleVar * Volt2D::randf());
-            
-            //create, init, add
-            //add parents's position if needed
-            glm::vec2 realSpawnPos = glm::vec2();
-            //The reason why using parent transform matrix on spawing is because all particles must be free from parent's object except scene and layer.
-            if (this->parent) {
-                realSpawnPos = glm::vec2(this->parent->getTransformMatWithOutSceneAndLayer() * glm::vec4(this->position / SCREEN_TO_WORLD_SCALE, 1));
-            }
-
-            float randX = (realSpawnPos.x + (this->posVar.x * Volt2D::randf())/SCREEN_TO_WORLD_SCALE);
-            float randY = (realSpawnPos.y + (this->posVar.y * Volt2D::randf())/SCREEN_TO_WORLD_SCALE);
-            
-            //radial
-            float randRadial = this->radialAccel + (this->radialAccelVar * Volt2D::randf());
-            
-            //tan
-            float randTan = this->tanAccel + (this->tanAccelVar * Volt2D::randf());
-            
-            glm::vec2 dirVec
-                    = glm::vec2(
-                                cosf(Volt2D::degreeToRadian(randEmitAngle)),
-                                sinf(Volt2D::degreeToRadian(randEmitAngle))
-                                ) * randSpeed / Volt2D::SCREEN_TO_WORLD_SCALE /*works as power scale*/;
-            
-            //color
-            Color randStartColor =
-                    Color::createWithRGBA(startColor.getR() + (startColorVar.getR() * Volt2D::randf()),
-                                          startColor.getG() + (startColorVar.getG() * Volt2D::randf()),
-                                          startColor.getB() + (startColorVar.getB() * Volt2D::randf()),
-                                          startColor.getA() + (startColorVar.getA() * Volt2D::randf()));
-            
-            Color randEndColor =
-                    Color::createWithRGBA(endColor.getR() + (endColorVar.getR() * Volt2D::randf()),
-                                          endColor.getG() + (endColorVar.getG() * Volt2D::randf()),
-                                          endColor.getB() + (endColorVar.getB() * Volt2D::randf()),
-                                          endColor.getA() + (endColorVar.getA() * Volt2D::randf()));
-            
-            float randStartSize = this->startSize + (this->startSizeVar * Volt2D::randf());
-            
-            float randEndSize = 0;
-            if(this->endSize == -1){
-                randEndSize = randStartSize;
+            //compute.
+            if(this->totalElapsedTime < this->duration || this->duration == -1){
+                //if time didn't exceed duration, use all elapsed time
+                curLifePoint = this->emissionRate * static_cast<float>(dt);
+                //ignore floating points
+                newParticleNumber += floor(curLifePoint);
+                //store floating points
+                newLifePoint += (curLifePoint - newParticleNumber);
+                if(newLifePoint > 1){
+                    //if stored floating points gathered enough to build new particle
+                    //it can be more than one. get it.
+                    int additionalParticle = newLifePoint / 1;
+                    //sub. goes back to < 1
+                    newLifePoint -= additionalParticle;
+                    //prepare to spawn
+                    newParticleNumber += additionalParticle;
+                }
             }
             else{
-                randEndSize = this->endSize + (this->endSize * Volt2D::randf());
+                //get elapsed time without exceed time. Same as above but just using valied time
+                double exceededTime = this->totalElapsedTime - this->duration;
+                double valiedTime = dt - exceededTime;
+                curLifePoint = this->emissionRate * valiedTime;
+                newParticleNumber += floor(curLifePoint);
+                newLifePoint+= (curLifePoint - newParticleNumber);
             }
             
-            float randStartAngle = this->startAngle + (this->startAngleVar * Volt2D::randf());
+            //sum up only if system is not infinite
+            if(this->duration >= 0)
+                totalCreatedParticles += newParticleNumber;
+            
+            //if no particle is created and not infinite.
+//            if (newParticleNumber == 0){
+//                return;
+//            }
+            
+            //add new particle
+            for (int i = 0; i<newParticleNumber; ++i){
+                //generate random values
+                float randLifeTime = this->lifeTime + (this->lifeTimeVar * Volt2D::randf());
+                
+                if(randLifeTime < 0)
+                    randLifeTime = 0;
+                
+                //speed
+                float randSpeed = this->speed + (this->speedVar * Volt2D::randf());
+                
+                //emitAngle
+                float randEmitAngle = this->emitAngle + (this->emitAngleVar * Volt2D::randf());
+                
+                //create, init, add
+                //add parents's position if needed
+                glm::vec2 realSpawnPos = glm::vec2();
+                //The reason why using parent transform matrix on spawing is because all particles must be free from parent's object except scene and layer.
+                if (this->parent) {
+    //                realSpawnPos = glm::vec2(this->parent->getTransformMatWithOutSceneAndLayer() * glm::vec4(this->position / SCREEN_TO_WORLD_SCALE, 1));
+                    realSpawnPos = glm::vec2(this->parent->getTransformMatWithOutScene() * glm::vec4(this->position / SCREEN_TO_WORLD_SCALE, 1));
+                }
 
-            float randEndAngle = this->endAngle + (this->endAngleVar * Volt2D::randf());
-            
-            Particle* p = new Particle();
-            p->pos = glm::vec2(randX, randY);
-            p->lifeTime = randLifeTime;
-            p->speed = randSpeed;
-            p->dirVec = dirVec;
-            p->radialAccel = randRadial;
-            p->tanAccel = randTan;
-            p->spawnedPosition = p->pos;
-            p->setColor(randStartColor, randEndColor);
-            p->setSize(randStartSize, randEndSize);
-            p->setAngle(randStartAngle, randEndAngle);
-            
-            particleList.push_back(p);
+                float randX = (realSpawnPos.x + (this->posVar.x * Volt2D::randf())/SCREEN_TO_WORLD_SCALE);
+                float randY = (realSpawnPos.y + (this->posVar.y * Volt2D::randf())/SCREEN_TO_WORLD_SCALE);
+                
+                //radial
+                float randRadial = this->radialAccel + (this->radialAccelVar * Volt2D::randf());
+                
+                //tan
+                float randTan = this->tanAccel + (this->tanAccelVar * Volt2D::randf());
+                
+                glm::vec2 dirVec
+                        = glm::vec2(
+                                    cosf(Volt2D::degreeToRadian(randEmitAngle)),
+                                    sinf(Volt2D::degreeToRadian(randEmitAngle))
+                                    ) * randSpeed / Volt2D::SCREEN_TO_WORLD_SCALE /*works as power scale*/;
+                
+                //color
+                Color randStartColor =
+                        Color::createWithRGBA(startColor.getR() + (startColorVar.getR() * Volt2D::randf()),
+                                              startColor.getG() + (startColorVar.getG() * Volt2D::randf()),
+                                              startColor.getB() + (startColorVar.getB() * Volt2D::randf()),
+                                              startColor.getA() + (startColorVar.getA() * Volt2D::randf()));
+                
+                Color randEndColor =
+                        Color::createWithRGBA(endColor.getR() + (endColorVar.getR() * Volt2D::randf()),
+                                              endColor.getG() + (endColorVar.getG() * Volt2D::randf()),
+                                              endColor.getB() + (endColorVar.getB() * Volt2D::randf()),
+                                              endColor.getA() + (endColorVar.getA() * Volt2D::randf()));
+                
+                float randStartSize = this->startSize + (this->startSizeVar * Volt2D::randf());
+                
+                float randEndSize = 0;
+                if(this->endSize == -1){
+                    randEndSize = randStartSize;
+                }
+                else{
+                    randEndSize = this->endSize + (this->endSize * Volt2D::randf());
+                }
+                
+                float randStartAngle = this->startAngle + (this->startAngleVar * Volt2D::randf());
+
+                float randEndAngle = this->endAngle + (this->endAngleVar * Volt2D::randf());
+                
+                Particle* p = new Particle();
+                p->pos = glm::vec2(randX, randY);
+                p->lifeTime = randLifeTime;
+                p->speed = randSpeed;
+                p->dirVec = dirVec;
+                p->radialAccel = randRadial;
+                p->tanAccel = randTan;
+                p->spawnedPosition = p->pos;
+                p->setColor(randStartColor, randEndColor);
+                p->setSize(randStartSize, randEndSize);
+                p->setAngle(randStartAngle, randEndAngle);
+                
+                particleList.push_back(p);
+            }
         }
     }
-
 	//update particles data
     int liveCount = 0;
     
@@ -487,7 +492,7 @@ void ParticleSystem::update(double dt){
     
     //size
     std::vector<glm::vec4> scaleRotData;
-
+    
 	//iterate through particle list
 	for (std::list<Particle*>::const_iterator ci = particleList.begin(); ci != particleList.end();) {
 		//get time val
@@ -550,13 +555,13 @@ void ParticleSystem::update(double dt){
                 
                 //sum up all vectors and apply time
                 tmp = radial + tangential + gravity;
-                tmp *= dt;
+                tmp *= static_cast<float>(dt);
                 
                 //update the direction vector
                 p->dirVec = p->dirVec + tmp / POWER_SCALE;
                 
                 //move particle based on new direction vector
-                tmp = glm::vec2(p->dirVec.x * dt, p->dirVec.y * dt);
+                tmp = glm::vec2(p->dirVec.x * static_cast<float>(dt), p->dirVec.y * static_cast<float>(dt));
                 p->pos = p->pos + tmp;
                 
                 //deal color here!
@@ -607,9 +612,14 @@ void ParticleSystem::update(double dt){
 
 	livingParticleNum = liveCount;
     
-    if(livingParticleNum == 0 && this->totalElapsedTime > this->duration){
-        this->alive = false;
-    }
+    // {
+    // Note: Make this part of autorelease feature later.
+    //       System must keep object even the particle system is dead for reuse purpose.
+    //kill if particle system is done
+//    if(livingParticleNum == 0 && this->totalElapsedTime > this->duration){
+//        this->alive = false;
+//    }
+    // }
 
     //update Data
     if (livingParticleNum > 0){
@@ -637,8 +647,12 @@ void ParticleSystem::update(double dt){
 
 void ParticleSystem::render(){
     //pre condition check before render
+    //return if not visible.
     if(!this->RenderableObject::visible) return;
+    //return if there is no living particle
     if(this->livingParticleNum == 0) return;
+    //return if particle list is empty
+    if(this->particleList.empty()) return;
     
     if(this->blend)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -657,6 +671,7 @@ void ParticleSystem::render(){
     glm::mat4 parentMat = glm::mat4();
     //particles only get affected by scene and layer's transformative matrixes.
     if(this->parent && Volt2D::Director::getInstance().transitioning){
+        //\todo Note:There is a bug where sometimes particle system need parent matrix when added to layer
         parentMat = this->parent->getSceneAndLayerTransformMat();
     }
     
@@ -695,16 +710,30 @@ void ParticleSystem::render(){
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-bool ParticleSystem::isDead(){
-    //if time is up
-    if(totalElapsedTime >= duration){
-        //if all particle is dead
-        if(particleList.empty()){
-            return true;
-        }
-    }
-    return false;
-}
+//bool ParticleSystem::isDead(){
+//    if(duration == -1){
+//        //inifinite particle never die.
+//        return false;
+//    }
+//    //if time is up
+//    if(totalElapsedTime >= duration){
+//        //if all particle is dead then retur true but if it's paused, then return false.
+//        if(paused){
+//            return false;
+//        }
+//        else{
+//            //if not paused
+//            if(particleList.empty()){
+//                //and particle list is empty = 
+//                return true;
+//            }
+//            else{
+//                return false;
+//            }
+//        }
+//    }
+//    return false;
+//}
 
 void ParticleSystem::reset(bool pause){
     this->totalElapsedTime = 0;
@@ -713,8 +742,11 @@ void ParticleSystem::reset(bool pause){
     this->paused = pause;
     this->newLifePoint = 0;
     
-    for(auto it : particleList){
-        delete it;
+    //note: had to add empty check.
+    if(!particleList.empty()){
+        for(auto it : particleList){
+            delete it;
+        }
     }
     particleList.clear();
     
@@ -739,4 +771,8 @@ void ParticleSystem::resume(){
 
 void ParticleSystem::pause(){
     this->paused = true;
+}
+
+bool ParticleSystem::isPaused(){
+    return this->paused;
 }

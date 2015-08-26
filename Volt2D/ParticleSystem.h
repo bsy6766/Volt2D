@@ -339,11 +339,6 @@ public:
     */
     virtual void update(double dt) override;
     
-    /**
-     * True = dead, false = alive
-     */
-    bool isDead();
-    
     /// @{
     /// @name Setters
     void setPause(bool pause);
@@ -386,6 +381,8 @@ public:
      *  pause particle system.
      */
     void pause();
+    
+    bool isPaused();
 };
 }
 
