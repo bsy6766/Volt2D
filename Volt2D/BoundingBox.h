@@ -44,7 +44,7 @@ private:
     void updatePointWithMax();
 public:
     //Constructor
-    BoundingBox(int x, int y, int w, int h);
+    BoundingBox(float o_x, float o_y, float e_x, float e_y);
     //Destructor
     ~BoundingBox();
     
@@ -57,6 +57,9 @@ public:
      *  Current bounding box's end point(Most right high point)
      */
     glm::vec2 end;
+    
+    /** Size of bounding box */
+    glm::vec2 size;
     
     /**
      *  Point - BoundingBox collision detection

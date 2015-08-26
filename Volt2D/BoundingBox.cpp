@@ -10,11 +10,12 @@
 
 using namespace Volt2D;
 
-BoundingBox::BoundingBox(int x, int y, int w, int h):
-origin(glm::vec2(x, y)),
-end(glm::vec2(w, h)),
-originalOrigin(glm::vec2(x, y)),
-originalEnd(glm::vec2(w, h))
+BoundingBox::BoundingBox(float o_x, float o_y, float e_x, float e_y):
+origin(glm::vec2(o_x, o_y)),
+end(glm::vec2(e_x, e_y)),
+originalOrigin(glm::vec2(o_x, o_y)),
+originalEnd(glm::vec2(e_x, e_y)),
+size(e_x - o_x, e_y - o_y)
 {
     
 }
@@ -63,6 +64,7 @@ void BoundingBox::updatePointWithMax(){
     
     origin = glm::vec2(minX, minY);
     end = glm::vec2(maxX, maxY);
+    size = glm::vec2(maxX - minX, maxY - minY);
 }
 
 bool BoundingBox::intersectsBox(BoundingBox *box){
